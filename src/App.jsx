@@ -6,6 +6,10 @@ import ProtectedRoute from './components/ProtectedRoute'
 import DashboardLayout from './components/DashboardLayout'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
+import ForgotPassword from './pages/auth/ForgotPassword'
+import VerifyPin from './pages/auth/VerifyPin'
+import ResetPassword from './pages/auth/ResetPassword'
+import EmailConfirmation from './pages/auth/EmailConfirmation'
 import Unauthorized from './pages/Unauthorized'
 
 // Worker Portal Pages
@@ -59,6 +63,11 @@ function App() {
               <Route path="/" element={<HomeRedirect />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/verify-pin" element={<VerifyPin />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/auth/confirm" element={<EmailConfirmation />} />
+              <Route path="/verify-email" element={<EmailConfirmation />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
 
               {/* 1. Worker Portal */}

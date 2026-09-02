@@ -1,7 +1,7 @@
 // SahakarConnect Mock Supabase Client & 4-6 Weeks Historical Database
 // Problem Statement SIH26089 - Cooperative Digital Service Marketplace
 
-import { DELHI_NCR_AREAS } from './geoService'
+import { DELHI_NCR_AREAS } from './geoService.js'
 
 // Helper to generate past ISO timestamps
 const daysAgo = (days, hour = 11, minute = 30) => {
@@ -12,6 +12,7 @@ const daysAgo = (days, hour = 11, minute = 30) => {
 }
 
 const mockData = {
+  password_reset_codes: [],
   cooperatives: [
     {
       id: 'coop1',
@@ -791,24 +792,38 @@ const mockData = {
   ],
 }
 
+// In-memory DB fallback for Node.js / test environments without window.localStorage
+let inMemoryDb = null
+
 // LocalStorage Persistence Key
 const STORAGE_KEY = 'sahakar_connect_db_v1'
 
 function getDb() {
-  const stored = localStorage.getItem(STORAGE_KEY)
-  if (stored) {
-    try {
-      return JSON.parse(stored)
-    } catch {
-      // Fallback
+  if (typeof localStorage !== 'undefined') {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      try {
+        return JSON.parse(stored)
+      } catch {
+        // Fallback
+      }
     }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockData))
+    return mockData
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(mockData))
-  return mockData
+
+  if (!inMemoryDb) {
+    inMemoryDb = JSON.parse(JSON.stringify(mockData))
+  }
+  return inMemoryDb
 }
 
 function saveDb(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  } else {
+    inMemoryDb = data
+  }
 }
 
 function applyFilters(data, filters) {
@@ -865,7 +880,11 @@ function createQueryBuilder(table) {
     },
     single() {
       singleResult = true
-      return builder.then()
+      return builder
+    },
+    maybeSingle() {
+      singleResult = true
+      return builder
     },
     then(resolve, reject) {
       const promise = new Promise((res) => {
@@ -985,16 +1004,23 @@ export const supabase = {
     onAuthStateChange(callback) {
       return { data: { subscription: { unsubscribe() {} } } }
     },
-    signUp({ email, password, role = 'worker', fullName = '' }) {
+    signUp({ email, password, role = 'worker', fullName = '', options = {} }) {
       const db = getDb()
       const newUserId = 'user_' + crypto.randomUUID().slice(0, 8)
-      const user = { id: newUserId, email }
+      const user = {
+        id: newUserId,
+        email,
+        email_confirmed_at: null,
+        user_metadata: { role, full_name: fullName },
+      }
       const newProfile = {
         id: newUserId,
         email,
         full_name: fullName,
         role,
         phone: '+91 98000 00000',
+        email_confirmed: false,
+        email_confirmed_at: null,
         created_at: new Date().toISOString(),
       }
       db.profiles.push(newProfile)
@@ -1004,14 +1030,14 @@ export const supabase = {
           id: 'wk_' + newUserId,
           user_id: newUserId,
           cooperative_id: 'coop1',
-          primary_trade: 'Electrician',
+          primary_trade: options.data?.trade || 'Electrician',
           skills: ['General Repair'],
           experience_years: 1,
           hourly_rate: 350.0,
           is_verified: false,
           gov_id_type: 'Aadhaar',
           gov_id_masked: 'XXXX-XXXX-0000',
-          area: 'South Extension, New Delhi',
+          area: options.data?.area || 'South Extension, New Delhi',
           latitude: 28.5728,
           longitude: 77.2217,
           rating: 5.0,
@@ -1024,8 +1050,8 @@ export const supabase = {
         db.households.push({
           id: 'hh_' + newUserId,
           user_id: newUserId,
-          address: 'New Residence, New Delhi',
-          area: 'South Extension, New Delhi',
+          address: options.data?.address || 'New Residence, New Delhi',
+          area: options.data?.area || 'South Extension, New Delhi',
           latitude: 28.5728,
           longitude: 77.2217,
           landmark: '',
@@ -1035,8 +1061,8 @@ export const supabase = {
       }
 
       saveDb(db)
-      localStorage.setItem('sahakar_auth_user', JSON.stringify(user))
-      return Promise.resolve({ data: { user }, error: null })
+      // When email confirmation is enabled, session is null until verified
+      return Promise.resolve({ data: { user, session: null }, error: null })
     },
     signInWithPassword({ email }) {
       const db = getDb()
@@ -1045,13 +1071,127 @@ export const supabase = {
         // Fallback default to Ramesh (Worker)
         profile = db.profiles[0]
       }
-      const user = { id: profile.id, email: profile.email }
-      localStorage.setItem('sahakar_auth_user', JSON.stringify(user))
+
+      // Check if email confirmation is required
+      if (profile.email_confirmed === false) {
+        return Promise.resolve({
+          data: null,
+          error: {
+            message: 'Email not confirmed. Please verify your email before logging in.',
+            status: 400,
+          },
+        })
+      }
+
+      const user = { id: profile.id, email: profile.email, email_confirmed_at: profile.email_confirmed_at || new Date().toISOString() }
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('sahakar_auth_user', JSON.stringify(user))
+      }
+      return Promise.resolve({ data: { user, session: { user } }, error: null })
+    },
+    resend({ type = 'signup', email } = {}) {
+      console.log(`[Supabase Auth Resend] Resending ${type} email confirmation to: ${email}`)
+      return Promise.resolve({ data: { message: 'Confirmation email resent successfully.' }, error: null })
+    },
+    verifyOtp({ token_hash, type = 'signup', email } = {}) {
+      const db = getDb()
+      let profile = db.profiles.find((p) => (email && p.email.toLowerCase() === email.toLowerCase()) || p.email_confirmed === false)
+      if (!profile) {
+        profile = db.profiles[0]
+      }
+
+      profile.email_confirmed = true
+      profile.email_confirmed_at = new Date().toISOString()
+      saveDb(db)
+
+      const user = { id: profile.id, email: profile.email, email_confirmed_at: profile.email_confirmed_at }
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('sahakar_auth_user', JSON.stringify(user))
+      }
       return Promise.resolve({ data: { user, session: { user } }, error: null })
     },
     signOut() {
-      localStorage.removeItem('sahakar_auth_user')
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('sahakar_auth_user')
+      }
       return Promise.resolve({})
+    },
+    updateUser({ password }) {
+      return Promise.resolve({ data: { user: { password } }, error: null })
+    },
+    admin: {
+      updateUserById(userId, { password, user_metadata } = {}) {
+        const db = getDb()
+        const profile = db.profiles.find((p) => p.id === userId || p.email === userId)
+        if (profile) {
+          profile.password_updated_at = new Date().toISOString()
+          saveDb(db)
+        }
+        return Promise.resolve({ data: { user: { id: userId, ...profile } }, error: null })
+      },
+    },
+  },
+  functions: {
+    async invoke(functionName, { body = {} } = {}) {
+      try {
+        const { requestPasswordReset, verifyResetPin, resetPasswordWithToken } = await import('./authResetService.js')
+        const { email, pin, resetToken, newPassword } = body || {}
+
+        if (functionName === 'forgot-password') {
+          const res = await requestPasswordReset(email)
+          return {
+            data: {
+              message: "If this email is registered, a code has been sent.",
+              pinCode: res.demoPin || res.pinCode,
+              simulated: res.simulated,
+            },
+            error: null,
+          }
+        }
+
+        if (functionName === 'verify-pin') {
+          const res = await verifyResetPin(email, pin)
+          if (!res.success) {
+            return {
+              data: { verified: false, error: res.error || 'Invalid or expired PIN code.', canResend: true },
+              error: { message: res.error || 'Invalid or expired PIN code.' },
+            }
+          }
+          const token = res.verificationToken || res.resetToken || res.token
+          return {
+            data: {
+              verified: true,
+              resetToken: token,
+              verificationToken: token,
+              email,
+            },
+            error: null,
+          }
+        }
+
+        if (functionName === 'reset-password') {
+          const tokenToUse = resetToken || body.verificationToken
+          const res = await resetPasswordWithToken(tokenToUse, newPassword, newPassword)
+          if (!res.success) {
+            return {
+              data: { success: false, error: res.error || 'Failed to update password.' },
+              error: { message: res.error || 'Failed to update password.' },
+            }
+          }
+          return {
+            data: {
+              success: true,
+              message: "Password updated successfully.",
+            },
+            error: null,
+          }
+        }
+
+        return { data: null, error: { message: `Edge function '${functionName}' not implemented in mock.` } }
+      } catch (err) {
+        return { data: null, error: { message: err.message || 'Function execution error' } }
+      }
     },
   },
 }
+

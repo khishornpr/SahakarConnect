@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
@@ -24,29 +24,80 @@ export default function Register() {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [trade, setTrade] = useState('Electrician')
   const [experience, setExperience] = useState('3')
   const [area, setArea] = useState(DELHI_NCR_AREAS[0].name)
   const [coopName, setCoopName] = useState('Delhi Shramik Sahakari Federation Ltd.')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { signUp } = useAuth()
+  const [isRegistered, setIsRegistered] = useState(false)
+  const [resendStatus, setResendStatus] = useState('')
+  const [resendCooldown, setResendCooldown] = useState(0)
+
+  const { signUp, resendVerification, verifyConfirmationToken } = useAuth()
   const { isDark } = useTheme()
   const navigate = useNavigate()
+
+  // Resend Cooldown Timer
+  useEffect(() => {
+    let timer = null
+    if (resendCooldown > 0) {
+      timer = setInterval(() => {
+        setResendCooldown((prev) => (prev <= 1 ? 0 : prev - 1))
+      }, 1000)
+    }
+    return () => clearInterval(timer)
+  }, [resendCooldown])
 
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const { error } = await signUp(email, password, role, fullName, {
+    const { data, error, needsConfirmation } = await signUp(email, password, role, fullName, {
       trade,
       experience,
       area,
       coopName,
     })
     setLoading(false)
-    if (error) setError(error.message)
-    else navigate('/')
+    if (error) {
+      setError(error.message)
+    } else if (needsConfirmation || !data?.session) {
+      setIsRegistered(true)
+    } else {
+      navigate('/')
+    }
+  }
+
+  async function handleResendEmail() {
+    if (resendCooldown > 0 || !email) return
+    setResendStatus('Resending verification email...')
+    try {
+      const { error } = await resendVerification(email)
+      if (error) {
+        setResendStatus(`Failed to resend: ${error.message}`)
+      } else {
+        setResendStatus('✅ Verification email sent! Please check your inbox.')
+        setResendCooldown(60)
+      }
+    } catch {
+      setResendStatus('Failed to resend email. Please try again.')
+    }
+  }
+
+  async function handleDemoInstantVerify() {
+    setResendStatus('⚡ Verifying account via demo bypass...')
+    try {
+      const { error } = await verifyConfirmationToken({ email, type: 'signup' })
+      if (error) {
+        setResendStatus(`Verification error: ${error.message}`)
+      } else {
+        navigate('/')
+      }
+    } catch {
+      navigate('/')
+    }
   }
 
   return (
@@ -125,7 +176,7 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Right Side: Floating Register Form */}
+        {/* Right Side: Floating Register Form Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
             className={`w-full max-w-[480px] border rounded-[32px] p-7 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
@@ -134,216 +185,342 @@ export default function Register() {
                 : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)]'
             }`}
           >
-            <h2 className={`text-2xl font-black text-center tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Get Started
-            </h2>
-            <p className={`text-xs text-center mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Choose your persona and create an account
-            </p>
-
-            {/* Role Tabs */}
-            <div
-              className={`grid grid-cols-3 gap-1.5 p-1 border rounded-2xl my-5 ${
-                isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
-              }`}
-            >
-              {[
-                { id: 'worker', label: '🛠️ Worker' },
-                { id: 'household', label: '🏡 Customer' },
-                { id: 'cooperative', label: '🏛️ Co-op Admin' },
-              ].map((r) => (
-                <button
-                  key={r.id}
-                  type="button"
-                  onClick={() => setRole(r.id)}
-                  className={`py-2 px-2 text-xs font-bold rounded-xl transition-all ${
-                    role === r.id
-                      ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md'
-                      : isDark
-                      ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                  }`}
-                >
-                  {r.label}
-                </button>
-              ))}
-            </div>
-
-            {error && (
-              <div className="mb-4 bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs p-3 rounded-xl">
-                {error}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Ramesh Kumar"
-                  className={`w-full px-3.5 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
-                    isDark
-                      ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
-                      : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d]'
-                  }`}
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
-                    className={`w-full px-3.5 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
-                      isDark
-                        ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
-                        : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d]'
-                    }`}
-                    required
-                  />
+            {isRegistered ? (
+              /* Verification Screen State */
+              <div className="text-center py-2 space-y-5 animate-fade-in-up">
+                {/* Mail Icon with Glowing Halo */}
+                <div className="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-amber-500/20 to-orange-500/20 border border-orange-500/40 flex items-center justify-center text-3xl text-orange-400 shadow-[0_0_35px_rgba(255,107,0,0.3)]">
+                  ✉️
                 </div>
-                <div>
-                  <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className={`w-full px-3.5 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
-                      isDark
-                        ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
-                        : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d]'
-                    }`}
-                    required
-                    minLength={6}
-                  />
-                </div>
-              </div>
 
-              {/* Worker Specific Fields */}
-              {role === 'worker' && (
-                <div
-                  className={`p-4 border rounded-2xl space-y-3 ${
-                    isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
-                  }`}
-                >
-                  <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
-                    Worker Skill Profiling
+                <div>
+                  <h2 className={`text-2xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    Verify Your Email
+                  </h2>
+                  <p className={`text-xs mt-2 max-w-xs mx-auto leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    We sent a confirmation link to:
+                  </p>
+                  <div className="mt-1.5 inline-block font-mono font-bold text-xs px-3 py-1 rounded-lg bg-orange-500/10 border border-orange-500/30 text-orange-400">
+                    {email}
                   </div>
+                </div>
+
+                <div
+                  className={`p-4 rounded-2xl text-left text-xs space-y-2 border ${
+                    isDark ? 'bg-slate-900/60 border-white/10 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-700'
+                  }`}
+                >
+                  <div className="font-bold flex items-center gap-1.5 text-amber-400">
+                    <span>📋</span> Next Steps:
+                  </div>
+                  <ol className="list-decimal list-inside space-y-1 text-[11px] text-slate-400">
+                    <li>Open your email inbox and check for the verification message.</li>
+                    <li>Click the <strong>Confirm your email</strong> link.</li>
+                    <li>You will be instantly redirected to your SahakarConnect dashboard.</li>
+                  </ol>
+                </div>
+
+                {resendStatus && (
+                  <div className="p-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-amber-300 animate-fade-in-up">
+                    {resendStatus}
+                  </div>
+                )}
+
+                {/* Resend & Demo Actions */}
+                <div className="space-y-2.5 pt-2">
+                  <button
+                    type="button"
+                    onClick={handleResendEmail}
+                    disabled={resendCooldown > 0}
+                    className={`w-full py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border ${
+                      resendCooldown > 0
+                        ? 'border-slate-800 text-slate-500 bg-slate-900/50 cursor-not-allowed'
+                        : isDark
+                        ? 'border-orange-500/40 text-orange-400 hover:bg-orange-500/10 cursor-pointer'
+                        : 'border-orange-500 text-orange-600 hover:bg-orange-50 cursor-pointer'
+                    }`}
+                  >
+                    {resendCooldown > 0 ? `Resend Email in ${resendCooldown}s` : 'Resend Verification Email'}
+                  </button>
+
+                  {/* Instant Demo Confirmation Helper for frictionless testing */}
+                  <button
+                    type="button"
+                    onClick={handleDemoInstantVerify}
+                    className="w-full py-2.5 px-4 rounded-xl text-[11px] font-bold text-emerald-400 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>⚡</span> Instant Verify (Demo Testing Mode)
+                  </button>
+                </div>
+
+                <div className="pt-2">
+                  <Link
+                    to="/login"
+                    className="text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center gap-1"
+                  >
+                    <span>←</span> Return to Login
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              /* Normal Signup Form State */
+              <>
+                <h2 className={`text-2xl font-black text-center tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  Get Started
+                </h2>
+                <p className={`text-xs text-center mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Choose your persona and create an account
+                </p>
+
+                {/* Role Tabs */}
+                <div
+                  className={`grid grid-cols-3 gap-1.5 p-1 border rounded-2xl my-5 ${
+                    isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
+                  }`}
+                >
+                  {[
+                    { id: 'worker', label: '🛠️ Worker' },
+                    { id: 'household', label: '🏡 Customer' },
+                    { id: 'cooperative', label: '🏛️ Co-op Admin' },
+                  ].map((r) => (
+                    <button
+                      key={r.id}
+                      type="button"
+                      onClick={() => setRole(r.id)}
+                      className={`py-2 px-2 text-xs font-bold rounded-xl transition-all ${
+                        role === r.id
+                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md'
+                          : isDark
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                      }`}
+                    >
+                      {r.label}
+                    </button>
+                  ))}
+                </div>
+
+                {error && (
+                  <div className="mb-4 bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs p-3 rounded-xl">
+                    {error}
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Full Name */}
+                  <div>
+                    <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="e.g. Ramesh Kumar"
+                      className={`w-full px-3.5 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
+                        isDark
+                          ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
+                          : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d]'
+                      }`}
+                      required
+                    />
+                  </div>
+
+                  {/* Email & Password Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                        Trade Category
-                      </label>
-                      <select
-                        value={trade}
-                        onChange={(e) => setTrade(e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                          isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
-                        }`}
-                      >
-                        {TRADES.map((tItem) => (
-                          <option key={tItem} value={tItem}>
-                            {tItem}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                        Experience (Years)
+                      <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                        Email Address
                       </label>
                       <input
-                        type="number"
-                        value={experience}
-                        onChange={(e) => setExperience(e.target.value)}
-                        min="0"
-                        className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                          isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="name@example.com"
+                        className={`w-full px-3.5 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
+                          isDark
+                            ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
+                            : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d]'
                         }`}
+                        required
                       />
+                    </div>
+                    <div>
+                      <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                        Password
+                      </label>
+                      <div className="relative flex items-center">
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="Min 6 characters"
+                          className={`w-full pl-3.5 pr-10 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
+                            isDark
+                              ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
+                              : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d]'
+                          }`}
+                          required
+                          minLength={6}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          aria-label={showPassword ? 'Hide password' : 'Show password'}
+                          className={`absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center ${
+                            isDark ? 'text-slate-400 hover:text-[#e5a65e]' : 'text-slate-500 hover:text-[#d8964d]'
+                          }`}
+                        >
+                          {showPassword ? (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                            </svg>
+                          ) : (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
 
-                  <div>
-                    <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                      Operating Cluster Area
-                    </label>
-                    <select
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                        isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                  {/* Worker Specific Fields */}
+                  {role === 'worker' && (
+                    <div
+                      className={`p-4 border rounded-2xl space-y-3 ${
+                        isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
                       }`}
                     >
-                      {DELHI_NCR_AREAS.map((a) => (
-                        <option key={a.id} value={a.name}>
-                          {a.name} ({a.district})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              )}
+                      <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
+                        Artisan Trade & Cooperative Affiliation
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                            Primary Skill / Trade
+                          </label>
+                          <select
+                            value={trade}
+                            onChange={(e) => setTrade(e.target.value)}
+                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                            }`}
+                          >
+                            {TRADES.map((t) => (
+                              <option key={t} value={t}>
+                                {t}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                            Experience (Years)
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="40"
+                            value={experience}
+                            onChange={(e) => setExperience(e.target.value)}
+                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                            }`}
+                          />
+                        </div>
+                      </div>
 
-              {/* Household Specific */}
-              {role === 'household' && (
-                <div
-                  className={`p-4 border rounded-2xl space-y-3 ${
-                    isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
-                  }`}
-                >
-                  <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
-                    Household Service Location
-                  </div>
-                  <div>
-                    <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                      Area / Locality
-                    </label>
-                    <select
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                        isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                      <div>
+                        <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                          Assigned Cooperative Society
+                        </label>
+                        <select
+                          value={coopName}
+                          onChange={(e) => setCoopName(e.target.value)}
+                          className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                            isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                          }`}
+                        >
+                          <option value="Delhi Shramik Sahakari Federation Ltd.">
+                            Delhi Shramik Sahakari Federation Ltd. (South Delhi)
+                          </option>
+                          <option value="Indraprastha Karigar Cooperative Society">
+                            Indraprastha Karigar Cooperative Society (West Delhi)
+                          </option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                          Primary Base Work Area (NCR)
+                        </label>
+                        <select
+                          value={area}
+                          onChange={(e) => setArea(e.target.value)}
+                          className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                            isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                          }`}
+                        >
+                          {DELHI_NCR_AREAS.map((a) => (
+                            <option key={a.id} value={a.name}>
+                              {a.name} ({a.district})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Household Specific */}
+                  {role === 'household' && (
+                    <div
+                      className={`p-4 border rounded-2xl space-y-3 ${
+                        isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
                       }`}
                     >
-                      {DELHI_NCR_AREAS.map((a) => (
-                        <option key={a.id} value={a.name}>
-                          {a.name} ({a.district})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                      <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
+                        Household Service Location
+                      </div>
+                      <div>
+                        <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                          Area / Locality
+                        </label>
+                        <select
+                          value={area}
+                          onChange={(e) => setArea(e.target.value)}
+                          className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                            isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                          }`}
+                        >
+                          {DELHI_NCR_AREAS.map((a) => (
+                            <option key={a.id} value={a.name}>
+                              {a.name} ({a.district})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] transition-all disabled:opacity-50 mt-2 cursor-pointer"
+                  >
+                    {loading ? 'Creating Account...' : `Register as ${role === 'worker' ? 'Cooperative Worker' : role === 'household' ? 'Household Customer' : 'Federation Admin'}`}
+                  </button>
+                </form>
+
+                <div className={`text-center mt-5 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Already have an account?{' '}
+                  <Link to="/login" className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline">
+                    Sign In
+                  </Link>
                 </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] transition-all disabled:opacity-50 mt-2 cursor-pointer"
-              >
-                {loading ? 'Creating Account...' : `Register as ${role === 'worker' ? 'Cooperative Worker' : role === 'household' ? 'Household Customer' : 'Federation Admin'}`}
-              </button>
-            </form>
-
-            <div className={`text-center mt-5 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Already have an account?{' '}
-              <Link to="/login" className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline">
-                Sign In
-              </Link>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </main>

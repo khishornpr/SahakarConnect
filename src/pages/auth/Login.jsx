@@ -7,43 +7,91 @@ import LanguageToggle from '../../components/LanguageToggle'
 import ThemeToggle from '../../components/ThemeToggle'
 
 export default function Login() {
-  const [email, setEmail] = useState('ramesh.worker@sahakar.in')
-  const [password, setPassword] = useState('demo123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [selectedRole, setSelectedRole] = useState('worker')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { signIn, switchDemoRole } = useAuth()
+  const [isUnconfirmed, setIsUnconfirmed] = useState(false)
+  const [resendStatus, setResendStatus] = useState('')
+
+  const { signIn, resendVerification } = useAuth()
   const { t } = useTranslation()
   const { isDark } = useTheme()
   const navigate = useNavigate()
 
+  // Role metadata and demo hints
+  const ROLE_CONFIGS = {
+    worker: {
+      id: 'worker',
+      label: `⚡ ${t('workerRole', 'Worker')}`,
+      demoEmail: 'ramesh.worker@sahakar.in',
+      hint: 'Ramesh Kumar (Electrician)',
+    },
+    household: {
+      id: 'household',
+      label: `🏡 ${t('customerRole', 'Customer')}`,
+      demoEmail: 'priya.customer@sahakar.in',
+      hint: 'Priya Sharma (Household)',
+    },
+    cooperative: {
+      id: 'cooperative',
+      label: `🏛️ ${t('adminRole', 'Admin')}`,
+      demoEmail: 'admin@delhicoop.in',
+      hint: 'Meena Iyer (Co-op Officer)',
+    },
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
+    setResendStatus('')
+    if (!email.trim() || !password) {
+      setError('Please enter both your email address and password.')
+      return
+    }
     setLoading(true)
-    const { error } = await signIn(email, password)
+    const { error, isUnconfirmed: unconfirmedFlag } = await signIn(email.trim(), password)
     setLoading(false)
     if (error) {
-      setError(error.message)
+      if (unconfirmedFlag || error.message?.toLowerCase().includes('email not confirmed')) {
+        setIsUnconfirmed(true)
+        setError('Please verify your email before logging in. Check your inbox or click below to resend the confirmation link.')
+      } else {
+        setIsUnconfirmed(false)
+        setError(error.message || 'Invalid email or password. Please try again.')
+      }
     } else {
       navigate('/')
     }
   }
 
-  async function handleSelectDemoPersona(roleType, demoEmail) {
+  async function handleResendConfirmation() {
+    if (!email) return
+    setResendStatus('Resending confirmation email...')
+    try {
+      const { error } = await resendVerification(email.trim())
+      if (error) {
+        setResendStatus(`Failed: ${error.message}`)
+      } else {
+        setResendStatus('✅ Verification email sent! Please check your inbox.')
+      }
+    } catch {
+      setResendStatus('Failed to resend confirmation email.')
+    }
+  }
+
+  function handleSelectRoleTab(roleType) {
     setSelectedRole(roleType)
+    setError('')
+    // Only switch the active role tab - do NOT automatically login
+  }
+
+  function handleFillDemoCredentials(demoEmail) {
     setEmail(demoEmail)
     setPassword('demo123')
     setError('')
-    setLoading(true)
-    const { error } = await switchDemoRole(demoEmail)
-    setLoading(false)
-    if (error) {
-      setError(error.message)
-    } else {
-      navigate('/')
-    }
   }
 
   return (
@@ -186,27 +234,23 @@ export default function Login() {
               {t('loginTitle', 'Login')}
             </h2>
             <p className={`text-xs text-center mt-1 font-normal ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              {t('loginSubtitle', 'Login to your account to continue')}
+              {t('loginSubtitle', 'Select your persona and enter credentials to continue')}
             </p>
 
-            {/* 1-Click Demo Persona Pills */}
+            {/* Persona Switcher Tabs (Selects persona type without auto-login) */}
             <div
               className={`mt-5 p-1 border rounded-2xl flex items-center justify-between gap-1 ${
                 isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
               }`}
             >
-              {[
-                { id: 'worker', email: 'ramesh.worker@sahakar.in', label: `⚡ ${t('workerRole', 'Worker')}`, sub: 'Ramesh' },
-                { id: 'household', email: 'priya.customer@sahakar.in', label: `🏡 ${t('customerRole', 'Customer')}`, sub: 'Priya' },
-                { id: 'cooperative', email: 'admin@delhicoop.in', label: `🏛️ ${t('adminRole', 'Admin')}`, sub: 'Meena' },
-              ].map((p) => {
+              {Object.values(ROLE_CONFIGS).map((p) => {
                 const isActive = selectedRole === p.id
                 return (
                   <button
                     key={p.id}
                     type="button"
-                    onClick={() => handleSelectDemoPersona(p.id, p.email)}
-                    className={`flex-1 py-1.5 px-2 rounded-xl text-[11px] font-bold transition-all ${
+                    onClick={() => handleSelectRoleTab(p.id)}
+                    className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                       isActive
                         ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
                         : isDark
@@ -220,22 +264,64 @@ export default function Login() {
               })}
             </div>
 
-            {/* Error Message */}
+            {/* Demo Credential Quick-Fill Helper Chip */}
+            <div className="mt-3 flex items-center justify-between text-[11px] px-1">
+              <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
+                Demo Account: <strong className={isDark ? 'text-slate-200' : 'text-slate-700'}>{ROLE_CONFIGS[selectedRole]?.hint}</strong>
+              </span>
+              <button
+                type="button"
+                onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
+                className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline transition-colors cursor-pointer"
+              >
+                Fill demo details ⚡
+              </button>
+            </div>
+
+            {/* Error Message & Email Unconfirmed Banner */}
             {error && (
-              <div className="mt-4 bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs p-3 rounded-xl shadow-[0_0_12px_rgba(244,63,94,0.3)]">
-                {error}
+              <div
+                className={`mt-4 border text-xs p-3.5 rounded-2xl shadow-lg transition-all ${
+                  isUnconfirmed
+                    ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
+                    : 'bg-rose-950/80 border-rose-500/50 text-rose-200 shadow-[0_0_12px_rgba(244,63,94,0.3)]'
+                }`}
+              >
+                <div className="flex items-start gap-2.5">
+                  <span className="text-base leading-none">{isUnconfirmed ? '✉️' : '⚠️'}</span>
+                  <div className="flex-1">
+                    <p className="font-semibold">{error}</p>
+
+                    {isUnconfirmed && (
+                      <div className="mt-2.5 pt-2 border-t border-amber-500/30 flex items-center justify-between gap-2">
+                        <button
+                          type="button"
+                          onClick={handleResendConfirmation}
+                          className="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+                        >
+                          Resend Confirmation Email →
+                        </button>
+                        {resendStatus && (
+                          <span className="text-[11px] text-amber-300 font-medium">
+                            {resendStatus}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
               {/* Email Address */}
               <div>
                 <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                   {t('emailAddress', 'Email Address')}
                 </label>
-                <div className="relative">
-                  <span className={`absolute left-3.5 top-3.5 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                <div className="relative flex items-center">
+                  <span className={`absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
@@ -244,8 +330,8 @@ export default function Login() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    className={`w-full pl-10 pr-3.5 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
+                    placeholder={ROLE_CONFIGS[selectedRole]?.demoEmail || 'you@example.com'}
+                    className={`w-full pl-10 pr-4 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
                       isDark
                         ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                         : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
@@ -255,13 +341,13 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Password */}
+              {/* Password with inline vertically-centered Eye Icon */}
               <div>
                 <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                   {t('password', 'Password')}
                 </label>
-                <div className="relative">
-                  <span className={`absolute left-3.5 top-3.5 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                <div className="relative flex items-center">
+                  <span className={`absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
@@ -270,8 +356,8 @@ export default function Login() {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className={`w-full pl-10 pr-10 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
+                    placeholder="Enter password"
+                    className={`w-full pl-10 pr-11 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
                       isDark
                         ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                         : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
@@ -281,8 +367,9 @@ export default function Login() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className={`absolute right-3.5 top-3.5 transition-colors ${
-                      isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center ${
+                      isDark ? 'text-slate-400 hover:text-[#e5a65e]' : 'text-slate-500 hover:text-[#d8964d]'
                     }`}
                   >
                     {showPassword ? (
@@ -300,14 +387,13 @@ export default function Login() {
               </div>
 
               {/* Forgot Password Link */}
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => alert('Password reset link sent to demo mail. For instant testing, use demo123!')}
-                  className="text-xs text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium"
+              <div className="flex justify-end pt-0.5">
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium cursor-pointer"
                 >
                   {t('forgotPassword', 'Forgot Password?')}
-                </button>
+                </Link>
               </div>
 
               {/* Login Button */}

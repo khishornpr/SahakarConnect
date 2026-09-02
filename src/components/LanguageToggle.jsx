@@ -8,7 +8,10 @@ export default function LanguageToggle() {
   const { isDark } = useTheme()
   const [showModal, setShowModal] = useState(false)
 
-  const currentLangObj = INDIAN_LANGUAGES.find((l) => l.code === language) || INDIAN_LANGUAGES[0]
+  const currentLangObj =
+    INDIAN_LANGUAGES.find((l) => l.code === language) ||
+    INDIAN_LANGUAGES.find((l) => l.code === 'en') ||
+    { code: 'en', name: 'English', englishName: 'English' }
 
   return (
     <>

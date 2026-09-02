@@ -40,23 +40,73 @@ export function AuthProvider({ children }) {
   }
 
   async function signUp(email, password, role = 'worker', fullName = '', extra = {}) {
+    const redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.origin}/#/auth/confirm`
+        : undefined
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       role,
       fullName,
+      options: {
+        data: {
+          role,
+          full_name: fullName,
+          ...extra,
+        },
+        emailRedirectTo: redirectUrl,
+      },
     })
     if (error) return { error }
 
-    if (data.user) {
+    // If email confirmation is enabled in Supabase, session is null until user confirms email
+    const needsConfirmation = data?.user && !data?.session
+
+    if (data?.session && data?.user) {
       setUser(data.user)
       await fetchProfile(data.user.id)
     }
-    return { data }
+
+    return { data, needsConfirmation }
   }
 
   async function signIn(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      const isUnconfirmed =
+        error.message?.toLowerCase().includes('email not confirmed') ||
+        error.message?.toLowerCase().includes('not confirmed') ||
+        error.status === 400
+      return { data: null, error, isUnconfirmed }
+    }
+
+    if (data?.user) {
+      setUser(data.user)
+      await fetchProfile(data.user.id)
+    }
+    return { data, error: null }
+  }
+
+  async function resendVerification(email) {
+    const redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.origin}/#/auth/confirm`
+        : undefined
+
+    const { data, error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: {
+        emailRedirectTo: redirectUrl,
+      },
+    })
+    return { data, error }
+  }
+
+  async function verifyConfirmationToken(params) {
+    const { data, error } = await supabase.auth.verifyOtp(params)
     if (!error && data?.user) {
       setUser(data.user)
       await fetchProfile(data.user.id)
@@ -75,7 +125,20 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signOut, switchDemoRole, refreshProfile: () => user && fetchProfile(user.id) }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        profile,
+        loading,
+        signUp,
+        signIn,
+        signOut,
+        resendVerification,
+        verifyConfirmationToken,
+        switchDemoRole,
+        refreshProfile: () => user && fetchProfile(user.id),
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

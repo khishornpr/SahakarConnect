@@ -2234,11 +2234,19 @@ const I18nContext = createContext()
 
 export function I18nProvider({ children }) {
   const [language, setLanguage] = useState(() => {
-    return localStorage.getItem('sahakar_lang') || 'mr'
+    try {
+      return localStorage.getItem('sahakar_lang') || 'en'
+    } catch {
+      return 'en'
+    }
   })
 
   useEffect(() => {
-    localStorage.setItem('sahakar_lang', language)
+    try {
+      localStorage.setItem('sahakar_lang', language)
+    } catch (e) {
+      console.warn('Failed to write language to localStorage', e)
+    }
   }, [language])
 
   const t = (key, fallback) => {
@@ -2248,20 +2256,20 @@ export function I18nProvider({ children }) {
       return langDict[key]
     }
 
-    // 2. Cognate language fallback lookup (e.g. Kokani -> Marathi, Maithili -> Hindi, Bodo -> Assamese)
+    // 2. Cognate language fallback lookup (e.g. Konkani -> Marathi, Maithili -> Hindi, Bodo -> Assamese)
     const cognateCode = COGNATE_FALLBACKS[language]
     if (cognateCode && translations[cognateCode] && translations[cognateCode][key]) {
       return translations[cognateCode][key]
     }
 
-    // 3. Hindi fallback
-    if (translations.hi && translations.hi[key]) {
-      return translations.hi[key]
-    }
-
-    // 4. English fallback
+    // 3. English fallback (Preferred base)
     if (translations.en && translations.en[key]) {
       return translations.en[key]
+    }
+
+    // 4. Hindi fallback
+    if (translations.hi && translations.hi[key]) {
+      return translations.hi[key]
     }
 
     return fallback !== undefined ? fallback : key
@@ -2269,6 +2277,11 @@ export function I18nProvider({ children }) {
 
   const changeLanguage = (code) => {
     setLanguage(code)
+    try {
+      localStorage.setItem('sahakar_lang', code)
+    } catch (e) {
+      console.warn('Failed to save language to localStorage', e)
+    }
   }
 
   return (
