@@ -13,17 +13,23 @@ export default function WorkerEarnings() {
   const [selectedInvoiceItem, setSelectedInvoiceItem] = useState(null)
 
   useEffect(() => {
-    if (user) loadLedger()
+    let ignore = false
+    async function loadLedger() {
+      if (!user) return
+      const { data } = await supabase
+        .from('wage_ledger')
+        .select('*, job(*)')
+        .eq('worker_id', user.id)
+        .order('created_at', { ascending: false })
+      if (!ignore) {
+        setLedger(data || [])
+      }
+    }
+    loadLedger()
+    return () => {
+      ignore = true
+    }
   }, [user])
-
-  async function loadLedger() {
-    const { data } = await supabase
-      .from('wage_ledger')
-      .select('*, job(*)')
-      .eq('worker_id', user.id)
-      .order('created_at', { ascending: false })
-    setLedger(data || [])
-  }
 
   const totalGross = ledger.reduce((acc, row) => acc + (row.gross_amount || 0), 0)
   const totalCoopFee = ledger.reduce((acc, row) => acc + (row.cooperative_fee_amount || 0), 0)

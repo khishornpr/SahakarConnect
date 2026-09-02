@@ -11,7 +11,6 @@ import {
   Line,
   AreaChart,
   Area,
-  ComposedChart,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -24,27 +23,28 @@ export default function CooperativeFinancials() {
   const { t } = useTranslation()
   const { isDark } = useTheme()
   const [ledger, setLedger] = useState([])
-  const [loading, setLoading] = useState(true)
   const [selectedInvoice, setSelectedInvoice] = useState(null)
   const [resolvedIds, setResolvedIds] = useState([])
 
   // Interactive Chart Options
   const [chartType, setChartType] = useState('bar') // 'bar', 'line', 'area', 'stacked'
-  const [viewMetric, setViewMetric] = useState('all') // 'all', 'clean', 'anomalous'
 
   useEffect(() => {
+    let ignore = false
+    async function loadLedger() {
+      const { data } = await supabase
+        .from('wage_ledger')
+        .select('*, worker:profiles(*), job:jobs(*)')
+        .order('created_at', { ascending: false })
+      if (!ignore) {
+        setLedger(data || [])
+      }
+    }
     loadLedger()
+    return () => {
+      ignore = true
+    }
   }, [])
-
-  async function loadLedger() {
-    setLoading(true)
-    const { data } = await supabase
-      .from('wage_ledger')
-      .select('*, worker:profiles(*), job:jobs(*)')
-      .order('created_at', { ascending: false })
-    setLedger(data || [])
-    setLoading(false)
-  }
 
   function handleResolveAnomaly(id) {
     setResolvedIds([...resolvedIds, id])

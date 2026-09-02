@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
 
-export default function RatingModal({ job, currentUserRole, currentUserId, targetUser, onClose, onRatingSubmitted }) {
+export default function RatingModal({ job, currentUserRole, currentUserId, onClose, onRatingSubmitted }) {
   const { isDark } = useTheme()
   const [score, setScore] = useState(5)
   const [selectedTags, setSelectedTags] = useState([])
@@ -11,21 +12,21 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
   const [success, setSuccess] = useState(false)
 
   const householdTags = [
-    'Punctual & On-Time',
-    'Expert Workmanship',
-    'Polite & Respectful',
-    'Clean Uniform',
-    'Fair Standard Pricing',
-    'Cooperative Toolset',
+    'On-Time',
+    'Great Work',
+    'Polite & Friendly',
+    'Clean & Tidy',
+    'Fair Pricing',
+    'Had All Tools',
   ]
 
   const workerTags = [
-    'Courteous Household',
-    'Safe & Clean Workplace',
-    'Prompt OTP Release',
-    'Clear Work Access',
-    'Respectful Treatment',
+    'Polite Customer',
+    'Safe Workplace',
+    'Fast OTP Sharing',
     'Clear Instructions',
+    'Easy Access',
+    'Respectful',
   ]
 
   const availableTags = currentUserRole === 'household' ? householdTags : workerTags
@@ -54,7 +55,7 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
       rater_role: currentUserRole,
       score,
       tags: selectedTags,
-      review_text: reviewText || (currentUserRole === 'household' ? 'Great workmanship by cooperative member.' : 'Respectful household environment.'),
+      review_text: reviewText || (currentUserRole === 'household' ? 'Great work by worker.' : 'Polite customer.'),
     })
 
     setSubmitting(false)
@@ -65,10 +66,10 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
     }, 1500)
   }
 
-  return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+  const modalContent = (
+    <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
       <div
-        className={`rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-4 border ${
+        className={`rounded-2xl max-w-md w-full p-5 sm:p-7 shadow-2xl space-y-4 border my-auto max-h-[90vh] overflow-y-auto ${
           isDark
             ? 'bg-[#12151b] border-white/[0.08] text-white shadow-[0_0_40px_rgba(0,0,0,0.8)]'
             : 'bg-white border-slate-200 text-slate-900'
@@ -79,7 +80,7 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
             <div className="flex items-center gap-2">
               <span className="text-xl text-yellow-400">★</span>
               <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                {currentUserRole === 'household' ? 'Rate Cooperative Artisan' : 'Rate Household Customer'}
+                {currentUserRole === 'household' ? 'Rate Worker' : 'Rate Customer'}
               </h3>
             </div>
             <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{job.title}</p>
@@ -94,9 +95,9 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
 
         {success ? (
           <div className="p-6 text-center text-emerald-400 bg-emerald-950/60 rounded-xl font-bold text-sm border border-emerald-500/40 space-y-1">
-            <div>✓ Rating & Review Submitted!</div>
+            <div>✓ Rating & Review Saved!</div>
             <p className="text-xs text-emerald-300 font-normal">
-              Updated cooperative trust ledger & reputation score.
+              Thank you for sharing your feedback.
             </p>
           </div>
         ) : (
@@ -104,7 +105,7 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
             {/* Star Rating */}
             <div>
               <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                {currentUserRole === 'household' ? 'Service Quality & Experience' : 'Workplace & Cooperation'}
+                {currentUserRole === 'household' ? 'How was the service?' : 'How was the customer experience?'}
               </label>
               <div className="flex items-center gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -119,14 +120,14 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
                     ★
                   </button>
                 ))}
-                <span className="text-xs font-bold text-yellow-400 ml-2">{score} / 5 Stars</span>
+                <span className="text-xs font-bold text-yellow-400 ml-2">{score} / 5</span>
               </div>
             </div>
 
             {/* Badges / Tags */}
             <div>
               <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Feedback Recognition Badges
+                What went well?
               </label>
               <div className="flex flex-wrap gap-1.5">
                 {availableTags.map((tag) => {
@@ -154,7 +155,7 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
             {/* Written Review */}
             <div>
               <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Written Feedback / Review
+                Write a quick review
               </label>
               <textarea
                 value={reviewText}
@@ -162,8 +163,8 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
                 rows={3}
                 placeholder={
                   currentUserRole === 'household'
-                    ? 'Comments about punctuality, safety, tools, or cleanliness...'
-                    : 'Comments about household cooperation, safety, and payment release...'
+                    ? 'Tell us about the worker and service quality...'
+                    : 'Tell us about your work experience at this household...'
                 }
                 className={`w-full p-3 border rounded-xl text-xs outline-none transition-all ${
                   isDark
@@ -188,7 +189,7 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
                 disabled={submitting}
                 className="px-5 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md transition-all disabled:opacity-50"
               >
-                {submitting ? 'Submitting...' : 'Submit Rating & Badge'}
+                {submitting ? 'Saving...' : 'Submit Rating'}
               </button>
             </div>
           </form>
@@ -196,4 +197,6 @@ export default function RatingModal({ job, currentUserRole, currentUserId, targe
       </div>
     </div>
   )
+
+  return createPortal(modalContent, document.body)
 }

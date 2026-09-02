@@ -1,23 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { DELHI_NCR_AREAS } from '../../lib/geoService'
+import { TRADES_LIST as TRADES } from '../../lib/serviceCategories'
 import LanguageToggle from '../../components/LanguageToggle'
 import ThemeToggle from '../../components/ThemeToggle'
 
-const TRADES = [
-  'Electrician',
-  'Plumber',
-  'Carpenter',
-  'Painter',
-  'Domestic Helper',
-  'Caregiver',
-  'Driver',
-  'Gardener',
-  'Cleaner',
-  'Appliance Technician',
-]
 
 export default function Register() {
   const [role, setRole] = useState('worker')
@@ -29,6 +19,11 @@ export default function Register() {
   const [experience, setExperience] = useState('3')
   const [area, setArea] = useState(DELHI_NCR_AREAS[0].name)
   const [coopName, setCoopName] = useState('Delhi Shramik Sahakari Federation Ltd.')
+  const [managerDistrict, setManagerDistrict] = useState('South Delhi')
+  const [managedTrade, setManagedTrade] = useState('All Trades')
+  const [departmentId, setDepartmentId] = useState('DEL-LAB-2026')
+  const [designation, setDesignation] = useState('Assistant Labor Commissioner')
+  const [jurisdiction, setJurisdiction] = useState('Delhi NCR Region')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
@@ -36,6 +31,7 @@ export default function Register() {
   const [resendCooldown, setResendCooldown] = useState(0)
 
   const { signUp, resendVerification, verifyConfirmationToken } = useAuth()
+  const { t } = useTranslation()
   const { isDark } = useTheme()
   const navigate = useNavigate()
 
@@ -59,6 +55,12 @@ export default function Register() {
       experience,
       area,
       coopName,
+      district: role === 'manager' ? managerDistrict : role === 'officer' ? jurisdiction : area,
+      managerDistrict,
+      managedTrade,
+      departmentId,
+      designation,
+      jurisdiction,
     })
     setLoading(false)
     if (error) {
@@ -151,14 +153,14 @@ export default function Register() {
       </header>
 
       {/* ----------------- MAIN VIEWPORT CONTENT ----------------- */}
-      <main className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-6 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         {/* Left Side: Create Account Info */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-6">
-          <div className="flex items-start gap-5">
-            <div className="w-2 h-28 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
+        <div className="lg:col-span-7 xl:col-span-7 space-y-5 sm:space-y-6">
+          <div className="flex items-start gap-4 sm:gap-5">
+            <div className="w-2 h-24 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
             <div>
               <h1
-                className={`text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
+                className={`text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
@@ -166,11 +168,11 @@ export default function Register() {
                 <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>Account</strong>
               </h1>
               <p
-                className={`text-sm sm:text-base mt-4 max-w-md leading-relaxed ${
+                className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
-                Join India&apos;s leading cooperative-owned digital service marketplace today.
+                Join SahakarConnect to book or offer verified local services.
               </p>
             </div>
           </div>
@@ -179,7 +181,7 @@ export default function Register() {
         {/* Right Side: Floating Register Form Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-            className={`w-full max-w-[480px] border rounded-[32px] p-7 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
+            className={`w-full max-w-[480px] border rounded-[28px] sm:rounded-[32px] p-5 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
               isDark
                 ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)]'
                 : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)]'
@@ -272,22 +274,23 @@ export default function Register() {
                   Choose your persona and create an account
                 </p>
 
-                {/* Role Tabs */}
+                {/* 4 Role Switcher Tabs */}
                 <div
-                  className={`grid grid-cols-3 gap-1.5 p-1 border rounded-2xl my-5 ${
+                  className={`grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 border rounded-2xl my-5 ${
                     isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                   }`}
                 >
                   {[
                     { id: 'worker', label: '🛠️ Worker' },
                     { id: 'household', label: '🏡 Customer' },
-                    { id: 'cooperative', label: '🏛️ Co-op Admin' },
+                    { id: 'manager', label: '👔 Manager' },
+                    { id: 'officer', label: '🏛️ Labor Officer' },
                   ].map((r) => (
                     <button
                       key={r.id}
                       type="button"
                       onClick={() => setRole(r.id)}
-                      className={`py-2 px-2 text-xs font-bold rounded-xl transition-all ${
+                      className={`py-2 px-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap ${
                         role === r.id
                           ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md'
                           : isDark
@@ -394,7 +397,7 @@ export default function Register() {
                       }`}
                     >
                       <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
-                        Artisan Trade & Cooperative Affiliation
+                        Worker Trade & Cooperative Affiliation
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
@@ -408,9 +411,9 @@ export default function Register() {
                               isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
                             }`}
                           >
-                            {TRADES.map((t) => (
-                              <option key={t} value={t}>
-                                {t}
+                            {TRADES.map((tr) => (
+                              <option key={tr} value={tr}>
+                                {t(tr, tr)}
                               </option>
                             ))}
                           </select>
@@ -504,12 +507,135 @@ export default function Register() {
                     </div>
                   )}
 
+                  {/* Manager Specific */}
+                  {role === 'manager' && (
+                    <div
+                      className={`p-4 border rounded-2xl space-y-3 ${
+                        isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
+                      }`}
+                    >
+                      <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
+                        Zonal Management & Supervision
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                            Supervised District / Zone
+                          </label>
+                          <select
+                            value={managerDistrict}
+                            onChange={(e) => setManagerDistrict(e.target.value)}
+                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                            }`}
+                          >
+                            <option value="South Delhi">South Delhi Zonal Unit</option>
+                            <option value="West Delhi">West Delhi Zonal Unit</option>
+                            <option value="Central Delhi">Central Delhi Operations</option>
+                            <option value="North Delhi">North Delhi Cluster</option>
+                            <option value="East Delhi">East Delhi Cluster</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                            Managed Trades Scope
+                          </label>
+                          <select
+                            value={managedTrade}
+                            onChange={(e) => setManagedTrade(e.target.value)}
+                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                            }`}
+                          >
+                            <option value="All Trades">All Trades (Integrated)</option>
+                            <option value="Electrical & Plumbing">Electrical & Plumbing</option>
+                            <option value="Carpentry & Masonry">Carpentry & Masonry</option>
+                            <option value="Home Hygiene & Care">Home Hygiene & Care</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Labor Officer Specific */}
+                  {role === 'officer' && (
+                    <div
+                      className={`p-4 border rounded-2xl space-y-3 ${
+                        isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
+                      }`}
+                    >
+                      <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
+                        Labor Department Credential
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                            Government / Officer ID
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={departmentId}
+                            onChange={(e) => setDepartmentId(e.target.value)}
+                            placeholder="e.g. DL-LAB-2026-88"
+                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                            }`}
+                          />
+                        </div>
+                        <div>
+                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                            Official Designation
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={designation}
+                            onChange={(e) => setDesignation(e.target.value)}
+                            placeholder="e.g. Labor Welfare Officer"
+                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                            }`}
+                          />
+                        </div>
+                        <div>
+                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                            District Jurisdiction
+                          </label>
+                          <select
+                            value={jurisdiction}
+                            onChange={(e) => setJurisdiction(e.target.value)}
+                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
+                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
+                            }`}
+                          >
+                            <option value="Delhi NCR Region">Delhi NCR (All Jurisdictions)</option>
+                            <option value="South Delhi">South Delhi Division</option>
+                            <option value="West Delhi">West Delhi Division</option>
+                            <option value="North Delhi">North Delhi Division</option>
+                            <option value="East Delhi">East Delhi Division</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
                     disabled={loading}
                     className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] transition-all disabled:opacity-50 mt-2 cursor-pointer"
                   >
-                    {loading ? 'Creating Account...' : `Register as ${role === 'worker' ? 'Cooperative Worker' : role === 'household' ? 'Household Customer' : 'Federation Admin'}`}
+                    {loading
+                      ? 'Creating Account...'
+                      : `Register as ${
+                          role === 'worker'
+                            ? 'Cooperative Worker'
+                            : role === 'household'
+                            ? 'Household Customer'
+                            : role === 'manager'
+                            ? 'Zonal Manager'
+                            : 'Labor Department Officer'
+                        }`}
                   </button>
                 </form>
 

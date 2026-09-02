@@ -12,31 +12,33 @@ export default function WorkerTransactions() {
   const [filter, setFilter] = useState({ type: '', dateFrom: '', dateTo: '', search: '' })
 
   useEffect(() => {
-    if (user) loadTransactions()
-  }, [user])
+    let ignore = false
+    async function loadTransactions() {
+      if (!user) return
+      let query = supabase
+        .from('transactions')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
 
-  async function loadTransactions() {
-    let query = supabase
-      .from('transactions')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      if (filter.type) query = query.eq('type', filter.type)
+      if (filter.dateFrom) query = query.gte('created_at', filter.dateFrom)
+      if (filter.dateTo) query = query.lte('created_at', filter.dateTo)
 
-    if (filter.type) query = query.eq('type', filter.type)
-    if (filter.dateFrom) query = query.gte('created_at', filter.dateFrom)
-    if (filter.dateTo) query = query.lte('created_at', filter.dateTo)
-
-    const { data } = await query
-    let results = data || []
-    if (filter.search) {
-      results = results.filter(tItem => tItem.remarks?.toLowerCase().includes(filter.search.toLowerCase()))
+      const { data } = await query
+      let results = data || []
+      if (filter.search) {
+        results = results.filter(tItem => tItem.remarks?.toLowerCase().includes(filter.search.toLowerCase()))
+      }
+      if (!ignore) {
+        setTransactions(results)
+      }
     }
-    setTransactions(results)
-  }
-
-  useEffect(() => {
-    if (user) loadTransactions()
-  }, [filter])
+    loadTransactions()
+    return () => {
+      ignore = true
+    }
+  }, [user, filter])
 
   return (
     <div className="space-y-6">

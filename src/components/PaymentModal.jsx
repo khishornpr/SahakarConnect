@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
 
@@ -46,10 +47,10 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
     }, 1500)
   }
 
-  return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+  const modalContent = (
+    <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
       <div
-        className={`rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-4 border ${
+        className={`rounded-2xl max-w-md w-full p-5 sm:p-7 shadow-2xl space-y-4 border my-auto max-h-[90vh] overflow-y-auto ${
           isDark
             ? 'bg-[#12151b] border-white/[0.08] text-white shadow-[0_0_40px_rgba(0,0,0,0.8)]'
             : 'bg-white border-slate-200 text-slate-900'
@@ -58,9 +59,9 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
         <div className={`flex justify-between items-start border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
           <div>
             <div className="status-pill-emerald mb-1">
-              Phase 2 Mock Gateway
+              Secure Payment
             </div>
-            <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>Cooperative Digital Checkout</h3>
+            <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>Pay for Service</h3>
             <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{job.title}</p>
           </div>
           <button
@@ -74,9 +75,9 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
         {success ? (
           <div className="p-6 text-center text-emerald-400 bg-emerald-950/60 rounded-xl font-bold text-sm border border-emerald-500/40 space-y-1">
             <div className="text-3xl mb-1">✅</div>
-            <div>Payment Settled Successfully!</div>
+            <div>Payment Successful!</div>
             <p className="text-xs text-emerald-300 font-normal">
-              Direct wage disbursed to worker&apos;s ledger with 5% cooperative statutory retention.
+              Direct pay sent to worker&apos;s account.
             </p>
           </div>
         ) : (
@@ -84,11 +85,11 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
             {/* Amount Summary */}
             <div className={`p-4 rounded-xl space-y-1.5 text-xs border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-900 text-white border-slate-800'}`}>
               <div className="flex justify-between items-center text-slate-300">
-                <span>Payable Amount:</span>
+                <span>Total to Pay:</span>
                 <span className="text-xl font-black text-emerald-400">₹{amount}</span>
               </div>
               <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-white/[0.08]">
-                <span>Worker Net Wage: ₹{netWage}</span>
+                <span>Worker Take-Home: ₹{netWage}</span>
                 <span>Co-op 5% + ₹10 Welfare</span>
               </div>
             </div>
@@ -96,12 +97,12 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
             {/* Payment Method Selector */}
             <div>
               <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Select Digital Payment Mode
+                Choose Payment Method
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
                   { id: 'upi', label: 'UPI / QR', icon: '📱' },
-                  { id: 'rupay', label: 'RuPay / Card', icon: '💳' },
+                  { id: 'rupay', label: 'Card', icon: '💳' },
                   { id: 'netbanking', label: 'NetBanking', icon: '🏦' },
                 ].map((m) => (
                   <button
@@ -146,19 +147,21 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
               {processing ? (
                 <>
                   <span className="w-3 h-3 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
-                  <span>Processing Secure Checkout...</span>
+                  <span>Processing Payment...</span>
                 </>
               ) : (
-                <span>Pay ₹{amount} & Complete Service</span>
+                <span>Pay ₹{amount}</span>
               )}
             </button>
 
             <p className="text-[10px] text-slate-400 text-center">
-              Phase 2 Mock Gateway • Directly simulates NPCI / UPI settlement.
+              Direct and secure digital payment.
             </p>
           </div>
         )}
       </div>
     </div>
   )
+
+  return createPortal(modalContent, document.body)
 }

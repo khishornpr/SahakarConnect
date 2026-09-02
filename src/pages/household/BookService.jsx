@@ -7,19 +7,9 @@ import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { DELHI_NCR_AREAS, getAreaCoordinates } from '../../lib/geoService'
 import { rankWorkersForJob } from '../../lib/matchingEngine'
+import { TRADES_TARIFF, TRADE_GROUPS } from '../../lib/serviceCategories'
 
-const TRADES_TARIFF = [
-  { trade: 'Electrician', rate: 350, icon: '⚡', minHours: 1.5 },
-  { trade: 'Plumber', rate: 350, icon: '🚰', minHours: 1.5 },
-  { trade: 'Carpenter', rate: 400, icon: '🪚', minHours: 2.0 },
-  { trade: 'Painter', rate: 380, icon: '🎨', minHours: 3.0 },
-  { trade: 'Cleaner', rate: 280, icon: '✨', minHours: 2.5 },
-  { trade: 'Domestic Helper', rate: 300, icon: '🧹', minHours: 2.0 },
-  { trade: 'Caregiver', rate: 320, icon: '🩺', minHours: 4.0 },
-  { trade: 'Appliance Technician', rate: 400, icon: '🔧', minHours: 1.5 },
-]
-
-export const TIME_SLOTS = [
+const TIME_SLOTS = [
   '09:00 AM - 11:00 AM',
   '11:30 AM - 01:30 PM',
   '02:00 PM - 04:00 PM',
@@ -37,6 +27,8 @@ export default function HouseholdBookService() {
   const navigate = useNavigate()
 
   const [trade, setTrade] = useState(defaultTrade)
+  const [tradeGroupFilter, setTradeGroupFilter] = useState('All')
+
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [area, setArea] = useState(DELHI_NCR_AREAS[0].name)
@@ -45,7 +37,6 @@ export default function HouseholdBookService() {
   const [timeSlot, setTimeSlot] = useState(TIME_SLOTS[0])
   const [estimatedHours, setEstimatedHours] = useState('2.0')
 
-  const [workers, setWorkers] = useState([])
   const [rankedWorkers, setRankedWorkers] = useState([])
   const [selectedWorkerId, setSelectedWorkerId] = useState(null)
   const [showScoreModalFor, setShowScoreModalFor] = useState(null)
@@ -56,38 +47,42 @@ export default function HouseholdBookService() {
   const estimatedTotal = Math.round(parseFloat(estimatedHours || 1.5) * currentTariff.rate)
 
   useEffect(() => {
-    loadWorkersAndMatch()
-  }, [trade, area])
+    let ignore = false
+    async function loadWorkersAndMatch() {
+      setLoading(true)
+      const { data: workerList } = await supabase.from('workers').select('*, profiles(*)')
+      const { data: recentJobs } = await supabase
+        .from('jobs')
+        .select('*')
+        .gte('created_at', new Date(Date.now() - 7 * 86400000).toISOString())
 
-  async function loadWorkersAndMatch() {
-    setLoading(true)
-    const { data: workerList } = await supabase.from('workers').select('*, profiles(*)')
-    const { data: recentJobs } = await supabase
-      .from('jobs')
-      .select('*')
-      .gte('created_at', new Date(Date.now() - 7 * 86400000).toISOString())
+      const coords = getAreaCoordinates(area)
+      const ranked = rankWorkersForJob(
+        {
+          trade_category: trade,
+          area,
+          latitude: coords.lat,
+          longitude: coords.lng,
+        },
+        workerList || [],
+        recentJobs || []
+      )
 
-    const coords = getAreaCoordinates(area)
-    const ranked = rankWorkersForJob(
-      {
-        trade_category: trade,
-        area,
-        latitude: coords.lat,
-        longitude: coords.lng,
-      },
-      workerList || [],
-      recentJobs || []
-    )
-
-    setWorkers(workerList || [])
-    setRankedWorkers(ranked)
-    if (ranked.length > 0) {
-      setSelectedWorkerId(ranked[0].user_id)
-    } else {
-      setSelectedWorkerId(null)
+      if (!ignore) {
+        setRankedWorkers(ranked)
+        if (ranked.length > 0) {
+          setSelectedWorkerId(ranked[0].user_id)
+        } else {
+          setSelectedWorkerId(null)
+        }
+        setLoading(false)
+      }
     }
-    setLoading(false)
-  }
+    loadWorkersAndMatch()
+    return () => {
+      ignore = true
+    }
+  }, [trade, area])
 
   async function handleBookService(e) {
     e.preventDefault()
@@ -133,49 +128,81 @@ export default function HouseholdBookService() {
           }`}
         >
           <span>✨</span>
-          <span>SIH26089 Features 4 & 5 • Guaranteed Cooperative Fair Rates & AI Dispatch</span>
+          <span>{t('bookServiceBadge', 'Guaranteed Fair Rates • Quick Matching')}</span>
         </div>
         <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          Book Verified Cooperative Craftsperson
+          {t('bookServiceHeading', 'Book a Service')}
         </h1>
         <p className={`text-xs mt-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-          Guaranteed standard hourly pricing • 5% statutory cooperative reserve • 100% fair artisan compensation
+          {t('bookServiceSubheading', 'Standard hourly rates • 100% verified skilled workers')}
         </p>
       </div>
 
       {/* Trade Category Selector Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {TRADES_TARIFF.map((tItem) => {
-          const isSelected = trade === tItem.trade
-          return (
-            <button
-              key={tItem.trade}
-              type="button"
-              onClick={() => setTrade(tItem.trade)}
-              className={`p-4 rounded-2xl border text-left transition-all relative overflow-hidden ${
-                isSelected
-                  ? 'border-[#ff6b00] bg-[#ff6b00]/10 shadow-[0_0_25px_rgba(255,107,0,0.35)] scale-[1.02]'
-                  : isDark
-                  ? 'bg-[#12151b] border-white/[0.08] hover:border-white/20'
-                  : 'bg-white border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="flex justify-between items-start">
-                <span className="text-2xl mb-2 block">{tItem.icon}</span>
-                {isSelected && <span className="text-[#ff7a00] font-black text-sm">✓</span>}
-              </div>
-              <div className={`text-xs font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                {t(tItem.trade, tItem.trade)}
-              </div>
-              <div className="text-[11px] font-mono font-bold text-emerald-400 mt-1">
-                ₹{tItem.rate}/hr
-              </div>
-              <div className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Min {tItem.minHours} hrs
-              </div>
-            </button>
-          )
-        })}
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div className="text-xs font-black uppercase tracking-wider text-slate-400">
+            {t('selectTradeCategory', 'Select Trade Category')} ({TRADES_TARIFF.length} {t('tradesCount', 'Trades Available')})
+          </div>
+
+          {/* Group Filter Tabs */}
+          <div className={`flex flex-wrap items-center gap-1.5 p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            {['All', ...TRADE_GROUPS].map((group) => {
+              const isSelected = tradeGroupFilter === group
+              const label = group === 'All' ? t('allTrades', 'All Trades') : group.split(' ')[0]
+              return (
+                <button
+                  key={group}
+                  type="button"
+                  onClick={() => setTradeGroupFilter(group)}
+                  className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                    isSelected
+                      ? 'flow-btn-primary shadow-sm'
+                      : isDark
+                      ? 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 gap-3">
+          {TRADES_TARIFF.filter((tItem) => tradeGroupFilter === 'All' || tItem.group === tradeGroupFilter).map((tItem) => {
+            const isSelected = trade === tItem.trade
+            return (
+              <button
+                key={tItem.trade}
+                type="button"
+                onClick={() => setTrade(tItem.trade)}
+                className={`p-4 rounded-2xl border text-left transition-all relative overflow-hidden ${
+                  isSelected
+                    ? 'border-[#ff6b00] bg-[#ff6b00]/10 shadow-[0_0_25px_rgba(255,107,0,0.35)] scale-[1.02]'
+                    : isDark
+                    ? 'bg-[#12151b] border-white/[0.08] hover:border-white/20'
+                    : 'bg-white border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="flex justify-between items-start">
+                  <span className="text-2xl mb-2 block">{tItem.icon}</span>
+                  {isSelected && <span className="text-[#ff7a00] font-black text-sm">✓</span>}
+                </div>
+                <div className={`text-xs font-black truncate ${isDark ? 'text-white' : 'text-slate-900'}`} title={tItem.trade}>
+                  {t(tItem.trade, tItem.trade)}
+                </div>
+                <div className="text-[11px] font-mono font-bold text-emerald-400 mt-1">
+                  ₹{tItem.rate}/hr
+                </div>
+                <div className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  {tItem.minHoursLabel || `Min ${tItem.minHours} hrs`}
+                </div>
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Main Form & Matching Workspace */}
@@ -324,14 +351,14 @@ export default function HouseholdBookService() {
           </div>
         </div>
 
-        {/* Right Column: AI Artisan Matching & Live Bill Summary */}
+        {/* Right Column: AI Worker Matching & Live Bill Summary */}
         <div className="lg:col-span-5 space-y-4">
-          {/* AI Matched Artisan Picker */}
+          {/* AI Matched Worker Picker */}
           <div className="flow-card glow-orange-hover p-6 space-y-4">
             <div className="flex justify-between items-center border-b pb-3">
               <div>
                 <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  AI Matched Artisans ({rankedWorkers.length})
+                  AI Matched Workers ({rankedWorkers.length})
                 </h3>
                 <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                   Multi-factor Fair-Rotation Ranking
@@ -362,7 +389,7 @@ export default function HouseholdBookService() {
                         </div>
                         <div>
                           <div className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                            {w.profiles?.full_name || 'Artisan Member'}
+                            {w.profiles?.full_name || 'Worker Member'}
                           </div>
                           <div className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                             📍 {w.distanceKm} km away • ★ {w.rating || '5.0'}
@@ -391,7 +418,7 @@ export default function HouseholdBookService() {
               })}
               {rankedWorkers.length === 0 && !loading && (
                 <div className={`p-6 text-center text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  No craftsperson in this cluster currently. Broadcast request to regional co-op queue.
+                  No workers in this cluster currently. Broadcast request to regional co-op queue.
                 </div>
               )}
             </div>
@@ -405,11 +432,11 @@ export default function HouseholdBookService() {
 
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className={isDark ? 'text-slate-400' : 'text-slate-600'}>Artisan Base Tariff ({estimatedHours} hrs @ ₹{currentTariff.rate}/hr):</span>
+                <span className={isDark ? 'text-slate-400' : 'text-slate-600'}>Worker Base Tariff ({estimatedHours} hrs @ ₹{currentTariff.rate}/hr):</span>
                 <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{estimatedTotal}</span>
               </div>
               <div className="flex justify-between text-emerald-400 font-semibold">
-                <span>Direct Artisan Take-Home (95%):</span>
+                <span>Direct Worker Take-Home (95%):</span>
                 <span>₹{(estimatedTotal * 0.95 - 10).toFixed(0)}</span>
               </div>
               <div className="flex justify-between text-amber-400 font-semibold">
@@ -417,7 +444,7 @@ export default function HouseholdBookService() {
                 <span>₹{(estimatedTotal * 0.05).toFixed(0)}</span>
               </div>
               <div className="flex justify-between text-cyan-400 font-semibold">
-                <span>Artisan Social Security & Welfare Fund:</span>
+                <span>Worker Social Security & Welfare Fund:</span>
                 <span>₹10.00</span>
               </div>
               <div className={`flex justify-between items-center pt-3 border-t text-sm font-black ${isDark ? 'border-white/[0.08] text-white' : 'border-slate-200 text-slate-900'}`}>
@@ -431,7 +458,7 @@ export default function HouseholdBookService() {
               disabled={submitting}
               className="w-full py-3.5 flow-btn-primary text-xs font-black uppercase tracking-wider rounded-xl shadow-lg transition-all disabled:opacity-50"
             >
-              {submitting ? 'Generating Booking...' : '✓ Confirm & Dispatch Cooperative Artisan'}
+              {submitting ? 'Generating Booking...' : '✓ Confirm & Dispatch Cooperative Worker'}
             </button>
           </div>
         </div>

@@ -109,17 +109,15 @@ export default function ForgotPassword() {
           <ThemeToggle />
           <LanguageToggle />
         </div>
-      </header>
-
-      {/* ----------------- MAIN CONTENT ----------------- */}
-      <main className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-        {/* Left Side: Editorial Context */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-6">
-          <div className="flex items-start gap-5">
-            <div className="w-2 h-28 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
+      </header>      {/* ----------------- MAIN VIEWPORT CONTENT ----------------- */}
+      <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-6 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Left Side: Reset Password Typography */}
+        <div className="lg:col-span-7 xl:col-span-7 space-y-5 sm:space-y-6">
+          <div className="flex items-start gap-4 sm:gap-5">
+            <div className="w-2 h-24 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
             <div>
               <h1
-                className={`text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
+                className={`text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
@@ -127,11 +125,11 @@ export default function ForgotPassword() {
                 <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>Password</strong>
               </h1>
               <p
-                className={`text-sm sm:text-base mt-4 max-w-md leading-relaxed ${
+                className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
-                Enter your registered cooperative email to receive a secure 4-digit PIN verification code.
+                Recover access to your account in 3 quick steps.
               </p>
             </div>
           </div>
@@ -140,14 +138,14 @@ export default function ForgotPassword() {
         {/* Right Side: Step 1 Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-            className={`w-full max-w-[460px] border rounded-[32px] p-7 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
+            className={`w-full max-w-[460px] border rounded-[28px] sm:rounded-[32px] p-5 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
               isDark
                 ? 'bg-[#12151c]/92 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)]'
                 : 'bg-white/94 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)]'
             }`}
           >
             {/* Progress Stepper Bar */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between mb-5 pb-3 sm:mb-6 sm:pb-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#e8b070] to-[#d8964d] text-slate-950 font-black text-xs flex items-center justify-center shadow-md">
                   1
@@ -159,12 +157,12 @@ export default function ForgotPassword() {
               <span className="text-[11px] font-semibold text-slate-400">Step 1 of 3</span>
             </div>
 
-            <div className="mb-5">
-              <h2 className={`text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <div className="mb-4 sm:mb-5">
+              <h2 className={`text-lg sm:text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('forgotPassword', 'Forgot Password?')}
               </h2>
               <p className={`text-xs mt-1 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                No worries! Enter your email address and we will dispatch a 4-digit reset PIN via Resend.
+                Enter your email address and we will send you a 4-digit reset PIN.
               </p>
             </div>
 

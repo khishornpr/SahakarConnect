@@ -1,35 +1,19 @@
 /**
- * SahakarConnect Email Service via Resend (https://resend.com)
- * Reusable utility for sending transactional verification emails, PINs, and security notices.
+ * SahakarConnect Email Template & Edge Function Dispatch Utilities
+ * 
+ * NOTE: For security and secret protection, all live email dispatching via Resend
+ * is executed exclusively inside Supabase Edge Functions (e.g. `supabase/functions/forgot-password`)
+ * using the server secret `RESEND_API_KEY`.
+ * 
+ * No Resend API keys or secrets are exposed or bundled in the client code.
  */
 
-import { Resend } from 'resend'
-
-// Retrieve API Key from environment (supports Vite import.meta.env and Node process.env)
-const getResendApiKey = () => {
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_RESEND_API_KEY) {
-    return import.meta.env.VITE_RESEND_API_KEY
-  }
-  if (typeof process !== 'undefined' && process.env?.RESEND_API_KEY) {
-    return process.env.RESEND_API_KEY
-  }
-  return null
-}
-
-const getFromEmail = () => {
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_RESEND_FROM_EMAIL) {
-    return import.meta.env.VITE_RESEND_FROM_EMAIL
-  }
-  if (typeof process !== 'undefined' && process.env?.RESEND_FROM_EMAIL) {
-    return process.env.RESEND_FROM_EMAIL
-  }
-  return 'SahakarConnect Security <onboarding@resend.dev>'
-}
+import { supabase } from './supabase.js'
 
 /**
  * Generates responsive, luxury dark-themed HTML email template for 4-digit PIN verification
  */
-export const generatePasswordResetEmailHtml = ({ pinCode, expiryMinutes = 10, email }) => {
+export const generatePasswordResetEmailHtml = ({ pinCode, expiryMinutes = 10, email = '' }) => {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -158,7 +142,7 @@ export const generatePasswordResetEmailHtml = ({ pinCode, expiryMinutes = 10, em
     <div class="content">
       <h2 class="intro-title">Your 4-Digit Verification Code</h2>
       <p class="intro-text">
-        We received a request to reset the password for your account (<strong>${email}</strong>). Use the 4-digit PIN below to complete the verification step:
+        We received a request to reset the password for your account${email ? ` (<strong>${email}</strong>)` : ''}. Use the 4-digit PIN below to complete the verification step:
       </p>
 
       <div class="pin-box">
@@ -185,62 +169,29 @@ export const generatePasswordResetEmailHtml = ({ pinCode, expiryMinutes = 10, em
 }
 
 /**
- * Core reusable email-sending utility function
- * Sends transactional email via Resend SDK with automatic fallback simulation
+ * Dispatches password reset PIN email by invoking the secure Edge Function
  */
-export async function sendPasswordResetPinEmail({ to, pinCode, expiryMinutes = 10 }) {
-  const apiKey = getResendApiKey()
-  const from = getFromEmail()
-  const html = generatePasswordResetEmailHtml({ pinCode, expiryMinutes, email: to })
+export async function sendPasswordResetPinEmail({ to }) {
+  try {
+    const { data, error } = await supabase.functions.invoke('forgot-password', {
+      body: { email: to },
+    })
 
-  // Check if a real Resend API key is provided
-  const isRealApiKey =
-    apiKey &&
-    apiKey.startsWith('re_') &&
-    apiKey !== 're_your_resend_api_key_here' &&
-    apiKey.length > 10
-
-  if (isRealApiKey) {
-    try {
-      const resend = new Resend(apiKey)
-      const data = await resend.emails.send({
-        from: from || 'SahakarConnect Security <onboarding@resend.dev>',
-        to: [to],
-        subject: `[${pinCode}] Your SahakarConnect Password Reset Code`,
-        html,
-      })
-
-      return {
-        success: true,
-        data,
-        simulated: false,
-        message: 'Email delivered successfully via Resend',
-      }
-    } catch (err) {
-      console.error('[Resend Email Error]', err)
+    if (error) {
       return {
         success: false,
-        error: err.message || 'Failed to dispatch email via Resend',
-        simulated: false,
+        error: error.message,
       }
     }
-  }
 
-  // Development / Demo Simulation Fallback
-  // (Displays exact code & template in console when live Resend API key is pending)
-  console.log('\n================== ✉️ RESEND EMAIL DISPATCH (SIMULATION) ==================')
-  console.log(`To: ${to}`)
-  console.log(`From: ${from}`)
-  console.log(`Subject: [${pinCode}] Your SahakarConnect Password Reset Code`)
-  console.log(`4-Digit PIN Code: >>> ${pinCode} <<<`)
-  console.log(`Expires In: ${expiryMinutes} minutes`)
-  console.log('To send real emails to your inbox, set RESEND_API_KEY in .env.local')
-  console.log('===========================================================================\n')
-
-  return {
-    success: true,
-    simulated: true,
-    data: { id: 'sim_' + Math.random().toString(36).substring(2, 10) },
-    message: 'Simulated email logged to console (Configure RESEND_API_KEY in .env.local for live delivery)',
+    return {
+      success: true,
+      message: data?.message || 'Verification email dispatched via Edge Function.',
+    }
+  } catch (err) {
+    return {
+      success: false,
+      error: err.message,
+    }
   }
 }

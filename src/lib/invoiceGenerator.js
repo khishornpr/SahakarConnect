@@ -28,7 +28,7 @@ export function generateInvoiceData(job, worker, household, wageLedgerItem) {
       area: job?.area || 'South Delhi',
     },
     worker: {
-      name: worker?.full_name || job?.worker?.full_name || 'Verified Artisan',
+      name: worker?.full_name || job?.worker?.full_name || 'Verified Worker',
       trade: job?.trade_category || 'Skilled Craftsman',
       rating: worker?.rating || 4.9,
     },

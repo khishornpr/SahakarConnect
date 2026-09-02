@@ -2,8 +2,11 @@
 // 1. Anomaly Detection Engine (Financials & Wage Auditing)
 // 2. Time-Series Demand Forecasting & Workforce Allocation
 
+import { TRADES_LIST } from './serviceCategories.js'
+
 /**
  * Analyzes wage ledger entries and identifies anomalous financial patterns
+
  * Flags: Commission rate deviation (>5% statutory ceiling), abnormal gross amount spikes, suspicious deductions
  */
 export function detectWageAnomalies(ledgerEntries = []) {
@@ -59,16 +62,10 @@ export function detectWageAnomalies(ledgerEntries = []) {
  * Computes 7-day and 30-day demand forecast per trade and district from historical jobs
  */
 export function computeDemandForecast(historicalJobs = [], activeWorkers = []) {
-  const trades = [
-    'Electrician',
-    'Plumber',
-    'Carpenter',
-    'Painter',
-    'Cleaner',
-    'Domestic Helper',
-    'Caregiver',
-    'Appliance Technician',
-  ]
+  // Use canonical trades list and also include any custom registered worker trades
+  const workerTrades = activeWorkers.map((w) => w.primary_trade).filter(Boolean)
+  const jobTrades = historicalJobs.map((j) => j.trade_category).filter(Boolean)
+  const allUniqueTrades = Array.from(new Set([...TRADES_LIST, ...workerTrades, ...jobTrades]))
 
   const districts = ['South Delhi', 'West Delhi', 'North West Delhi', 'Central Delhi', 'East Delhi']
 
@@ -95,7 +92,7 @@ export function computeDemandForecast(historicalJobs = [], activeWorkers = []) {
   })
 
   // Forecast per trade using trend projection
-  const tradeForecasts = trades.map((t) => {
+  const tradeForecasts = allUniqueTrades.map((t) => {
     const pastWeekly = Math.max(3, Math.round((tradeHistoricalCount[t] || 4) / 4))
     const recentVelocity = (tradeRecentCount[t] || 2) / 2
     const growthRate = recentVelocity > pastWeekly ? 1.35 : 1.15
@@ -156,7 +153,7 @@ export function computeDemandForecast(historicalJobs = [], activeWorkers = []) {
       urgency: 'LOW',
       growthPct: 'Surplus',
       message:
-        'Commercial cleaning idle rate in Connaught Place cluster is 22%. Recommend redeploying 2 artisans to East Delhi residential sectors.',
+        'Commercial cleaning idle rate in Connaught Place cluster is 22%. Recommend redeploying 2 workers to East Delhi residential sectors.',
     },
   ]
 

@@ -1,19 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
-import { useTranslation } from '../../context/I18nContext'
 import { supabase } from '../../lib/supabase'
 import LanguageToggle from '../../components/LanguageToggle'
 import ThemeToggle from '../../components/ThemeToggle'
 
 export default function VerifyPin() {
   const { isDark } = useTheme()
-  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 
   // Extract email from location state or sessionStorage
-  const [email, setEmail] = useState(() => {
+  const [email] = useState(() => {
     return location.state?.email || sessionStorage.getItem('sahakar_reset_email') || ''
   })
 
@@ -27,7 +25,11 @@ export default function VerifyPin() {
   const [canResend, setCanResend] = useState(false)
   const [resendCooldown, setResendCooldown] = useState(30)
 
-  const pinInputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)]
+  const pinInput0 = useRef(null)
+  const pinInput1 = useRef(null)
+  const pinInput2 = useRef(null)
+  const pinInput3 = useRef(null)
+  const pinInputRefs = [pinInput0, pinInput1, pinInput2, pinInput3]
 
   // Redirect to /forgot-password if email is completely missing
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function VerifyPin() {
       navigate('/forgot-password')
     } else {
       // Focus first digit on load
-      pinInputRefs[0].current?.focus()
+      pinInput0.current?.focus()
     }
   }, [email, navigate])
 
@@ -235,15 +237,15 @@ export default function VerifyPin() {
         </div>
       </header>
 
-      {/* ----------------- MAIN CONTENT ----------------- */}
-      <main className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-        {/* Left Side: Context */}
+      {/* ----------------- MAIN VIEWPORT CONTENT ----------------- */}
+      <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-6 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Left Side: Reset Password Typography */}
         <div className="lg:col-span-7 xl:col-span-7 space-y-6">
-          <div className="flex items-start gap-5">
-            <div className="w-2 h-28 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
+          <div className="flex items-start gap-4 sm:gap-5">
+            <div className="w-2 h-24 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
             <div>
               <h1
-                className={`text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
+                className={`text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
@@ -251,11 +253,11 @@ export default function VerifyPin() {
                 <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>4-Digit PIN</strong>
               </h1>
               <p
-                className={`text-sm sm:text-base mt-4 max-w-md leading-relaxed ${
+                className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
-                Enter the 4-digit code dispatched to your registered email address to verify your identity.
+                Enter the 4-digit code sent to your email to confirm your identity.
               </p>
             </div>
           </div>
@@ -264,14 +266,14 @@ export default function VerifyPin() {
         {/* Right Side: Step 2 Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-            className={`w-full max-w-[460px] border rounded-[32px] p-7 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
+            className={`w-full max-w-[460px] border rounded-[28px] sm:rounded-[32px] p-5 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
               isDark
                 ? 'bg-[#12151c]/92 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)]'
                 : 'bg-white/94 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)]'
             }`}
           >
             {/* Stepper Header */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between mb-5 pb-3 sm:mb-6 sm:pb-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#e8b070] to-[#d8964d] text-slate-950 font-black text-xs flex items-center justify-center shadow-md">
                   2
@@ -283,12 +285,12 @@ export default function VerifyPin() {
               <span className="text-[11px] font-semibold text-slate-400">Step 2 of 3</span>
             </div>
 
-            <div className="mb-5">
-              <h2 className={`text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <div className="mb-4 sm:mb-5">
+              <h2 className={`text-lg sm:text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 Enter 4-Digit Code
               </h2>
               <p className={`text-xs mt-1 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                We sent a secure PIN to: <span className="font-semibold text-[#e5a65e]">{email}</span>
+                We sent a PIN code to: <span className="font-semibold text-[#e5a65e] break-all">{email}</span>
               </p>
             </div>
 
@@ -313,8 +315,8 @@ export default function VerifyPin() {
               }}
               className="space-y-5"
             >
-              {/* 4 Digit Input Boxes */}
-              <div className="flex justify-center gap-3 sm:gap-4 my-6">
+              {/* 4 Digit Input Boxes with responsive widths */}
+              <div className="flex justify-center gap-2 sm:gap-4 my-4 sm:my-6">
                 {pinDigits.map((digit, index) => (
                   <input
                     key={index}
@@ -330,7 +332,7 @@ export default function VerifyPin() {
                       e.preventDefault()
                       handlePinPaste(e.clipboardData.getData('text'))
                     }}
-                    className={`w-14 h-16 sm:w-16 sm:h-18 text-center text-2xl font-black rounded-2xl border transition-all duration-200 outline-none ${
+                    className={`w-11 h-14 sm:w-14 sm:h-16 md:w-16 md:h-18 text-center text-xl sm:text-2xl font-black rounded-xl sm:rounded-2xl border transition-all duration-200 outline-none ${
                       digit
                         ? 'border-[#e5a65e] text-[#e5a65e] shadow-[0_0_15px_rgba(229,166,94,0.35)] scale-105'
                         : isDark

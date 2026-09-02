@@ -1,29 +1,63 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
+import { SERVICE_CATEGORIES, getCategoryByTrade } from '../../lib/serviceCategories'
 
 export default function WorkerProfile() {
   const { user, profile } = useAuth()
+  const { t } = useTranslation()
   const { isDark } = useTheme()
   const [workerInfo, setWorkerInfo] = useState(null)
   const [ratingsList, setRatingsList] = useState([])
+  const [editingTrade, setEditingTrade] = useState(false)
+  const [selectedTrade, setSelectedTrade] = useState('')
+  const [saveSuccess, setSaveSuccess] = useState('')
 
   useEffect(() => {
-    if (user) loadProfile()
+    let ignore = false
+    async function loadProfile() {
+      if (!user) return
+      const { data: worker } = await supabase.from('workers').select('*').eq('user_id', user.id).single()
+      if (ignore) return
+      setWorkerInfo(worker)
+      setSelectedTrade(worker?.primary_trade || 'Electrician')
+
+      const { data: ratings } = await supabase
+        .from('ratings')
+        .select('*')
+        .eq('rated_user_id', user.id)
+        .order('created_at', { ascending: false })
+      if (!ignore) {
+        setRatingsList(ratings || [])
+      }
+    }
+    loadProfile()
+    return () => {
+      ignore = true
+    }
   }, [user])
 
-  async function loadProfile() {
-    const { data: worker } = await supabase.from('workers').select('*').eq('user_id', user.id).single()
-    setWorkerInfo(worker)
-
-    const { data: ratings } = await supabase
-      .from('ratings')
-      .select('*')
-      .eq('rated_user_id', user.id)
-      .order('created_at', { ascending: false })
-    setRatingsList(ratings || [])
+  async function handleSaveTrade() {
+    if (!user || !selectedTrade) return
+    const cat = getCategoryByTrade(selectedTrade)
+    const updatePayload = {
+      primary_trade: selectedTrade,
+      hourly_rate: cat.rate,
+      skills: cat.skills,
+    }
+    const { error } = await supabase.from('workers').update(updatePayload).eq('user_id', user.id)
+    if (!error) {
+      setWorkerInfo((prev) => ({ ...prev, ...updatePayload }))
+      setEditingTrade(false)
+      setSaveSuccess('Primary trade & skill badges updated successfully!')
+      setTimeout(() => setSaveSuccess(''), 3000)
+    }
   }
+
+  const currentCategory = getCategoryByTrade(workerInfo?.primary_trade || selectedTrade)
+
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -79,12 +113,55 @@ export default function WorkerProfile() {
         {/* Skill Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
           <div className="space-y-4">
-            <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-wider">Craft & Specializations</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-wider">Craft & Specializations</h3>
+              <button
+                type="button"
+                onClick={() => setEditingTrade(!editingTrade)}
+                className="text-xs text-[#ff7a00] hover:underline font-bold"
+              >
+                {editingTrade ? 'Cancel' : 'Edit Trade ✏️'}
+              </button>
+            </div>
+
+            {saveSuccess && (
+              <div className="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
+                ✓ {saveSuccess}
+              </div>
+            )}
+
             <div>
               <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Primary Trade</label>
-              <div className={`text-sm font-bold mt-0.5 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                {workerInfo?.primary_trade || 'Electrician'}
-              </div>
+              {editingTrade ? (
+                <div className="mt-1 space-y-2">
+                  <select
+                    value={selectedTrade}
+                    onChange={(e) => setSelectedTrade(e.target.value)}
+                    className={`w-full px-3 py-2 border rounded-xl text-xs outline-none font-bold ${
+                      isDark ? 'bg-[#12151c] border-white/[0.1] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
+                    }`}
+                  >
+                    {SERVICE_CATEGORIES.map((c) => (
+                      <option key={c.trade} value={c.trade}>
+                        {c.icon} {t(c.trade, c.trade)} ({c.rateFormatted})
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={handleSaveTrade}
+                    className="px-4 py-1.5 flow-btn-primary text-xs font-bold rounded-xl shadow-sm"
+                  >
+                    Save Primary Trade
+                  </button>
+                </div>
+              ) : (
+                <div className={`text-sm font-bold mt-0.5 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                  <span>{currentCategory.icon}</span>
+                  <span>{t(workerInfo?.primary_trade || 'Electrician', workerInfo?.primary_trade || 'Electrician')}</span>
+                  <span className="text-xs font-mono font-bold text-emerald-400">({currentCategory.rateFormatted})</span>
+                </div>
+              )}
             </div>
 
             <div>
@@ -136,6 +213,56 @@ export default function WorkerProfile() {
               <div className={`text-sm mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                 📍 {workerInfo?.area || 'South Extension, New Delhi'}
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Certified Training & Upskilling Badges */}
+      <div className="flow-card glow-orange-hover p-6 space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🎓</span>
+            <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-800'}`}>
+              Certified Training & Upskilling Badges
+            </h3>
+          </div>
+          <span className="status-pill-emerald text-[11px]">
+            Co-op Verified
+          </span>
+        </div>
+        <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+          Earned through successfully passing practical exams and interactive safety modules at the Sahakar Training Academy.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
+          <div className={`p-3.5 rounded-xl border flex items-center gap-3 ${
+            isDark ? 'bg-amber-950/20 border-amber-500/30 text-amber-200' : 'bg-amber-50 border-amber-200 text-amber-900'
+          }`}>
+            <span className="text-2xl">🏆</span>
+            <div>
+              <strong className="text-xs block">Electrical Safety (LOTO)</strong>
+              <span className="text-[10px] text-slate-400">Score: 100% • Verified</span>
+            </div>
+          </div>
+
+          <div className={`p-3.5 rounded-xl border flex items-center gap-3 ${
+            isDark ? 'bg-purple-950/20 border-purple-500/30 text-purple-200' : 'bg-purple-50 border-purple-200 text-purple-900'
+          }`}>
+            <span className="text-2xl">⭐</span>
+            <div>
+              <strong className="text-xs block">5-Star Customer Etiquette</strong>
+              <span className="text-[10px] text-slate-400">Score: 100% • Verified</span>
+            </div>
+          </div>
+
+          <div className={`p-3.5 rounded-xl border flex items-center gap-3 ${
+            isDark ? 'bg-blue-950/20 border-blue-500/30 text-blue-200' : 'bg-blue-50 border-blue-200 text-blue-900'
+          }`}>
+            <span className="text-2xl">⚡</span>
+            <div>
+              <strong className="text-xs block">Smart Relay Specialist</strong>
+              <span className="text-[10px] text-slate-400">In Progress (50%)</span>
             </div>
           </div>
         </div>

@@ -31,11 +31,6 @@ export default function CooperativeDemandForecast() {
 
   // Interactive Chart 2 Controls (District Demand)
   const [districtChartType, setDistrictChartType] = useState('bar') // 'bar', 'vertical', 'area'
-  const [districtFilter, setDistrictFilter] = useState('all')
-
-  useEffect(() => {
-    loadData()
-  }, [])
 
   async function loadData() {
     setLoading(true)
@@ -46,6 +41,24 @@ export default function CooperativeDemandForecast() {
     setForecastData(computed)
     setLoading(false)
   }
+
+  useEffect(() => {
+    let ignore = false
+    async function init() {
+      const { data: jobs } = await supabase.from('jobs').select('*')
+      const { data: workers } = await supabase.from('workers').select('*')
+
+      const computed = computeDemandForecast(jobs || [], workers || [])
+      if (!ignore) {
+        setForecastData(computed)
+        setLoading(false)
+      }
+    }
+    init()
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   if (loading || !forecastData) {
     return (
@@ -69,12 +82,10 @@ export default function CooperativeDemandForecast() {
     gap: Math.round(row.activeWorkers * (tradeHorizon === '7d' ? 1 : 1.4) - row.projectedNextWeek * horizonMultiplier),
   }))
 
-  const filteredDistrictData = districtDemand
-    .filter((d) => districtFilter === 'all' || d.district.toLowerCase().includes(districtFilter.toLowerCase()))
-    .map((d) => ({
-      ...d,
-      displayDistrict: t(d.district, d.district),
-    }))
+  const filteredDistrictData = districtDemand.map((d) => ({
+    ...d,
+    displayDistrict: t(d.district, d.district),
+  }))
 
   const localizedRecommendations = [
     {
@@ -107,7 +118,7 @@ export default function CooperativeDemandForecast() {
       growthPct: 'Surplus',
       message: t(
         'rec3Msg',
-        'Commercial cleaning idle rate in Connaught Place cluster is 22%. Recommend redeploying 2 artisans to East Delhi residential sectors.'
+        'Commercial cleaning idle rate in Connaught Place cluster is 22%. Recommend redeploying 2 workers to East Delhi residential sectors.'
       ),
     },
   ]
@@ -418,16 +429,16 @@ export default function CooperativeDemandForecast() {
                     {row.projectedNextWeek} {t('jobsUnit', 'jobs')}
                   </td>
                   <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-cyan-400' : 'text-cyan-700'}`}>
-                    {row.activeWorkers} {t('artisansUnit', 'artisans')}
+                    {row.activeWorkers} {t('workersUnit', 'workers')}
                   </td>
                   <td className="px-4 py-3.5 font-mono font-bold">
                     {row.deficit < 0 ? (
                       <span className={isDark ? 'text-rose-400' : 'text-rose-600'}>
-                        {row.deficit} {t('deficitText', 'artisans (Deficit)')}
+                        {row.deficit} {t('deficitText', 'workers (Deficit)')}
                       </span>
                     ) : row.deficit > 0 ? (
                       <span className={isDark ? 'text-amber-400' : 'text-amber-700'}>
-                        +{row.deficit} {t('surplusText', 'artisans (Surplus)')}
+                        +{row.deficit} {t('surplusText', 'workers (Surplus)')}
                       </span>
                     ) : (
                       <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('balancedText', '0 (Balanced)')}</span>

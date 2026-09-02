@@ -12,24 +12,31 @@ export default function WorkerSalary() {
   const [increments, setIncrements] = useState([])
 
   useEffect(() => {
-    if (user) loadData()
+    let ignore = false
+    async function loadData() {
+      if (!user) return
+      const { data } = await supabase
+        .from('salaries')
+        .select('*')
+        .eq('user_id', user.id)
+        .single()
+      if (ignore) return
+      setSalary(data)
+
+      const { data: history } = await supabase
+        .from('salary_increments')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+      if (!ignore) {
+        setIncrements(history || [])
+      }
+    }
+    loadData()
+    return () => {
+      ignore = true
+    }
   }, [user])
-
-  async function loadData() {
-    const { data } = await supabase
-      .from('salaries')
-      .select('*')
-      .eq('user_id', user.id)
-      .single()
-    setSalary(data)
-
-    const { data: history } = await supabase
-      .from('salary_increments')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-    setIncrements(history || [])
-  }
 
   return (
     <div className="space-y-6">

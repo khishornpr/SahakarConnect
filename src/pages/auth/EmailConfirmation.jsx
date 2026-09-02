@@ -7,7 +7,7 @@ import LanguageToggle from '../../components/LanguageToggle'
 
 export default function EmailConfirmation() {
   const { isDark, toggleTheme } = useTheme()
-  const { user, profile, verifyConfirmationToken, resendVerification } = useAuth()
+  const { profile, verifyConfirmationToken, resendVerification } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -16,6 +16,11 @@ export default function EmailConfirmation() {
   const [resendEmail, setResendEmail] = useState('')
   const [resendStatus, setResendStatus] = useState('')
   const [countdown, setCountdown] = useState(3)
+
+  function handleVerificationSuccess() {
+    setStatus('success')
+    setMessage('Your email has been confirmed! Activating your SahakarConnect account...')
+  }
 
   useEffect(() => {
     async function processEmailConfirmation() {
@@ -80,12 +85,7 @@ export default function EmailConfirmation() {
     }
 
     processEmailConfirmation()
-  }, [location])
-
-  function handleVerificationSuccess() {
-    setStatus('success')
-    setMessage('Your email has been confirmed! Activating your SahakarConnect account...')
-  }
+  }, [location, verifyConfirmationToken])
 
   // Automatic redirect countdown on success
   useEffect(() => {
@@ -156,9 +156,9 @@ export default function EmailConfirmation() {
       </div>
 
       {/* Confirmation Glass Card */}
-      <div className="relative z-10 w-full max-w-md my-8">
+      <div className="relative z-10 w-full max-w-md my-6 px-4">
         <div
-          className={`rounded-3xl border p-7 sm:p-9 backdrop-blur-xl shadow-2xl text-center transition-all ${
+          className={`rounded-[28px] sm:rounded-3xl border p-5 sm:p-9 backdrop-blur-xl shadow-2xl text-center transition-all ${
             isDark
               ? 'bg-[#12151b]/95 border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)]'
               : 'bg-white/95 border-slate-200 shadow-xl'

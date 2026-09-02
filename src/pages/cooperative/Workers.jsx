@@ -8,14 +8,24 @@ export default function CooperativeWorkers() {
   const [filter, setFilter] = useState('all')
   const [updatingId, setUpdatingId] = useState(null)
 
-  useEffect(() => {
-    loadWorkers()
-  }, [])
-
   async function loadWorkers() {
     const { data } = await supabase.from('workers').select('*, profiles(*)')
     setWorkers(data || [])
   }
+
+  useEffect(() => {
+    let ignore = false
+    async function init() {
+      const { data } = await supabase.from('workers').select('*, profiles(*)')
+      if (!ignore) {
+        setWorkers(data || [])
+      }
+    }
+    init()
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   async function toggleVerification(workerUserId, currentStatus) {
     setUpdatingId(workerUserId)
@@ -39,7 +49,7 @@ export default function CooperativeWorkers() {
             Member Worker Roster & Verification Queue
           </h1>
           <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-            Administer artisan onboarding, inspect government ID / trade credentials, and toggle verified status
+            Administer worker onboarding, inspect government ID / trade credentials, and toggle verified status
           </p>
         </div>
 
@@ -69,7 +79,7 @@ export default function CooperativeWorkers() {
               isDark ? 'bg-[#161a22] text-[#ff7a00] border-white/[0.08]' : 'bg-slate-50 text-slate-700 border-slate-200'
             }`}>
               <tr>
-                <th className="px-4 py-3.5">Artisan Name</th>
+                <th className="px-4 py-3.5">Worker Name</th>
                 <th className="px-4 py-3.5">Primary Trade</th>
                 <th className="px-4 py-3.5">Base Locality</th>
                 <th className="px-4 py-3.5">KYC Document</th>

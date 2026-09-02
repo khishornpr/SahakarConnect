@@ -1,8 +1,6 @@
 // SahakarConnect Mock Supabase Client & 4-6 Weeks Historical Database
 // Problem Statement SIH26089 - Cooperative Digital Service Marketplace
 
-import { DELHI_NCR_AREAS } from './geoService.js'
-
 // Helper to generate past ISO timestamps
 const daysAgo = (days, hour = 11, minute = 30) => {
   const d = new Date()
@@ -119,6 +117,27 @@ const mockData = {
       phone: '+91 11 2689 4400',
       avatar_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
       created_at: daysAgo(120),
+    },
+    {
+      id: 'manager1',
+      email: 'manager.delhi@sahakar.in',
+      full_name: 'Rajiv Deshmukh (Zonal Manager)',
+      role: 'manager',
+      district: 'South Delhi',
+      trade: 'Electrical & Plumbing Cluster',
+      phone: '+91 98100 55443',
+      avatar_url: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150',
+      created_at: daysAgo(90),
+    },
+    {
+      id: 'officer1',
+      email: 'officer.delhi@gov.in',
+      full_name: 'Sanjay Verma (Labor Officer)',
+      role: 'officer',
+      district: 'Delhi NCR Region',
+      phone: '+91 11 2338 1200',
+      avatar_url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150',
+      created_at: daysAgo(150),
     },
   ],
 
@@ -790,20 +809,175 @@ const mockData = {
       created_at: daysAgo(80),
     },
   ],
+
+  complaints: [
+    {
+      id: 'CASE-2026-081',
+      user_id: 'w1',
+      user_name: 'Ramesh Kumar',
+      initiator_role: 'worker',
+      complaint_type: 'Non-Payment',
+      job_id: 'job-hist-1',
+      title: 'Non-Payment for Overtime Rewiring Work',
+      description: 'Completed an additional 2 hours of emergency switchboard replacement at customer site. Payment received was only for basic 1.5 hr tariff.',
+      attachment_name: 'work_completion_photo.jpg',
+      status: 'under review',
+      assigned_officer: 'Sanjay Verma (Labor Officer)',
+      resolution_notes: 'Under review. Cross-referencing timestamps with Geo-Dispatch logs.',
+      created_at: daysAgo(4, 14, 20),
+      updated_at: daysAgo(2, 10, 15),
+    },
+    {
+      id: 'CASE-2026-082',
+      user_id: 'w3',
+      user_name: 'Mohammad Irfan',
+      initiator_role: 'worker',
+      complaint_type: 'Unsafe Job Site',
+      job_id: 'job-hist-2',
+      title: 'Uninsulated Live Main Line at Residential Site',
+      description: 'Customer requested pipe replacement directly adjacent to uninsulated high-voltage domestic riser without main switch isolation.',
+      attachment_name: 'site_hazard_image.png',
+      status: 'in progress',
+      assigned_officer: 'Sanjay Verma (Labor Officer)',
+      resolution_notes: 'Safety inspection scheduled with zonal engineer.',
+      created_at: daysAgo(7, 16, 45),
+      updated_at: daysAgo(3, 11, 0),
+    },
+    {
+      id: 'CASE-2026-083',
+      user_id: 'h1',
+      user_name: 'Priya Sharma',
+      initiator_role: 'household',
+      complaint_type: 'Customer Dispute',
+      job_id: 'job-hist-4',
+      title: 'Incomplete Drain Sealant Application',
+      description: 'Drain pipe connection started leaking 24 hours after completion.',
+      attachment_name: 'leakage_receipt.pdf',
+      status: 'resolved',
+      assigned_officer: 'Sanjay Verma (Labor Officer)',
+      resolution_notes: 'Worker re-visited site under warranty and applied secondary epoxy seal at no additional charge.',
+      created_at: daysAgo(15, 9, 30),
+      updated_at: daysAgo(12, 17, 0),
+    },
+    {
+      id: 'CASE-2026-084',
+      user_id: 'w2',
+      user_name: 'Sunita Devi',
+      initiator_role: 'worker',
+      complaint_type: 'Harassment',
+      job_id: 'job-hist-5',
+      title: 'Verbal Abuse and Refusal to Sign Completion Form',
+      description: 'Household occupant used abusive language and demanded unpaid heavy furniture shifting outside service scope.',
+      attachment_name: 'incident_log.txt',
+      status: 'submitted',
+      assigned_officer: 'Unassigned',
+      resolution_notes: null,
+      created_at: daysAgo(1, 18, 10),
+      updated_at: daysAgo(1, 18, 10),
+    },
+  ],
+
+  learning_modules: [
+    {
+      id: 'mod-1',
+      title: 'High-Voltage Residential Electrical Safety & Lockout',
+      category: 'Safety Training',
+      trade: 'Electrician',
+      description: 'Standard operating procedures for 230V/415V domestic installations, arc flash protection, and earthing test protocols.',
+      duration: '45 mins',
+      total_lessons: 4,
+      completed_lessons: 4,
+      progress_pct: 100,
+      status: 'completed',
+      badge: '🏆 Certified Electrical Safety',
+      lessons: [
+        { id: 1, title: 'Basics of Live Line Detection & Neon Testers', duration: '10 min', completed: true },
+        { id: 2, title: 'Lockout/Tagout (LOTO) Procedures for DB Panels', duration: '12 min', completed: true },
+        { id: 3, title: 'Earth Resistance & Megger Testing Standards', duration: '11 min', completed: true },
+        { id: 4, title: 'Safe Tool Insulation (1000V Rated)', duration: '12 min', completed: true },
+      ],
+      completed_at: daysAgo(14),
+    },
+    {
+      id: 'mod-2',
+      title: 'Customer Communication & Digital Service Etiquette',
+      category: 'Soft Skills',
+      trade: 'General',
+      description: 'Effective household etiquette, dispute de-escalation, OTP collection, and two-way digital rating transparency.',
+      duration: '30 mins',
+      total_lessons: 3,
+      completed_lessons: 3,
+      progress_pct: 100,
+      status: 'completed',
+      badge: '⭐ 5-Star Service Etiquette',
+      lessons: [
+        { id: 1, title: 'Entering Customer Homes & Uniform Presentation', duration: '10 min', completed: true },
+        { id: 2, title: 'Explaining Tariff Breakdown & Spare Part Costs', duration: '10 min', completed: true },
+        { id: 3, title: 'Security OTP Collection & Completion Protocol', duration: '10 min', completed: true },
+      ],
+      completed_at: daysAgo(20),
+    },
+    {
+      id: 'mod-3',
+      title: 'Modern Inverter & Smart Home Relay Installation',
+      category: 'Upskilling',
+      trade: 'Electrician',
+      description: 'Hands-on guide to smart MCBs, IoT home automation relays, solar hybrid inverters, and battery maintenance.',
+      duration: '60 mins',
+      total_lessons: 4,
+      completed_lessons: 2,
+      progress_pct: 50,
+      status: 'in_progress',
+      badge: '⚡ Smart Relay Specialist',
+      lessons: [
+        { id: 1, title: 'Smart MCB Wiring & Wi-Fi Module Pairing', duration: '15 min', completed: true },
+        { id: 2, title: 'Hybrid Solar Inverter Grid Synchronization', duration: '15 min', completed: true },
+        { id: 3, title: 'Lithium vs Tubular Battery Load Calculations', duration: '15 min', completed: false },
+        { id: 4, title: 'Testing Home Automation App Triggers', duration: '15 min', completed: false },
+      ],
+      completed_at: null,
+    },
+    {
+      id: 'mod-4',
+      title: 'First Aid & Emergency Response at Household Job Sites',
+      category: 'Safety Training',
+      trade: 'General',
+      description: 'Immediate response protocols for electrical shock, minor burns, gas leaks, and chemical exposure.',
+      duration: '35 mins',
+      total_lessons: 3,
+      completed_lessons: 0,
+      progress_pct: 0,
+      status: 'not_started',
+      badge: '🩹 First Aid Certified',
+      lessons: [
+        { id: 1, title: 'CPR and Shock Treatment Guidelines', duration: '12 min', completed: false },
+        { id: 2, title: 'Burn Dressing & Minor Wound Sanitization', duration: '11 min', completed: false },
+        { id: 3, title: 'Emergency Contact Hierarchy & Co-op SOS Dispatch', duration: '12 min', completed: false },
+      ],
+      completed_at: null,
+    },
+  ],
 }
 
 // In-memory DB fallback for Node.js / test environments without window.localStorage
 let inMemoryDb = null
 
 // LocalStorage Persistence Key
-const STORAGE_KEY = 'sahakar_connect_db_v1'
+const STORAGE_KEY = 'sahakar_connect_db_v2'
 
 function getDb() {
   if (typeof localStorage !== 'undefined') {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
       try {
-        return JSON.parse(stored)
+        const parsed = JSON.parse(stored)
+        // Ensure new tables are merged
+        if (!parsed.complaints) parsed.complaints = mockData.complaints
+        if (!parsed.learning_modules) parsed.learning_modules = mockData.learning_modules
+        if (!parsed.profiles.some((p) => p.role === 'manager')) {
+          parsed.profiles.push(...mockData.profiles.filter((p) => p.role === 'manager' || p.role === 'officer'))
+        }
+        return parsed
       } catch {
         // Fallback
       }
@@ -839,7 +1013,7 @@ function applyFilters(data, filters) {
 
 function createQueryBuilder(table) {
   let filters = []
-  let selectColumns = '*'
+  let _selectColumns = '*'
   let orderCol = null
   let orderAsc = true
   let limitCount = null
@@ -847,7 +1021,7 @@ function createQueryBuilder(table) {
 
   const builder = {
     select(cols) {
-      selectColumns = cols || '*'
+      _selectColumns = cols || '*'
       return builder
     },
     eq(col, val) {
@@ -1001,10 +1175,10 @@ export const supabase = {
       }
       return Promise.resolve({ data: { session: null } })
     },
-    onAuthStateChange(callback) {
+    onAuthStateChange(_callback) {
       return { data: { subscription: { unsubscribe() {} } } }
     },
-    signUp({ email, password, role = 'worker', fullName = '', options = {} }) {
+    signUp({ email, password: _password, role = 'worker', fullName = '', options = {} }) {
       const db = getDb()
       const newUserId = 'user_' + crypto.randomUUID().slice(0, 8)
       const user = {
@@ -1093,7 +1267,7 @@ export const supabase = {
       console.log(`[Supabase Auth Resend] Resending ${type} email confirmation to: ${email}`)
       return Promise.resolve({ data: { message: 'Confirmation email resent successfully.' }, error: null })
     },
-    verifyOtp({ token_hash, type = 'signup', email } = {}) {
+    verifyOtp({ token_hash: _token_hash, type: _type = 'signup', email } = {}) {
       const db = getDb()
       let profile = db.profiles.find((p) => (email && p.email.toLowerCase() === email.toLowerCase()) || p.email_confirmed === false)
       if (!profile) {
@@ -1120,7 +1294,7 @@ export const supabase = {
       return Promise.resolve({ data: { user: { password } }, error: null })
     },
     admin: {
-      updateUserById(userId, { password, user_metadata } = {}) {
+      updateUserById(userId, { password: _password, user_metadata: _user_metadata } = {}) {
         const db = getDb()
         const profile = db.profiles.find((p) => p.id === userId || p.email === userId)
         if (profile) {

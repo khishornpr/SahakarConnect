@@ -13,18 +13,24 @@ export default function HouseholdInvoices() {
   const [selectedInvoice, setSelectedInvoice] = useState(null)
 
   useEffect(() => {
-    if (user) loadInvoices()
+    let ignore = false
+    async function loadInvoices() {
+      if (!user) return
+      const { data } = await supabase
+        .from('jobs')
+        .select('*, wage_ledger(*)')
+        .eq('household_id', user.id)
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
+      if (!ignore) {
+        setInvoices(data || [])
+      }
+    }
+    loadInvoices()
+    return () => {
+      ignore = true
+    }
   }, [user])
-
-  async function loadInvoices() {
-    const { data } = await supabase
-      .from('jobs')
-      .select('*, wage_ledger(*)')
-      .eq('household_id', user.id)
-      .eq('status', 'completed')
-      .order('completed_at', { ascending: false })
-    setInvoices(data || [])
-  }
 
   function printInvoice() {
     window.print()

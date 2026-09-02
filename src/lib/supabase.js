@@ -1,9 +1,38 @@
-// Toggle between mock (for UI development) and real Supabase
-// To use real Supabase, comment the mock line and uncomment the real client below
+import { createClient } from '@supabase/supabase-js'
+import { supabase as mockSupabase } from './supabase-mock.js'
 
-export { supabase } from './supabase-mock.js'
+const supabaseUrl =
+  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_URL) ||
+  globalThis.process?.env?.VITE_SUPABASE_URL ||
+  ''
 
-// import { createClient } from '@supabase/supabase-js'
-// const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-// const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-// export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+const supabaseAnonKey =
+  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_ANON_KEY) ||
+  globalThis.process?.env?.VITE_SUPABASE_ANON_KEY ||
+  ''
+
+const useMockEnv =
+  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_USE_MOCK) ||
+  globalThis.process?.env?.VITE_USE_MOCK
+
+// Use real client only when explicitly configured with valid non-placeholder credentials and VITE_USE_MOCK !== 'true'
+const isPlaceholder =
+  !supabaseUrl ||
+  !supabaseAnonKey ||
+  supabaseUrl.includes('placeholder') ||
+  supabaseUrl.includes('your-supabase-url')
+
+let client = mockSupabase
+
+if (useMockEnv === 'false' && !isPlaceholder) {
+  try {
+    client = createClient(supabaseUrl, supabaseAnonKey)
+  } catch (err) {
+    console.warn('[Supabase] Failed to initialize live client, using mock database fallback:', err)
+  }
+}
+
+export const supabase = client
+export { mockSupabase }
+
+

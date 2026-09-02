@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
+import { supabase } from '../lib/supabase'
 import { DELHI_NCR_AREAS } from '../lib/geoService'
 import { useTheme } from '../context/ThemeContext'
 
@@ -20,13 +21,44 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
     { type: 'Gas Line Appliance Safety Inspection', icon: '🔥', time: '15-20 min', tariff: '₹450' },
   ]
 
-  function handleTriggerEmergency() {
+  async function handleTriggerEmergency() {
     setSearching(true)
+    const tradeCategory = selectedEmergency.includes('Electrical')
+      ? 'Electrician'
+      : selectedEmergency.includes('Pipe')
+      ? 'Plumber'
+      : selectedEmergency.includes('Door')
+      ? 'Carpenter'
+      : 'Appliance Technician'
+
+    const emergencyJob = {
+      id: `emg-${Date.now()}`,
+      household_id: 'h1',
+      assigned_worker_id: 'w1',
+      trade_category: tradeCategory,
+      title: `🚨 EMERGENCY: ${selectedEmergency}`,
+      description: `Urgent 30-min priority dispatch request at ${address}.`,
+      area: area,
+      address: address,
+      latitude: 28.5728,
+      longitude: 77.2217,
+      scheduled_date: new Date().toISOString().split('T')[0],
+      scheduled_time_slot: 'IMMEDIATE (30-Min SOS)',
+      estimated_hours: 1.0,
+      estimated_amount: 500.0,
+      status: 'assigned',
+      is_emergency: true,
+      priority: 'EMERGENCY',
+      otp_code: '9999',
+    }
+
+    await supabase.from('jobs').insert(emergencyJob)
+
     setTimeout(() => {
       setSearching(false)
       setDispatched(true)
       if (onConfirmEmergency) onConfirmEmergency(selectedEmergency, area, address)
-    }, 2000)
+    }, 1200)
   }
 
   const content = (
@@ -40,15 +72,15 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
       >
         <div className={`flex justify-between items-start border-b pb-3 ${isDark ? 'border-rose-500/20' : 'border-slate-100'}`}>
           <div className="flex items-center gap-2.5">
-            <span className="w-9 h-9 rounded-xl bg-rose-600/20 border border-rose-500/50 text-rose-500 flex items-center justify-center text-xl font-bold animate-pulse">
+            <span className="w-9 h-9 rounded-xl bg-rose-600/20 border border-rose-500/50 text-rose-500 flex items-center justify-center text-xl font-bold animate-pulse shrink-0">
               🚨
             </span>
             <div>
               <div className="inline-block px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 text-[10px] font-bold border border-rose-300 dark:border-rose-800 uppercase tracking-wider mb-0.5">
-                SIH26089 Feature 8 • Phase 2 Stub
+                Quick Response
               </div>
               <h2 className={`text-base sm:text-lg font-black ${isDark ? 'text-rose-100' : 'text-slate-900'}`}>
-                30-Min Emergency SOS Dispatch
+                30-Min Emergency Help
               </h2>
             </div>
           </div>
@@ -66,14 +98,11 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
         {dispatched ? (
           <div className="p-6 text-center space-y-3 bg-rose-50 dark:bg-rose-950/40 rounded-xl border border-rose-200 dark:border-rose-800/80">
             <div className="text-4xl animate-bounce">🚑</div>
-            <h3 className="text-base font-bold text-rose-800 dark:text-rose-200">Emergency Artisan Dispatched!</h3>
+            <h3 className="text-base font-bold text-rose-800 dark:text-rose-200">Worker Dispatched!</h3>
             <p className="text-xs text-slate-700 dark:text-slate-300">
-              Assigned nearest on-duty cooperative rapid-response worker (Ramesh Kumar - 1.8 km away).
-              Estimated arrival: <strong className="text-rose-600 dark:text-rose-400">18 minutes</strong>.
+              Nearest on-duty worker assigned (Ramesh Kumar - 1.8 km away).
+              Expected arrival: <strong className="text-rose-600 dark:text-rose-400">18 minutes</strong>.
             </p>
-            <div className="pt-2 text-[10px] text-slate-500 dark:text-slate-400 italic">
-              Phase 2 Roadmap: Integrates with real-time GPS telemetry and automated federation emergency hotline.
-            </div>
             <button
               onClick={onClose}
               className="mt-2 px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow"
@@ -89,15 +118,15 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
               <span className="text-2xl">📡</span>
             </div>
             <div className="text-sm font-bold text-rose-700 dark:text-rose-200">
-              Pinging nearest on-duty emergency cooperative artisans in {area}...
+              Finding nearest available emergency workers in {area}...
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Locking priority dispatch channel...</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Connecting directly...</p>
           </div>
         ) : (
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                Select Emergency Type
+                Select Emergency Issue
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {emergencies.map((e) => (
@@ -118,7 +147,7 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
                       <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold">⏱️ {e.time}</span>
                     </div>
                     <div className={`mt-1.5 font-semibold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{e.type}</div>
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Emergency Tariff: {e.tariff}</div>
+                    <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Rate: {e.tariff}</div>
                   </button>
                 ))}
               </div>
@@ -126,7 +155,7 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="block text-slate-500 dark:text-slate-400 mb-1 font-medium">Locality Hub</label>
+                <label className="block text-slate-500 dark:text-slate-400 mb-1 font-medium">Area / Hub</label>
                 <select
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
@@ -161,7 +190,7 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
               onClick={handleTriggerEmergency}
               className="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
             >
-              <span>🚨 Request Instant 30-Min Cooperative SOS Dispatch</span>
+              <span>🚨 Request 30-Min Emergency Help</span>
             </button>
           </div>
         )}

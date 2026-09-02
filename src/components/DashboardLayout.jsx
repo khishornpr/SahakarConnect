@@ -16,12 +16,20 @@ export default function DashboardLayout() {
     worker: t('workerPortal', 'Cooperative Worker Portal'),
     household: t('householdPortal', 'Household Customer Portal'),
     cooperative: t('adminPortal', 'Federation Admin Portal'),
+    manager: t('managerPortal', 'Zonal Manager Operations Hub'),
+    officer: t('officerPortal', 'Labor Department Adjudication Portal'),
+    labor_officer: t('officerPortal', 'Labor Department Adjudication Portal'),
+    labor: t('officerPortal', 'Labor Department Adjudication Portal'),
   }
 
   const roleThemeBadge = {
     worker: isDark ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-emerald-50 text-emerald-700 border-emerald-200',
     household: isDark ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' : 'bg-cyan-50 text-cyan-700 border-cyan-200',
     cooperative: isDark ? 'bg-[#ff6b00]/10 text-[#ff7a00] border-[#ff6b00]/30' : 'bg-orange-50 text-orange-700 border-orange-200',
+    manager: isDark ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 'bg-amber-50 text-amber-700 border-amber-200',
+    officer: isDark ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 'bg-blue-50 text-blue-700 border-blue-200',
+    labor_officer: isDark ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 'bg-blue-50 text-blue-700 border-blue-200',
+    labor: isDark ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 'bg-blue-50 text-blue-700 border-blue-200',
   }
 
   const currentDate = new Date().toLocaleDateString('en-US', {
@@ -59,12 +67,12 @@ export default function DashboardLayout() {
           }`}
         >
           {/* Left Title / Greeting */}
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="md:hidden flex items-center gap-2">
-              <span className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#ff5500] to-[#ff8c00] text-white flex items-center justify-center font-black text-base shadow-[0_0_15px_rgba(255,107,0,0.6)]">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="md:hidden flex items-center gap-1.5 sm:gap-2">
+              <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-[#ff5500] to-[#ff8c00] text-white flex items-center justify-center font-black text-sm sm:text-base shadow-[0_0_15px_rgba(255,107,0,0.6)] shrink-0">
                 ⚡
               </span>
-              <span className={`font-black text-sm tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <span className={`font-black text-xs sm:text-sm tracking-tight truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('brandTitle', 'SahakarConnect')}
               </span>
             </div>
@@ -73,7 +81,7 @@ export default function DashboardLayout() {
               <div className="text-xs text-slate-400 font-medium flex items-center gap-1.5">
                 <span>{t('greetingMorning', 'Good morning')}, <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{profile?.full_name?.split(' ')[0] || t('member', 'Member')}</span> 👋</span>
                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${roleThemeBadge[role]}`}>
-                  {role}
+                  {t(role + 'Role', role)}
                 </span>
               </div>
               <div className={`text-sm font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -83,7 +91,7 @@ export default function DashboardLayout() {
           </div>
 
           {/* Right Controls: Date Badge + Notifications + Theme Toggle + Language Toggle */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* FlowBoard Date Badge */}
             <div
               className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
@@ -100,14 +108,14 @@ export default function DashboardLayout() {
             {/* Notification Bell with Badge */}
             <button
               type="button"
-              className={`relative w-9 h-9 rounded-xl flex items-center justify-center text-sm border transition-all ${
+              className={`relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center text-xs sm:text-sm border transition-all ${
                 isDark
                   ? 'bg-[#161a22] border-white/[0.08] text-slate-300 hover:text-white glow-orange-hover'
                   : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
               }`}
             >
               <span>🔔</span>
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#ff5500] text-white text-[9px] font-black flex items-center justify-center shadow-[0_0_10px_rgba(255,107,0,0.8)]">
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#ff5500] text-white text-[8px] sm:text-[9px] font-black flex items-center justify-center shadow-[0_0_10px_rgba(255,107,0,0.8)]">
                 3
               </span>
             </button>
@@ -121,7 +129,7 @@ export default function DashboardLayout() {
         </header>
 
         {/* Dynamic Page Workspace with smooth fade in */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-7 animate-fade-in-up">
+        <main className="flex-1 p-3 sm:p-6 lg:p-7 animate-fade-in-up">
           <Outlet />
         </main>
       </div>

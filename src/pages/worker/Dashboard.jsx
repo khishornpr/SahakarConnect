@@ -11,7 +11,6 @@ import {
   Line,
   AreaChart,
   Area,
-  ComposedChart,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -21,7 +20,7 @@ import {
 } from 'recharts'
 
 export default function WorkerDashboard() {
-  const { user, profile } = useAuth()
+  const { user } = useAuth()
   const { t } = useTranslation()
   const { isDark } = useTheme()
   const [workerInfo, setWorkerInfo] = useState(null)
@@ -31,31 +30,39 @@ export default function WorkerDashboard() {
   const [chartTimeframe, setChartTimeframe] = useState('weekly') // 'weekly', 'monthly'
 
   useEffect(() => {
-    if (user) loadData()
+    let ignore = false
+    async function loadData() {
+      if (!user) return
+      const { data: worker } = await supabase
+        .from('workers')
+        .select('*')
+        .eq('user_id', user.id)
+        .single()
+      if (ignore) return
+      setWorkerInfo(worker)
+
+      const { data: jobList } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('assigned_worker_id', user.id)
+        .order('created_at', { ascending: false })
+      if (ignore) return
+      setJobs(jobList || [])
+
+      const { data: ledger } = await supabase
+        .from('wage_ledger')
+        .select('*')
+        .eq('worker_id', user.id)
+        .order('created_at', { ascending: false })
+      if (!ignore) {
+        setWageLedger(ledger || [])
+      }
+    }
+    loadData()
+    return () => {
+      ignore = true
+    }
   }, [user])
-
-  async function loadData() {
-    const { data: worker } = await supabase
-      .from('workers')
-      .select('*')
-      .eq('user_id', user.id)
-      .single()
-    setWorkerInfo(worker)
-
-    const { data: jobList } = await supabase
-      .from('jobs')
-      .select('*')
-      .eq('assigned_worker_id', user.id)
-      .order('created_at', { ascending: false })
-    setJobs(jobList || [])
-
-    const { data: ledger } = await supabase
-      .from('wage_ledger')
-      .select('*')
-      .eq('worker_id', user.id)
-      .order('created_at', { ascending: false })
-    setWageLedger(ledger || [])
-  }
 
   const totalNet = wageLedger.reduce((sum, w) => sum + (w.net_payout || 0), 0)
   const coOpDeduction = wageLedger.reduce((sum, w) => sum + (w.cooperative_fee_amount || 0), 0)
@@ -98,7 +105,7 @@ export default function WorkerDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Total Net Disbursed
+                  {t('totalNetDisbursed', 'Total Net Disbursed')}
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   ₹{totalNet.toLocaleString()}
@@ -112,11 +119,13 @@ export default function WorkerDashboard() {
               {totalNet > 0 ? (
                 <>
                   <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">↑ 12.5%</span>
-                  <span className={`font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Direct Bank/UPI</span>
+                  <span className={`font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    {t('directBankUpi', 'Direct Bank/UPI')}
+                  </span>
                 </>
               ) : (
                 <span className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-slate-400 font-medium">
-                  0 Payouts • Direct Bank/UPI
+                  0 {t('netTakeHome', 'Payouts')} • {t('directBankUpi', 'Direct Bank/UPI')}
                 </span>
               )}
             </div>
@@ -136,10 +145,10 @@ export default function WorkerDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Completed Service Tasks
+                  {t('completedServiceTasks', 'Completed Service Tasks')}
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  {completedJobsCount} Jobs
+                  {completedJobsCount} {t('jobsCount', 'Jobs')}
                 </div>
               </div>
               <div className="flow-icon-badge-orange shrink-0">
@@ -148,10 +157,10 @@ export default function WorkerDashboard() {
             </div>
             <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-[#ff7a00]">
               <span className="px-2 py-0.5 rounded-md bg-[#ff6b00]/10 border border-[#ff6b00]/20">
-                ★ {workerInfo?.rating || '5.0'} Rating
+                ★ {workerInfo?.rating || '5.0'} {t('rating', 'Rating')}
               </span>
               <span className={`font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                ({workerInfo?.total_ratings || 0} reviews)
+                ({workerInfo?.total_ratings || 0} {t('reviews', 'reviews')})
               </span>
             </div>
           </div>
@@ -170,7 +179,7 @@ export default function WorkerDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Cooperative Retention
+                  {t('cooperativeRetention', 'Cooperative Retention')}
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-[#ff7a00]' : 'text-orange-600'}`}>
                   ₹{coOpDeduction.toLocaleString()}
@@ -181,7 +190,9 @@ export default function WorkerDashboard() {
               </div>
             </div>
             <div className={`flex items-center gap-1.5 mt-2 text-xs font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              <span className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10">5% Statutory Max</span>
+              <span className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10">
+                {t('statutoryMax', '5% Statutory Max')}
+              </span>
             </div>
           </div>
           <div className="h-10 mt-2 -mx-2 -mb-2">
@@ -199,10 +210,10 @@ export default function WorkerDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Statutory Hourly Floor
+                  {t('statutoryHourlyFloor', 'Statutory Hourly Floor')}
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  ₹{workerInfo?.hourly_rate || 350}/hr
+                  ₹{workerInfo?.hourly_rate || 350}{t('perHour', '/hr')}
                 </div>
               </div>
               <div className="flow-icon-badge-emerald shrink-0">
@@ -210,7 +221,9 @@ export default function WorkerDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-emerald-400">
-              <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">✓ Verified Member</span>
+              <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">
+                ✓ {t('verifiedMember', 'Verified Member')}
+              </span>
             </div>
           </div>
           <div className="h-10 mt-2 -mx-2 -mb-2">
@@ -229,10 +242,10 @@ export default function WorkerDashboard() {
           <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <div>
               <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Net Payout & Fair Wage Velocity
+                {t('netPayoutVelocity', 'Net Payout & Fair Wage Velocity')}
               </h2>
               <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Transparent breakdown of gross billings vs 100% direct take-home pay
+                {t('netPayoutSub', 'Transparent breakdown of gross billings vs 100% direct take-home pay')}
               </p>
             </div>
 
@@ -241,10 +254,10 @@ export default function WorkerDashboard() {
               {/* Chart Types */}
               <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
                 {[
-                  { id: 'bar', label: '📊 Bar' },
-                  { id: 'line', label: '📈 Line' },
-                  { id: 'area', label: '🌊 Area' },
-                  { id: 'stacked', label: '⚡ Stacked' },
+                  { id: 'bar', label: t('bar', '📊 Bar') },
+                  { id: 'line', label: t('line', '📈 Line') },
+                  { id: 'area', label: t('area', '🌊 Area') },
+                  { id: 'stacked', label: t('stacked', '⚡ Stacked') },
                 ].map((tItem) => (
                   <button
                     key={tItem.id}
@@ -272,8 +285,8 @@ export default function WorkerDashboard() {
                     : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
                 }`}
               >
-                <option value="weekly">📅 Last 7 Days (Daily)</option>
-                <option value="monthly">📅 This Month (Weekly)</option>
+                <option value="weekly">{t('last7Days', '📅 Last 7 Days (Daily)')}</option>
+                <option value="monthly">{t('last4Weeks', '📅 This Month (Weekly)')}</option>
               </select>
             </div>
           </div>
@@ -287,17 +300,17 @@ export default function WorkerDashboard() {
                   📊
                 </div>
                 <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  No Earnings Activity Yet
+                  {t('noEarningsTitle', 'No Earnings Activity Yet')}
                 </h3>
                 <p className="text-xs text-slate-400 mt-1 max-w-sm">
-                  Once you accept and complete service bookings, your daily take-home earnings and statutory 5% co-op fee breakdown will be visualised here.
+                  {t('noEarningsSub', 'Once you accept and complete service bookings, your daily take-home earnings and statutory 5% co-op fee breakdown will be visualised here.')}
                 </p>
                 <Link
                   to="/worker/jobs"
                   className="mt-3.5 px-4 py-2 rounded-xl text-xs font-bold flow-btn-primary shadow-md inline-flex items-center gap-1.5"
                 >
                   <span>⚡</span>
-                  <span>View Open Job Requests →</span>
+                  <span>{t('viewOpenJobs', 'View Open Job Requests →')}</span>
                 </Link>
               </div>
             ) : (
@@ -308,12 +321,12 @@ export default function WorkerDashboard() {
                     <XAxis dataKey="date" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <Tooltip
-                      formatter={(val, name) => [`₹${val}`, name === 'gross' ? 'Gross Billed' : 'Net Take-Home']}
+                      formatter={(val, name) => [`₹${val}`, name === 'gross' ? t('grossBilled', 'Gross Billed') : t('netTakeHome', 'Net Take-Home')]}
                       contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
                     />
                     <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
-                    <Bar dataKey="gross" name="Gross Customer Tariff" fill={isDark ? '#334155' : '#cbd5e1'} radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="netPayout" name="Net Worker Payout (95%)" fill="#ff6b00" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="gross" name={t('grossCustomerTariff', 'Gross Customer Tariff')} fill={isDark ? '#334155' : '#cbd5e1'} radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="netPayout" name={t('netWorkerPayout', 'Net Worker Payout (95%)')} fill="#ff6b00" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 ) : chartType === 'line' ? (
                   <LineChart data={activeChartData}>
@@ -321,12 +334,12 @@ export default function WorkerDashboard() {
                     <XAxis dataKey="date" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <Tooltip
-                      formatter={(val, name) => [`₹${val}`, name === 'gross' ? 'Gross' : 'Net Payout']}
+                      formatter={(val, name) => [`₹${val}`, name === 'gross' ? t('grossBilled', 'Gross') : t('netTakeHome', 'Net Payout')]}
                       contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
                     />
                     <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
-                    <Line type="monotone" dataKey="gross" name="Gross Billed" stroke={isDark ? '#64748b' : '#94a3b8'} strokeWidth={2} dot={{ r: 4 }} />
-                    <Line type="monotone" dataKey="netPayout" name="Net Take-Home" stroke="#ff6b00" strokeWidth={3} dot={{ r: 5, fill: '#ff6b00' }} />
+                    <Line type="monotone" dataKey="gross" name={t('grossBilled', 'Gross Billed')} stroke={isDark ? '#64748b' : '#94a3b8'} strokeWidth={2} dot={{ r: 4 }} />
+                    <Line type="monotone" dataKey="netPayout" name={t('netTakeHome', 'Net Take-Home')} stroke="#ff6b00" strokeWidth={3} dot={{ r: 5, fill: '#ff6b00' }} />
                   </LineChart>
                 ) : chartType === 'area' ? (
                   <AreaChart data={activeChartData}>
@@ -340,7 +353,7 @@ export default function WorkerDashboard() {
                     <XAxis dataKey="date" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <Tooltip
-                      formatter={(val) => [`₹${val}`, 'Net Take-Home Payout']}
+                      formatter={(val) => [`₹${val}`, t('netTakeHome', 'Net Take-Home Payout')]}
                       contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
                     />
                     <Area type="monotone" dataKey="netPayout" stroke="#ff6b00" strokeWidth={3} fill="url(#areaGradWorker)" dot={{ r: 4, fill: '#ff7a00' }} />
@@ -351,12 +364,12 @@ export default function WorkerDashboard() {
                     <XAxis dataKey="date" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
                     <Tooltip
-                      formatter={(val, name) => [`₹${val}`, name === 'netPayout' ? 'Net Worker Payout' : '5% Co-op + Welfare Fund']}
+                      formatter={(val, name) => [`₹${val}`, name === 'netPayout' ? t('netWorkerPayout', 'Net Worker Payout') : t('coopRetentionDeduction', '5% Co-op + Welfare Fund')]}
                       contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
                     />
                     <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
-                    <Bar dataKey="netPayout" stackId="a" name="Net Direct Disbursed (95%)" fill="#ff6b00" radius={[0, 0, 4, 4]} />
-                    <Bar dataKey="deductions" stackId="a" name="Cooperative 5% + ₹10 Welfare" fill="#10b981" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="netPayout" stackId="a" name={t('netWorkerPayout', 'Net Direct Disbursed (95%)')} fill="#ff6b00" radius={[0, 0, 4, 4]} />
+                    <Bar dataKey="deductions" stackId="a" name={t('coopRetentionDeduction', 'Cooperative 5% + ₹10 Welfare')} fill="#10b981" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 )}
               </ResponsiveContainer>
@@ -369,10 +382,10 @@ export default function WorkerDashboard() {
           <div>
             <div className={`flex items-center justify-between border-b pb-3 mb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
               <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Current Job Queue
+                {t('currentJobQueue', 'Current Job Queue')}
               </h2>
               <Link to="/worker/jobs" className="text-xs text-[#ff7a00] hover:underline font-bold">
-                Manage All →
+                {t('manageAll', 'Manage All →')}
               </Link>
             </div>
 
@@ -388,7 +401,7 @@ export default function WorkerDashboard() {
                     <div className="flex justify-between items-start">
                       <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>{job.title}</span>
                       <span className="px-2 py-0.5 rounded-md bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 text-[10px] font-bold uppercase">
-                        {job.status}
+                        {t(job.status, job.status)}
                       </span>
                     </div>
                     <div className={`text-[11px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>📍 {job.address}</div>
@@ -401,10 +414,44 @@ export default function WorkerDashboard() {
               ) : (
                 <div className={`p-6 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
                   <div className="text-2xl mb-1 text-[#ff7a00]">⚡</div>
-                  <div className={`font-bold text-xs ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>Ready for Assignments</div>
-                  <p className="text-[11px] text-slate-500 mt-1">Geo-matching engine is active.</p>
+                  <div className={`font-bold text-xs ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                    {t('readyForAssignments', 'Ready for Assignments')}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    {t('geoMatchingActive', 'Geo-matching engine is active.')}
+                  </p>
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Learning & Upskilling Widget */}
+          <div className="flow-card glow-orange-hover p-5 space-y-3">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-base">🎓</span>
+                <h2 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  {t('skillUpskilling', 'Skill Upskilling')}
+                </h2>
+              </div>
+              <Link to="/worker/learning" className="text-xs text-[#ff7a00] font-bold hover:underline">
+                {t('courses', 'Courses →')}
+              </Link>
+            </div>
+            <div className={`p-3 rounded-xl border space-y-2 ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
+              <div className="flex justify-between items-center text-xs font-bold">
+                <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>
+                  {t('safetyProtocolAcademy', 'Safety & Protocol Academy')}
+                </span>
+                <span className="text-[#ff7a00]">75% {t('done', 'Done')}</span>
+              </div>
+              <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#ff6b00] to-amber-400 w-3/4"></div>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                <span>{t('badgesEarned', '🏆 2 Badges Earned')}</span>
+                <span className="text-emerald-400 font-bold">{t('matchPriority', '+15% Match Priority')}</span>
+              </div>
             </div>
           </div>
 
@@ -412,7 +459,7 @@ export default function WorkerDashboard() {
             to="/worker/welfare"
             className="flow-btn-primary block text-center py-2.5 text-xs font-bold uppercase tracking-wider shadow-md"
           >
-            PMSBY Welfare Active 🛡️
+            {t('pmsbyWelfareActive', 'PMSBY Welfare Active 🛡️')}
           </Link>
         </div>
       </div>

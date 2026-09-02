@@ -76,7 +76,7 @@ export default function LanguageModal({ isOpen, onClose }) {
         </div>
 
         {/* Language Grid with Official Names in Selection Boxes */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 overflow-y-auto pr-1 flex-1 max-h-80">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 overflow-y-auto pr-1 flex-1 max-h-80">
           {filtered.map((lang) => {
             const isSelected = language === lang.code
             return (

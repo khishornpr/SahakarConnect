@@ -2,19 +2,16 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
-import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import InvoiceModal from '../../components/InvoiceModal'
 import RatingModal from '../../components/RatingModal'
 
 export default function WorkerJobs() {
   const { user } = useAuth()
-  const { t } = useTranslation()
   const { isDark } = useTheme()
   const [assignedJobs, setAssignedJobs] = useState([])
   const [availableJobs, setAvailableJobs] = useState([])
   const [workerInfo, setWorkerInfo] = useState(null)
-  const [loading, setLoading] = useState(true)
   const [statusUpdating, setStatusUpdating] = useState(null)
 
   // OTP Verification Modal
@@ -25,12 +22,8 @@ export default function WorkerJobs() {
   const [viewInvoiceJob, setViewInvoiceJob] = useState(null)
   const [ratingCustomerJob, setRatingCustomerJob] = useState(null)
 
-  useEffect(() => {
-    if (user) loadJobs()
-  }, [user])
-
   async function loadJobs() {
-    setLoading(true)
+    if (!user) return
     const { data: worker } = await supabase.from('workers').select('*, profiles(*)').eq('user_id', user.id).single()
     setWorkerInfo(worker)
 
@@ -48,9 +41,39 @@ export default function WorkerJobs() {
       .eq('trade_category', worker?.primary_trade || 'Electrician')
       .order('created_at', { ascending: false })
     setAvailableJobs(openJobs || [])
-
-    setLoading(false)
   }
+
+  useEffect(() => {
+    let ignore = false
+    async function init() {
+      if (!user) return
+      const { data: worker } = await supabase.from('workers').select('*, profiles(*)').eq('user_id', user.id).single()
+      if (ignore) return
+      setWorkerInfo(worker)
+
+      const { data: myJobs } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('assigned_worker_id', user.id)
+        .order('created_at', { ascending: false })
+      if (ignore) return
+      setAssignedJobs(myJobs || [])
+
+      const { data: openJobs } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('status', 'requested')
+        .eq('trade_category', worker?.primary_trade || 'Electrician')
+        .order('created_at', { ascending: false })
+      if (!ignore) {
+        setAvailableJobs(openJobs || [])
+      }
+    }
+    init()
+    return () => {
+      ignore = true
+    }
+  }, [user])
 
   async function acceptJob(jobId) {
     setStatusUpdating(jobId)
@@ -306,7 +329,7 @@ export default function WorkerJobs() {
         createPortal(
           <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
             <div
-              className={`rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border my-auto ${
+              className={`rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border my-auto max-h-[90vh] overflow-y-auto ${
                 isDark
                   ? 'bg-[#12151b] border-white/[0.08] text-white shadow-[0_0_40px_rgba(0,0,0,0.8)]'
                   : 'bg-white border-slate-200 text-slate-900'
@@ -336,7 +359,7 @@ export default function WorkerJobs() {
               <form onSubmit={handleVerifyOtpAndComplete} className="space-y-4">
                 <div>
                   <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    4-Digit Customer Security OTP
+                    4-Digit Customer OTP
                   </label>
                   <input
                     type="text"
@@ -352,19 +375,19 @@ export default function WorkerJobs() {
                     required
                   />
                   <p className="text-[10px] text-slate-500 mt-1 text-center">
-                    Ask the household customer for the verification OTP displayed on their screen.
+                    Ask the customer for the 4-digit code shown on their booking page.
                   </p>
                 </div>
 
                 <div>
                   <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    Service Completion Notes
+                    Work Notes (Optional)
                   </label>
                   <textarea
                     value={completionNotes}
                     onChange={(e) => setCompletionNotes(e.target.value)}
                     rows={2}
-                    placeholder="e.g. MCB replaced and tested with clamp meter. Voltage stabilized."
+                    placeholder="e.g. Replaced switch and checked connections."
                     className={`w-full px-3 py-2 border rounded-xl text-xs ${
                       isDark
                         ? 'bg-[#161a22] border-white/[0.1] text-white'
@@ -375,11 +398,11 @@ export default function WorkerJobs() {
 
                 <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-300 space-y-1">
                   <div className="flex justify-between font-bold">
-                    <span>Gross Tariff: ₹{otpModalJob.final_amount || otpModalJob.estimated_amount}</span>
-                    <span>Net Payout: ₹{((otpModalJob.final_amount || otpModalJob.estimated_amount) * 0.95 - 10).toFixed(0)}</span>
+                    <span>Total Bill: ₹{otpModalJob.final_amount || otpModalJob.estimated_amount}</span>
+                    <span>Your Take-Home: ₹{((otpModalJob.final_amount || otpModalJob.estimated_amount) * 0.95 - 10).toFixed(0)}</span>
                   </div>
                   <div className="text-[10px] text-emerald-400/80">
-                    Cooperative 5% retention + ₹10 welfare fund automatically deducted.
+                    5% co-op fee + ₹10 welfare deduction.
                   </div>
                 </div>
 
@@ -387,7 +410,7 @@ export default function WorkerJobs() {
                   type="submit"
                   className="w-full py-3 flow-btn-primary text-xs font-black uppercase tracking-wider rounded-xl shadow transition-all"
                 >
-                  ✓ Verify OTP & Disburse Wage
+                  ✓ Complete Job & Receive Wage
                 </button>
               </form>
             </div>

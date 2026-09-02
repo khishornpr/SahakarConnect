@@ -41,6 +41,18 @@ export default function Login() {
       demoEmail: 'admin@delhicoop.in',
       hint: 'Meena Iyer (Co-op Officer)',
     },
+    manager: {
+      id: 'manager',
+      label: '👔 Manager',
+      demoEmail: 'manager.delhi@sahakar.in',
+      hint: 'Rajiv Deshmukh (Zonal Manager)',
+    },
+    officer: {
+      id: 'officer',
+      label: '⚖️ Labor Officer',
+      demoEmail: 'officer.delhi@gov.in',
+      hint: 'Sanjay Verma (Labor Officer)',
+    },
   }
 
   async function handleSubmit(e) {
@@ -148,14 +160,14 @@ export default function Login() {
       </header>
 
       {/* ----------------- MAIN VIEWPORT CONTENT ----------------- */}
-      <main className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-6 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         {/* Left Side: Welcome Typography & Cooperative Badges */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-6">
-          <div className="flex items-start gap-5">
-            <div className="w-2 h-28 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
+        <div className="lg:col-span-7 xl:col-span-7 space-y-5 sm:space-y-6">
+          <div className="flex items-start gap-4 sm:gap-5">
+            <div className="w-2 h-24 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
             <div>
               <h1
-                className={`text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
+                className={`text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
@@ -165,7 +177,7 @@ export default function Login() {
                 </strong>
               </h1>
               <p
-                className={`text-sm sm:text-base mt-4 max-w-md leading-relaxed ${
+                className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
@@ -176,33 +188,33 @@ export default function Login() {
           </div>
 
           {/* Quick Highlight Chips */}
-          <div className="flex flex-wrap gap-2.5 pt-2 pl-7">
+          <div className="flex flex-wrap gap-2 pt-1 pl-0 sm:pl-7">
             <span
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
                 isDark
                   ? 'bg-black/50 border-white/10 text-slate-200'
                   : 'bg-white/80 border-slate-300 text-slate-800 shadow-xs'
               }`}
             >
-              <span>⚡</span> {t('statutoryFairWageChip', '100% Statutory Fair Wage')}
+              <span>⚡</span> {t('statutoryFairWageChip', '100% Fair Wages')}
             </span>
             <span
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
                 isDark
                   ? 'bg-black/50 border-white/10 text-emerald-400'
                   : 'bg-white/80 border-slate-300 text-emerald-700 shadow-xs'
               }`}
             >
-              <span>🛡️</span> {t('societyWelfareFundChip', 'Society Welfare Fund')}
+              <span>🛡️</span> {t('societyWelfareFundChip', 'Worker Welfare & Safety')}
             </span>
             <span
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
                 isDark
                   ? 'bg-black/50 border-white/10 text-[#e5a65e]'
                   : 'bg-white/80 border-slate-300 text-orange-700 shadow-xs'
               }`}
             >
-              <span>📍</span> {t('aiGeoDispatchChip', 'AI Geo-Dispatch')}
+              <span>📍</span> {t('aiGeoDispatchChip', 'Fast Local Matching')}
             </span>
           </div>
         </div>
@@ -210,7 +222,7 @@ export default function Login() {
         {/* Right Side: Floating Glassmorphic Login Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-            className={`w-full max-w-[430px] border rounded-[32px] p-7 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
+            className={`w-full max-w-[430px] border rounded-[28px] sm:rounded-[32px] p-5 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
               isDark
                 ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
                 : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
@@ -239,7 +251,7 @@ export default function Login() {
 
             {/* Persona Switcher Tabs (Selects persona type without auto-login) */}
             <div
-              className={`mt-5 p-1 border rounded-2xl flex items-center justify-between gap-1 ${
+              className={`mt-5 p-1 border rounded-2xl grid grid-cols-3 sm:grid-cols-5 gap-1 ${
                 isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
               }`}
             >
@@ -250,7 +262,7 @@ export default function Login() {
                     key={p.id}
                     type="button"
                     onClick={() => handleSelectRoleTab(p.id)}
-                    className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
+                    className={`py-2 px-1.5 rounded-xl text-[10px] sm:text-[11px] font-bold transition-all cursor-pointer whitespace-nowrap text-center ${
                       isActive
                         ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
                         : isDark

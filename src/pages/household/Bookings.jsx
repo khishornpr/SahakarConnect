@@ -6,6 +6,7 @@ import { useTheme } from '../../context/ThemeContext'
 import { Link } from 'react-router-dom'
 import RatingModal from '../../components/RatingModal'
 import PaymentModal from '../../components/PaymentModal'
+import ReportIssueModal from '../../components/ReportIssueModal'
 
 export default function HouseholdBookings() {
   const { user } = useAuth()
@@ -15,12 +16,10 @@ export default function HouseholdBookings() {
   const [activeTab, setActiveTab] = useState('all')
   const [ratingModalJob, setRatingModalJob] = useState(null)
   const [paymentModalJob, setPaymentModalJob] = useState(null)
-
-  useEffect(() => {
-    if (user) loadBookings()
-  }, [user])
+  const [reportIssueModalJob, setReportIssueModalJob] = useState(null)
 
   async function loadBookings() {
+    if (!user) return
     const { data } = await supabase
       .from('jobs')
       .select('*')
@@ -28,6 +27,25 @@ export default function HouseholdBookings() {
       .order('created_at', { ascending: false })
     setBookings(data || [])
   }
+
+  useEffect(() => {
+    let ignore = false
+    async function init() {
+      if (!user) return
+      const { data } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('household_id', user.id)
+        .order('created_at', { ascending: false })
+      if (!ignore) {
+        setBookings(data || [])
+      }
+    }
+    init()
+    return () => {
+      ignore = true
+    }
+  }, [user])
 
   const filteredBookings = bookings.filter((b) => {
     if (activeTab === 'active') return ['requested', 'assigned', 'in_progress'].includes(b.status)
@@ -69,7 +87,7 @@ export default function HouseholdBookings() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div
             className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 border ${
@@ -77,16 +95,16 @@ export default function HouseholdBookings() {
             }`}
           >
             <span>⭐</span>
-            <span>{t('bookingsBannerBadge', 'SIH26089 Features 5 & 6 • Lifecycle Tracking & Digital Settlement')}</span>
+            <span>{t('bookingsBannerBadge', 'Service Tracking & Digital Pay')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            {t('serviceBookingsHeading', 'Service Bookings & Live Tracking')}
+            {t('serviceBookingsHeading', 'My Bookings')}
           </h1>
           <p className={`text-xs mt-1 max-w-3xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            {t('serviceBookingsSubheading', 'Monitor real-time lifecycle progression of your household service requests')}
+            {t('serviceBookingsSubheading', 'Track the status of your booked services in real-time')}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
           <div className={`flex p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
             {[
               { id: 'all', label: t('all', 'All') },
@@ -110,7 +128,7 @@ export default function HouseholdBookings() {
           </div>
           <Link
             to="/household/book"
-            className="flow-btn-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl shadow transition-all self-start sm:self-auto"
+            className="flow-btn-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl shadow transition-all ml-auto sm:ml-0"
           >
             {t('bookServiceBtn', '+ Book Service')}
           </Link>
@@ -123,7 +141,7 @@ export default function HouseholdBookings() {
           return (
             <div
               key={b.id}
-              className="flow-card glow-orange-hover p-6 space-y-4"
+              className="flow-card glow-orange-hover p-4 sm:p-6 space-y-4"
             >
               {/* Header Info */}
               <div className="flex flex-col md:flex-row justify-between md:items-center gap-3">
@@ -141,7 +159,7 @@ export default function HouseholdBookings() {
 
                 <div className="text-left md:text-right">
                   <span className="text-[10px] uppercase font-bold text-slate-500 block">
-                    {t('tariffAmountLabel', 'Tariff Amount')}
+                    {t('tariffAmountLabel', 'Total Cost')}
                   </span>
                   <span className={`text-lg font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     ₹{b.final_amount || b.estimated_amount}
@@ -149,12 +167,12 @@ export default function HouseholdBookings() {
                 </div>
               </div>
 
-              {/* Progress Stepper with Rich Neon Glow */}
+              {/* Progress Stepper */}
               <div className="pt-2">
-                <div className="grid grid-cols-4 gap-2 text-center text-[11px] font-bold">
+                <div className="grid grid-cols-4 gap-1.5 sm:gap-2 text-center text-[10px] sm:text-xs font-bold">
                   {[
                     { idx: 1, label: t('stepRequested', '1. Requested') },
-                    { idx: 2, label: t('stepAssigned', '2. Artisan Assigned') },
+                    { idx: 2, label: t('stepAssigned', '2. Assigned') },
                     { idx: 3, label: t('stepInProgress', '3. In Progress') },
                     { idx: 4, label: t('stepCompleted', '4. Completed') },
                   ].map((s) => {
@@ -192,17 +210,17 @@ export default function HouseholdBookings() {
 
               {/* OTP Banner (If assigned / in_progress) */}
               {['assigned', 'in_progress'].includes(b.status) && (
-                <div className="p-4 rounded-xl bg-gradient-to-r from-[#ff6b00]/15 via-[#ff6b00]/10 to-transparent border border-[#ff6b00]/40 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[#ff6b00]/15 via-[#ff6b00]/10 to-transparent border border-[#ff6b00]/40 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                   <div>
                     <div className="text-xs font-bold text-[#ff7a00] flex items-center gap-1.5">
                       <span>🔐</span>
-                      <span>Customer Verification OTP</span>
+                      <span>Completion OTP</span>
                     </div>
                     <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                      Share this 4-digit security code with the artisan only after the task is completed satisfactorily.
+                      Share this 4-digit code with the worker once the work is completed.
                     </p>
                   </div>
-                  <div className="px-4 py-2 rounded-xl bg-[#ff6b00] text-white font-mono font-black text-xl tracking-widest text-center shadow-[0_0_15px_rgba(255,107,0,0.5)] shrink-0">
+                  <div className="px-4 py-2 rounded-xl bg-[#ff6b00] text-white font-mono font-black text-xl tracking-widest text-center shadow-[0_0_15px_rgba(255,107,0,0.5)] shrink-0 self-start sm:self-auto">
                     {b.otp_code || '4829'}
                   </div>
                 </div>
@@ -225,7 +243,18 @@ export default function HouseholdBookings() {
                             : 'bg-amber-50 border-amber-300 text-amber-900'
                         }`}
                       >
-                        ★ Rate Artisan
+                        ★ Rate Worker
+                      </button>
+                      <button
+                        onClick={() => setReportIssueModalJob(b)}
+                        className={`px-3 py-1.5 rounded-xl font-bold border transition-all flex items-center gap-1 ${
+                          isDark
+                            ? 'bg-rose-950/40 border-rose-500/40 text-rose-300 hover:bg-rose-900/40'
+                            : 'bg-rose-50 border-rose-300 text-rose-900'
+                        }`}
+                      >
+                        <span>⚠️</span>
+                        <span>Report Issue</span>
                       </button>
                       <button
                         onClick={() => setPaymentModalJob(b)}
@@ -262,7 +291,7 @@ export default function HouseholdBookings() {
           job={ratingModalJob}
           currentUserRole="household"
           currentUserId={user.id}
-          targetUser={{ full_name: ratingModalJob.worker?.full_name || 'Cooperative Artisan' }}
+          targetUser={{ full_name: ratingModalJob.worker?.full_name || 'Cooperative Worker' }}
           onClose={() => setRatingModalJob(null)}
           onRatingSubmitted={() => loadBookings()}
         />
@@ -277,6 +306,17 @@ export default function HouseholdBookings() {
             setPaymentModalJob(null)
             loadBookings()
           }}
+        />
+      )}
+
+      {/* Report Issue Dispute Modal */}
+      {reportIssueModalJob && (
+        <ReportIssueModal
+          isOpen={!!reportIssueModalJob}
+          job={reportIssueModalJob}
+          currentUser={user}
+          onClose={() => setReportIssueModalJob(null)}
+          onSubmitted={() => loadBookings()}
         />
       )}
     </div>

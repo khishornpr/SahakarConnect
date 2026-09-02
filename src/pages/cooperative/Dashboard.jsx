@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
-import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { Link } from 'react-router-dom'
+import { TRADE_GROUPS } from '../../lib/serviceCategories'
 import {
   BarChart,
   Bar,
@@ -25,12 +25,10 @@ import {
 } from 'recharts'
 
 export default function CooperativeDashboard() {
-  const { t } = useTranslation()
   const { isDark } = useTheme()
-  const [workers, setWorkers] = useState([])
-  const [jobs, setJobs] = useState([])
   const [ledger, setLedger] = useState([])
-  const [loading, setLoading] = useState(true)
+
+
 
   // Interactive Chart 1 Controls (Revenue Overview)
   const [revenueChartType, setRevenueChartType] = useState('bar') // 'bar', 'line', 'area', 'composed'
@@ -44,20 +42,18 @@ export default function CooperativeDashboard() {
   const [cashFlowMetric, setCashFlowMetric] = useState('net') // 'net', 'gross', 'coop'
 
   useEffect(() => {
+    let ignore = false
+    async function loadFederationData() {
+      const { data: lList } = await supabase.from('wage_ledger').select('*')
+      if (!ignore) {
+        setLedger(lList || [])
+      }
+    }
     loadFederationData()
+    return () => {
+      ignore = true
+    }
   }, [])
-
-  async function loadFederationData() {
-    setLoading(true)
-    const { data: wList } = await supabase.from('workers').select('*, profiles(*)')
-    const { data: jList } = await supabase.from('jobs').select('*')
-    const { data: lList } = await supabase.from('wage_ledger').select('*')
-
-    setWorkers(wList || [])
-    setJobs(jList || [])
-    setLedger(lList || [])
-    setLoading(false)
-  }
 
   const totalGrossVolume = ledger.reduce((acc, row) => acc + (row.gross_amount || 0), 48750.5)
   const totalNetWagesPaid = ledger.reduce((acc, row) => acc + (row.net_payout || 0), 23685.2)
@@ -98,14 +94,37 @@ export default function CooperativeDashboard() {
       ? quarterlyData
       : fullYearData
 
-  // Trade / Expense Breakdown Donut Data
-  const expenseData = [
-    { name: 'Electrical Works', value: 3200, percentage: '25.9%', fill: '#ff6b00', color: '#ff6b00' },
-    { name: 'Plumbing & Drainage', value: 2850, percentage: '23.1%', fill: '#fb923c', color: '#fb923c' },
-    { name: 'Carpentry & Woodwork', value: 2450, percentage: '19.8%', fill: '#ea580c', color: '#ea580c' },
-    { name: 'Cleaning & Housekeeping', value: 2100, percentage: '17.0%', fill: '#c2410c', color: '#c2410c' },
-    { name: 'Other Trade Services', value: 1747, percentage: '14.2%', fill: '#7c2d12', color: '#7c2d12' },
-  ]
+  // Service Trade Sector Distribution Data
+  const groupColors = {
+    'Repair & maintenance trades': '#ff6b00',
+    'Cleaning & housekeeping': '#fb923c',
+    'Domestic works': '#e11d48',
+    'Care & household support': '#ea580c',
+    'Outdoor & occasional': '#c2410c',
+  }
+
+  const tradeSectorTotals = {
+    'Repair & maintenance trades': 4850,
+    'Cleaning & housekeeping': 2840,
+    'Domestic works': 3120,
+    'Care & household support': 2280,
+    'Outdoor & occasional': 1577,
+  }
+
+  const totalExpenseVal = Object.values(tradeSectorTotals).reduce((a, b) => a + b, 0)
+
+  const expenseData = TRADE_GROUPS.map((groupName) => {
+    const val = tradeSectorTotals[groupName] || 1500
+    const pct = ((val / totalExpenseVal) * 100).toFixed(1) + '%'
+    return {
+      name: groupName,
+      value: val,
+      percentage: pct,
+      fill: groupColors[groupName] || '#ff6b00',
+      color: groupColors[groupName] || '#ff6b00',
+    }
+  })
+
 
   // Cash Flow Trend Area Data with multiple selectable metrics
   const cashFlowData = [
@@ -664,7 +683,7 @@ export default function CooperativeDashboard() {
                 <div className="bg-emerald-500 h-full rounded-full shadow-[0_0_8px_#10b981]" style={{ width: '94%' }}></div>
               </div>
               <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>32/34 Artisans Enrolled</span>
+                <span>32/34 Workers Enrolled</span>
                 <span>Goal: 100%</span>
               </div>
             </div>

@@ -4,15 +4,8 @@ import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { Link } from 'react-router-dom'
+import { POPULAR_SERVICES, TRADE_GROUPS } from '../../lib/serviceCategories'
 
-const POPULAR_SERVICES = [
-  { trade: 'Electrician', icon: '⚡', descKey: 'Wiring & Power', rate: '₹350/hr' },
-  { trade: 'Plumber', icon: '🚰', descKey: 'Tanks & Leaks', rate: '₹350/hr' },
-  { trade: 'Carpenter', icon: '🪚', descKey: 'Furniture Repair', rate: '₹400/hr' },
-  { trade: 'Cleaner', icon: '✨', descKey: 'Deep Sanitization', rate: '₹280/hr' },
-  { trade: 'Domestic Helper', icon: '🧹', descKey: 'Housekeeping', rate: '₹300/hr' },
-  { trade: 'Painter', icon: '🎨', descKey: 'Wall Coating', rate: '₹380/hr' },
-]
 
 export default function HouseholdDashboard() {
   const { user, profile } = useAuth()
@@ -20,22 +13,34 @@ export default function HouseholdDashboard() {
   const { isDark } = useTheme()
   const [activeBookings, setActiveBookings] = useState([])
   const [pastBookings, setPastBookings] = useState([])
+  const [selectedGroup, setSelectedGroup] = useState('All')
+
+  const displayedServices =
+    selectedGroup === 'All'
+      ? POPULAR_SERVICES
+      : POPULAR_SERVICES.filter((s) => s.group === selectedGroup)
 
   useEffect(() => {
-    if (user) loadBookings()
+    let ignore = false
+    async function loadBookings() {
+      if (!user) return
+      const { data } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('household_id', user.id)
+        .order('created_at', { ascending: false })
+
+      const list = data || []
+      if (!ignore) {
+        setActiveBookings(list.filter((j) => ['requested', 'assigned', 'in_progress'].includes(j.status)))
+        setPastBookings(list.filter((j) => j.status === 'completed'))
+      }
+    }
+    loadBookings()
+    return () => {
+      ignore = true
+    }
   }, [user])
-
-  async function loadBookings() {
-    const { data } = await supabase
-      .from('jobs')
-      .select('*')
-      .eq('household_id', user.id)
-      .order('created_at', { ascending: false })
-
-    const list = data || []
-    setActiveBookings(list.filter((j) => ['requested', 'assigned', 'in_progress'].includes(j.status)))
-    setPastBookings(list.filter((j) => j.status === 'completed'))
-  }
 
   return (
     <div className="space-y-6">
@@ -76,16 +81,44 @@ export default function HouseholdDashboard() {
       </div>
 
       {/* Quick Service Categories Grid */}
-      <div>
-        <div className="flex items-center justify-between mb-3.5">
-          <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Cooperative Service Categories
-          </h2>
-          <span className="text-xs text-[#ff7a00] font-bold">Standardized Non-Exploitative Tariffs</span>
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div>
+            <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              {t('coopServiceCategories', 'Cooperative Service Categories')} ({POPULAR_SERVICES.length})
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              {t('standardTariffSub', 'Standardized Non-Exploitative Hourly Tariffs • 100% Cooperative Direct')}
+            </p>
+          </div>
+
+          {/* Group Filter Tabs */}
+          <div className={`flex flex-wrap items-center gap-1.5 p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            {['All', ...TRADE_GROUPS].map((group) => {
+              const isSelected = (selectedGroup || 'All') === group
+              const label = group === 'All' ? t('allTrades', 'All Trades') : group.split(' ')[0]
+              return (
+                <button
+                  key={group}
+                  type="button"
+                  onClick={() => setSelectedGroup(group)}
+                  className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                    isSelected
+                      ? 'flow-btn-primary shadow-sm'
+                      : isDark
+                      ? 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {POPULAR_SERVICES.map((s) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
+          {displayedServices.map((s) => (
             <Link
               key={s.trade}
               to={`/household/book?trade=${encodeURIComponent(s.trade)}`}
@@ -104,11 +137,12 @@ export default function HouseholdDashboard() {
               >
                 {s.icon}
               </div>
-              <div className="mt-3">
+              <div className="mt-3 w-full">
                 <div
-                  className={`text-xs font-bold group-hover:text-[#ff7a00] transition-colors ${
+                  className={`text-xs font-bold truncate group-hover:text-[#ff7a00] transition-colors ${
                     isDark ? 'text-slate-100' : 'text-slate-900'
                   }`}
+                  title={s.trade}
                 >
                   {t(s.trade, s.trade)}
                 </div>
@@ -162,16 +196,16 @@ export default function HouseholdDashboard() {
                   </span>
                 </div>
                 <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
-                  <span>Craftsperson: <strong className="text-emerald-400 font-bold">{b.worker?.full_name || 'Matching nearest artisan...'}</strong></span>
+                  <span>{t('assignedWorker', 'Assigned Worker')}: <strong className="text-emerald-400 font-bold">{b.worker?.full_name || t('matchingNearestWorker', 'Matching nearest worker...')}</strong></span>
                   <span className={`font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{b.estimated_amount}</span>
                 </div>
               </div>
             ))}
             {activeBookings.length === 0 && (
               <div className={`p-8 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
-                <p className="text-xs font-semibold">No active bookings right now.</p>
+                <p className="text-xs font-semibold">{t('noActiveBookings', 'No active bookings right now.')}</p>
                 <Link to="/household/book" className="text-xs text-[#ff7a00] font-bold mt-1 inline-block">
-                  + Schedule a cooperative artisan
+                  + {t('scheduleCoopWorker', 'Schedule a cooperative worker')}
                 </Link>
               </div>
             )}
