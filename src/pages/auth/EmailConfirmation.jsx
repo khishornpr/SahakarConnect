@@ -144,12 +144,13 @@ export default function EmailConfirmation() {
       </div>
 
       {/* Top Floating Controls */}
-      <div className="fixed top-5 right-5 z-20 flex items-center gap-3">
+      <div className="fixed top-3.5 right-3.5 sm:top-5 sm:right-5 z-20 flex items-center gap-1.5 sm:gap-3">
         <LanguageToggle />
         <button
           onClick={toggleTheme}
           type="button"
-          className="p-2.5 rounded-xl border border-white/10 bg-slate-900/80 text-amber-400 shadow-lg backdrop-blur-md hover:scale-105 transition-all"
+          aria-label="Toggle Dark and Light Mode"
+          className="p-2 sm:p-2.5 rounded-xl border border-white/10 bg-slate-900/80 text-amber-400 shadow-lg backdrop-blur-md hover:scale-105 transition-all cursor-pointer"
         >
           {isDark ? '☀️' : '🌙'}
         </button>

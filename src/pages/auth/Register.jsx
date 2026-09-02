@@ -119,34 +119,35 @@ export default function Register() {
       </div>
 
       {/* ----------------- TOP NAVBAR ----------------- */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-6 sm:pt-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-3.5 sm:px-10 pt-4 sm:pt-8 flex items-center justify-between gap-2 sm:gap-4">
+        {/* Brand Emblem */}
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div
-            className={`w-10 h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all ${
+            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all shrink-0 ${
               isDark
                 ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_20px_rgba(229,166,94,0.3)]'
                 : 'bg-white/90 border-slate-300 text-[#d8964d]'
             }`}
           >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
             </svg>
           </div>
-          <div>
+          <div className="min-w-0">
             <span
-              className={`text-xs font-black tracking-[0.25em] uppercase drop-shadow-sm block ${
+              className={`text-[11px] sm:text-xs font-black tracking-[0.15em] sm:tracking-[0.25em] uppercase drop-shadow-sm block truncate ${
                 isDark ? 'text-white' : 'text-slate-900'
               }`}
             >
               SAHAKARCONNECT
             </span>
-            <span className={`text-[10px] block font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+            <span className={`text-[9px] sm:text-[10px] hidden sm:block font-medium truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
               SIH26089 • Cooperative Registration
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <ThemeToggle />
           <LanguageToggle />
         </div>

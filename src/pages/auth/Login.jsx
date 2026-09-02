@@ -37,7 +37,7 @@ export default function Login() {
     },
     cooperative: {
       id: 'cooperative',
-      label: `🏛️ ${t('adminRole', 'Admin')}`,
+      label: `🏛️ ${t('coopAdminRole', 'Co-op Admin')}`,
       demoEmail: 'admin@delhicoop.in',
       hint: 'Meena Iyer (Co-op Officer)',
     },
@@ -128,11 +128,10 @@ export default function Login() {
         {/* Brand Emblem */}
         <div className="flex items-center gap-3">
           <div
-            className={`w-10 h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all ${
-              isDark
-                ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_20px_rgba(229,166,94,0.3)]'
-                : 'bg-white/90 border-slate-300 text-[#d8964d]'
-            }`}
+            className={`w-10 h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all ${isDark
+              ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_20px_rgba(229,166,94,0.3)]'
+              : 'bg-white/90 border-slate-300 text-[#d8964d]'
+              }`}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
@@ -140,9 +139,8 @@ export default function Login() {
           </div>
           <div>
             <span
-              className={`text-xs font-black tracking-[0.25em] uppercase drop-shadow-sm block ${
-                isDark ? 'text-white' : 'text-slate-900'
-              }`}
+              className={`text-xs font-black tracking-[0.25em] uppercase drop-shadow-sm block ${isDark ? 'text-white' : 'text-slate-900'
+                }`}
             >
               {t('brandTitle', 'SAHAKARCONNECT')}
             </span>
@@ -167,9 +165,8 @@ export default function Login() {
             <div className="w-2 h-24 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
             <div>
               <h1
-                className={`text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
-                  isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
-                }`}
+                className={`text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
+                  }`}
               >
                 {t('welcome', 'Welcome')}<br />
                 <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>
@@ -177,9 +174,8 @@ export default function Login() {
                 </strong>
               </h1>
               <p
-                className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
-                  isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
-                }`}
+                className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
+                  }`}
               >
                 {t('loginHeroGreeting', 'Glad to see you again.')}<br />
                 {t('loginHeroSub', "Let's continue where you left off.")}
@@ -190,29 +186,26 @@ export default function Login() {
           {/* Quick Highlight Chips */}
           <div className="flex flex-wrap gap-2 pt-1 pl-0 sm:pl-7">
             <span
-              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
-                isDark
-                  ? 'bg-black/50 border-white/10 text-slate-200'
-                  : 'bg-white/80 border-slate-300 text-slate-800 shadow-xs'
-              }`}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${isDark
+                ? 'bg-black/50 border-white/10 text-slate-200'
+                : 'bg-white/80 border-slate-300 text-slate-800 shadow-xs'
+                }`}
             >
               <span>⚡</span> {t('statutoryFairWageChip', '100% Fair Wages')}
             </span>
             <span
-              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
-                isDark
-                  ? 'bg-black/50 border-white/10 text-emerald-400'
-                  : 'bg-white/80 border-slate-300 text-emerald-700 shadow-xs'
-              }`}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${isDark
+                ? 'bg-black/50 border-white/10 text-emerald-400'
+                : 'bg-white/80 border-slate-300 text-emerald-700 shadow-xs'
+                }`}
             >
               <span>🛡️</span> {t('societyWelfareFundChip', 'Worker Welfare & Safety')}
             </span>
             <span
-              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
-                isDark
-                  ? 'bg-black/50 border-white/10 text-[#e5a65e]'
-                  : 'bg-white/80 border-slate-300 text-orange-700 shadow-xs'
-              }`}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${isDark
+                ? 'bg-black/50 border-white/10 text-[#e5a65e]'
+                : 'bg-white/80 border-slate-300 text-orange-700 shadow-xs'
+                }`}
             >
               <span>📍</span> {t('aiGeoDispatchChip', 'Fast Local Matching')}
             </span>
@@ -222,19 +215,17 @@ export default function Login() {
         {/* Right Side: Floating Glassmorphic Login Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-            className={`w-full max-w-[430px] border rounded-[28px] sm:rounded-[32px] p-5 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
-              isDark
-                ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
-                : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
-            }`}
+            className={`w-full max-w-[470px] border rounded-[28px] sm:rounded-[32px] p-6 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${isDark
+              ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
+              : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
+              }`}
           >
             {/* Hexagonal Gold Emblem Badge */}
             <div
-              className={`w-14 h-14 rounded-2xl border flex items-center justify-center mx-auto mb-4 transition-all ${
-                isDark
-                  ? 'bg-[#1e232e] border-white/[0.08] text-[#e5a65e] shadow-[0_0_25px_rgba(229,166,94,0.25)]'
-                  : 'bg-orange-50 border-orange-200 text-[#d8964d] shadow-sm'
-              }`}
+              className={`w-14 h-14 rounded-2xl border flex items-center justify-center mx-auto mb-4 transition-all ${isDark
+                ? 'bg-[#1e232e] border-white/[0.08] text-[#e5a65e] shadow-[0_0_25px_rgba(229,166,94,0.25)]'
+                : 'bg-orange-50 border-orange-200 text-[#d8964d] shadow-sm'
+                }`}
             >
               <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
@@ -249,55 +240,103 @@ export default function Login() {
               {t('loginSubtitle', 'Select your persona and enter credentials to continue')}
             </p>
 
-            {/* Persona Switcher Tabs (Selects persona type without auto-login) */}
-            <div
-              className={`mt-5 p-1 border rounded-2xl grid grid-cols-3 sm:grid-cols-5 gap-1 ${
-                isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
-              }`}
-            >
-              {Object.values(ROLE_CONFIGS).map((p) => {
-                const isActive = selectedRole === p.id
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => handleSelectRoleTab(p.id)}
-                    className={`py-2 px-1.5 rounded-xl text-[10px] sm:text-[11px] font-bold transition-all cursor-pointer whitespace-nowrap text-center ${
-                      isActive
+            {/* Persona Switcher Tabs (Structured 2-row layout with zero truncation) */}
+            <div className="mt-5 space-y-1.5">
+              <div
+                className={`p-1 border rounded-2xl grid grid-cols-3 gap-1 ${isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
+                  }`}
+              >
+                {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative].map((p) => {
+                  const isActive = selectedRole === p.id
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => handleSelectRoleTab(p.id)}
+                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${isActive
                         ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
                         : isDark
-                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                    }`}
-                  >
-                    <span className="block truncate">{p.label}</span>
-                  </button>
-                )
-              })}
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                        }`}
+                    >
+                      <span>{p.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div
+                className={`p-1 border rounded-2xl grid grid-cols-2 gap-1 ${isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
+                  }`}
+              >
+                {[ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {
+                  const isActive = selectedRole === p.id
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => handleSelectRoleTab(p.id)}
+                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${isActive
+                        ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
+                        : isDark
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                        }`}
+                    >
+                      <span>{p.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
-            {/* Demo Credential Quick-Fill Helper Chip */}
-            <div className="mt-3 flex items-center justify-between text-[11px] px-1">
-              <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                Demo Account: <strong className={isDark ? 'text-slate-200' : 'text-slate-700'}>{ROLE_CONFIGS[selectedRole]?.hint}</strong>
-              </span>
+            {/* Premium Demo Credential Auto-Fill Card */}
+            <div
+              className={`mt-4 p-3 rounded-2xl border flex items-center justify-between gap-3 transition-all ${isDark
+                ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
+                : 'bg-orange-50/70 border-orange-200/80 shadow-xs'
+                }`}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 border ${isDark
+                    ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
+                    : 'bg-white border-orange-200 text-orange-600'
+                    }`}
+                >
+                  ⚡
+                </div>
+                <div className="min-w-0">
+                  <div className={`text-[11px] font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    {ROLE_CONFIGS[selectedRole]?.hint}
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono truncate">
+                    {ROLE_CONFIGS[selectedRole]?.demoEmail}
+                  </div>
+                </div>
+              </div>
+
               <button
                 type="button"
                 onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
-                className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline transition-colors cursor-pointer"
+                className={`px-3 py-1.5 rounded-xl text-[11px] font-bold shrink-0 transition-all border cursor-pointer ${isDark
+                  ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25 shadow-sm'
+                  : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
+                  }`}
               >
-                Fill demo details ⚡
+                Auto-Fill ⚡
               </button>
             </div>
+
 
             {/* Error Message & Email Unconfirmed Banner */}
             {error && (
               <div
-                className={`mt-4 border text-xs p-3.5 rounded-2xl shadow-lg transition-all ${
-                  isUnconfirmed
-                    ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
-                    : 'bg-rose-950/80 border-rose-500/50 text-rose-200 shadow-[0_0_12px_rgba(244,63,94,0.3)]'
-                }`}
+                className={`mt-4 border text-xs p-3.5 rounded-2xl shadow-lg transition-all ${isUnconfirmed
+                  ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
+                  : 'bg-rose-950/80 border-rose-500/50 text-rose-200 shadow-[0_0_12px_rgba(244,63,94,0.3)]'
+                  }`}
               >
                 <div className="flex items-start gap-2.5">
                   <span className="text-base leading-none">{isUnconfirmed ? '✉️' : '⚠️'}</span>
@@ -343,11 +382,10 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={ROLE_CONFIGS[selectedRole]?.demoEmail || 'you@example.com'}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
-                      isDark
-                        ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
-                        : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
-                    }`}
+                    className={`w-full pl-10 pr-4 py-3 border rounded-xl text-xs focus:outline-none transition-all ${isDark
+                      ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
+                      : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
+                      }`}
                     required
                   />
                 </div>
@@ -369,20 +407,18 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter password"
-                    className={`w-full pl-10 pr-11 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
-                      isDark
-                        ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
-                        : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
-                    }`}
+                    className={`w-full pl-10 pr-11 py-3 border rounded-xl text-xs focus:outline-none transition-all ${isDark
+                      ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
+                      : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
+                      }`}
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center ${
-                      isDark ? 'text-slate-400 hover:text-[#e5a65e]' : 'text-slate-500 hover:text-[#d8964d]'
-                    }`}
+                    className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center ${isDark ? 'text-slate-400 hover:text-[#e5a65e]' : 'text-slate-500 hover:text-[#d8964d]'
+                      }`}
                   >
                     {showPassword ? (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
