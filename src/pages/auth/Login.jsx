@@ -215,18 +215,11 @@ export default function Login() {
         {/* Right Side: Floating Glassmorphic Login Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-<<<<<<< HEAD
-            className={`w-full max-w-[470px] border rounded-[28px] sm:rounded-[32px] p-6 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${isDark
-              ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
-              : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
-              }`}
-=======
             className={`w-full max-w-[470px] border rounded-[28px] sm:rounded-[32px] p-6 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
               isDark
                 ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
                 : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
             }`}
->>>>>>> ca3b365bb3e072719ebbfaac3fceb8fcc6faf7d6
           >
             {/* Hexagonal Gold Emblem Badge */}
             <div
@@ -251,14 +244,9 @@ export default function Login() {
             {/* Persona Switcher Tabs (Structured 2-row layout with zero truncation) */}
             <div className="mt-5 space-y-1.5">
               <div
-<<<<<<< HEAD
-                className={`p-1 border rounded-2xl grid grid-cols-3 gap-1 ${isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
-                  }`}
-=======
                 className={`p-1 border rounded-2xl grid grid-cols-3 gap-1 ${
                   isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                 }`}
->>>>>>> ca3b365bb3e072719ebbfaac3fceb8fcc6faf7d6
               >
                 {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative].map((p) => {
                   const isActive = selectedRole === p.id
@@ -267,14 +255,6 @@ export default function Login() {
                       key={p.id}
                       type="button"
                       onClick={() => handleSelectRoleTab(p.id)}
-<<<<<<< HEAD
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${isActive
-                        ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
-                        : isDark
-                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                        }`}
-=======
                       className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                         isActive
                           ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
@@ -282,7 +262,6 @@ export default function Login() {
                           ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
                           : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                       }`}
->>>>>>> ca3b365bb3e072719ebbfaac3fceb8fcc6faf7d6
                     >
                       <span>{p.label}</span>
                     </button>
@@ -291,14 +270,9 @@ export default function Login() {
               </div>
 
               <div
-<<<<<<< HEAD
-                className={`p-1 border rounded-2xl grid grid-cols-2 gap-1 ${isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
-                  }`}
-=======
                 className={`p-1 border rounded-2xl grid grid-cols-2 gap-1 ${
                   isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                 }`}
->>>>>>> ca3b365bb3e072719ebbfaac3fceb8fcc6faf7d6
               >
                 {[ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {
                   const isActive = selectedRole === p.id
@@ -307,14 +281,6 @@ export default function Login() {
                       key={p.id}
                       type="button"
                       onClick={() => handleSelectRoleTab(p.id)}
-<<<<<<< HEAD
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${isActive
-                        ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
-                        : isDark
-                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                        }`}
-=======
                       className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                         isActive
                           ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
@@ -322,7 +288,6 @@ export default function Login() {
                           ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
                           : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                       }`}
->>>>>>> ca3b365bb3e072719ebbfaac3fceb8fcc6faf7d6
                     >
                       <span>{p.label}</span>
                     </button>
@@ -333,19 +298,6 @@ export default function Login() {
 
             {/* Premium Demo Credential Auto-Fill Card */}
             <div
-<<<<<<< HEAD
-              className={`mt-4 p-3 rounded-2xl border flex items-center justify-between gap-3 transition-all ${isDark
-                ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
-                : 'bg-orange-50/70 border-orange-200/80 shadow-xs'
-                }`}
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 border ${isDark
-                    ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
-                    : 'bg-white border-orange-200 text-orange-600'
-                    }`}
-=======
               className={`mt-4 p-3 rounded-2xl border flex items-center justify-between gap-3 transition-all ${
                 isDark
                   ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
@@ -359,7 +311,6 @@ export default function Login() {
                       ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
                       : 'bg-white border-orange-200 text-orange-600'
                   }`}
->>>>>>> ca3b365bb3e072719ebbfaac3fceb8fcc6faf7d6
                 >
                   ⚡
                 </div>
@@ -376,18 +327,11 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
-<<<<<<< HEAD
-                className={`px-3 py-1.5 rounded-xl text-[11px] font-bold shrink-0 transition-all border cursor-pointer ${isDark
-                  ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25 shadow-sm'
-                  : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
-                  }`}
-=======
                 className={`px-3 py-1.5 rounded-xl text-[11px] font-bold shrink-0 transition-all border cursor-pointer ${
                   isDark
                     ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25 shadow-sm'
                     : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
                 }`}
->>>>>>> ca3b365bb3e072719ebbfaac3fceb8fcc6faf7d6
               >
                 Auto-Fill ⚡
               </button>
