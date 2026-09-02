@@ -1,0 +1,229 @@
+import { useState, useEffect } from 'react'
+import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from '../../context/I18nContext'
+import { useTheme } from '../../context/ThemeContext'
+import { Link } from 'react-router-dom'
+
+const POPULAR_SERVICES = [
+  { trade: 'Electrician', icon: '⚡', descKey: 'Wiring & Power', rate: '₹350/hr' },
+  { trade: 'Plumber', icon: '🚰', descKey: 'Tanks & Leaks', rate: '₹350/hr' },
+  { trade: 'Carpenter', icon: '🪚', descKey: 'Furniture Repair', rate: '₹400/hr' },
+  { trade: 'Cleaner', icon: '✨', descKey: 'Deep Sanitization', rate: '₹280/hr' },
+  { trade: 'Domestic Helper', icon: '🧹', descKey: 'Housekeeping', rate: '₹300/hr' },
+  { trade: 'Painter', icon: '🎨', descKey: 'Wall Coating', rate: '₹380/hr' },
+]
+
+export default function HouseholdDashboard() {
+  const { user, profile } = useAuth()
+  const { t } = useTranslation()
+  const { isDark } = useTheme()
+  const [activeBookings, setActiveBookings] = useState([])
+  const [pastBookings, setPastBookings] = useState([])
+
+  useEffect(() => {
+    if (user) loadBookings()
+  }, [user])
+
+  async function loadBookings() {
+    const { data } = await supabase
+      .from('jobs')
+      .select('*')
+      .eq('household_id', user.id)
+      .order('created_at', { ascending: false })
+
+    const list = data || []
+    setActiveBookings(list.filter((j) => ['requested', 'assigned', 'in_progress'].includes(j.status)))
+    setPastBookings(list.filter((j) => j.status === 'completed'))
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* FlowBoard Welcome Banner */}
+      <div
+        className={`p-6 sm:p-8 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden transition-all glow-orange-hover border ${
+          isDark
+            ? 'bg-gradient-to-r from-[#141822] via-[#10131a] to-[#141822] border-white/[0.08] text-white shadow-xl'
+            : 'bg-white border-slate-200 text-slate-900 shadow-sm'
+        }`}
+      >
+        <div className="relative z-10 space-y-2">
+          <div
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+              isDark
+                ? 'bg-[#ff6b00]/15 border border-[#ff6b00]/30 text-[#ff7a00]'
+                : 'bg-orange-50 border border-orange-200 text-orange-800'
+            }`}
+          >
+            <span>🏡</span>
+            <span>Verified Cooperative Household Portal</span>
+          </div>
+          <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            {t('welcomeBack', 'Welcome back')}, {profile?.full_name}
+          </h1>
+          <p className={`text-xs sm:text-sm max-w-xl leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            {t('householdTagline', 'Book verified cooperative craftspeople with guaranteed fair statutory rates & worker social security.')}
+          </p>
+        </div>
+
+        <Link
+          to="/household/book"
+          className="flow-btn-primary px-6 py-3.5 text-xs font-black uppercase tracking-wider self-start md:self-auto flex items-center gap-2 shrink-0 shadow-lg"
+        >
+          <span>✨ Book Verified Service</span>
+          <span>→</span>
+        </Link>
+      </div>
+
+      {/* Quick Service Categories Grid */}
+      <div>
+        <div className="flex items-center justify-between mb-3.5">
+          <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            Cooperative Service Categories
+          </h2>
+          <span className="text-xs text-[#ff7a00] font-bold">Standardized Non-Exploitative Tariffs</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {POPULAR_SERVICES.map((s) => (
+            <Link
+              key={s.trade}
+              to={`/household/book?trade=${encodeURIComponent(s.trade)}`}
+              className={`p-4 rounded-2xl text-center group flex flex-col items-center justify-between transition-all duration-300 border glow-orange-hover ${
+                isDark
+                  ? 'bg-[#12151b] border-white/[0.08] text-white hover:border-[#ff6b00] shadow-md'
+                  : 'bg-white border-slate-200 text-slate-900 hover:border-[#ff6b00] shadow-sm'
+              }`}
+            >
+              <div
+                className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-all border ${
+                  isDark
+                    ? 'bg-[#181d26] border-white/[0.08] text-[#ff7a00] group-hover:border-[#ff6b00]'
+                    : 'bg-orange-50 border-orange-100 text-[#ff7a00]'
+                }`}
+              >
+                {s.icon}
+              </div>
+              <div className="mt-3">
+                <div
+                  className={`text-xs font-bold group-hover:text-[#ff7a00] transition-colors ${
+                    isDark ? 'text-slate-100' : 'text-slate-900'
+                  }`}
+                >
+                  {t(s.trade, s.trade)}
+                </div>
+                <div
+                  className={`text-[10px] font-mono font-bold mt-1 px-2.5 py-0.5 rounded-lg border ${
+                    isDark
+                      ? 'bg-black/50 text-emerald-400 border-emerald-500/30'
+                      : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                  }`}
+                >
+                  {s.rate}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Active Service Requests vs Past Invoices */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Active Bookings Pane */}
+        <div className="flow-card glow-orange-hover p-6 space-y-4">
+          <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
+            <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              Active Service Bookings ({activeBookings.length})
+            </h2>
+            <Link to="/household/bookings" className="text-xs text-[#ff7a00] hover:underline font-bold">
+              View All →
+            </Link>
+          </div>
+
+          <div className="space-y-3">
+            {activeBookings.map((b) => (
+              <div
+                key={b.id}
+                className={`p-4 rounded-xl text-xs space-y-2 border transition-all hover:border-[#ff6b00] ${
+                  isDark
+                    ? 'bg-[#161a22] border-white/[0.06] text-slate-200'
+                    : 'bg-slate-50 border-slate-200 text-slate-800'
+                }`}
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
+                    <p className="text-[#ff7a00] text-[11px] mt-0.5 font-bold">
+                      {t(b.trade_category, b.trade_category)} • {b.scheduled_time_slot}
+                    </p>
+                  </div>
+                  <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 uppercase">
+                    {b.status}
+                  </span>
+                </div>
+                <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
+                  <span>Craftsperson: <strong className="text-emerald-400 font-bold">{b.worker?.full_name || 'Matching nearest artisan...'}</strong></span>
+                  <span className={`font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{b.estimated_amount}</span>
+                </div>
+              </div>
+            ))}
+            {activeBookings.length === 0 && (
+              <div className={`p-8 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
+                <p className="text-xs font-semibold">No active bookings right now.</p>
+                <Link to="/household/book" className="text-xs text-[#ff7a00] font-bold mt-1 inline-block">
+                  + Schedule a cooperative artisan
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Completed Services */}
+        <div className="flow-card glow-orange-hover p-6 space-y-4">
+          <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
+            <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              Completed Services & Digital Invoices
+            </h2>
+            <Link to="/household/invoices" className="text-xs text-emerald-400 hover:underline font-bold">
+              Invoices →
+            </Link>
+          </div>
+
+          <div className="space-y-3">
+            {pastBookings.slice(0, 3).map((b) => (
+              <div
+                key={b.id}
+                className={`p-4 rounded-xl text-xs space-y-2 border transition-all hover:border-[#ff6b00] ${
+                  isDark
+                    ? 'bg-[#161a22] border-white/[0.06] text-slate-200'
+                    : 'bg-slate-50 border-slate-200 text-slate-800'
+                }`}
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
+                    <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Completed by {b.worker?.full_name || 'Cooperative Member'}</p>
+                  </div>
+                  <span className="status-pill-emerald">
+                    ✓ COMPLETED
+                  </span>
+                </div>
+                <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
+                  <span>Total Billed: <strong className={isDark ? 'text-white' : 'text-slate-900'}>₹{b.final_amount || b.estimated_amount}</strong></span>
+                  <Link to="/household/invoices" className="text-emerald-400 font-bold hover:underline">
+                    Download Invoice 📄
+                  </Link>
+                </div>
+              </div>
+            ))}
+            {pastBookings.length === 0 && (
+              <div className={`p-8 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
+                No completed bookings yet.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

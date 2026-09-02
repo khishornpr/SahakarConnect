@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\assets",
+    "\\src\\context",
+    "\\src\\pages",
+    "\\src\\pages\\labor",
+    "\\src\\pages\\manager",
+    "\\src\\pages\\owner",
+    "\\src\\pages\\worker"
+  ],
+  "PreviewInSolutionExplorer": false
+}

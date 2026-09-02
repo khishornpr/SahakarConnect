@@ -1,0 +1,232 @@
+Problem Statement
+Financial Analytics and Learning Dashboard
+Develop a web-based Financial Analytics and Learning Dashboard that provides role-based access and management capabilities for Workers, Managers, Company Owners, and Labor Department Officers.
+The system should support financial tracking, employee payment management, complaint handling, and analytical reporting through dedicated dashboards and portals.
+________________________________________
+User Roles
+1. Worker
+•	Register and login to the system.
+•	View personal profile.
+•	View current salary.
+•	View salary increment history.
+•	View credited and debited amounts.
+•	View overpaid amounts.
+•	View shortfall amounts.
+•	Raise complaints or cases.
+•	Track complaint status and resolutions.
+•	Access learning dashboard and assigned learning content.
+2. Manager
+•	Login through a dedicated manager portal.
+•	View all workers under management.
+•	Monitor worker payments.
+•	Track salary increments.
+•	View overpayments and shortfalls.
+•	Review worker complaints.
+•	Generate financial summaries and reports.
+3. Company Owner
+•	Login through a dedicated owner portal.
+•	View company-wide financial analytics.
+•	Monitor all credits and debits.
+•	Review salary expenditures.
+•	View equipment purchase expenses.
+•	Analyze operational costs.
+•	Access high-level financial dashboards and reports.
+4. Labor Department Officer
+•	Login through a dedicated labor department portal.
+•	View employee complaints and case details.
+•	Track complaint investigations.
+•	Resolve, reject, or close cases.
+•	Maintain complaint resolution history.
+________________________________________
+Authentication Requirements
+Registration
+•	Common registration page.
+•	User role selection during registration: 
+o	Worker
+o	Manager
+o	Owner
+o	Labor Department Officer
+Login
+Separate login access for:
+•	Worker
+•	Manager
+•	Owner
+•	Labor Department Officer
+________________________________________
+Core Modules
+1. Financial Management Module
+Features
+•	Credit transactions
+•	Debit transactions
+•	Salary management
+•	Salary increment tracking
+•	Overpaid amount tracking
+•	Shortfall amount tracking
+•	Equipment purchase expenses
+•	Company expenditure tracking
+Dashboard Metrics
+•	Total Credits
+•	Total Debits
+•	Current Balance
+•	Total Salary Paid
+•	Total Shortfall Amount
+•	Total Overpaid Amount
+•	Monthly Financial Summary
+•	Transaction Analytics
+________________________________________
+2. Transaction Management
+Transaction Table View
+The transaction screen should include:
+•	Transaction ID
+•	Employee Name
+•	Transaction Type 
+o	Credit
+o	Debit
+•	Amount
+•	Date & Time
+•	Status
+•	Remarks
+Filters
+•	Date From - Date To
+•	Time Filter
+•	Transaction Type Filter
+•	Employee Filter
+•	Status Filter
+•	Search Functionality
+________________________________________
+3. Worker Dashboard
+Dashboard Widgets
+•	Current Salary
+•	Salary Increment Status
+•	Total Credits Received
+•	Total Debits
+•	Overpaid Amount
+•	Shortfall Amount
+•	Pending Complaints
+•	Completed Complaints
+•	Learning Progress
+________________________________________
+4. Manager Dashboard
+Dashboard Widgets
+•	Total Workers
+•	Total Payments Processed
+•	Pending Salary Payments
+•	Overpaid Employees
+•	Employees with Shortfalls
+•	Complaint Statistics
+•	Financial Summary
+________________________________________
+5. Owner Dashboard
+Dashboard Widgets
+•	Total Company Revenue
+•	Total Company Expenses
+•	Equipment Purchase Costs
+•	Salary Expenditures
+•	Net Balance
+•	Monthly Profit/Loss Summary
+•	Employee Financial Overview
+•	Operational Analytics
+________________________________________
+6. Complaint Management Module
+Worker Functions
+•	Create Complaint
+•	Submit Supporting Documents
+•	Track Complaint Status
+Complaint Statuses
+•	Submitted
+•	Under Review
+•	In Progress
+•	Resolved
+•	Rejected
+•	Closed
+________________________________________
+7. Labor Dashboard
+Dedicated module for labor department officials.
+Features
+•	Case Management
+•	Complaint Review
+•	Investigation Tracking
+•	Resolution Submission
+•	Case Closure
+•	Complaint Analytics
+Dashboard Metrics
+•	Total Cases
+•	Pending Cases
+•	Resolved Cases
+•	Rejected Cases
+•	Average Resolution Time
+________________________________________
+8. Profile Management
+Worker Profile
+•	Personal Details
+•	Salary Information
+•	Employment Information
+•	Complaint History
+•	Learning Progress
+Manager Profile
+•	Personal Details
+•	Team Information
+•	Management Statistics
+
+
+Financial Analytics & Learning Dashboard
+
+├── Authentication Module
+│ ├── Registration
+│ ├── Login
+│ └── Role Management
+│
+├── Worker Portal
+│ ├── Profile
+│ ├── Salary Details
+│ ├── Transactions
+│ ├── Complaints
+│ └── Learning Dashboard
+│
+├── Manager Portal
+│ ├── Worker Management
+│ ├── Payment Monitoring
+│ ├── Financial Reports
+│ └── Complaint Monitoring
+│
+├── Owner Portal
+│ ├── Financial Analytics
+│ ├── Equipment Expenses
+│ ├── Revenue & Expense Tracking
+│ └── Business Reports
+│
+├── Labor Department Portal
+│ ├── Case Management
+│ ├── Complaint Review
+│ └── Resolution Tracking
+│
+└── Reporting & Analytics
+├── Credits
+├── Debits
+├── Balance Analysis
+├── Salary Reports
+└── KPI Dashboards
+
+
+Frontend:
+- React (Vite)
+- Tailwind CSS
+- Recharts
+
+Backend:
+- Supabase
+
+Database:
+- PostgreSQL (Supabase)
+
+Authentication:
+- Supabase Auth
+
+Hosting:
+- GitHub Pages (Frontend)
+- Supabase (Backend & Database)
+
+Version Control:
+- GitHub
+
+

@@ -1,0 +1,694 @@
+@import "tailwindcss";
+
+/* -------------------------------------------------------------------------- */
+/*                        GLOBAL NEON COLOR TOKENS                            */
+/* -------------------------------------------------------------------------- */
+:root {
+  --neon-orange: #ff6b00;
+  --neon-orange-bright: #ff8533;
+  --neon-orange-glow: rgba(255, 107, 0, 0.5);
+  --neon-orange-halo: rgba(255, 107, 0, 0.25);
+
+  --neon-emerald: #10b981;
+  --neon-emerald-bright: #34d399;
+  --neon-emerald-glow: rgba(16, 185, 129, 0.5);
+  --neon-emerald-halo: rgba(16, 185, 129, 0.25);
+
+  --neon-cyan: #06b6d4;
+  --neon-cyan-bright: #22d3ee;
+  --neon-cyan-glow: rgba(6, 182, 212, 0.5);
+  --neon-cyan-halo: rgba(6, 182, 212, 0.25);
+
+  --neon-purple: #a855f7;
+  --neon-purple-bright: #c084fc;
+  --neon-purple-glow: rgba(168, 85, 247, 0.5);
+  --neon-purple-halo: rgba(168, 85, 247, 0.25);
+
+  --neon-rose: #f43f5e;
+  --neon-rose-bright: #fb7185;
+  --neon-rose-glow: rgba(244, 63, 94, 0.55);
+  --neon-rose-halo: rgba(244, 63, 94, 0.25);
+
+  --neon-amber: #f59e0b;
+  --neon-amber-bright: #fbbf24;
+  --neon-amber-glow: rgba(245, 158, 11, 0.5);
+  --neon-amber-halo: rgba(245, 158, 11, 0.25);
+}
+
+/* Global FlowBoard Theme Tokens */
+html.dark,
+html[data-theme="dark"],
+.dark {
+  background-color: #0b0d11;
+  color: #f8fafc;
+}
+
+html:not(.dark),
+html[data-theme="light"] {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                  DARK MODE SURFACES & BOX NEON GLOW                        */
+/* -------------------------------------------------------------------------- */
+html.dark .flow-card,
+.dark .flow-card,
+html.dark .neon-card,
+.dark .neon-card,
+html.dark .neon-box,
+.dark .neon-box,
+html.dark .glass-card,
+.dark .glass-card {
+  background-color: #12151b !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+/* Default / Orange Neon Box Hover in Dark Mode */
+html.dark .flow-card-hover:hover,
+html.dark .flow-card:hover,
+.dark .flow-card:hover,
+html.dark .neon-card:hover,
+.dark .neon-card:hover,
+html.dark .neon-box:hover,
+.dark .neon-box:hover,
+.dark .glow-orange-hover:hover,
+html.dark .glow-orange-hover:hover,
+.dark .neon-glow-orange:hover,
+html.dark .neon-glow-orange:hover,
+.dark .glass-card:hover {
+  border-color: rgba(255, 107, 0, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(255, 107, 0, 0.6),
+              0 0 22px rgba(255, 107, 0, 0.45),
+              0 0 50px rgba(255, 107, 0, 0.22),
+              0 12px 32px rgba(0, 0, 0, 0.7) !important;
+  transform: translateY(-3px);
+}
+
+/* Emerald Neon Box Hover in Dark Mode */
+html.dark .glow-emerald-hover:hover,
+.dark .glow-emerald-hover:hover,
+.dark .neon-glow-emerald:hover,
+html.dark .neon-glow-emerald:hover,
+.dark .neon-glow-green:hover,
+html.dark .neon-glow-green:hover {
+  border-color: rgba(16, 185, 129, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.6),
+              0 0 22px rgba(16, 185, 129, 0.45),
+              0 0 50px rgba(16, 185, 129, 0.22),
+              0 12px 32px rgba(0, 0, 0, 0.7) !important;
+  transform: translateY(-3px);
+}
+
+/* Cyan Neon Box Hover in Dark Mode */
+html.dark .glow-cyan-hover:hover,
+.dark .glow-cyan-hover:hover,
+.dark .neon-glow-cyan:hover,
+html.dark .neon-glow-cyan:hover,
+.dark .neon-glow-blue:hover,
+html.dark .neon-glow-blue:hover {
+  border-color: rgba(6, 182, 212, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.6),
+              0 0 22px rgba(6, 182, 212, 0.45),
+              0 0 50px rgba(6, 182, 212, 0.22),
+              0 12px 32px rgba(0, 0, 0, 0.7) !important;
+  transform: translateY(-3px);
+}
+
+/* Purple Neon Box Hover in Dark Mode */
+html.dark .glow-purple-hover:hover,
+.dark .glow-purple-hover:hover,
+.dark .neon-glow-purple:hover,
+html.dark .neon-glow-purple:hover,
+.dark .neon-glow-violet:hover,
+html.dark .neon-glow-violet:hover {
+  border-color: rgba(168, 85, 247, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.6),
+              0 0 22px rgba(168, 85, 247, 0.45),
+              0 0 50px rgba(168, 85, 247, 0.22),
+              0 12px 32px rgba(0, 0, 0, 0.7) !important;
+  transform: translateY(-3px);
+}
+
+/* Rose / Red Neon Box Hover in Dark Mode */
+html.dark .glow-rose-hover:hover,
+.dark .glow-rose-hover:hover,
+.dark .neon-glow-rose:hover,
+html.dark .neon-glow-rose:hover,
+.dark .neon-glow-red:hover,
+html.dark .neon-glow-red:hover {
+  border-color: rgba(244, 63, 94, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(244, 63, 94, 0.6),
+              0 0 22px rgba(244, 63, 94, 0.5),
+              0 0 50px rgba(244, 63, 94, 0.25),
+              0 12px 32px rgba(0, 0, 0, 0.7) !important;
+  transform: translateY(-3px);
+}
+
+/* Amber / Gold Neon Box Hover in Dark Mode */
+html.dark .glow-amber-hover:hover,
+.dark .glow-amber-hover:hover,
+.dark .neon-glow-amber:hover,
+html.dark .neon-glow-amber:hover {
+  border-color: rgba(245, 158, 11, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.6),
+              0 0 22px rgba(245, 158, 11, 0.45),
+              0 0 50px rgba(245, 158, 11, 0.22),
+              0 12px 32px rgba(0, 0, 0, 0.7) !important;
+  transform: translateY(-3px);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                  LIGHT MODE SURFACES & BOX NEON GLOW                       */
+/* -------------------------------------------------------------------------- */
+html:not(.dark) .flow-card,
+html:not(.dark) .neon-card,
+html:not(.dark) .neon-box,
+html:not(.dark) .glass-card {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+html:not(.dark) .flow-card:hover,
+html:not(.dark) .flow-card-hover:hover,
+html:not(.dark) .neon-card:hover,
+html:not(.dark) .neon-box:hover,
+html:not(.dark) .glow-orange-hover:hover,
+html:not(.dark) .neon-glow-orange:hover,
+html:not(.dark) .glass-card:hover {
+  border-color: #ff6b00 !important;
+  box-shadow: 0 0 0 1px rgba(255, 107, 0, 0.5),
+              0 0 20px rgba(255, 107, 0, 0.35),
+              0 8px 25px rgba(255, 107, 0, 0.2) !important;
+  transform: translateY(-3px);
+}
+
+html:not(.dark) .glow-emerald-hover:hover,
+html:not(.dark) .neon-glow-emerald:hover,
+html:not(.dark) .neon-glow-green:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.5),
+              0 0 20px rgba(16, 185, 129, 0.35),
+              0 8px 25px rgba(16, 185, 129, 0.2) !important;
+  transform: translateY(-3px);
+}
+
+html:not(.dark) .glow-cyan-hover:hover,
+html:not(.dark) .neon-glow-cyan:hover,
+html:not(.dark) .neon-glow-blue:hover {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.5),
+              0 0 20px rgba(6, 182, 212, 0.35),
+              0 8px 25px rgba(6, 182, 212, 0.2) !important;
+  transform: translateY(-3px);
+}
+
+html:not(.dark) .glow-purple-hover:hover,
+html:not(.dark) .neon-glow-purple:hover,
+html:not(.dark) .neon-glow-violet:hover {
+  border-color: #a855f7 !important;
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.5),
+              0 0 20px rgba(168, 85, 247, 0.35),
+              0 8px 25px rgba(168, 85, 247, 0.2) !important;
+  transform: translateY(-3px);
+}
+
+html:not(.dark) .glow-rose-hover:hover,
+html:not(.dark) .neon-glow-rose:hover,
+html:not(.dark) .neon-glow-red:hover {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 1px rgba(244, 63, 94, 0.5),
+              0 0 20px rgba(244, 63, 94, 0.35),
+              0 8px 25px rgba(244, 63, 94, 0.2) !important;
+  transform: translateY(-3px);
+}
+
+html:not(.dark) .glow-amber-hover:hover,
+html:not(.dark) .neon-glow-amber:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.5),
+              0 0 20px rgba(245, 158, 11, 0.35),
+              0 8px 25px rgba(245, 158, 11, 0.2) !important;
+  transform: translateY(-3px);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                  CLICKABLE BUTTON NEON GLOW SYSTEM                         */
+/* -------------------------------------------------------------------------- */
+
+/* Universal Button Transitions & Interactions */
+button,
+input[type="button"],
+input[type="submit"],
+.neon-btn,
+.flow-btn-primary,
+.flow-btn-emerald,
+.flow-btn-cyan,
+.flow-btn-purple,
+.flow-btn-rose {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease,
+              filter 0.22s ease,
+              background-color 0.22s ease !important;
+}
+
+/* General interactive button floating neon hover */
+button:not(:disabled):hover,
+input[type="button"]:not(:disabled):hover,
+input[type="submit"]:not(:disabled):hover {
+  box-shadow: 0 0 18px rgba(255, 107, 0, 0.42),
+              0 0 35px rgba(255, 107, 0, 0.2);
+  transform: translateY(-1.5px);
+}
+
+/* Active click feedback for all buttons */
+button:not(:disabled):active,
+input[type="button"]:not(:disabled):active,
+input[type="submit"]:not(:disabled):active {
+  transform: translateY(0.5px) scale(0.98);
+}
+
+/* Primary Flow / Neon Orange Buttons */
+.flow-btn-primary,
+.neon-btn-primary,
+.neon-btn-orange {
+  background: linear-gradient(135deg, #ff7a00 0%, #ff5500 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 140, 0, 0.6) !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 0, 0.35);
+}
+
+.flow-btn-primary:not(:disabled):hover,
+.neon-btn-primary:not(:disabled):hover,
+.neon-btn-orange:not(:disabled):hover {
+  background: linear-gradient(135deg, #ff8c1a 0%, #ff6600 100%) !important;
+  border-color: #ffaa00 !important;
+  box-shadow: 0 0 0 1px rgba(255, 170, 0, 0.7),
+              0 0 25px rgba(255, 107, 0, 0.7),
+              0 0 45px rgba(255, 107, 0, 0.35),
+              0 4px 18px rgba(0, 0, 0, 0.35) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* Emerald / Green Neon Button */
+.flow-btn-emerald,
+.neon-btn-emerald,
+.neon-btn-green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 1px solid rgba(52, 211, 153, 0.6) !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+}
+
+.flow-btn-emerald:not(:disabled):hover,
+.neon-btn-emerald:not(:disabled):hover,
+.neon-btn-green:not(:disabled):hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+  border-color: #6ee7b7 !important;
+  box-shadow: 0 0 0 1px rgba(110, 231, 183, 0.7),
+              0 0 25px rgba(16, 185, 129, 0.7),
+              0 0 45px rgba(16, 185, 129, 0.35),
+              0 4px 18px rgba(0, 0, 0, 0.35) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* Cyan / Blue Neon Button */
+.flow-btn-cyan,
+.neon-btn-cyan,
+.neon-btn-blue {
+  background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.6) !important;
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+}
+
+.flow-btn-cyan:not(:disabled):hover,
+.neon-btn-cyan:not(:disabled):hover,
+.neon-btn-blue:not(:disabled):hover {
+  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%) !important;
+  border-color: #67e8f9 !important;
+  box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.7),
+              0 0 25px rgba(6, 182, 212, 0.7),
+              0 0 45px rgba(6, 182, 212, 0.35),
+              0 4px 18px rgba(0, 0, 0, 0.35) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* Purple / Violet Neon Button */
+.flow-btn-purple,
+.neon-btn-purple,
+.neon-btn-violet {
+  background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 132, 252, 0.6) !important;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.35);
+}
+
+.flow-btn-purple:not(:disabled):hover,
+.neon-btn-purple:not(:disabled):hover,
+.neon-btn-violet:not(:disabled):hover {
+  background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%) !important;
+  border-color: #e9d5ff !important;
+  box-shadow: 0 0 0 1px rgba(233, 213, 255, 0.7),
+              0 0 25px rgba(168, 85, 247, 0.7),
+              0 0 45px rgba(168, 85, 247, 0.35),
+              0 4px 18px rgba(0, 0, 0, 0.35) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* Rose / Red Neon Button (Emergency & High Alert) */
+.flow-btn-rose,
+.neon-btn-rose,
+.neon-btn-red {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 1px solid rgba(251, 113, 133, 0.6) !important;
+  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.35);
+}
+
+.flow-btn-rose:not(:disabled):hover,
+.neon-btn-rose:not(:disabled):hover,
+.neon-btn-red:not(:disabled):hover {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  border-color: #fecdd3 !important;
+  box-shadow: 0 0 0 1px rgba(254, 205, 211, 0.7),
+              0 0 25px rgba(244, 63, 94, 0.75),
+              0 0 50px rgba(244, 63, 94, 0.4),
+              0 4px 18px rgba(0, 0, 0, 0.35) !important;
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* -------------------------------------------------------------------------- */
+/*             CIRCULAR ICON BADGES & SPECIAL INTERACTIVE WIDGETS             */
+/* -------------------------------------------------------------------------- */
+html.dark .flow-icon-badge-orange,
+.dark .flow-icon-badge-orange {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(255, 107, 0, 0.15) !important;
+  border: 1px solid rgba(255, 107, 0, 0.35) !important;
+  color: #ff7a00 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(255, 107, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .flow-icon-badge-orange:hover,
+.dark .flow-icon-badge-orange:hover {
+  border-color: #ff8c00 !important;
+  box-shadow: 0 0 25px rgba(255, 107, 0, 0.65) !important;
+  transform: scale(1.08) translateY(-1px);
+}
+
+html:not(.dark) .flow-icon-badge-orange {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: #fff7ed !important;
+  border: 1px solid #fed7aa !important;
+  color: #ea580c !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html:not(.dark) .flow-icon-badge-orange:hover {
+  border-color: #ff6b00 !important;
+  box-shadow: 0 0 18px rgba(255, 107, 0, 0.4) !important;
+  transform: scale(1.08) translateY(-1px);
+}
+
+html.dark .flow-icon-badge-emerald,
+.dark .flow-icon-badge-emerald {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #10b981 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .flow-icon-badge-emerald:hover,
+.dark .flow-icon-badge-emerald:hover {
+  border-color: #34d399 !important;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.65) !important;
+  transform: scale(1.08) translateY(-1px);
+}
+
+html:not(.dark) .flow-icon-badge-emerald {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: #f0fdf4 !important;
+  border: 1px solid #bbf7d0 !important;
+  color: #16a34a !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html:not(.dark) .flow-icon-badge-emerald:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.4) !important;
+  transform: scale(1.08) translateY(-1px);
+}
+
+/* Active Sidebar Navigation Pill with Neon Glow */
+html.dark .flow-nav-active,
+.dark .flow-nav-active {
+  background: #ff6b00 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 22px rgba(255, 107, 0, 0.65), 0 0 45px rgba(255, 107, 0, 0.3) !important;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+html:not(.dark) .flow-nav-active {
+  background: #ff6b00 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4) !important;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0b0d11;
+}
+
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 0, 0.4);
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 0, 0.85);
+  box-shadow: 0 0 10px rgba(255, 107, 0, 0.6);
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #ff6b00;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                       INTERACTIVE ROW & FORM NEON GLOW                     */
+/* -------------------------------------------------------------------------- */
+.interactive-row,
+.flow-table-row {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .interactive-row:hover,
+.dark .flow-table-row:hover {
+  background-color: rgba(255, 107, 0, 0.08) !important;
+  box-shadow: inset 3px 0 0 #ff6b00, 0 0 12px rgba(255, 107, 0, 0.15);
+}
+
+html:not(.dark) .interactive-row:hover,
+html:not(.dark) .flow-table-row:hover {
+  background-color: #fff7ed !important;
+  box-shadow: inset 3px 0 0 #ea580c;
+}
+
+/* Input / Select Neon Focus Glow */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: #ff6b00 !important;
+  box-shadow: 0 0 0 1px #ff6b00, 0 0 16px rgba(255, 107, 0, 0.35) !important;
+}
+
+/* Gradient Text Utilities */
+.gradient-text-orange {
+  background: linear-gradient(135deg, #ff8c00 0%, #ff5500 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-emerald {
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-cyan {
+  background: linear-gradient(135deg, #22d3ee 0%, #0284c7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-purple {
+  background: linear-gradient(135deg, #c084fc 0%, #7e22ce 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Status Pills with Dynamic Glow */
+.status-pill-emerald {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+.status-pill-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(255, 107, 0, 0.15);
+  border: 1px solid rgba(255, 107, 0, 0.35);
+  color: #ff7a00;
+  box-shadow: 0 0 10px rgba(255, 107, 0, 0.2);
+}
+
+.status-pill-cyan {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  color: #06b6d4;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+}
+
+.status-pill-rose {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  color: #f43f5e;
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+}
+
+/* Glass Panels */
+.glass-panel {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Smooth Pulse Animation for Emergency SOS and High Alerts */
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.45), 0 0 30px rgba(244, 63, 94, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(244, 63, 94, 0.8), 0 0 50px rgba(244, 63, 94, 0.45);
+  }
+}
+
+.neon-pulse-rose {
+  animation: neon-pulse 2s infinite ease-in-out;
+}
+
+/* Fade in entrance animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

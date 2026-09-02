@@ -1,0 +1,352 @@
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from '../../context/I18nContext'
+import { useTheme } from '../../context/ThemeContext'
+import LanguageToggle from '../../components/LanguageToggle'
+import ThemeToggle from '../../components/ThemeToggle'
+
+export default function Login() {
+  const [email, setEmail] = useState('ramesh.worker@sahakar.in')
+  const [password, setPassword] = useState('demo123')
+  const [showPassword, setShowPassword] = useState(false)
+  const [selectedRole, setSelectedRole] = useState('worker')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { signIn, switchDemoRole } = useAuth()
+  const { t } = useTranslation()
+  const { isDark } = useTheme()
+  const navigate = useNavigate()
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    const { error } = await signIn(email, password)
+    setLoading(false)
+    if (error) {
+      setError(error.message)
+    } else {
+      navigate('/')
+    }
+  }
+
+  async function handleSelectDemoPersona(roleType, demoEmail) {
+    setSelectedRole(roleType)
+    setEmail(demoEmail)
+    setPassword('demo123')
+    setError('')
+    setLoading(true)
+    const { error } = await switchDemoRole(demoEmail)
+    setLoading(false)
+    if (error) {
+      setError(error.message)
+    } else {
+      navigate('/')
+    }
+  }
+
+  return (
+    <div className="min-h-screen w-full relative flex flex-col justify-between overflow-x-hidden font-sans select-none">
+      {/* ----------------- FULL-SCREEN IMMERSIVE PANORAMIC BACKGROUND ----------------- */}
+      <div className="fixed inset-0 z-0">
+        <img
+          src={isDark ? '/login-bg-dark.jpg' : '/login-bg-light.jpg'}
+          alt="Luxury Architectural Panoramic Background"
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Subtle Ambient Contrast Overlay for Optimal Readability */}
+        {isDark ? (
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/80 backdrop-brightness-[0.88]"></div>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/45 to-white/85 backdrop-brightness-[0.98]"></div>
+        )}
+      </div>
+
+      {/* ----------------- TOP NAVBAR ----------------- */}
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-6 sm:pt-8 flex items-center justify-between">
+        {/* Brand Emblem */}
+        <div className="flex items-center gap-3">
+          <div
+            className={`w-10 h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all ${
+              isDark
+                ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_20px_rgba(229,166,94,0.3)]'
+                : 'bg-white/90 border-slate-300 text-[#d8964d]'
+            }`}
+          >
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
+            </svg>
+          </div>
+          <div>
+            <span
+              className={`text-xs font-black tracking-[0.25em] uppercase drop-shadow-sm block ${
+                isDark ? 'text-white' : 'text-slate-900'
+              }`}
+            >
+              {t('brandTitle', 'SAHAKARCONNECT')}
+            </span>
+            <span className={`text-[10px] block font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              {t('loginSubHeader', 'SIH26089 • Cooperative Service Marketplace')}
+            </span>
+          </div>
+        </div>
+
+        {/* Floating Controls */}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <LanguageToggle />
+        </div>
+      </header>
+
+      {/* ----------------- MAIN VIEWPORT CONTENT ----------------- */}
+      <main className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        {/* Left Side: Welcome Typography & Cooperative Badges */}
+        <div className="lg:col-span-7 xl:col-span-7 space-y-6">
+          <div className="flex items-start gap-5">
+            <div className="w-2 h-28 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
+            <div>
+              <h1
+                className={`text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${
+                  isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
+                }`}
+              >
+                {t('welcome', 'Welcome')}<br />
+                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>
+                  {t('back', 'Back')}
+                </strong>
+              </h1>
+              <p
+                className={`text-sm sm:text-base mt-4 max-w-md leading-relaxed ${
+                  isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
+                }`}
+              >
+                {t('loginHeroGreeting', 'Glad to see you again.')}<br />
+                {t('loginHeroSub', "Let's continue where you left off.")}
+              </p>
+            </div>
+          </div>
+
+          {/* Quick Highlight Chips */}
+          <div className="flex flex-wrap gap-2.5 pt-2 pl-7">
+            <span
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
+                isDark
+                  ? 'bg-black/50 border-white/10 text-slate-200'
+                  : 'bg-white/80 border-slate-300 text-slate-800 shadow-xs'
+              }`}
+            >
+              <span>⚡</span> {t('statutoryFairWageChip', '100% Statutory Fair Wage')}
+            </span>
+            <span
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
+                isDark
+                  ? 'bg-black/50 border-white/10 text-emerald-400'
+                  : 'bg-white/80 border-slate-300 text-emerald-700 shadow-xs'
+              }`}
+            >
+              <span>🛡️</span> {t('societyWelfareFundChip', 'Society Welfare Fund')}
+            </span>
+            <span
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${
+                isDark
+                  ? 'bg-black/50 border-white/10 text-[#e5a65e]'
+                  : 'bg-white/80 border-slate-300 text-orange-700 shadow-xs'
+              }`}
+            >
+              <span>📍</span> {t('aiGeoDispatchChip', 'AI Geo-Dispatch')}
+            </span>
+          </div>
+        </div>
+
+        {/* Right Side: Floating Glassmorphic Login Card */}
+        <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
+          <div
+            className={`w-full max-w-[430px] border rounded-[32px] p-7 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
+              isDark
+                ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
+                : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
+            }`}
+          >
+            {/* Hexagonal Gold Emblem Badge */}
+            <div
+              className={`w-14 h-14 rounded-2xl border flex items-center justify-center mx-auto mb-4 transition-all ${
+                isDark
+                  ? 'bg-[#1e232e] border-white/[0.08] text-[#e5a65e] shadow-[0_0_25px_rgba(229,166,94,0.25)]'
+                  : 'bg-orange-50 border-orange-200 text-[#d8964d] shadow-sm'
+              }`}
+            >
+              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
+              </svg>
+            </div>
+
+            {/* Heading */}
+            <h2 className={`text-2xl font-black text-center tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              {t('loginTitle', 'Login')}
+            </h2>
+            <p className={`text-xs text-center mt-1 font-normal ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              {t('loginSubtitle', 'Login to your account to continue')}
+            </p>
+
+            {/* 1-Click Demo Persona Pills */}
+            <div
+              className={`mt-5 p-1 border rounded-2xl flex items-center justify-between gap-1 ${
+                isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
+              }`}
+            >
+              {[
+                { id: 'worker', email: 'ramesh.worker@sahakar.in', label: `⚡ ${t('workerRole', 'Worker')}`, sub: 'Ramesh' },
+                { id: 'household', email: 'priya.customer@sahakar.in', label: `🏡 ${t('customerRole', 'Customer')}`, sub: 'Priya' },
+                { id: 'cooperative', email: 'admin@delhicoop.in', label: `🏛️ ${t('adminRole', 'Admin')}`, sub: 'Meena' },
+              ].map((p) => {
+                const isActive = selectedRole === p.id
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => handleSelectDemoPersona(p.id, p.email)}
+                    className={`flex-1 py-1.5 px-2 rounded-xl text-[11px] font-bold transition-all ${
+                      isActive
+                        ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
+                        : isDark
+                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                    }`}
+                  >
+                    <span className="block truncate">{p.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="mt-4 bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs p-3 rounded-xl shadow-[0_0_12px_rgba(244,63,94,0.3)]">
+                {error}
+              </div>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+              {/* Email Address */}
+              <div>
+                <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {t('emailAddress', 'Email Address')}
+                </label>
+                <div className="relative">
+                  <span className={`absolute left-3.5 top-3.5 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </span>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className={`w-full pl-10 pr-3.5 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
+                      isDark
+                        ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
+                        : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
+                    }`}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {t('password', 'Password')}
+                </label>
+                <div className="relative">
+                  <span className={`absolute left-3.5 top-3.5 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </span>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className={`w-full pl-10 pr-10 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
+                      isDark
+                        ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
+                        : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
+                    }`}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={`absolute right-3.5 top-3.5 transition-colors ${
+                      isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    {showPassword ? (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Forgot Password Link */}
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => alert('Password reset link sent to demo mail. For instant testing, use demo123!')}
+                  className="text-xs text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium"
+                >
+                  {t('forgotPassword', 'Forgot Password?')}
+                </button>
+              </div>
+
+              {/* Login Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50"
+              >
+                <span>{loading ? t('authenticating', 'Authenticating...') : t('loginBtn', 'Login')}</span>
+                <span className="group-hover:translate-x-1 transition-transform font-bold">→</span>
+              </button>
+            </form>
+
+            {/* Sign up Link */}
+            <div className={`text-center mt-6 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              {t('dontHaveAccount', "Don't have an account?")}{' '}
+              <Link
+                to="/register"
+                className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline transition-colors"
+              >
+                {t('signUpLink', 'Sign up')}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* ----------------- BOTTOM FOOTER ----------------- */}
+      <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium">
+        <div className={isDark ? 'text-slate-300' : 'text-slate-700'}>
+          {t('loginFooterRights', '© 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations')}
+        </div>
+        <div className="flex items-center gap-1.5 text-emerald-500">
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <span className="font-semibold">{t('loginFooterSecure', 'Your data is secure with cooperative encryption')}</span>
+        </div>
+      </footer>
+    </div>
+  )
+}

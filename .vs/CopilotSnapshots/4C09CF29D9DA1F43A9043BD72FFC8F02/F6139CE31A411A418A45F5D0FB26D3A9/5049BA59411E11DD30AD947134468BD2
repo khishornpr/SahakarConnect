@@ -1,0 +1,163 @@
+﻿// Mock Supabase client for UI development without a real database
+
+const mockData = {
+  profiles: [
+    { id: '1', email: 'worker@test.com', full_name: 'John Worker', role: 'worker', created_at: '2024-01-15' },
+    { id: '2', email: 'manager@test.com', full_name: 'Sarah Manager', role: 'manager', created_at: '2024-01-10' },
+    { id: '3', email: 'owner@test.com', full_name: 'Mike Owner', role: 'owner', created_at: '2024-01-01' },
+    { id: '4', email: 'labor@test.com', full_name: 'Lisa Officer', role: 'labor', created_at: '2024-01-05' },
+  ],
+  salaries: [
+    { id: '1', user_id: '1', amount: 5500, updated_at: '2024-06-01' },
+  ],
+  salary_increments: [
+    { id: '1', user_id: '1', previous_amount: 4500, new_amount: 5000, created_at: '2024-03-01' },
+    { id: '2', user_id: '1', previous_amount: 5000, new_amount: 5500, created_at: '2024-06-01' },
+  ],
+  transactions: [
+    { id: 't1', user_id: '1', type: 'credit', amount: 5500, category: 'salary', status: 'completed', remarks: 'June salary', created_at: '2024-06-01' },
+    { id: 't2', user_id: '1', type: 'debit', amount: 200, category: 'general', status: 'completed', remarks: 'Advance deduction', created_at: '2024-06-05' },
+    { id: 't3', user_id: '1', type: 'credit', amount: 5500, category: 'salary', status: 'completed', remarks: 'May salary', created_at: '2024-05-01' },
+    { id: 't4', user_id: '1', type: 'credit', amount: 5000, category: 'salary', status: 'completed', remarks: 'April salary', created_at: '2024-04-01' },
+    { id: 't5', user_id: '1', type: 'debit', amount: 500, category: 'general', status: 'completed', remarks: 'Insurance', created_at: '2024-04-15' },
+    { id: 't6', user_id: '1', type: 'credit', amount: 12000, category: 'general', status: 'completed', remarks: 'Client payment', created_at: '2024-05-20' },
+    { id: 't7', user_id: '1', type: 'debit', amount: 3000, category: 'equipment', status: 'completed', remarks: 'Laptop purchase', created_at: '2024-03-10' },
+    { id: 't8', user_id: '1', type: 'credit', amount: 8000, category: 'general', status: 'pending', remarks: 'Bonus', created_at: '2024-06-15' },
+  ],
+  complaints: [
+    { id: 'c1', user_id: '1', title: 'Late salary payment', description: 'June salary was delayed by 5 days', status: 'submitted', created_at: '2024-06-06', resolved_at: null },
+    { id: 'c2', user_id: '1', title: 'Incorrect deduction', description: 'Rs 200 deducted without notice', status: 'under review', created_at: '2024-05-20', resolved_at: null },
+    { id: 'c3', user_id: '1', title: 'Overtime not paid', description: 'Worked 20 extra hours in March', status: 'resolved', created_at: '2024-04-01', resolved_at: '2024-04-15' },
+    { id: 'c4', user_id: '1', title: 'Unsafe working conditions', description: 'No fire extinguisher on floor 3', status: 'in progress', created_at: '2024-06-10', resolved_at: null },
+  ],
+  equipment_expenses: [
+    { id: 'e1', name: 'Office Laptops (5x)', amount: 7500, category: 'IT Equipment', description: 'Dell Latitude for new hires', created_at: '2024-02-15' },
+    { id: 'e2', name: 'Standing Desks', amount: 3200, category: 'Furniture', description: '8 adjustable standing desks', created_at: '2024-03-01' },
+    { id: 'e3', name: 'Server Upgrade', amount: 12000, category: 'IT Equipment', description: 'New rack server for production', created_at: '2024-04-20' },
+    { id: 'e4', name: 'Safety Equipment', amount: 2800, category: 'Safety', description: 'Fire extinguishers and alarms', created_at: '2024-05-10' },
+  ],
+  learning_content: [
+    { id: 'l1', title: 'Workplace Safety Training', description: 'Complete safety protocols and procedures', category: 'Safety', assigned_to: '1', completed: true, created_at: '2024-01-15' },
+    { id: 'l2', title: 'Financial Literacy Basics', description: 'Understanding payslips and deductions', category: 'Finance', assigned_to: '1', completed: false, created_at: '2024-03-01' },
+    { id: 'l3', title: 'Communication Skills', description: 'Professional email and reporting', category: 'Soft Skills', assigned_to: null, completed: false, created_at: '2024-04-01' },
+  ],
+}
+
+function applyFilters(data, filters) {
+  let result = [...data]
+  filters.forEach(f => {
+    if (f.type === 'eq') result = result.filter(item => item[f.column] === f.value)
+    if (f.type === 'in') result = result.filter(item => f.value.includes(item[f.column]))
+    if (f.type === 'or') result = result // simplified - return all for OR
+    if (f.type === 'gte') result = result.filter(item => item[f.column] >= f.value)
+    if (f.type === 'lte') result = result.filter(item => item[f.column] <= f.value)
+  })
+  return result
+}
+
+function createQueryBuilder(table) {
+  let filters = []
+  let selectColumns = '*'
+  let orderCol = null
+  let orderAsc = true
+  let limitCount = null
+  let singleResult = false
+
+  const builder = {
+    select(cols) { selectColumns = cols; return builder },
+    eq(col, val) { filters.push({ type: 'eq', column: col, value: val }); return builder },
+    in(col, val) { filters.push({ type: 'in', column: col, value: val }); return builder },
+    or(expr) { return builder },
+    gte(col, val) { filters.push({ type: 'gte', column: col, value: val }); return builder },
+    lte(col, val) { filters.push({ type: 'lte', column: col, value: val }); return builder },
+    order(col, opts) { orderCol = col; orderAsc = opts?.ascending ?? true; return builder },
+    limit(n) { limitCount = n; return builder },
+    single() { singleResult = true; return builder.then() },
+    then(resolve, reject) {
+      const promise = new Promise((res) => {
+        let data = mockData[table] ? applyFilters(mockData[table], filters) : []
+        if (orderCol) {
+          data.sort((a, b) => {
+            if (orderAsc) return a[orderCol] > b[orderCol] ? 1 : -1
+            return a[orderCol] < b[orderCol] ? 1 : -1
+          })
+        }
+        if (limitCount) data = data.slice(0, limitCount)
+
+        // Handle joins in select (e.g., "*, profiles(full_name)")
+        if (selectColumns.includes('profiles(')) {
+          data = data.map(item => ({
+            ...item,
+            profiles: mockData.profiles.find(p => p.id === item.user_id) || { full_name: 'Unknown' }
+          }))
+        }
+        if (selectColumns.includes('salaries(')) {
+          data = data.map(item => ({
+            ...item,
+            salaries: mockData.salaries.filter(s => s.user_id === item.id)
+          }))
+        }
+
+        if (singleResult) res({ data: data[0] || null, error: null })
+        else res({ data, error: null })
+      })
+      return resolve ? promise.then(resolve, reject) : promise
+    },
+  }
+  return builder
+}
+
+export const supabase = {
+  from(table) {
+    return {
+      select(cols) { return createQueryBuilder(table).select(cols || '*') },
+      insert(row) {
+        const newRow = { id: crypto.randomUUID(), ...row, created_at: new Date().toISOString() }
+        if (!mockData[table]) mockData[table] = []
+        mockData[table].push(newRow)
+        return Promise.resolve({ data: newRow, error: null })
+      },
+      update(updates) {
+        return {
+          eq(col, val) {
+            const item = mockData[table]?.find(i => i[col] === val)
+            if (item) Object.assign(item, updates)
+            return Promise.resolve({ data: item, error: null })
+          }
+        }
+      },
+    }
+  },
+  auth: {
+    getSession() {
+      const stored = localStorage.getItem('mock_user')
+      if (stored) {
+        const user = JSON.parse(stored)
+        return Promise.resolve({ data: { session: { user } } })
+      }
+      return Promise.resolve({ data: { session: null } })
+    },
+    onAuthStateChange(callback) {
+      return { data: { subscription: { unsubscribe() {} } } }
+    },
+    signUp({ email, password }) {
+      const role = email.includes('manager') ? 'manager' : email.includes('owner') ? 'owner' : email.includes('labor') ? 'labor' : 'worker'
+      const user = { id: crypto.randomUUID(), email }
+      return Promise.resolve({ data: { user }, error: null })
+    },
+    signInWithPassword({ email, password }) {
+      // Find matching mock profile or create one based on email
+      let profile = mockData.profiles.find(p => p.email === email)
+      if (!profile) {
+        profile = mockData.profiles[0] // Default to worker
+      }
+      const user = { id: profile.id, email: profile.email }
+      localStorage.setItem('mock_user', JSON.stringify(user))
+      return Promise.resolve({ data: { user, session: { user } }, error: null })
+    },
+    signOut() {
+      localStorage.removeItem('mock_user')
+      return Promise.resolve({})
+    },
+  },
+}

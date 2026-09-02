@@ -1,0 +1,88 @@
+﻿import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
+import DashboardLayout from './components/DashboardLayout'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import Unauthorized from './pages/Unauthorized'
+import WorkerDashboard from './pages/worker/Dashboard'
+import WorkerProfile from './pages/worker/Profile'
+import WorkerSalary from './pages/worker/Salary'
+import WorkerTransactions from './pages/worker/Transactions'
+import WorkerComplaints from './pages/worker/Complaints'
+import WorkerLearning from './pages/worker/Learning'
+import ManagerDashboard from './pages/manager/Dashboard'
+import ManagerWorkers from './pages/manager/Workers'
+import ManagerPayments from './pages/manager/Payments'
+import ManagerReports from './pages/manager/Reports'
+import ManagerComplaints from './pages/manager/Complaints'
+import OwnerDashboard from './pages/owner/Dashboard'
+import OwnerAnalytics from './pages/owner/Analytics'
+import OwnerExpenses from './pages/owner/Expenses'
+import OwnerRevenue from './pages/owner/Revenue'
+import OwnerReports from './pages/owner/Reports'
+import LaborDashboard from './pages/labor/Dashboard'
+import LaborCases from './pages/labor/Cases'
+import LaborComplaints from './pages/labor/Complaints'
+import LaborResolutions from './pages/labor/Resolutions'
+import HRDashboard from './pages/hr/Dashboard'
+import HRSalaryCredit from './pages/hr/SalaryCredit'
+import HRLoans from './pages/hr/Loans'
+
+function HomeRedirect() {
+  const { profile, loading } = useAuth()
+  if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+  if (!profile) return <Navigate to="/login" />
+  const redirects = { worker: '/worker/dashboard', manager: '/manager/dashboard', owner: '/owner/dashboard', labor: '/labor/dashboard', hr: '/hr/dashboard' }
+  return <Navigate to={redirects[profile.role] || '/login'} />
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/worker" element={<ProtectedRoute allowedRoles={['worker']}><DashboardLayout /></ProtectedRoute>}>
+            <Route path="dashboard" element={<WorkerDashboard />} />
+            <Route path="profile" element={<WorkerProfile />} />
+            <Route path="salary" element={<WorkerSalary />} />
+            <Route path="transactions" element={<WorkerTransactions />} />
+            <Route path="complaints" element={<WorkerComplaints />} />
+            <Route path="learning" element={<WorkerLearning />} />
+          </Route>
+          <Route path="/manager" element={<ProtectedRoute allowedRoles={['manager']}><DashboardLayout /></ProtectedRoute>}>
+            <Route path="dashboard" element={<ManagerDashboard />} />
+            <Route path="workers" element={<ManagerWorkers />} />
+            <Route path="payments" element={<ManagerPayments />} />
+            <Route path="reports" element={<ManagerReports />} />
+            <Route path="complaints" element={<ManagerComplaints />} />
+          </Route>
+          <Route path="/owner" element={<ProtectedRoute allowedRoles={['owner']}><DashboardLayout /></ProtectedRoute>}>
+            <Route path="dashboard" element={<OwnerDashboard />} />
+            <Route path="analytics" element={<OwnerAnalytics />} />
+            <Route path="expenses" element={<OwnerExpenses />} />
+            <Route path="revenue" element={<OwnerRevenue />} />
+            <Route path="reports" element={<OwnerReports />} />
+          </Route>
+          <Route path="/labor" element={<ProtectedRoute allowedRoles={['labor']}><DashboardLayout /></ProtectedRoute>}>
+            <Route path="dashboard" element={<LaborDashboard />} />
+            <Route path="cases" element={<LaborCases />} />
+            <Route path="complaints" element={<LaborComplaints />} />
+            <Route path="resolutions" element={<LaborResolutions />} />
+          </Route>
+          <Route path="/hr" element={<ProtectedRoute allowedRoles={['hr']}><DashboardLayout /></ProtectedRoute>}>
+            <Route path="dashboard" element={<HRDashboard />} />
+            <Route path="salary-credit" element={<HRSalaryCredit />} />
+            <Route path="loans" element={<HRLoans />} />
+          </Route>
+        </Routes>
+      </HashRouter>
+    </AuthProvider>
+  )
+}
+
+export default App
