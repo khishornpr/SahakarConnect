@@ -37,7 +37,7 @@ export default function Login() {
     },
     cooperative: {
       id: 'cooperative',
-      label: `🏛️ ${t('adminRole', 'Admin')}`,
+      label: `🏛️ ${t('coopAdminRole', 'Co-op Admin')}`,
       demoEmail: 'admin@delhicoop.in',
       hint: 'Meena Iyer (Co-op Officer)',
     },
@@ -222,7 +222,7 @@ export default function Login() {
         {/* Right Side: Floating Glassmorphic Login Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-            className={`w-full max-w-[430px] border rounded-[28px] sm:rounded-[32px] p-5 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
+            className={`w-full max-w-[470px] border rounded-[28px] sm:rounded-[32px] p-6 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
               isDark
                 ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
                 : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
@@ -249,46 +249,102 @@ export default function Login() {
               {t('loginSubtitle', 'Select your persona and enter credentials to continue')}
             </p>
 
-            {/* Persona Switcher Tabs (Selects persona type without auto-login) */}
-            <div
-              className={`mt-5 p-1 border rounded-2xl grid grid-cols-3 sm:grid-cols-5 gap-1 ${
-                isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
-              }`}
-            >
-              {Object.values(ROLE_CONFIGS).map((p) => {
-                const isActive = selectedRole === p.id
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => handleSelectRoleTab(p.id)}
-                    className={`py-2 px-1.5 rounded-xl text-[10px] sm:text-[11px] font-bold transition-all cursor-pointer whitespace-nowrap text-center ${
-                      isActive
-                        ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
-                        : isDark
-                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                    }`}
-                  >
-                    <span className="block truncate">{p.label}</span>
-                  </button>
-                )
-              })}
+            {/* Persona Switcher Tabs (Structured 2-row layout with zero truncation) */}
+            <div className="mt-5 space-y-1.5">
+              <div
+                className={`p-1 border rounded-2xl grid grid-cols-3 gap-1 ${
+                  isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
+                }`}
+              >
+                {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative].map((p) => {
+                  const isActive = selectedRole === p.id
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => handleSelectRoleTab(p.id)}
+                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                        isActive
+                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
+                          : isDark
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                      }`}
+                    >
+                      <span>{p.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div
+                className={`p-1 border rounded-2xl grid grid-cols-2 gap-1 ${
+                  isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
+                }`}
+              >
+                {[ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {
+                  const isActive = selectedRole === p.id
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => handleSelectRoleTab(p.id)}
+                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                        isActive
+                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
+                          : isDark
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                      }`}
+                    >
+                      <span>{p.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
-            {/* Demo Credential Quick-Fill Helper Chip */}
-            <div className="mt-3 flex items-center justify-between text-[11px] px-1">
-              <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                Demo Account: <strong className={isDark ? 'text-slate-200' : 'text-slate-700'}>{ROLE_CONFIGS[selectedRole]?.hint}</strong>
-              </span>
+            {/* Premium Demo Credential Auto-Fill Card */}
+            <div
+              className={`mt-4 p-3 rounded-2xl border flex items-center justify-between gap-3 transition-all ${
+                isDark
+                  ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
+                  : 'bg-orange-50/70 border-orange-200/80 shadow-xs'
+              }`}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 border ${
+                    isDark
+                      ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
+                      : 'bg-white border-orange-200 text-orange-600'
+                  }`}
+                >
+                  ⚡
+                </div>
+                <div className="min-w-0">
+                  <div className={`text-[11px] font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    {ROLE_CONFIGS[selectedRole]?.hint}
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono truncate">
+                    {ROLE_CONFIGS[selectedRole]?.demoEmail}
+                  </div>
+                </div>
+              </div>
+
               <button
                 type="button"
                 onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
-                className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline transition-colors cursor-pointer"
+                className={`px-3 py-1.5 rounded-xl text-[11px] font-bold shrink-0 transition-all border cursor-pointer ${
+                  isDark
+                    ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25 shadow-sm'
+                    : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
+                }`}
               >
-                Fill demo details ⚡
+                Auto-Fill ⚡
               </button>
             </div>
+
 
             {/* Error Message & Email Unconfirmed Banner */}
             {error && (
