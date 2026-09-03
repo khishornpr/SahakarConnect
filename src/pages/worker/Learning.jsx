@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../../lib/supabase'
 import { useTranslation } from '../../context/I18nContext'
@@ -12,6 +12,10 @@ export default function WorkerLearning() {
   const [activeModule, setActiveModule] = useState(null)
   const [activeLessonIndex, setActiveLessonIndex] = useState(0)
   const [completedBadgeModal, setCompletedBadgeModal] = useState(null)
+  const modalScrollRef = useRef(null)
+  const lessonCardRef = useRef(null)
+  const activePillRef = useRef(null)
+  const playlistContainerRef = useRef(null)
 
   useEffect(() => {
     let ignore = false
@@ -26,6 +30,18 @@ export default function WorkerLearning() {
       ignore = true
     }
   }, [])
+
+  useEffect(() => {
+    if (activeModule) {
+      if (activePillRef.current) {
+        activePillRef.current.scrollIntoView({
+          behavior: 'smooth',
+          inline: 'center',
+          block: 'nearest',
+        })
+      }
+    }
+  }, [activeLessonIndex, activeModule])
 
   function handleOpenModule(mod) {
     setActiveModule(mod)
@@ -50,17 +66,35 @@ export default function WorkerLearning() {
       completed_lessons: completedCount,
       progress_pct: progressPct,
       status: isAllDone ? 'completed' : 'in_progress',
-      completed_at: isAllDone ? new Date().toISOString() : activeModule.completed_at,
+      completed_at: isAllDone ? activeModule.completed_at || new Date().toISOString() : activeModule.completed_at,
     }
 
-    setActiveModule(updatedModule)
     setModules((prev) => prev.map((m) => (m.id === modId ? updatedModule : m)))
     supabase.from('learning_modules').update(updatedModule).eq('id', modId)
+    setActiveModule(updatedModule)
 
-    if (isAllDone) {
-      setCompletedBadgeModal(updatedModule)
-    } else if (activeLessonIndex < updatedLessons.length - 1) {
+    // Advance to next lesson if one exists
+    if (activeLessonIndex < updatedLessons.length - 1) {
       setActiveLessonIndex((prev) => prev + 1)
+    } else if (isAllDone) {
+      // Completed the final lesson of the entire module
+      setActiveModule(null)
+      setCompletedBadgeModal(updatedModule)
+    }
+  }
+
+  function handleNextLesson() {
+    if (activeModule && activeLessonIndex < activeModule.lessons.length - 1) {
+      setActiveLessonIndex((prev) => prev + 1)
+    } else if (activeModule && activeModule.progress_pct === 100) {
+      setActiveModule(null)
+      setCompletedBadgeModal(activeModule)
+    }
+  }
+
+  function handlePreviousLesson() {
+    if (activeLessonIndex > 0) {
+      setActiveLessonIndex((prev) => prev - 1)
     }
   }
 
@@ -149,10 +183,10 @@ export default function WorkerLearning() {
 
                 <div>
                   <h3 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    {mod.title}
+                    {t(mod.title, mod.title)}
                   </h3>
                   <p className={`text-xs mt-1.5 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    {mod.description}
+                    {t(mod.description, mod.description)}
                   </p>
                 </div>
 
@@ -185,11 +219,10 @@ export default function WorkerLearning() {
                     : 'bg-slate-50 border-slate-200 text-slate-600'
                 }`}>
                   <div className="flex items-center gap-2">
-                    <span className="text-base">{mod.badge?.split(' ')[0] || '🏆'}</span>
-                    <span>{mod.badge || 'Certified Badge'}</span>
+                    <span>{t(mod.badge, mod.badge || 'Certified Badge')}</span>
                   </div>
                   {isDone ? (
-                    <span className="text-emerald-400 text-[11px]">✓ {t('completedBadge', 'Badge Unlocked!')}</span>
+                    <span className="text-emerald-400 text-[11px]">{t('completedBadge', '✓ Certified')}</span>
                   ) : (
                     <span className="text-[11px] text-slate-500">{t('unlockCertificate', 'Unlocks on completion')}</span>
                   )}
@@ -197,14 +230,15 @@ export default function WorkerLearning() {
               </div>
 
               <button
+                type="button"
                 onClick={() => handleOpenModule(mod)}
-                className={`w-full py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 ${
+                className={`w-full py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   isDone
                     ? 'border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10'
                     : 'flow-btn-primary shadow-lg'
                 }`}
               >
-                {isDone ? t('completedBadge', 'Review Course Lessons') : isInProgress ? t('continueLearning', 'Continue →') : t('startLearning', 'Start Learning →')}
+                {isDone ? t('reviewCourseLessons', 'Review Course Lessons') : isInProgress ? t('continueLearning', 'Continue →') : t('startLearning', 'Start Learning →')}
               </button>
             </div>
           )
@@ -216,6 +250,7 @@ export default function WorkerLearning() {
         createPortal(
           <div className="fixed inset-0 z-[99999] bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
             <div
+              ref={modalScrollRef}
               className={`rounded-2xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl space-y-5 border my-auto max-h-[90vh] overflow-y-auto ${
                 isDark
                   ? 'bg-[#12151b] border-white/[0.1] text-white shadow-[0_0_40px_rgba(0,0,0,0.8)]'
@@ -229,12 +264,13 @@ export default function WorkerLearning() {
                     {t(activeModule.category, activeModule.category)} • {t('moduleLessons', 'Lesson')} {activeLessonIndex + 1} / {activeModule.lessons?.length || 4}
                   </span>
                   <h3 className={`text-base sm:text-lg font-black mt-0.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    {activeModule.title}
+                    {t(activeModule.title, activeModule.title)}
                   </h3>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setActiveModule(null)}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm cursor-pointer ${
                     isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-600'
                   }`}
                 >
@@ -243,34 +279,53 @@ export default function WorkerLearning() {
               </div>
 
               {/* Lesson Playlist Pills */}
-              <div className="flex gap-2 overflow-x-auto pb-1">
-                {activeModule.lessons?.map((les, idx) => (
-                  <button
-                    key={les.id}
-                    onClick={() => setActiveLessonIndex(idx)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border shrink-0 ${
-                      activeLessonIndex === idx
-                        ? 'bg-[#ff6b00] border-[#ff6b00] text-white'
-                        : les.completed
-                        ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-400'
-                        : isDark
-                        ? 'bg-[#161a22] border-white/[0.08] text-slate-400'
-                        : 'bg-slate-100 border-slate-200 text-slate-700'
-                    }`}
-                  >
-                    {les.completed ? '✓' : idx + 1}. {les.title}
-                  </button>
-                ))}
+              <div
+                ref={playlistContainerRef}
+                className="flex gap-2 overflow-x-auto pb-2 scroll-smooth scrollbar-thin"
+              >
+                {activeModule.lessons?.map((les, idx) => {
+                  const isCurrent = activeLessonIndex === idx
+                  return (
+                    <button
+                      key={les.id}
+                      ref={isCurrent ? activePillRef : null}
+                      type="button"
+                      onClick={() => setActiveLessonIndex(idx)}
+                      aria-selected={isCurrent}
+                      data-selected={isCurrent ? 'true' : undefined}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
+                        isCurrent
+                          ? 'bg-[#ff6b00] border-[#ff6b00] text-white shadow-md ring-2 ring-[#ff6b00]/50 scale-[1.03]'
+                          : les.completed
+                          ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-400 hover:scale-105'
+                          : isDark
+                          ? 'bg-[#161a22] border-white/[0.08] text-slate-400 hover:scale-105'
+                          : 'bg-slate-100 border-slate-200 text-slate-700 hover:scale-105'
+                      }`}
+                    >
+                      {les.completed ? '✓ ' : `${idx + 1}. `}
+                      {t('moduleLessons', 'Lesson')} {idx + 1}: {t(les.title, les.title)}
+                    </button>
+                  )
+                })}
               </div>
 
               {/* Lesson Content Viewer */}
               {activeModule.lessons?.[activeLessonIndex] && (
-                <div className={`p-5 rounded-2xl border space-y-4 ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-bold text-[#ff7a00]">
-                      {activeModule.lessons[activeLessonIndex].title}
+                <div
+                  ref={lessonCardRef}
+                  className={`p-5 rounded-2xl border space-y-4 ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}
+                >
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h4 className="text-sm sm:text-base font-black text-[#ff7a00] flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-lg bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 text-xs font-bold shrink-0">
+                        {t('moduleLessons', 'Lesson')} {activeLessonIndex + 1}
+                      </span>
+                      <span>
+                        {t(activeModule.lessons[activeLessonIndex].title, activeModule.lessons[activeLessonIndex].title)}
+                      </span>
                     </h4>
-                    <span className="text-[11px] text-slate-400 font-mono">
+                    <span className="text-[11px] text-slate-400 font-mono shrink-0">
                       ⏱ {activeModule.lessons[activeLessonIndex].duration}
                     </span>
                   </div>
@@ -278,53 +333,100 @@ export default function WorkerLearning() {
                   {/* Interactive Micro-Lesson Text */}
                   <div className="space-y-2 text-xs leading-relaxed text-slate-300">
                     <p>
-                      <strong>{t('safetyProtocolAcademy', 'Standard Operating Protocol')}:</strong> Always conduct a visual audit before starting service. Ensure main switches or secondary isolators are clearly locked out with tagout warnings.
+                      <strong>{t('standardOperatingProtocol', 'Standard Operating Protocol')}:</strong>{' '}
+                      {t('lessonProtocolText', 'Always conduct a visual audit before starting service. Ensure main switches or secondary isolators are clearly locked out with tagout warnings.')}
                     </p>
                     <div className="p-3 rounded-xl bg-black/30 border border-white/5 space-y-1.5 text-[11px]">
-                      <div className="font-bold text-amber-300">{t('safetyProtocolAcademy', 'Key Safety Checklist')}:</div>
+                      <div className="font-bold text-amber-300">{t('keySafetyChecklist', 'Key Safety Checklist')}:</div>
                       <ul className="list-disc list-inside space-y-1 text-slate-300">
-                        <li>Test tool handles for 1000V dielectric insulation certification.</li>
-                        <li>Always wear rubber-soled ISI-approved footwear on tile or wet floors.</li>
-                        <li>Inform household occupants not to touch auxiliary fuse boards during work.</li>
+                        <li>{t('checklistItem1', 'Test tool handles for 1000V dielectric insulation certification.')}</li>
+                        <li>{t('checklistItem2', 'Always wear rubber-soled ISI-approved footwear on tile or wet floors.')}</li>
+                        <li>{t('checklistItem3', 'Inform household occupants not to touch auxiliary fuse boards during work.')}</li>
                       </ul>
                     </div>
                   </div>
 
-                  {/* Mark as completed action */}
-                  <div className="pt-2 flex justify-between items-center border-t border-white/[0.06]">
-                    <span className="text-xs text-slate-400">
-                      {activeModule.lessons[activeLessonIndex].completed ? (
-                        <span className="text-emerald-400 font-bold">✓ {t('done', 'Lesson Finished')}</span>
-                      ) : (
-                        <span>{t('curriculumLessons', 'Ready to complete?')}</span>
+                  {/* Micro-Lesson Navigation & Completion Actions */}
+                  <div className="pt-3 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2.5 border-t border-white/[0.06]">
+                    <div className="flex items-center gap-2">
+                      {activeLessonIndex > 0 && (
+                        <button
+                          type="button"
+                          onClick={handlePreviousLesson}
+                          className="px-3.5 py-2 rounded-xl border border-slate-600 text-slate-300 hover:text-white hover:border-white/40 text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                        >
+                          <span>←</span>
+                          <span>{t('previousLesson', 'Previous Lesson')}</span>
+                        </button>
                       )}
-                    </span>
+                      <span className="text-xs text-slate-400">
+                        {activeModule.lessons[activeLessonIndex].completed ? (
+                          <span className="text-emerald-400 font-bold">✓ {t('done', 'Lesson Finished')}</span>
+                        ) : (
+                          <span>{t('readyToComplete', 'Ready to complete?')}</span>
+                        )}
+                      </span>
+                    </div>
 
-                    <button
-                      onClick={() =>
-                        handleCompleteLesson(
-                          activeModule.id,
-                          activeModule.lessons[activeLessonIndex].id
+                    <div className="flex items-center gap-2">
+                      {activeModule.lessons[activeLessonIndex].completed ? (
+                        activeLessonIndex < activeModule.lessons.length - 1 ? (
+                          <button
+                            type="button"
+                            onClick={handleNextLesson}
+                            className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md"
+                          >
+                            <span>{t('nextLesson', 'Next Lesson')}</span>
+                            <span>→</span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveModule(null)
+                              setCompletedBadgeModal(activeModule)
+                            }}
+                            className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-xs rounded-xl flex items-center gap-1.5 cursor-pointer shadow-lg hover:brightness-110 transition-all"
+                          >
+                            <span>🏆</span>
+                            <span>{t('claimCertificate', 'Claim Certificate Badge')}</span>
+                            <span>→</span>
+                          </button>
                         )
-                      }
-                      className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl"
-                    >
-                      {activeModule.lessons[activeLessonIndex].completed
-                        ? `${t('continueLearning', 'Next Lesson')} →`
-                        : `✓ ${t('completeLessonBtn', 'Mark Lesson Complete & Continue')}`}
-                    </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleCompleteLesson(
+                              activeModule.id,
+                              activeModule.lessons[activeLessonIndex].id
+                            )
+                          }
+                          className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md"
+                        >
+                          <span>✓</span>
+                          <span>
+                            {activeLessonIndex === activeModule.lessons.length - 1
+                              ? t('completeFinalLesson', 'Complete Final Lesson & Claim Badge')
+                              : t('markLessonComplete', 'Mark Lesson Complete & Continue')}
+                          </span>
+                          <span>→</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
 
               {/* Progress Summary in Modal */}
               <div className="flex items-center justify-between text-xs text-slate-400 border-t pt-3 border-white/[0.08]">
-                <span>{t('overallProgress', 'Overall Module Progress')}: {activeModule.progress_pct}%</span>
+                <span>{t('overallModuleProgress', 'Overall Module Progress')}: {activeModule.progress_pct}%</span>
                 <button
+                  type="button"
                   onClick={() => setActiveModule(null)}
-                  className="px-4 py-1.5 rounded-lg border border-slate-600 hover:text-white"
+                  className="px-4 py-1.5 rounded-lg border border-slate-600 hover:text-white cursor-pointer"
                 >
-                  {t('closeModal', 'Close Course')}
+                  {t('closeCourse', 'Close Course')}
                 </button>
               </div>
             </div>
@@ -345,18 +447,33 @@ export default function WorkerLearning() {
                 {completedBadgeModal.badge?.split(' ')[0] || '🏆'}
               </div>
               <div>
-                <h3 className="text-lg font-black text-emerald-400">{t('congratsBadgeUnlocked', 'Course Completed!')}</h3>
-                <h4 className="text-sm font-bold text-white mt-1">{completedBadgeModal.title}</h4>
+                <h3 className="text-lg font-black text-emerald-400">{t('courseCompleted', 'Course Completed!')}</h3>
+                <h4 className="text-sm font-bold text-white mt-1">{t(completedBadgeModal.title, completedBadgeModal.title)}</h4>
                 <p className="text-xs text-slate-300 mt-2">
                   {t('badgeUnlockedDesc', 'You have successfully unlocked the official certification badge! This is now attached to your public Skill Profile and enhances your dispatch matching score.')}
                 </p>
               </div>
-              <button
-                onClick={() => setCompletedBadgeModal(null)}
-                className="w-full py-2.5 flow-btn-primary text-xs font-bold rounded-xl"
-              >
-                {t('unlockCertificate', 'Awesome, View My Badges!')}
-              </button>
+              <div className="space-y-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setCompletedBadgeModal(null)}
+                  className="w-full py-2.5 flow-btn-primary text-xs font-bold rounded-xl cursor-pointer"
+                >
+                  {t('viewMyBadges', 'Awesome, View My Badges!')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const mod = completedBadgeModal
+                    setCompletedBadgeModal(null)
+                    setActiveModule(mod)
+                    setActiveLessonIndex(0)
+                  }}
+                  className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold rounded-xl border border-white/10 cursor-pointer transition-colors"
+                >
+                  {t('reviewCourseLessons', 'Review Course Lessons Again')}
+                </button>
+              </div>
             </div>
           </div>,
           document.body

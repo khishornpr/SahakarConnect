@@ -114,12 +114,14 @@ export default function HouseholdBookings() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
+                aria-selected={activeTab === tab.id}
+                data-selected={activeTab === tab.id ? 'true' : undefined}
                 className={`px-3 py-1 rounded-lg capitalize font-bold transition-all ${
                   activeTab === tab.id
-                    ? 'flow-btn-primary'
+                    ? 'flow-btn-primary cursor-default'
                     : isDark
-                    ? 'text-slate-400 hover:text-white'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                    : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
                 }`}
               >
                 {tab.label}
@@ -148,7 +150,13 @@ export default function HouseholdBookings() {
                 <div>
                   <div className="flex items-center gap-2.5">
                     <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
-                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 uppercase">
+                    <span
+                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase border ${
+                        b.status === 'completed'
+                          ? 'bg-emerald-950/40 text-emerald-400 border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
+                          : 'bg-[#ff6b00]/20 text-[#ff7a00] border-[#ff6b00]/40'
+                      }`}
+                    >
                       {getStatusLabel(b.status)}
                     </span>
                   </div>
@@ -178,12 +186,15 @@ export default function HouseholdBookings() {
                   ].map((s) => {
                     const isDone = step >= s.idx
                     const isCurrent = step === s.idx
+                    const isCompletedWork = b.status === 'completed'
                     return (
                       <div key={s.idx} className="space-y-1.5">
                         <div
                           className={`h-2 rounded-full transition-all duration-300 ${
                             isDone
-                              ? 'bg-gradient-to-r from-[#ff6b00] to-[#ff9900] shadow-[0_0_12px_rgba(255,107,0,0.6)]'
+                              ? isCompletedWork
+                                ? 'bg-gradient-to-r from-emerald-500 to-teal-400 shadow-[0_0_12px_rgba(16,185,129,0.8)]'
+                                : 'bg-gradient-to-r from-[#ff6b00] to-[#ff9900] shadow-[0_0_12px_rgba(255,107,0,0.6)]'
                               : isDark
                               ? 'bg-slate-800'
                               : 'bg-slate-200'
@@ -191,7 +202,9 @@ export default function HouseholdBookings() {
                         ></div>
                         <span
                           className={`block truncate ${
-                            isCurrent
+                            isCompletedWork
+                              ? 'text-emerald-400 font-bold'
+                              : isCurrent
                               ? 'text-[#ff7a00] font-black'
                               : isDone
                               ? isDark

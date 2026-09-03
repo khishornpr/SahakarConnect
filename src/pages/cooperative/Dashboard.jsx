@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { Link } from 'react-router-dom'
 import { TRADE_GROUPS } from '../../lib/serviceCategories'
@@ -25,6 +27,8 @@ import {
 } from 'recharts'
 
 export default function CooperativeDashboard() {
+  const { profile } = useAuth()
+  const { t } = useTranslation()
   const { isDark } = useTheme()
   const [ledger, setLedger] = useState([])
 
@@ -153,6 +157,24 @@ export default function CooperativeDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Hero Welcome Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.08]">
+        <div>
+          <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            {t('welcome', 'Welcome')}, {profile?.full_name || 'Administrator'} 👋
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+            {t('coopWelcomeSub', 'Federation real-time financial ledger, member welfare tracking, and demand analytics.')}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#ff6b00]/15 text-[#ff7a00] border border-[#ff6b00]/30 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-pulse"></span>
+            Apex Federation Operations
+          </span>
+        </div>
+      </div>
+
       {/* 4 FlowBoard Top KPI Cards with Sparklines */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1 */}
@@ -316,13 +338,15 @@ export default function CooperativeDashboard() {
                   <button
                     key={type.id}
                     onClick={() => setRevenueChartType(type.id)}
+                    aria-selected={revenueChartType === type.id}
+                    data-selected={revenueChartType === type.id ? 'true' : undefined}
                     title={type.tooltip}
                     className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
                       revenueChartType === type.id
-                        ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)]'
+                        ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                        : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
                     }`}
                   >
                     {type.label}
@@ -429,13 +453,15 @@ export default function CooperativeDashboard() {
                 <button
                   key={tItem.id}
                   onClick={() => setExpenseChartType(tItem.id)}
+                  aria-selected={expenseChartType === tItem.id}
+                  data-selected={expenseChartType === tItem.id ? 'true' : undefined}
                   title={tItem.title}
                   className={`px-2 py-0.5 text-xs rounded transition-all ${
                     expenseChartType === tItem.id
-                      ? 'bg-[#ff6b00] text-white shadow-sm font-bold'
+                      ? 'bg-[#ff6b00] text-white shadow-sm font-bold cursor-default'
                       : isDark
-                      ? 'text-slate-400 hover:text-white'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                      : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
                   }`}
                 >
                   {tItem.label}
@@ -513,8 +539,9 @@ export default function CooperativeDashboard() {
         <div className="flow-card glow-orange-hover p-6 space-y-4">
           <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>Recent Transactions</h2>
-            <Link to="/cooperative/financials" className="text-xs text-[#ff7a00] hover:underline font-bold">
-              View All
+            <Link to="/cooperative/financials" className="text-xs text-[#ff7a00] hover:underline font-bold flex items-center gap-1">
+              <span>{t('viewAll', 'View All')}</span>
+              <span>→</span>
             </Link>
           </div>
 
@@ -581,12 +608,14 @@ export default function CooperativeDashboard() {
                   <button
                     key={c.id}
                     onClick={() => setCashFlowChartType(c.id)}
+                    aria-selected={cashFlowChartType === c.id}
+                    data-selected={cashFlowChartType === c.id ? 'true' : undefined}
                     className={`px-1.5 py-0.5 text-xs rounded ${
                       cashFlowChartType === c.id
-                        ? 'bg-[#ff6b00] text-white font-bold'
+                        ? 'bg-[#ff6b00] text-white font-bold cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                        : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
                     }`}
                   >
                     {c.label}
@@ -646,8 +675,9 @@ export default function CooperativeDashboard() {
         <div className="flow-card glow-orange-hover p-6 space-y-4">
           <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>Cooperative Targets</h2>
-            <Link to="/cooperative/demand-forecast" className="text-xs text-[#ff7a00] hover:underline font-bold">
-              View All
+            <Link to="/cooperative/demand-forecast" className="text-xs text-[#ff7a00] hover:underline font-bold flex items-center gap-1">
+              <span>{t('viewAll', 'View All')}</span>
+              <span>→</span>
             </Link>
           </div>
 
@@ -734,9 +764,10 @@ export default function CooperativeDashboard() {
         <div className="flex items-center gap-3 relative z-10 shrink-0">
           <Link
             to="/cooperative/financials"
-            className="flow-btn-primary px-6 py-3 text-xs font-black uppercase tracking-wider text-center"
+            className="flow-btn-primary px-6 py-3 text-xs font-black uppercase tracking-wider text-center flex items-center gap-1.5"
           >
-            View Detailed Audit Report
+            <span>{t('viewDetailedAuditReport', 'View Detailed Audit Report')}</span>
+            <span>→</span>
           </Link>
         </div>
       </div>

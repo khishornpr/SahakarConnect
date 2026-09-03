@@ -2,15 +2,40 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
+import { useTranslation } from '../context/I18nContext'
+
+const ALLOWED_EXTENSIONS = ['txt', 'doc', 'docx', 'pdf', 'png', 'jpeg', 'jpg']
 
 export default function ReportIssueModal({ isOpen, onClose, job, currentUser, onSubmitted }) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [issueType, setIssueType] = useState('Unsatisfactory Service')
   const [subject, setSubject] = useState('')
   const [description, setDescription] = useState('')
   const [fileName, setFileName] = useState('')
+  const [fileError, setFileError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0]
+    if (!file) {
+      setFileName('')
+      setFileError('')
+      return
+    }
+
+    const ext = file.name.split('.').pop()?.toLowerCase()
+    if (!ALLOWED_EXTENSIONS.includes(ext)) {
+      setFileError(`⚠️ Invalid file format (.${ext || 'unknown'}). Please upload only TXT, DOC, DOCX, PDF, PNG, JPEG, or JPG files.`)
+      setFileName('')
+      e.target.value = '' // Reset input
+      return
+    }
+
+    setFileError('')
+    setFileName(file.name)
+  }
 
   if (!isOpen || !job) return null
 
@@ -130,7 +155,7 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
                 required
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                placeholder="e.g. Pipe started leaking 24 hrs after repair"
+                placeholder="example: Pipe started leaking 24 hrs after repair"
                 className={`w-full p-2.5 rounded-xl border outline-none transition-all ${
                   isDark ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900'
                 }`}
@@ -154,10 +179,27 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
 
             {/* File Upload */}
             <div>
-              <label className="block font-bold mb-1 text-slate-300">Evidence Photo / Receipt</label>
+              <label className="block font-bold mb-1 text-slate-300">Evidence Photo / Receipt / Document</label>
+              <p className="text-[11px] text-slate-400 mb-1.5 font-medium">
+                Upload the files in any of these formats: <span className="font-bold text-[#ff7a00]">TXT, DOC, DOCX, PDF, PNG, JPEG, JPG</span>
+              </p>
+
+              {fileError && (
+                <div className="mb-2 p-2.5 rounded-xl bg-rose-950/90 border border-rose-500/70 text-rose-200 text-xs font-bold flex items-center gap-1.5 shadow-md">
+                  <span>{fileError}</span>
+                </div>
+              )}
+
+              {fileName && !fileError && (
+                <div className="mb-2 text-xs font-bold text-emerald-400">
+                  ✓ Attached: {fileName}
+                </div>
+              )}
+
               <input
                 type="file"
-                onChange={(e) => setFileName(e.target.files?.[0]?.name || 'customer_proof.jpg')}
+                accept=".txt,.doc,.docx,.pdf,.png,.jpeg,.jpg,text/plain,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg"
+                onChange={handleFileChange}
                 className="w-full text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-[#ff6b00] file:text-white cursor-pointer"
               />
             </div>

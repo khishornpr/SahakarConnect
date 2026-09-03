@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import {
   BarChart,
@@ -18,6 +19,7 @@ import {
 
 export default function OfficerDashboard() {
   const { profile } = useAuth()
+  const { t } = useTranslation()
   const { isDark } = useTheme()
 
   const [cases, setCases] = useState([])
@@ -140,7 +142,7 @@ export default function OfficerDashboard() {
   return (
     <div className="space-y-6">
       {/* Top Banner & Jurisdiction Info */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.08]">
         <div>
           <div
             className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 border ${
@@ -151,7 +153,7 @@ export default function OfficerDashboard() {
             <span>Government of NCT of Delhi • Labor Department</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Labor Department Dispute & Adjudication Portal
+            {t('welcome', 'Welcome')}, {profile?.full_name || 'Officer'} 👋
           </h1>
           <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
             Statutory dispute resolution bench for household gig workers and registered consumer complaints across Delhi-NCR cooperative clusters.
@@ -271,8 +273,12 @@ export default function OfficerDashboard() {
               <button
                 key={tab}
                 onClick={() => setStatusFilter(tab)}
+                aria-selected={statusFilter === tab}
+                data-selected={statusFilter === tab ? 'true' : undefined}
                 className={`px-3 py-1 rounded-lg font-bold capitalize transition-all ${
-                  statusFilter === tab ? 'bg-[#ff6b00] text-white' : 'text-slate-400 hover:text-white'
+                  statusFilter === tab
+                    ? 'bg-[#ff6b00] text-white cursor-default'
+                    : 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
                 }`}
               >
                 {tab}

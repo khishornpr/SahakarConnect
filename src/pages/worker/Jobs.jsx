@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 import InvoiceModal from '../../components/InvoiceModal'
 import RatingModal from '../../components/RatingModal'
 
 export default function WorkerJobs() {
   const { user } = useAuth()
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [assignedJobs, setAssignedJobs] = useState([])
   const [availableJobs, setAvailableJobs] = useState([])
   const [workerInfo, setWorkerInfo] = useState(null)
@@ -21,6 +23,16 @@ export default function WorkerJobs() {
   const [otpError, setOtpError] = useState('')
   const [viewInvoiceJob, setViewInvoiceJob] = useState(null)
   const [ratingCustomerJob, setRatingCustomerJob] = useState(null)
+  const otpInputRef = useRef(null)
+
+  useEffect(() => {
+    if (otpModalJob) {
+      const timer = setTimeout(() => {
+        otpInputRef.current?.focus()
+      }, 60)
+      return () => clearTimeout(timer)
+    }
+  }, [otpModalJob])
 
   async function loadJobs() {
     if (!user) return
@@ -94,7 +106,7 @@ export default function WorkerJobs() {
     if (!otpModalJob) return
 
     if (enteredOtp.trim() !== otpModalJob.otp_code && enteredOtp.trim() !== '4829' && enteredOtp.trim() !== '1234') {
-      setOtpError(`Invalid OTP! Please enter the 4-digit code provided by customer (Hint: ${otpModalJob.otp_code})`)
+      setOtpError(t('invalidOtpWarning', '⚠️ Invalid OTP! Please enter the correct 4-digit code provided by the customer.'))
       return
     }
 
@@ -151,10 +163,10 @@ export default function WorkerJobs() {
             <span>⚡ SIH26089 Feature 6 • Service Booking & Status Progression</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Service Jobs & Dispatch Queue
+            {t('serviceJobsQueue', 'Service Jobs & Dispatch Queue')}
           </h1>
           <p className={`text-xs mt-1 max-w-3xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Accept open trade requests, track active assignments, and verify customer OTP on completion
+            {t('serviceJobsSub', 'Accept open trade requests, track active assignments, and verify customer OTP on completion')}
           </p>
         </div>
         <button
@@ -165,7 +177,7 @@ export default function WorkerJobs() {
               : 'bg-slate-900 text-white hover:bg-slate-800'
           }`}
         >
-          🔄 Refresh Queue
+          🔄 {t('refreshQueue', 'Refresh Queue')}
         </button>
       </div>
 
@@ -174,15 +186,15 @@ export default function WorkerJobs() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-800'}`}>
-              ⚡ Open Service Requests ({availableJobs.length})
+              ⚡ {t('openServiceRequests', 'Open Service Requests')} ({availableJobs.length})
             </h2>
             <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Filtered for your verified trade:{' '}
+              {t('filteredForTrade', 'Filtered for your verified trade')}:{' '}
               <strong className="text-emerald-400 font-bold">{workerInfo?.primary_trade || 'Electrician'}</strong>
             </p>
           </div>
           <span className="status-pill-emerald">
-            Fair-Rotation Matching
+            {t('fairRotationMatching', 'Fair-Rotation Matching')}
           </span>
         </div>
 
@@ -218,16 +230,16 @@ export default function WorkerJobs() {
                   disabled={statusUpdating === job.id}
                   className="w-full py-2 flow-btn-primary text-xs font-bold uppercase tracking-wider rounded-xl shadow transition-all disabled:opacity-50"
                 >
-                  {statusUpdating === job.id ? 'Accepting...' : '✓ Accept Job Assignment'}
+                  {statusUpdating === job.id ? t('acceptingStatus', 'Accepting...') : t('acceptJobAssignment', '✓ Accept Job Assignment')}
                 </button>
               </div>
             ))}
           </div>
         ) : (
           <div className={`p-8 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
-            <p className="text-sm font-medium">No open unassigned requests at this moment.</p>
+            <p className="text-sm font-medium">{t('noOpenRequests', 'No open unassigned requests at this moment.')}</p>
             <p className="text-xs text-slate-500 mt-1">
-              New customer service bookings matching your trade will appear here automatically.
+              {t('newBookingsWillAppear', 'New customer service bookings matching your trade will appear here automatically.')}
             </p>
           </div>
         )}
@@ -236,7 +248,7 @@ export default function WorkerJobs() {
       {/* My Assigned & Active Jobs */}
       <div className="flow-card glow-orange-hover p-6">
         <h2 className={`text-base font-black mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-          📋 My Assigned & Completed Work ({assignedJobs.length})
+          📋 {t('myAssignedCompletedWork', 'My Assigned & Completed Work')} ({assignedJobs.length})
         </h2>
 
         {assignedJobs.length > 0 ? (
@@ -253,7 +265,13 @@ export default function WorkerJobs() {
                 <div className="space-y-1.5 flex-1">
                   <div className="flex items-center gap-2.5">
                     <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{job.title}</h3>
-                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 uppercase">
+                    <span
+                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase border ${
+                        job.status === 'completed'
+                          ? 'bg-emerald-950/40 text-emerald-400 border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
+                          : 'bg-[#ff6b00]/20 text-[#ff7a00] border-[#ff6b00]/40'
+                      }`}
+                    >
                       {job.status.replace('_', ' ')}
                     </span>
                   </div>
@@ -266,7 +284,7 @@ export default function WorkerJobs() {
 
                 <div className="flex flex-col items-end justify-between gap-3 shrink-0">
                   <div className="text-right">
-                    <span className="text-[11px] text-slate-500 block">Gross Service Fee</span>
+                    <span className="text-[11px] text-slate-500 block">{t('grossServiceFee', 'Gross Service Fee')}</span>
                     <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
                       ₹{job.final_amount || job.estimated_amount}
                     </span>
@@ -280,7 +298,7 @@ export default function WorkerJobs() {
                         disabled={statusUpdating === job.id}
                         className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow-sm"
                       >
-                        Start Service (In Progress) →
+                        {t('startServiceAction', 'Start Service (In Progress) →')}
                       </button>
                     )}
                     {job.status === 'in_progress' && (
@@ -288,7 +306,7 @@ export default function WorkerJobs() {
                         onClick={() => setOtpModalJob(job)}
                         className="px-4 py-2 flow-btn-emerald text-xs font-bold rounded-xl shadow-sm flex items-center gap-1"
                       >
-                        🔐 Verify OTP & Complete
+                        🔐 {t('verifyOtpCompleteAction', 'Verify OTP & Complete')}
                       </button>
                     )}
                     {job.status === 'completed' && (
@@ -301,14 +319,14 @@ export default function WorkerJobs() {
                               : 'bg-amber-50 border-amber-300 text-amber-900'
                           }`}
                         >
-                          ★ Rate Customer
+                          ★ {t('rateCustomer', 'Rate Customer')}
                         </button>
                         <button
                           onClick={() => setViewInvoiceJob(job)}
                           className="px-3.5 py-1.5 flow-btn-primary text-xs font-bold rounded-xl flex items-center gap-1 shadow-sm"
                         >
                           <span>📄</span>
-                          <span>Invoice</span>
+                          <span>{t('invoice', 'Invoice')}</span>
                         </button>
                       </div>
                     )}
@@ -319,7 +337,7 @@ export default function WorkerJobs() {
           </div>
         ) : (
           <div className={`p-8 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
-            <p className="text-sm font-medium">No jobs assigned yet.</p>
+            <p className="text-sm font-medium">{t('noJobsAssignedYet', 'No jobs assigned yet.')}</p>
           </div>
         )}
       </div>
@@ -337,7 +355,7 @@ export default function WorkerJobs() {
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>Enter Customer OTP</h3>
+                  <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('enterCustomerOtp', 'Enter Customer OTP')}</h3>
                   <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{otpModalJob.title}</p>
                 </div>
                 <button
@@ -359,15 +377,18 @@ export default function WorkerJobs() {
               <form onSubmit={handleVerifyOtpAndComplete} className="space-y-4">
                 <div>
                   <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    4-Digit Customer OTP
+                    {t('fourDigitOtp', '4-Digit Customer OTP')}
                   </label>
                   <input
+                    ref={otpInputRef}
+                    autoFocus
                     type="text"
+                    inputMode="numeric"
                     maxLength={4}
                     value={enteredOtp}
                     onChange={(e) => setEnteredOtp(e.target.value)}
-                    placeholder="e.g. 4829"
-                    className={`w-full text-center text-2xl font-mono tracking-widest px-4 py-2 border rounded-xl outline-none transition-all ${
+                    placeholder="0000"
+                    className={`w-full text-center text-2xl font-mono tracking-widest px-4 py-2.5 border rounded-xl outline-none transition-all placeholder:text-slate-500/40 placeholder:tracking-widest ${
                       isDark
                         ? 'bg-[#161a22] border-white/[0.1] text-white focus:border-[#ff6b00]'
                         : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
@@ -375,19 +396,22 @@ export default function WorkerJobs() {
                     required
                   />
                   <p className="text-[10px] text-slate-500 mt-1 text-center">
-                    Ask the customer for the 4-digit code shown on their booking page.
+                    {t('otpInstructionText', 'Ask the customer for the 4-digit code shown on their booking page.')}
                   </p>
                 </div>
 
                 <div>
                   <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    Work Notes (Optional)
+                    {t('workNotesOptional', 'Work Notes (Optional)')}
+                    <span className="block text-[10px] text-slate-400 font-normal mt-0.5">
+                      ({t('workNotesExample', 'example: Replaced switch and checked connections')})
+                    </span>
                   </label>
                   <textarea
                     value={completionNotes}
                     onChange={(e) => setCompletionNotes(e.target.value)}
                     rows={2}
-                    placeholder="e.g. Replaced switch and checked connections."
+                    placeholder={t('workNotesPlaceholder', 'Replaced switch and checked connections...')}
                     className={`w-full px-3 py-2 border rounded-xl text-xs ${
                       isDark
                         ? 'bg-[#161a22] border-white/[0.1] text-white'
@@ -410,7 +434,7 @@ export default function WorkerJobs() {
                   type="submit"
                   className="w-full py-3 flow-btn-primary text-xs font-black uppercase tracking-wider rounded-xl shadow transition-all"
                 >
-                  ✓ Complete Job & Receive Wage
+                  {t('completeJobReceiveWage', '✓ Complete Job & Receive Wage')}
                 </button>
               </form>
             </div>

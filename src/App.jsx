@@ -23,12 +23,14 @@ const WorkerProfile = lazy(() => import('./pages/worker/Profile'))
 const WorkerWelfare = lazy(() => import('./pages/worker/Welfare'))
 const WorkerComplaints = lazy(() => import('./pages/worker/Complaints'))
 const WorkerLearning = lazy(() => import('./pages/worker/Learning'))
+const WorkerHelp = lazy(() => import('./pages/worker/Help'))
 
 // Household Portal Pages (Lazy loaded)
 const HouseholdDashboard = lazy(() => import('./pages/household/Dashboard'))
 const HouseholdBookService = lazy(() => import('./pages/household/BookService'))
 const HouseholdBookings = lazy(() => import('./pages/household/Bookings'))
 const HouseholdInvoices = lazy(() => import('./pages/household/Invoices'))
+const HouseholdHelp = lazy(() => import('./pages/household/Help'))
 
 // Cooperative Federation Admin Pages (Lazy loaded)
 const CooperativeDashboard = lazy(() => import('./pages/cooperative/Dashboard'))
@@ -36,15 +38,18 @@ const CooperativeWorkers = lazy(() => import('./pages/cooperative/Workers'))
 const CooperativeDispatch = lazy(() => import('./pages/cooperative/Dispatch'))
 const CooperativeFinancials = lazy(() => import('./pages/cooperative/Financials'))
 const CooperativeDemandForecast = lazy(() => import('./pages/cooperative/DemandForecast'))
+const CooperativeHelp = lazy(() => import('./pages/cooperative/Help'))
 
 // Labor Department Officer Portal Pages (Lazy loaded)
 const OfficerDashboard = lazy(() => import('./pages/officer/Dashboard'))
 const OfficerCases = lazy(() => import('./pages/officer/Cases'))
+const OfficerHelp = lazy(() => import('./pages/officer/Help'))
 
 // Manager Portal Pages (Lazy loaded)
 const ManagerDashboard = lazy(() => import('./pages/manager/Dashboard'))
 const ManagerWorkers = lazy(() => import('./pages/manager/Workers'))
 const ManagerReports = lazy(() => import('./pages/manager/Reports'))
+const ManagerHelp = lazy(() => import('./pages/manager/Help'))
 
 function PageLoadingFallback() {
   return (
@@ -116,6 +121,7 @@ function App() {
                   <Route path="welfare" element={<WorkerWelfare />} />
                   <Route path="complaints" element={<WorkerComplaints />} />
                   <Route path="learning" element={<WorkerLearning />} />
+                  <Route path="help" element={<WorkerHelp />} />
                 </Route>
 
                 {/* 2. Household Portal */}
@@ -131,6 +137,7 @@ function App() {
                   <Route path="book" element={<HouseholdBookService />} />
                   <Route path="bookings" element={<HouseholdBookings />} />
                   <Route path="invoices" element={<HouseholdInvoices />} />
+                  <Route path="help" element={<HouseholdHelp />} />
                 </Route>
 
                 {/* 3. Cooperative Federation Admin Portal */}
@@ -147,6 +154,7 @@ function App() {
                   <Route path="dispatch" element={<CooperativeDispatch />} />
                   <Route path="financials" element={<CooperativeFinancials />} />
                   <Route path="demand-forecast" element={<CooperativeDemandForecast />} />
+                  <Route path="help" element={<CooperativeHelp />} />
                 </Route>
 
                 {/* 4. Labor Department Officer Portal */}
@@ -160,6 +168,7 @@ function App() {
                 >
                   <Route path="dashboard" element={<OfficerDashboard />} />
                   <Route path="cases" element={<OfficerCases />} />
+                  <Route path="help" element={<OfficerHelp />} />
                 </Route>
 
                 {/* 5. Manager Portal */}
@@ -174,6 +183,7 @@ function App() {
                   <Route path="dashboard" element={<ManagerDashboard />} />
                   <Route path="workers" element={<ManagerWorkers />} />
                   <Route path="reports" element={<ManagerReports />} />
+                  <Route path="help" element={<ManagerHelp />} />
                 </Route>
 
                 {/* Fallback to root */}

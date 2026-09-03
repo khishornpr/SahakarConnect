@@ -61,10 +61,10 @@ export default function HouseholdDashboard() {
             }`}
           >
             <span>🏡</span>
-            <span>Verified Cooperative Household Portal</span>
+            <span>{t('householdPortalBadge', 'Verified Cooperative Household Portal')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            {t('welcomeBack', 'Welcome back')}, {profile?.full_name}
+            {t('welcome', 'Welcome')}, {profile?.full_name || 'Member'} 👋
           </h1>
           <p className={`text-xs sm:text-sm max-w-xl leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
             {t('householdTagline', 'Book verified cooperative craftspeople with guaranteed fair statutory rates & worker social security.')}
@@ -75,7 +75,7 @@ export default function HouseholdDashboard() {
           to="/household/book"
           className="flow-btn-primary px-6 py-3.5 text-xs font-black uppercase tracking-wider self-start md:self-auto flex items-center gap-2 shrink-0 shadow-lg"
         >
-          <span>✨ Book Verified Service</span>
+          <span>✨ {t('bookService', 'Book Service')}</span>
           <span>→</span>
         </Link>
       </div>
@@ -96,18 +96,33 @@ export default function HouseholdDashboard() {
           <div className={`flex flex-wrap items-center gap-1.5 p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
             {['All', ...TRADE_GROUPS].map((group) => {
               const isSelected = (selectedGroup || 'All') === group
-              const label = group === 'All' ? t('allTrades', 'All Trades') : group.split(' ')[0]
+              const label =
+                group === 'All'
+                  ? t('allTrades', 'All Trades')
+                  : group.includes('Home')
+                  ? '🏠 Home Improvement'
+                  : group.includes('Repair')
+                  ? '🔧 Repair'
+                  : group.includes('Cleaning')
+                  ? '🧹 Cleaning'
+                  : group.includes('Domestic')
+                  ? '🍳 Domestic'
+                  : group.includes('Care')
+                  ? '🩺 Care'
+                  : '🌿 Outdoor'
               return (
                 <button
                   key={group}
                   type="button"
                   onClick={() => setSelectedGroup(group)}
+                  aria-selected={isSelected}
+                  data-selected={isSelected ? 'true' : undefined}
                   className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
                     isSelected
-                      ? 'flow-btn-primary shadow-sm'
+                      ? 'flow-btn-primary shadow-sm cursor-default'
                       : isDark
-                      ? 'text-slate-400 hover:text-white'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                      : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
                   }`}
                 >
                   {label}
@@ -204,8 +219,9 @@ export default function HouseholdDashboard() {
             {activeBookings.length === 0 && (
               <div className={`p-8 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
                 <p className="text-xs font-semibold">{t('noActiveBookings', 'No active bookings right now.')}</p>
-                <Link to="/household/book" className="text-xs text-[#ff7a00] font-bold mt-1 inline-block">
-                  + {t('scheduleCoopWorker', 'Schedule a cooperative worker')}
+                <Link to="/household/book" className="text-xs text-[#ff7a00] font-bold mt-1 inline-flex items-center gap-1">
+                  <span>+ {t('scheduleCoopWorker', 'Schedule a cooperative worker')}</span>
+                  <span>→</span>
                 </Link>
               </div>
             )}
@@ -218,8 +234,9 @@ export default function HouseholdDashboard() {
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Completed Services & Digital Invoices
             </h2>
-            <Link to="/household/invoices" className="text-xs text-emerald-400 hover:underline font-bold">
-              Invoices →
+            <Link to="/household/invoices" className="text-xs text-emerald-400 hover:underline font-bold flex items-center gap-1">
+              <span>{t('invoices', 'Invoices')}</span>
+              <span>→</span>
             </Link>
           </div>
 
@@ -244,8 +261,9 @@ export default function HouseholdDashboard() {
                 </div>
                 <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
                   <span>Total Billed: <strong className={isDark ? 'text-white' : 'text-slate-900'}>₹{b.final_amount || b.estimated_amount}</strong></span>
-                  <Link to="/household/invoices" className="text-emerald-400 font-bold hover:underline">
-                    Download Invoice 📄
+                  <Link to="/household/invoices" className="text-emerald-400 font-bold hover:underline inline-flex items-center gap-1">
+                    <span>Download Invoice 📄</span>
+                    <span>→</span>
                   </Link>
                 </div>
               </div>

@@ -3,9 +3,11 @@ import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { DELHI_NCR_AREAS } from '../lib/geoService'
 import { useTheme } from '../context/ThemeContext'
+import { useTranslation } from '../context/I18nContext'
 
 export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [selectedEmergency, setSelectedEmergency] = useState('Electrical Sparking / Short Circuit')
   const [area, setArea] = useState(DELHI_NCR_AREAS[0].name)
   const [address, setAddress] = useState('B-42, South Extension Part 2, New Delhi')

@@ -364,30 +364,32 @@ input[type="submit"],
               background-color 0.2s ease !important;
 }
 
-/* General interactive button floating neon hover (Dark Mode) */
-.dark button:not(:disabled):hover,
-html.dark button:not(:disabled):hover,
+/* General interactive button floating neon hover (Dark Mode) - Only for unselected buttons */
+.dark button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):hover,
+html.dark button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):hover,
 .dark input[type="button"]:not(:disabled):hover,
 .dark input[type="submit"]:not(:disabled):hover {
   box-shadow: 0 0 0 1px rgba(255, 140, 26, 0.7),
               0 0 24px rgba(255, 107, 0, 0.65),
               0 0 50px rgba(255, 107, 0, 0.35),
               0 6px 20px rgba(0, 0, 0, 0.6) !important;
-  transform: translateY(-2px);
+  transform: translateY(-2.5px) scale(1.02) !important;
+  cursor: pointer !important;
 }
 
-/* General interactive button floating neon hover (Light Mode) */
-html:not(.dark) button:not(:disabled):hover,
+/* General interactive button floating neon hover (Light Mode) - Only for unselected buttons */
+html:not(.dark) button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):hover,
 html:not(.dark) input[type="button"]:not(:disabled):hover,
 html:not(.dark) input[type="submit"]:not(:disabled):hover {
   box-shadow: 0 0 0 1px #ff6b00,
               0 4px 18px rgba(255, 107, 0, 0.45),
               0 8px 30px rgba(255, 107, 0, 0.25) !important;
-  transform: translateY(-2px);
+  transform: translateY(-2.5px) scale(1.02) !important;
+  cursor: pointer !important;
 }
 
-/* Active click feedback for all buttons */
-button:not(:disabled):active,
+/* Active click feedback for unselected buttons */
+button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):active,
 input[type="button"]:not(:disabled):active,
 input[type="submit"]:not(:disabled):active {
   transform: translateY(0.5px) scale(0.97) !important;
@@ -866,4 +868,317 @@ html:not(.dark) .recharts-cartesian-axis-tick text {
 
 .animate-fade-in-up {
   animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* -------------------------------------------------------------------------- */
+/*            NOTIFICATION BELL SHAKING & GLOWING ANIMATIONS                  */
+/* -------------------------------------------------------------------------- */
+@keyframes bell-ring-shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  5% {
+    transform: rotate(22deg) scale(1.08);
+  }
+  10% {
+    transform: rotate(-22deg) scale(1.08);
+  }
+  15% {
+    transform: rotate(18deg);
+  }
+  20% {
+    transform: rotate(-18deg);
+  }
+  25% {
+    transform: rotate(12deg);
+  }
+  30% {
+    transform: rotate(-12deg);
+  }
+  35% {
+    transform: rotate(6deg);
+  }
+  40% {
+    transform: rotate(-6deg);
+  }
+  45% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-bell-shake {
+  animation: bell-ring-shake 1.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite !important;
+  transform-origin: top center;
+  display: inline-block;
+  will-change: transform;
+}
+
+@keyframes neon-glow-pulse-orange {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(255, 107, 0, 0.5), 0 0 30px rgba(255, 107, 0, 0.3), inset 0 0 8px rgba(255, 107, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(255, 107, 0, 0.95), 0 0 60px rgba(255, 107, 0, 0.6), inset 0 0 14px rgba(255, 107, 0, 0.4);
+  }
+}
+
+.neon-glow-pulse-orange {
+  animation: neon-glow-pulse-orange 1.8s infinite ease-in-out;
+}
+
+.neon-bell-button {
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.4), 0 0 24px rgba(255, 107, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neon-bell-button:hover {
+  box-shadow: 0 0 15px #ff7a00,
+              0 0 35px rgba(255, 107, 0, 0.9),
+              0 0 70px rgba(255, 85, 0, 0.5) !important;
+  border-color: #ff9d42 !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* -------------------------------------------------------------------------- */
+/*      HYPER-VIBRANT NEON GLOW HOVER & INTERACTIVE BUTTON BEHAVIOR           */
+/* -------------------------------------------------------------------------- */
+/* Unselected buttons: Multi-layered, ultra-radiant neon bloom & smooth lift */
+button:not(:disabled):not([aria-selected="true"]):not([data-selected="true"]):not(.btn-selected):not(.active-tab):not(.cursor-default):hover,
+a.flow-btn-primary:not(:disabled):hover,
+a.flow-btn-secondary:not(:disabled):hover,
+.flow-btn-primary:not(:disabled):hover,
+.flow-btn-secondary:not(:disabled):hover,
+.neon-glow-hover:not(:disabled):hover,
+.neon-glow-btn:not(:disabled):hover {
+  box-shadow: 0 0 12px #ff7a00,
+              0 0 28px rgba(255, 107, 0, 0.85),
+              0 0 60px rgba(255, 85, 0, 0.55),
+              0 0 95px rgba(255, 107, 0, 0.35) !important;
+  border-color: #ffa149 !important;
+  transform: translateY(-2.5px) scale(1.025);
+  filter: brightness(1.15) saturate(1.2);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Specific glowing class boosters */
+.glow-orange-hover:hover {
+  box-shadow: 0 0 12px #ff7a00,
+              0 0 30px rgba(255, 107, 0, 0.9),
+              0 0 65px rgba(255, 85, 0, 0.6),
+              0 0 100px rgba(255, 107, 0, 0.35) !important;
+  border-color: #ffa149 !important;
+  transform: translateY(-2.5px) scale(1.02);
+  filter: brightness(1.15) saturate(1.25);
+}
+
+.glow-emerald-hover:hover {
+  box-shadow: 0 0 12px #10b981,
+              0 0 30px rgba(16, 185, 129, 0.9),
+              0 0 65px rgba(5, 150, 105, 0.6),
+              0 0 100px rgba(16, 185, 129, 0.35) !important;
+  border-color: #6ee7b7 !important;
+  transform: translateY(-2.5px) scale(1.02);
+  filter: brightness(1.15) saturate(1.25);
+}
+
+.glow-cyan-hover:hover {
+  box-shadow: 0 0 12px #06b6d4,
+              0 0 30px rgba(6, 182, 212, 0.9),
+              0 0 65px rgba(2, 132, 199, 0.6),
+              0 0 100px rgba(6, 182, 212, 0.35) !important;
+  border-color: #67e8f9 !important;
+  transform: translateY(-2.5px) scale(1.02);
+  filter: brightness(1.15) saturate(1.25);
+}
+
+.glow-rose-hover:hover {
+  box-shadow: 0 0 12px #f43f5e,
+              0 0 30px rgba(244, 63, 94, 0.9),
+              0 0 65px rgba(225, 29, 72, 0.6),
+              0 0 100px rgba(244, 63, 94, 0.35) !important;
+  border-color: #fda4af !important;
+  transform: translateY(-2.5px) scale(1.02);
+  filter: brightness(1.15) saturate(1.25);
+}
+
+/* Selected / clicked buttons: Solid and static - do NOT jump or scale */
+button[aria-selected="true"],
+button[aria-pressed="true"],
+button[aria-current="page"],
+button[data-selected="true"],
+button[data-active="true"],
+button.active,
+button.is-selected,
+button.is-active,
+button.active-tab,
+button.tab-active,
+button.btn-selected,
+button.selected-btn,
+a.active,
+a[aria-current="page"],
+a[data-selected="true"],
+.sidebar-link-active,
+.flow-nav-active,
+.btn-selected,
+.tab-active,
+.active-tab,
+[data-selected="true"],
+[data-active="true"],
+[aria-selected="true"] {
+  cursor: default !important;
+  transform: none !important;
+  scale: 1 !important;
+  translate: none !important;
+}
+
+button[aria-selected="true"]:hover,
+button[aria-pressed="true"]:hover,
+button[aria-current="page"]:hover,
+button[data-selected="true"]:hover,
+button[data-active="true"]:hover,
+button.active:hover,
+button.is-selected:hover,
+button.is-active:hover,
+button.active-tab:hover,
+button.tab-active:hover,
+button.btn-selected:hover,
+button.selected-btn:hover,
+a.active:hover,
+a[aria-current="page"]:hover,
+a[data-selected="true"]:hover,
+.sidebar-link-active:hover,
+.flow-nav-active:hover,
+.btn-selected:hover,
+.tab-active:hover,
+.active-tab:hover,
+[data-selected="true"]:hover,
+[data-active="true"]:hover,
+[aria-selected="true"]:hover,
+button[aria-selected="true"]:active,
+button[aria-pressed="true"]:active,
+button[aria-current="page"]:active,
+button[data-selected="true"]:active,
+button[data-active="true"]:active,
+button.active:active,
+button.is-selected:active,
+button.is-active:active,
+button.active-tab:active,
+button.tab-active:active,
+button.btn-selected:active,
+a.active:active,
+a[aria-current="page"]:active,
+a[data-selected="true"]:active,
+.sidebar-link-active:active,
+.flow-nav-active:active,
+.btn-selected:active,
+.tab-active:active,
+.active-tab:active,
+[data-selected="true"]:active,
+[data-active="true"]:active,
+[aria-selected="true"]:active {
+  transform: none !important;
+  scale: 1 !important;
+  translate: none !important;
+  cursor: default !important;
+}
+
+button[aria-selected="true"] *,
+button[data-selected="true"] *,
+button[data-active="true"] *,
+.sidebar-link-active *,
+.active-tab *,
+.btn-selected * {
+  transform: none !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/*            SUPERCHARGED SIDEBAR NEON GLOW & LIGHT AURA                      */
+/* -------------------------------------------------------------------------- */
+.sidebar-link-active {
+  background: linear-gradient(135deg, #ff5500 0%, #ff7a00 50%, #ff9500 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 200, 120, 0.95) !important;
+  box-shadow: 0 0 16px rgba(255, 107, 0, 1),
+              0 0 35px rgba(255, 107, 0, 0.8),
+              0 0 65px rgba(255, 85, 0, 0.5),
+              inset 0 0 14px rgba(255, 255, 255, 0.35) !important;
+  cursor: default !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar-link-inactive {
+  border: 1px solid transparent;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sidebar-link-inactive:hover {
+  background: rgba(255, 107, 0, 0.16) !important;
+  color: #ffffff !important;
+  border-color: #ff8c00 !important;
+  box-shadow: 0 0 16px #ff7a00,
+              0 0 32px rgba(255, 107, 0, 0.88),
+              0 0 60px rgba(255, 85, 0, 0.55),
+              0 0 90px rgba(255, 107, 0, 0.3),
+              inset 0 0 15px rgba(255, 107, 0, 0.3) !important;
+  transform: translateY(-2px) scale(1.03) !important;
+  filter: brightness(1.25) saturate(1.35) !important;
+}
+
+/* Light mode sidebar link inactive hover */
+html:not(.dark) .sidebar-link-inactive:hover {
+  background: rgba(255, 107, 0, 0.12) !important;
+  color: #c2410c !important;
+  border-color: #ff7a00 !important;
+  box-shadow: 0 0 16px rgba(255, 107, 0, 0.85),
+              0 0 32px rgba(255, 107, 0, 0.45),
+              inset 0 0 12px rgba(255, 107, 0, 0.15) !important;
+}
+
+/* Sidebar SOS button ultra-radiant hover */
+.sidebar-sos-btn {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sidebar-sos-btn:hover {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 50%, #e11d48 100%) !important;
+  color: #ffffff !important;
+  border-color: #ffe4e6 !important;
+  box-shadow: 0 0 18px #f43f5e,
+              0 0 38px rgba(244, 63, 94, 0.95),
+              0 0 75px rgba(225, 29, 72, 0.6),
+              inset 0 0 15px rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-2px) scale(1.03) !important;
+  filter: brightness(1.2) saturate(1.3) !important;
+}
+
+/* Sidebar Protection Plan Welfare button hover */
+.sidebar-welfare-btn {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sidebar-welfare-btn:hover {
+  background: linear-gradient(135deg, #ff9429 0%, #ff7a00 50%, #ff5500 100%) !important;
+  color: #ffffff !important;
+  border-color: #ffedd5 !important;
+  box-shadow: 0 0 18px #ff7a00,
+              0 0 38px rgba(255, 107, 0, 0.95),
+              0 0 75px rgba(255, 85, 0, 0.6),
+              inset 0 0 14px rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-2px) scale(1.03) !important;
+  filter: brightness(1.2) saturate(1.3) !important;
+}
+
+/* Sidebar Mobile Bottom Navigation link glow */
+.mobile-nav-link-active {
+  color: #ff7a00 !important;
+  filter: drop-shadow(0 0 8px #ff7a00) drop-shadow(0 0 18px rgba(255, 107, 0, 0.7)) !important;
+}
+
+.mobile-nav-link-inactive:hover {
+  color: #ff9d42 !important;
+  transform: translateY(-2px) scale(1.08) !important;
+  filter: drop-shadow(0 0 10px rgba(255, 122, 0, 0.85)) !important;
 }

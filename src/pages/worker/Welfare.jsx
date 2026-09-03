@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 
 export default function WorkerWelfare() {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [schemes, setSchemes] = useState([])
   const [loanAmount, setLoanAmount] = useState(15000)
 
@@ -24,10 +26,10 @@ export default function WorkerWelfare() {
             <span>SIH26089 Feature 7 • Worker Welfare & Social Security</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Cooperative Welfare & Social Security
+            {t('welfareHeading', 'Cooperative Welfare & Social Security')}
           </h1>
           <p className={`text-xs mt-1 max-w-3xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Government subsidized insurance, accidental coverage, and emergency credit pool funded by 5% co-op surplus
+            {t('welfareSubheading', 'Government subsidized insurance, accidental coverage, and emergency credit pool funded by 5% co-op surplus')}
           </p>
         </div>
       </div>
@@ -44,7 +46,7 @@ export default function WorkerWelfare() {
                 <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40">
                   {sch.type.replace('_', ' ')}
                 </span>
-                <span className="status-pill-emerald">✓ Auto-Enrolled</span>
+                <span className="status-pill-emerald">✓ {t('autoEnrolled', 'Auto-Enrolled')}</span>
               </div>
               <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{sch.name}</h3>
               <p className={`text-xs mt-2 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{sch.description}</p>
@@ -52,17 +54,17 @@ export default function WorkerWelfare() {
 
             <div className={`space-y-2 pt-4 border-t text-xs ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
               <div className="flex justify-between">
-                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Max Cover:</span>
+                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('maxCover', 'Max Cover')}:</span>
                 <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{sch.coverage_amount?.toLocaleString()}</strong>
               </div>
               <div className="flex justify-between">
-                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Member Premium:</span>
+                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('memberPremium', 'Member Premium')}:</span>
                 <span className="text-emerald-400 font-bold">
                   {sch.monthly_premium === 0 ? 'FREE (100% Co-op Funded)' : `₹${sch.monthly_premium}/month`}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Govt/Co-op Subsidy:</span>
+                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('govtSubsidy', 'Govt/Co-op Subsidy')}:</span>
                 <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{sch.govt_subsidy_pct}%</span>
               </div>
             </div>
@@ -71,7 +73,7 @@ export default function WorkerWelfare() {
               onClick={() => alert('Digital Welfare Card: Download request queued with National Health Authority / PMSBY API.')}
               className="w-full py-2.5 flow-btn-primary text-xs font-bold rounded-xl shadow-md transition-all"
             >
-              📄 Download Digital Welfare Card
+              📄 {t('downloadWelfareCard', 'Download Digital Welfare Card')}
             </button>
           </div>
         ))}
@@ -84,20 +86,20 @@ export default function WorkerWelfare() {
             <div className="flex items-center gap-2">
               <span className="text-xl">🤝</span>
               <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Emergency Cooperative Micro-Advance Pool (0% Interest)
+                {t('microAdvanceTitle', 'Emergency Cooperative Micro-Advance Pool (0% Interest)')}
               </h2>
             </div>
             <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Collateral-free advance for health emergencies, tool upgrades, and family needs backed by verified member ledger
+              {t('microAdvanceSub', 'Collateral-free advance for health emergencies, tool upgrades, and family needs backed by verified member ledger')}
             </p>
           </div>
-          <span className="status-pill-emerald">Instant UPI Disbursal</span>
+          <span className="status-pill-emerald">{t('instantUpiDisbursal', 'Instant UPI Disbursal')}</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2 items-center">
           <div className="lg:col-span-2 space-y-3">
             <div className="flex justify-between text-xs font-bold">
-              <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>Select Advance Amount:</span>
+              <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>{t('selectAdvanceAmount', 'Select Advance Amount')}:</span>
               <span className="text-[#ff7a00] font-black text-sm">₹{loanAmount.toLocaleString()}</span>
             </div>
             <input

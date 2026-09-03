@@ -2,7 +2,7 @@
  * SahakarConnect Email Template & Edge Function Dispatch Utilities
  * 
  * NOTE: For security and secret protection, all live email dispatching via Resend
- * is executed exclusively inside Supabase Edge Functions (e.g. `supabase/functions/forgot-password`)
+ * is executed exclusively inside Supabase Edge Functions (example: `supabase/functions/forgot-password`)
  * using the server secret `RESEND_API_KEY`.
  * 
  * No Resend API keys or secrets are exposed or bundled in the client code.

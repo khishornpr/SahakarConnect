@@ -20,7 +20,7 @@ import {
 } from 'recharts'
 
 export default function WorkerDashboard() {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const { t } = useTranslation()
   const { isDark } = useTheme()
   const [workerInfo, setWorkerInfo] = useState(null)
@@ -97,6 +97,24 @@ export default function WorkerDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Hero Welcome Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.08]">
+        <div>
+          <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            {t('welcome', 'Welcome')}, {profile?.full_name || workerInfo?.full_name || t('worker', 'Worker')} 👋
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+            {t('workerWelcomeSub', 'Here is your daily earnings performance and live task roster.')}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            {t('verifiedCooperativeMember', 'Active Cooperative Member')}
+          </span>
+        </div>
+      </div>
+
       {/* 4 FlowBoard KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Total Net Disbursed */}
@@ -148,7 +166,7 @@ export default function WorkerDashboard() {
                   {t('completedServiceTasks', 'Completed Service Tasks')}
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  {completedJobsCount} {t('jobsCount', 'Jobs')}
+                  {completedJobsCount} {t('worksCount', 'Works')}
                 </div>
               </div>
               <div className="flow-icon-badge-orange shrink-0">
@@ -258,21 +276,26 @@ export default function WorkerDashboard() {
                   { id: 'line', label: t('line', '📈 Line') },
                   { id: 'area', label: t('area', '🌊 Area') },
                   { id: 'stacked', label: t('stacked', '⚡ Stacked') },
-                ].map((tItem) => (
-                  <button
-                    key={tItem.id}
-                    onClick={() => setChartType(tItem.id)}
-                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
-                      chartType === tItem.id
-                        ? 'flow-btn-primary shadow-[0_0_12px_rgba(255,107,0,0.5)]'
-                        : isDark
-                        ? 'text-slate-400 hover:text-white'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    {tItem.label}
-                  </button>
-                ))}
+                ].map((tItem) => {
+                  const isSelected = chartType === tItem.id
+                  return (
+                    <button
+                      key={tItem.id}
+                      aria-selected={isSelected ? 'true' : undefined}
+                      data-selected={isSelected ? 'true' : undefined}
+                      onClick={() => !isSelected && setChartType(tItem.id)}
+                      className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                        isSelected
+                          ? 'flow-btn-primary shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
+                          : isDark
+                          ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                          : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                      }`}
+                    >
+                      {tItem.label}
+                    </button>
+                  )
+                })}
               </div>
 
               {/* Timeframe */}
@@ -458,9 +481,10 @@ export default function WorkerDashboard() {
 
           <Link
             to="/worker/welfare"
-            className="flow-btn-primary block text-center py-2.5 text-xs font-bold uppercase tracking-wider shadow-md"
+            className="flow-btn-primary flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold uppercase tracking-wider shadow-md"
           >
-            {t('pmsbyWelfareActive', 'PMSBY Welfare Active 🛡️')}
+            <span>{t('pmsbyWelfareActive', 'PMSBY Welfare Active 🛡️')}</span>
+            <span>→</span>
           </Link>
         </div>
       </div>

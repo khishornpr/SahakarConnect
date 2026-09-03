@@ -66,7 +66,7 @@ export default function LanguageModal({ isOpen, onClose }) {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search language (e.g. Tamil, Marathi, বাংলা, తెలుగు, Gujarati, Punjabi)..."
+            placeholder="Search language (example: Tamil, Marathi, বাংলা, తెలుగు, Gujarati, Punjabi)..."
             className={`w-full pl-10 pr-4 py-2 rounded-xl text-xs focus:outline-none focus:ring-2 transition-all ${
               isDark
                 ? 'bg-slate-950 border border-slate-700 focus:border-cyan-400 text-slate-100 placeholder-slate-500 focus:ring-cyan-400/30'

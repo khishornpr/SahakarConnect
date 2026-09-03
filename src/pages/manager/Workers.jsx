@@ -92,8 +92,8 @@ export default function ManagerWorkers() {
                     {w.gov_id_type}: {w.gov_id_masked}
                   </td>
                   <td className="py-3 px-3">
-                    <span className={w.is_verified ? 'status-pill-emerald' : 'status-pill-orange'}>
-                      {w.is_verified ? 'VERIFIED' : 'PENDING'}
+                    <span className={w.is_verified && w.trade_verification_status !== 'pending' ? 'status-pill-emerald font-bold' : 'status-pill-orange font-bold'}>
+                      {w.is_verified && w.trade_verification_status !== 'pending' ? '✓ VERIFIED' : '⏳ PENDING REVIEW'}
                     </span>
                   </td>
                 </tr>

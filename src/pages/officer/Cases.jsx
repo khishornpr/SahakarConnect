@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 import { Link } from 'react-router-dom'
 
 export default function OfficerCases() {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [cases, setCases] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')

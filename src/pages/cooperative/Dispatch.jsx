@@ -94,18 +94,24 @@ export default function CooperativeDispatch() {
           <div className={`flex p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
             <button
               onClick={() => setPriorityFilter('all')}
+              aria-selected={priorityFilter === 'all'}
+              data-selected={priorityFilter === 'all' ? 'true' : undefined}
               className={`px-3 py-1 rounded-lg font-bold transition-all ${
-                priorityFilter === 'all' ? 'flow-btn-primary' : 'text-slate-400 hover:text-white'
+                priorityFilter === 'all'
+                  ? 'flow-btn-primary cursor-default'
+                  : 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
               }`}
             >
               All ({jobs.length})
             </button>
             <button
               onClick={() => setPriorityFilter('emergency')}
+              aria-selected={priorityFilter === 'emergency'}
+              data-selected={priorityFilter === 'emergency' ? 'true' : undefined}
               className={`px-3 py-1 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
                 priorityFilter === 'emergency'
-                  ? 'bg-rose-600 text-white shadow-md'
-                  : 'text-rose-400 hover:text-rose-300'
+                  ? 'bg-rose-600 text-white shadow-md cursor-default'
+                  : 'text-rose-400 hover:text-rose-300 cursor-pointer hover:scale-105'
               }`}
             >
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>

@@ -239,21 +239,26 @@ export default function CooperativeDemandForecast() {
                   { id: 'line', label: '📈 Line' },
                   { id: 'area', label: '🌊 Area' },
                   { id: 'composed', label: '⚡ Combo' },
-                ].map((tItem) => (
-                  <button
-                    key={tItem.id}
-                    onClick={() => setTradeChartType(tItem.id)}
-                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
-                      tradeChartType === tItem.id
-                        ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)]'
-                        : isDark
-                        ? 'text-slate-400 hover:text-white'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    {tItem.label}
-                  </button>
-                ))}
+                ].map((tItem) => {
+                  const isSelected = tradeChartType === tItem.id
+                  return (
+                    <button
+                      key={tItem.id}
+                      aria-selected={isSelected ? 'true' : undefined}
+                      data-selected={isSelected ? 'true' : undefined}
+                      onClick={() => !isSelected && setTradeChartType(tItem.id)}
+                      className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                        isSelected
+                          ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
+                          : isDark
+                          ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                          : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                      }`}
+                    >
+                      {tItem.label}
+                    </button>
+                  )
+                })}
               </div>
 
               {/* Series Filter Selector to Declutter Overlapping Lines */}
@@ -262,21 +267,26 @@ export default function CooperativeDemandForecast() {
                   { id: 'all', label: '✨ All Combined' },
                   { id: 'demand', label: '⚡ Demand Only' },
                   { id: 'supply', label: '👥 Supply Only' },
-                ].map((fItem) => (
-                  <button
-                    key={fItem.id}
-                    onClick={() => setTradeMetricFilter(fItem.id)}
-                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
-                      tradeMetricFilter === fItem.id
-                        ? 'bg-gradient-to-r from-[#ff7a00] to-[#ff5500] text-white shadow-sm'
-                        : isDark
-                        ? 'text-slate-400 hover:text-white'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    {fItem.label}
-                  </button>
-                ))}
+                ].map((fItem) => {
+                  const isSelected = tradeMetricFilter === fItem.id
+                  return (
+                    <button
+                      key={fItem.id}
+                      aria-selected={isSelected ? 'true' : undefined}
+                      data-selected={isSelected ? 'true' : undefined}
+                      onClick={() => !isSelected && setTradeMetricFilter(fItem.id)}
+                      className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                        isSelected
+                          ? 'bg-gradient-to-r from-[#ff7a00] to-[#ff5500] text-white shadow-sm cursor-default'
+                          : isDark
+                          ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                          : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                      }`}
+                    >
+                      {fItem.label}
+                    </button>
+                  )
+                })}
               </div>
 
               <select
@@ -387,12 +397,14 @@ export default function CooperativeDemandForecast() {
                   <button
                     key={c.id}
                     onClick={() => setDistrictChartType(c.id)}
+                    aria-selected={districtChartType === c.id}
+                    data-selected={districtChartType === c.id ? 'true' : undefined}
                     className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
                       districtChartType === c.id
-                        ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)]'
+                        ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                        : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
                     }`}
                   >
                     {c.label}

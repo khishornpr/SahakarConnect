@@ -291,12 +291,14 @@ export default function Register() {
                       key={r.id}
                       type="button"
                       onClick={() => setRole(r.id)}
+                      aria-selected={role === r.id}
+                      data-selected={role === r.id ? 'true' : undefined}
                       className={`py-2 px-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap ${
                         role === r.id
-                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md'
+                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md cursor-default'
                           : isDark
-                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04] cursor-pointer hover:scale-105'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer hover:scale-105'
                       }`}
                     >
                       {r.label}
@@ -320,7 +322,7 @@ export default function Register() {
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      placeholder="e.g. Ramesh Kumar"
+                      placeholder="example: Ramesh Kumar"
                       className={`w-full px-3.5 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
                         isDark
                           ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
@@ -578,7 +580,7 @@ export default function Register() {
                             required
                             value={departmentId}
                             onChange={(e) => setDepartmentId(e.target.value)}
-                            placeholder="e.g. DL-LAB-2026-88"
+                            placeholder="example: DL-LAB-2026-88"
                             className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
                               isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
                             }`}
@@ -593,7 +595,7 @@ export default function Register() {
                             required
                             value={designation}
                             onChange={(e) => setDesignation(e.target.value)}
-                            placeholder="e.g. Labor Welfare Officer"
+                            placeholder="example: Labor Welfare Officer"
                             className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
                               isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
                             }`}

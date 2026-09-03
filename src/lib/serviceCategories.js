@@ -30,28 +30,6 @@ export const SERVICE_CATEGORIES = [
     skills: ['Pipe Leakage', 'Tap Fitting', 'Geyser Installation', 'Motor Pump Repair'],
   },
   {
-    trade: 'Carpenter',
-    group: 'Repair & maintenance trades',
-    rate: 400,
-    rateFormatted: '₹400/hr',
-    minHours: 2.0,
-    minHoursLabel: 'Min 2 hrs',
-    icon: '🪚',
-    descKey: 'Furniture Repair',
-    skills: ['Door Locks', 'Cabinet Making', 'Hinge Alignment', 'Wooden Polishing'],
-  },
-  {
-    trade: 'Painter',
-    group: 'Repair & maintenance trades',
-    rate: 380,
-    rateFormatted: '₹380/hr',
-    minHours: 3.0,
-    minHoursLabel: 'Min 3 hrs',
-    icon: '🎨',
-    descKey: 'Wall Coating',
-    skills: ['Interior Emulsion', 'Waterproofing Putty', 'Texture Design', 'Wood Enamel'],
-  },
-  {
     trade: 'Appliance Technician',
     group: 'Repair & maintenance trades',
     rate: 400,
@@ -74,28 +52,6 @@ export const SERVICE_CATEGORIES = [
     skills: ['Split AC Installation', 'Compressor Overhaul', 'Gas Leakage Refill', 'Ductless Servicing'],
   },
   {
-    trade: 'Mason / Tile & Flooring Work',
-    group: 'Repair & maintenance trades',
-    rate: 380,
-    rateFormatted: '₹380/hr',
-    minHours: 3.0,
-    minHoursLabel: 'Min 3 hrs',
-    icon: '🧱',
-    descKey: 'Tiles & Plastering',
-    skills: ['Vitrified Tile Laying', 'Grouting & Leveling', 'Wall Plastering', 'Cement Patching'],
-  },
-  {
-    trade: 'Welder / Grill & Gate Fabrication',
-    group: 'Repair & maintenance trades',
-    rate: 420,
-    rateFormatted: '₹420/hr',
-    minHours: 3.0,
-    minHoursLabel: 'Min 3 hrs',
-    icon: '🧑‍🏭',
-    descKey: 'Gate & Railings',
-    skills: ['ARC Welding', 'Grill Alignment', 'Shutter Hinge Welding', 'MS Pipe Fabrication'],
-  },
-  {
     trade: 'Locksmith',
     group: 'Repair & maintenance trades',
     rate: 350,
@@ -105,17 +61,6 @@ export const SERVICE_CATEGORIES = [
     icon: '🔑',
     descKey: 'Locks & Key Duplication',
     skills: ['Emergency Lockout', 'Deadbolt Installation', 'Key Duplication', 'Digital Lock Setup'],
-  },
-  {
-    trade: 'Pest Control Technician',
-    group: 'Repair & maintenance trades',
-    rate: 350,
-    rateFormatted: '₹350/hr',
-    minHours: 1.5,
-    minHoursLabel: 'Min 1.5 hrs',
-    icon: '🪲',
-    descKey: 'Eco-Friendly Fumigation',
-    skills: ['Termite Chemical Barrier', 'Cockroach Gel Treatment', 'Bedbug Eradication', 'Rodent Baiting'],
   },
   {
     trade: 'RO / Water Purifier Technician',
@@ -129,6 +74,17 @@ export const SERVICE_CATEGORIES = [
     skills: ['Membrane Flushing', 'Sediment Filter Replacement', 'Booster Pump Service', 'TDS Balancing'],
   },
   {
+    trade: 'Welder / Grill & Gate Fabrication',
+    group: 'Repair & maintenance trades',
+    rate: 420,
+    rateFormatted: '₹420/hr',
+    minHours: 3.0,
+    minHoursLabel: 'Min 3 hrs',
+    icon: '🧑‍🏭',
+    descKey: 'Gate & Railings',
+    skills: ['ARC Welding', 'Grill Alignment', 'Shutter Hinge Welding', 'MS Pipe Fabrication'],
+  },
+  {
     trade: 'Solar Panel Installer/Maintenance',
     group: 'Repair & maintenance trades',
     rate: 450,
@@ -139,9 +95,90 @@ export const SERVICE_CATEGORIES = [
     descKey: 'Rooftop PV & Inverter',
     skills: ['PV Cell Mounting', 'Microinverter Wiring', 'Solar Battery Hookup', 'Panel Array Cleaning'],
   },
+  {
+    trade: 'Pest Control Technician',
+    group: 'Repair & maintenance trades',
+    rate: 350,
+    rateFormatted: '₹350/hr',
+    minHours: 1.5,
+    minHoursLabel: 'Min 1.5 hrs',
+    icon: '🪲',
+    descKey: 'Eco-Friendly Fumigation',
+    skills: ['Termite Chemical Barrier', 'Cockroach Gel Treatment', 'Bedbug Eradication', 'Rodent Baiting'],
+  },
 
   // ==========================================
-  // 2. CLEANING & HOUSEKEEPING
+  // 2. HOME IMPROVEMENT / RENOVATION TRADES
+  // ==========================================
+  {
+    trade: 'Painting',
+    group: 'Home improvement / renovation',
+    rate: 380,
+    rateFormatted: '₹380/hr',
+    minHours: 3.0,
+    minHoursLabel: 'Min 3 hrs',
+    icon: '🎨',
+    descKey: 'Wall Coating & Primer',
+    skills: ['Interior Emulsion', 'Waterproofing Putty', 'Texture Design', 'Wood & Metal Enamel'],
+  },
+  {
+    trade: 'Wall work',
+    group: 'Home improvement / renovation',
+    rate: 380,
+    rateFormatted: '₹380/hr',
+    minHours: 3.0,
+    minHoursLabel: 'Min 3 hrs',
+    icon: '🧱',
+    descKey: 'Masonry & Plastering',
+    skills: ['Brick & Cement Work', 'Wall Plastering', 'Crack Patching', 'Vitrified Tile Laying'],
+  },
+  {
+    trade: 'Minor renovation',
+    group: 'Home improvement / renovation',
+    rate: 420,
+    rateFormatted: '₹420/hr',
+    minHours: 2.0,
+    minHoursLabel: 'Min 2 hrs',
+    icon: '🔨',
+    descKey: 'Handyman & Alterations',
+    skills: ['Small Partitions', 'Demolition Prep', 'Structural Touchup', 'Floor & Ceiling Repairs'],
+  },
+  {
+    trade: 'Door & window work',
+    group: 'Home improvement / renovation',
+    rate: 380,
+    rateFormatted: '₹380/hr',
+    minHours: 2.0,
+    minHoursLabel: 'Min 2 hrs',
+    icon: '🚪',
+    descKey: 'Fitting & Alignment',
+    skills: ['Door Frame Fitting', 'Window Sliding Track', 'Mesh & Grill Installation', 'Hinges & Latches'],
+  },
+  {
+    trade: 'Interior improvement',
+    group: 'Home improvement / renovation',
+    rate: 400,
+    rateFormatted: '₹400/hr',
+    minHours: 2.5,
+    minHoursLabel: 'Min 2.5 hrs',
+    icon: '🏡',
+    descKey: 'Decor & Modular Setup',
+    skills: ['Modular Wardrobe Fitments', 'Wall Paneling', 'False Ceiling Touchup', 'Curtain Track & Shelves'],
+  },
+  {
+    trade: 'Carpenter',
+    group: 'Home improvement / renovation',
+    rate: 400,
+    rateFormatted: '₹400/hr',
+    minHours: 2.0,
+    minHoursLabel: 'Min 2 hrs',
+    icon: '🪚',
+    descKey: 'Furniture Repair',
+    skills: ['Door Locks', 'Cabinet Making', 'Hinge Alignment', 'Wooden Polishing'],
+  },
+
+  // ==========================================
+  // 3. CLEANING & HOUSEKEEPING
   // ==========================================
   {
     trade: 'Cleaner',
@@ -200,7 +237,7 @@ export const SERVICE_CATEGORIES = [
   },
 
   // ==========================================
-  // 3. DOMESTIC WORKS
+  // 4. DOMESTIC WORKS
   // ==========================================
   {
     trade: 'Domestic Helper',
@@ -259,7 +296,7 @@ export const SERVICE_CATEGORIES = [
   },
 
   // ==========================================
-  // 4. CARE & HOUSEHOLD SUPPORT
+  // 5. CARE & HOUSEHOLD SUPPORT
   // ==========================================
   {
     trade: 'Caregiver',
@@ -297,7 +334,7 @@ export const SERVICE_CATEGORIES = [
   },
 
   // ==========================================
-  // 5. OUTDOOR & OCCASIONAL
+  // 6. OUTDOOR & OCCASIONAL
   // ==========================================
   {
     trade: 'Gardener / Landscaping',
@@ -369,6 +406,7 @@ export const POPULAR_SERVICES = SERVICE_CATEGORIES.map((c) => ({
  */
 export const TRADE_GROUPS = [
   'Repair & maintenance trades',
+  'Home improvement / renovation',
   'Cleaning & housekeeping',
   'Domestic works',
   'Care & household support',

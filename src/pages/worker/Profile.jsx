@@ -5,14 +5,27 @@ import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { SERVICE_CATEGORIES, getCategoryByTrade } from '../../lib/serviceCategories'
 
+export function formatExperience(years, months) {
+  const y = Math.floor(years || 0)
+  const m = months !== undefined && months !== null ? Number(months) : Math.round(((years || 0) % 1) * 12)
+  const parts = []
+  if (y > 0) parts.push(`${y} ${y === 1 ? 'Year' : 'Years'}`)
+  if (m > 0) parts.push(`${m} ${m === 1 ? 'Month' : 'Months'}`)
+  if (parts.length === 0) return '0 Months'
+  return parts.join(' ')
+}
+
 export default function WorkerProfile() {
   const { user, profile } = useAuth()
   const { t } = useTranslation()
   const { isDark } = useTheme()
   const [workerInfo, setWorkerInfo] = useState(null)
   const [ratingsList, setRatingsList] = useState([])
+  const [jobsList, setJobsList] = useState([])
   const [editingTrade, setEditingTrade] = useState(false)
   const [selectedTrade, setSelectedTrade] = useState('')
+  const [experienceYears, setExperienceYears] = useState(5)
+  const [experienceMonths, setExperienceMonths] = useState(0)
   const [saveSuccess, setSaveSuccess] = useState('')
 
   useEffect(() => {
@@ -23,14 +36,24 @@ export default function WorkerProfile() {
       if (ignore) return
       setWorkerInfo(worker)
       setSelectedTrade(worker?.primary_trade || 'Electrician')
+      const rawExp = worker?.experience_years ?? 5
+      setExperienceYears(Math.floor(rawExp))
+      setExperienceMonths(worker?.experience_months ?? Math.round((rawExp % 1) * 12))
 
       const { data: ratings } = await supabase
         .from('ratings')
         .select('*')
         .eq('rated_user_id', user.id)
         .order('created_at', { ascending: false })
+      if (ignore) return
+      setRatingsList(ratings || [])
+
+      const { data: jobs } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('assigned_worker_id', user.id)
       if (!ignore) {
-        setRatingsList(ratings || [])
+        setJobsList(jobs || [])
       }
     }
     loadProfile()
@@ -41,23 +64,61 @@ export default function WorkerProfile() {
 
   async function handleSaveTrade() {
     if (!user || !selectedTrade) return
+    const isTradeChanged =
+      selectedTrade !== (workerInfo?.primary_trade || 'Electrician') ||
+      Number(experienceYears) !== Math.floor(workerInfo?.experience_years || 5) ||
+      Number(experienceMonths) !== Number(workerInfo?.experience_months || 0)
+    
     const cat = getCategoryByTrade(selectedTrade)
+    const totalExpYears = Number(experienceYears) + (Number(experienceMonths) / 12)
     const updatePayload = {
       primary_trade: selectedTrade,
+      experience_years: Number(totalExpYears.toFixed(2)),
+      experience_months: Number(experienceMonths) || 0,
       hourly_rate: cat.rate,
       skills: cat.skills,
+      is_verified: isTradeChanged ? false : (workerInfo?.is_verified ?? true),
+      trade_verification_status: isTradeChanged ? 'pending' : (workerInfo?.trade_verification_status || 'verified'),
     }
     const { error } = await supabase.from('workers').update(updatePayload).eq('user_id', user.id)
     if (!error) {
       setWorkerInfo((prev) => ({ ...prev, ...updatePayload }))
       setEditingTrade(false)
-      setSaveSuccess('Primary trade & skill badges updated successfully!')
-      setTimeout(() => setSaveSuccess(''), 3000)
+      if (isTradeChanged) {
+        setSaveSuccess(`Trade change to "${selectedTrade}" submitted to Admin Dept for verification!`)
+      } else {
+        setSaveSuccess('Primary trade & experience details updated!')
+      }
+      setTimeout(() => setSaveSuccess(''), 5000)
     }
   }
 
   const currentCategory = getCategoryByTrade(workerInfo?.primary_trade || selectedTrade)
+  const completedJobs = jobsList.filter((j) => j.status === 'completed')
+  const totalWorks = completedJobs.length > 0 ? completedJobs.length : (workerInfo?.completed_jobs_count || 0)
+  const currentTradeName = workerInfo?.primary_trade || selectedTrade || 'Electrician'
+  
+  // Exact count of completed jobs in the active trade
+  const currentTradeWorks = completedJobs.filter((j) => {
+    const jobTrade = (j.trade_category || j.service_category || j.trade || j.title || '').toLowerCase()
+    const target = currentTradeName.toLowerCase()
+    return jobTrade.includes(target) || target.includes(jobTrade)
+  }).length
 
+  // Calculate prior trades where remaining works were completed
+  const otherTradeJobs = completedJobs.filter((j) => {
+    const jobTrade = (j.trade_category || j.service_category || j.trade || j.title || '').toLowerCase()
+    const target = currentTradeName.toLowerCase()
+    return !jobTrade.includes(target) && !target.includes(jobTrade)
+  })
+  const otherTradesSet = new Set(
+    otherTradeJobs.map((j) => j.trade_category || j.service_category || j.trade).filter(Boolean)
+  )
+  const priorTradeName = otherTradesSet.size > 0
+    ? Array.from(otherTradesSet).join(', ')
+    : 'Electrician'
+  const priorWorksCount = totalWorks - currentTradeWorks
+  const isPendingVerification = !workerInfo?.is_verified || workerInfo?.trade_verification_status === 'pending'
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -79,13 +140,15 @@ export default function WorkerProfile() {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{profile?.full_name}</h2>
-                {workerInfo?.is_verified ? (
-                  <span className="status-pill-emerald">
-                    ✓ Verified KYC
+                {isPendingVerification ? (
+                  <span className="status-pill-orange flex items-center gap-1.5 animate-pulse font-bold">
+                    <span>⏳</span>
+                    <span>Verification in Progress</span>
                   </span>
                 ) : (
-                  <span className="status-pill-orange">
-                    Verification Pending
+                  <span className="status-pill-emerald flex items-center gap-1 font-bold">
+                    <span>✓</span>
+                    <span>Verified</span>
                   </span>
                 )}
               </div>
@@ -95,16 +158,34 @@ export default function WorkerProfile() {
             </div>
           </div>
 
-          <div className={`flex items-center gap-4 p-3.5 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-50 border-slate-200'}`}>
-            <div className="text-right">
-              <div className="text-[10px] uppercase font-bold text-slate-500">Reputation Score</div>
+          {/* Stats Bar with Total Works & Current Trade Total Works */}
+          <div className={`flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 p-3.5 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-50 border-slate-200'}`}>
+            <div className="text-right sm:text-left">
+              <div className="text-[10px] uppercase font-bold text-slate-500">{t('reputationScore', 'Reputation Score')}</div>
               <div className="text-base font-black text-yellow-400">★ {workerInfo?.rating || '5.0'} / 5.0</div>
             </div>
             <div className={`h-8 w-px ${isDark ? 'bg-white/[0.08]' : 'bg-slate-200'}`}></div>
             <div className="text-left">
-              <div className="text-[10px] uppercase font-bold text-slate-500">Total Jobs</div>
+              <div className="text-[10px] uppercase font-bold text-slate-500">{t('totalWorks', 'Total Works')}</div>
               <div className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                {workerInfo?.completed_jobs_count || 0}
+                {totalWorks}
+              </div>
+            </div>
+            <div className={`h-8 w-px ${isDark ? 'bg-white/[0.08]' : 'bg-slate-200'}`}></div>
+            <div className="text-left">
+              <div className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1 truncate">
+                <span>{currentCategory.icon}</span>
+                <span className="truncate">{currentTradeName} Works</span>
+              </div>
+              <div className="text-base font-black text-[#ff7a00]">
+                {currentTradeWorks}{' '}
+                <span className="text-[10px] font-bold text-slate-400">
+                  {currentTradeWorks === 0 && totalWorks > 0
+                    ? `(${priorWorksCount} as ${priorTradeName})`
+                    : currentTradeWorks < totalWorks
+                    ? `(${currentTradeWorks}/${totalWorks} • ${priorWorksCount} as ${priorTradeName})`
+                    : `(${currentTradeWorks}/${totalWorks} Works)`}
+                </span>
               </div>
             </div>
           </div>
@@ -115,13 +196,6 @@ export default function WorkerProfile() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-wider">Craft & Specializations</h3>
-              <button
-                type="button"
-                onClick={() => setEditingTrade(!editingTrade)}
-                className="text-xs text-[#ff7a00] hover:underline font-bold"
-              >
-                {editingTrade ? 'Cancel' : 'Edit Trade ✏️'}
-              </button>
             </div>
 
             {saveSuccess && (
@@ -130,36 +204,128 @@ export default function WorkerProfile() {
               </div>
             )}
 
+            {isPendingVerification && (
+              <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs flex items-start gap-2.5 shadow-md">
+                <span className="text-lg shrink-0">⏳</span>
+                <div>
+                  <span className="font-bold block text-amber-300">Verification In Progress</span>
+                  <span className="text-[11px] text-amber-200/90 leading-relaxed block mt-0.5">
+                    Your craft credentials for <strong>{workerInfo?.primary_trade}</strong> ({formatExperience(workerInfo?.experience_years ?? experienceYears, workerInfo?.experience_months ?? experienceMonths)} exp) have been submitted to the Cooperative Admin Department. Until verified, your status will show <strong>Verification in Progress</strong>. Once approved by Admin, it will automatically update to <strong>Verified</strong>.
+                  </span>
+                </div>
+              </div>
+            )}
+
             <div>
-              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Primary Trade</label>
+              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                {t('primaryTrade', 'Primary Trade')}
+              </label>
               {editingTrade ? (
-                <div className="mt-1 space-y-2">
-                  <select
-                    value={selectedTrade}
-                    onChange={(e) => setSelectedTrade(e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-xl text-xs outline-none font-bold ${
-                      isDark ? 'bg-[#12151c] border-white/[0.1] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
-                    }`}
-                  >
-                    {SERVICE_CATEGORIES.map((c) => (
-                      <option key={c.trade} value={c.trade}>
-                        {c.icon} {t(c.trade, c.trade)} ({c.rateFormatted})
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    onClick={handleSaveTrade}
-                    className="px-4 py-1.5 flow-btn-primary text-xs font-bold rounded-xl shadow-sm"
-                  >
-                    Save Primary Trade
-                  </button>
+                <div className="mt-2 p-3.5 rounded-2xl border bg-gradient-to-b from-transparent to-orange-500/5 space-y-3 border-[#ff6b00]/30 shadow-md">
+                  <div>
+                    <label className={`text-[11px] font-bold block mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                      Select New Primary Trade
+                    </label>
+                    <select
+                      value={selectedTrade}
+                      onChange={(e) => setSelectedTrade(e.target.value)}
+                      className={`w-full px-3 py-2 border rounded-xl text-xs outline-none font-bold cursor-pointer ${
+                        isDark ? 'bg-[#12151c] border-white/[0.1] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
+                      }`}
+                    >
+                      {SERVICE_CATEGORIES.map((c) => (
+                        <option key={c.trade} value={c.trade}>
+                          {c.icon} {t(c.trade, c.trade)} ({c.rateFormatted})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={`text-[11px] font-bold block mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                      Experience in this Trade
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[10px] text-slate-400 block mb-1 font-bold uppercase">Years</label>
+                        <select
+                          value={experienceYears}
+                          onChange={(e) => setExperienceYears(parseInt(e.target.value) || 0)}
+                          className={`w-full px-3 py-2 border rounded-xl text-xs outline-none font-bold cursor-pointer ${
+                            isDark ? 'bg-[#12151c] border-white/[0.1] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
+                          }`}
+                        >
+                          {Array.from({ length: 41 }, (_, i) => (
+                            <option key={i} value={i}>
+                              {i} {i === 1 ? 'Year' : 'Years'}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] text-slate-400 block mb-1 font-bold uppercase">Months</label>
+                        <select
+                          value={experienceMonths}
+                          onChange={(e) => setExperienceMonths(parseInt(e.target.value) || 0)}
+                          className={`w-full px-3 py-2 border rounded-xl text-xs outline-none font-bold cursor-pointer ${
+                            isDark ? 'bg-[#12151c] border-white/[0.1] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
+                          }`}
+                        >
+                          {Array.from({ length: 12 }, (_, i) => (
+                            <option key={i} value={i}>
+                              {i} {i === 1 ? 'Month' : 'Months'}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons: Save Primary Trade with Cancel on the Right Side */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={handleSaveTrade}
+                      className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-sm cursor-pointer hover:scale-105 transition-all"
+                    >
+                      Save Primary Trade
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedTrade(workerInfo?.primary_trade || 'Electrician')
+                        const rawExp = workerInfo?.experience_years ?? 5
+                        setExperienceYears(Math.floor(rawExp))
+                        setExperienceMonths(workerInfo?.experience_months ?? Math.round((rawExp % 1) * 12))
+                        setEditingTrade(false)
+                      }}
+                      className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all cursor-pointer ${
+                        isDark
+                          ? 'bg-[#161a22] border-white/[0.1] text-slate-300 hover:text-white hover:bg-white/[0.08]'
+                          : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
+                      }`}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <div className={`text-sm font-bold mt-0.5 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                  <span>{currentCategory.icon}</span>
-                  <span>{t(workerInfo?.primary_trade || 'Electrician', workerInfo?.primary_trade || 'Electrician')}</span>
-                  <span className="text-xs font-mono font-bold text-emerald-400">({currentCategory.rateFormatted})</span>
+                <div className={`text-sm font-bold mt-1 flex items-center justify-between gap-2 p-3 rounded-xl border ${
+                  isDark ? 'bg-white/[0.02] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
+                }`}>
+                  <div className={`flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                    <span className="text-base">{currentCategory.icon}</span>
+                    <span>{t(workerInfo?.primary_trade || 'Electrician', workerInfo?.primary_trade || 'Electrician')}</span>
+                    <span className="text-xs font-mono font-bold text-emerald-400">({currentCategory.rateFormatted})</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEditingTrade(true)}
+                    className="text-xs text-[#ff7a00] hover:underline font-bold cursor-pointer"
+                  >
+                    Edit Trade ✏️
+                  </button>
                 </div>
               )}
             </div>
@@ -167,7 +333,7 @@ export default function WorkerProfile() {
             <div>
               <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Experience</label>
               <div className={`text-sm font-semibold mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-                {workerInfo?.experience_years || 5} Years Certified Experience
+                {formatExperience(workerInfo?.experience_years ?? experienceYears, workerInfo?.experience_months ?? experienceMonths)} Certified Experience
               </div>
             </div>
 

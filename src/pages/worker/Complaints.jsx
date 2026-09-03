@@ -5,6 +5,8 @@ import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 
+const ALLOWED_EXTENSIONS = ['txt', 'doc', 'docx', 'pdf', 'png', 'jpeg', 'jpg']
+
 export default function WorkerComplaints() {
   const { user, profile } = useAuth()
   const { t } = useTranslation()
@@ -24,6 +26,27 @@ export default function WorkerComplaints() {
   const [description, setDescription] = useState('')
   const [attachmentName, setAttachmentName] = useState('')
   const [fileName, setFileName] = useState('')
+  const [fileError, setFileError] = useState('')
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0]
+    if (!file) {
+      setFileName('')
+      setFileError('')
+      return
+    }
+
+    const ext = file.name.split('.').pop()?.toLowerCase()
+    if (!ALLOWED_EXTENSIONS.includes(ext)) {
+      setFileError(`⚠️ Invalid file format (.${ext || 'unknown'}). Please upload only TXT, DOC, DOCX, PDF, PNG, JPEG, or JPG files.`)
+      setFileName('')
+      e.target.value = '' // Reset input so unallowed file is never attached
+      return
+    }
+
+    setFileError('')
+    setFileName(file.name)
+  }
 
   useEffect(() => {
     let ignore = false
@@ -143,24 +166,28 @@ export default function WorkerComplaints() {
           <div className={`flex p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
             <button
               onClick={() => setActiveTab('list')}
+              aria-selected={activeTab === 'list'}
+              data-selected={activeTab === 'list' ? 'true' : undefined}
               className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
                 activeTab === 'list'
-                  ? 'flow-btn-primary'
+                  ? 'flow-btn-primary cursor-default'
                   : isDark
-                  ? 'text-slate-400 hover:text-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                  : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
               }`}
             >
               📋 {t('myComplaintsTab', 'My Complaints')} ({complaints.length})
             </button>
             <button
               onClick={() => setActiveTab('create')}
+              aria-selected={activeTab === 'create'}
+              data-selected={activeTab === 'create' ? 'true' : undefined}
               className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
                 activeTab === 'create'
-                  ? 'flow-btn-primary'
+                  ? 'flow-btn-primary cursor-default'
                   : isDark
-                  ? 'text-slate-400 hover:text-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                  : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
               }`}
             >
               ✍️ {t('raiseComplaintTab', '+ Raise Complaint')}
@@ -244,7 +271,7 @@ export default function WorkerComplaints() {
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Wage dispute / Safety issue"
+                placeholder="example: Wage dispute / Safety issue"
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-xs outline-none transition-all ${
                   isDark ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
                 }`}
@@ -271,25 +298,41 @@ export default function WorkerComplaints() {
             {/* Supporting Document Upload */}
             <div>
               <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                {t('supportingDocs', 'Supporting Documents (Photos, Work Logs, WhatsApp Chat)')}
+                {t('supportingDocs', 'Supporting Documents / Photos')}
               </label>
               <div
                 className={`border-2 border-dashed rounded-2xl p-4 sm:p-6 text-center transition-all ${
-                  isDark ? 'border-white/10 bg-[#161a22]/50 hover:border-[#ff6b00]/40' : 'border-slate-300 bg-slate-50 hover:border-orange-400'
+                  fileError
+                    ? 'border-rose-500/80 bg-rose-950/20'
+                    : isDark
+                    ? 'border-white/10 bg-[#161a22]/50 hover:border-[#ff6b00]/40'
+                    : 'border-slate-300 bg-slate-50 hover:border-orange-400'
                 }`}
               >
-                <div className="text-2xl mb-1">📎</div>
+                <div className="text-2xl mb-1">{fileError ? '⚠️' : '📎'}</div>
                 <div className="text-xs font-semibold text-slate-400">
-                  {fileName ? (
-                    <span className="text-emerald-400 font-bold">Attached: {fileName}</span>
+                  {fileName && !fileError ? (
+                    <span className="text-emerald-400 font-bold">✓ Attached: {fileName}</span>
                   ) : (
-                    <span>{t('uploadProof', 'Click to attach photo evidence, bill receipts or work completion logs')}</span>
+                    <span>{t('uploadProof', 'Click to attach photo evidence, bill receipts, documents or work logs')}</span>
                   )}
                 </div>
+
+                <p className={`text-[11px] mt-1.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Upload the files in any of these formats: <span className="font-bold text-[#ff7a00]">TXT, DOC, DOCX, PDF, PNG, JPEG, JPG</span>
+                </p>
+
+                {fileError && (
+                  <div className="mt-2.5 p-3 rounded-xl bg-rose-950/90 border border-rose-500/70 text-rose-200 text-xs font-bold flex items-center justify-center gap-2 shadow-lg">
+                    <span>{fileError}</span>
+                  </div>
+                )}
+
                 <input
                   type="file"
-                  onChange={(e) => setFileName(e.target.files?.[0]?.name || 'site_evidence.jpg')}
-                  className="mt-2 text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#ff6b00] file:text-white cursor-pointer"
+                  accept=".txt,.doc,.docx,.pdf,.png,.jpeg,.jpg,text/plain,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg"
+                  onChange={handleFileChange}
+                  className="mt-2.5 text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#ff6b00] file:text-white cursor-pointer"
                 />
               </div>
             </div>

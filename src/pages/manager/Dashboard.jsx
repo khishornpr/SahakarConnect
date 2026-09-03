@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { Link } from 'react-router-dom'
 import {
@@ -16,6 +18,8 @@ import {
 } from 'recharts'
 
 export default function ManagerDashboard() {
+  const { profile } = useAuth()
+  const { t } = useTranslation()
   const { isDark } = useTheme()
 
   const [workers, setWorkers] = useState([])
@@ -60,7 +64,7 @@ export default function ManagerDashboard() {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.08]">
         <div>
           <div
             className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 border ${
@@ -71,7 +75,7 @@ export default function ManagerDashboard() {
             <span>Middle Management • Zonal Operations</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Zonal Manager Control Hub
+            {t('welcome', 'Welcome')}, {profile?.full_name || 'Manager'} 👋
           </h1>
           <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
             Supervising field worker rosters, locality service fulfilment, payroll disbursements, and team performance metrics for <strong>South Delhi Cluster</strong>.
@@ -81,9 +85,10 @@ export default function ManagerDashboard() {
         <div className="flex gap-2">
           <Link
             to="/manager/reports"
-            className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md"
+            className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md flex items-center gap-1.5"
           >
-            📊 Generate Financial Report
+            <span>📊 {t('generateFinancialReport', 'Generate Financial Report')}</span>
+            <span>→</span>
           </Link>
         </div>
       </div>

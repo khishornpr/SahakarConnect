@@ -186,21 +186,26 @@ export default function CooperativeFinancials() {
                 { id: 'line', label: '📈 Line' },
                 { id: 'area', label: '🌊 Area' },
                 { id: 'stacked', label: '⚡ Stacked' },
-              ].map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => setChartType(c.id)}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
-                    chartType === c.id
-                      ? 'flow-btn-primary shadow-[0_0_12px_rgba(255,107,0,0.5)]'
-                      : isDark
-                      ? 'text-slate-400 hover:text-white'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {c.label}
-                </button>
-              ))}
+              ].map((c) => {
+                const isSelected = chartType === c.id
+                return (
+                  <button
+                    key={c.id}
+                    aria-selected={isSelected ? 'true' : undefined}
+                    data-selected={isSelected ? 'true' : undefined}
+                    onClick={() => !isSelected && setChartType(c.id)}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                      isSelected
+                        ? 'flow-btn-primary shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
+                        : isDark
+                        ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                    }`}
+                  >
+                    {c.label}
+                  </button>
+                )
+              })}
             </div>
 
             {/* Metric Filter Selector to Declutter Multi-Series */}
@@ -209,21 +214,26 @@ export default function CooperativeFinancials() {
                 { id: 'all', label: '✨ All' },
                 { id: 'net', label: '💰 Net Payouts' },
                 { id: 'coop', label: '🏛️ Co-op Retained' },
-              ].map((m) => (
-                <button
-                  key={m.id}
-                  onClick={() => setMetricFilter(m.id)}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
-                    metricFilter === m.id
-                      ? 'bg-gradient-to-r from-[#10b981] to-[#059669] text-white shadow-sm'
-                      : isDark
-                      ? 'text-slate-400 hover:text-white'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {m.label}
-                </button>
-              ))}
+              ].map((m) => {
+                const isSelected = metricFilter === m.id
+                return (
+                  <button
+                    key={m.id}
+                    aria-selected={isSelected ? 'true' : undefined}
+                    data-selected={isSelected ? 'true' : undefined}
+                    onClick={() => !isSelected && setMetricFilter(m.id)}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-[#10b981] to-[#059669] text-white shadow-sm cursor-default'
+                        : isDark
+                        ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                    }`}
+                  >
+                    {m.label}
+                  </button>
+                )
+              })}
             </div>
           </div>
         </div>

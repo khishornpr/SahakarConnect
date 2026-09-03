@@ -107,7 +107,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen w-full relative flex flex-col justify-between overflow-x-hidden font-sans select-none">
+    <div className="h-screen max-h-screen w-full relative flex flex-col justify-between overflow-hidden font-sans select-none">
       {/* ----------------- FULL-SCREEN IMMERSIVE PANORAMIC BACKGROUND ----------------- */}
       <div className="fixed inset-0 z-0">
         <img
@@ -124,11 +124,11 @@ export default function Login() {
       </div>
 
       {/* ----------------- TOP NAVBAR ----------------- */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-6 sm:pt-8 flex items-center justify-between">
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-3 sm:pt-4 pb-1 flex items-center justify-between shrink-0">
         {/* Brand Emblem */}
         <div className="flex items-center gap-3">
           <div
-            className={`w-10 h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all ${isDark
+            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all ${isDark
               ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_20px_rgba(229,166,94,0.3)]'
               : 'bg-white/90 border-slate-300 text-[#d8964d]'
               }`}
@@ -139,12 +139,12 @@ export default function Login() {
           </div>
           <div>
             <span
-              className={`text-xs font-black tracking-[0.25em] uppercase drop-shadow-sm block ${isDark ? 'text-white' : 'text-slate-900'
+              className={`text-xs sm:text-sm font-black tracking-[0.25em] uppercase drop-shadow-sm block ${isDark ? 'text-white' : 'text-slate-900'
                 }`}
             >
               {t('brandTitle', 'SAHAKARCONNECT')}
             </span>
-            <span className={`text-[10px] block font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+            <span className={`text-[11px] block font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               {t('loginSubHeader', 'SIH26089 • Cooperative Service Marketplace')}
             </span>
           </div>
@@ -158,56 +158,56 @@ export default function Login() {
       </header>
 
       {/* ----------------- MAIN VIEWPORT CONTENT ----------------- */}
-      <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-6 sm:py-16 my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-2 sm:py-4 my-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center overflow-hidden">
         {/* Left Side: Welcome Typography & Cooperative Badges */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-5 sm:space-y-6">
-          <div className="flex items-start gap-4 sm:gap-5">
-            <div className="w-2 h-24 sm:h-36 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_15px_rgba(229,166,94,0.7)] shrink-0"></div>
+        <div className="lg:col-span-7 xl:col-span-7 space-y-5 sm:space-y-7">
+          <div className="flex items-start gap-4 sm:gap-6">
+            <div className="w-3 h-32 sm:h-52 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_18px_rgba(229,166,94,0.75)] shrink-0 mt-1"></div>
             <div>
               <h1
-                className={`text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-none ${isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
+                className={`text-5xl sm:text-7xl lg:text-7xl xl:text-8xl font-light tracking-tight leading-[1.02] ${isDark ? 'text-white drop-shadow-lg' : 'text-slate-900'
                   }`}
               >
                 {t('welcome', 'Welcome')}<br />
-                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>
+                <strong className={`font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-950'}`}>
                   {t('back', 'Back')}
                 </strong>
               </h1>
               <p
-                className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
+                className={`text-lg sm:text-2xl lg:text-3xl mt-4 sm:mt-5 max-w-xl leading-snug font-normal ${isDark ? 'text-slate-100 drop-shadow-sm' : 'text-slate-800'
                   }`}
               >
                 {t('loginHeroGreeting', 'Glad to see you again.')}<br />
-                {t('loginHeroSub', "Let's continue where you left off.")}
+                <span className="font-semibold text-[#e5a65e]">{t('loginHeroSub', "Let's continue where you left off.")}</span>
               </p>
             </div>
           </div>
 
           {/* Quick Highlight Chips */}
-          <div className="flex flex-wrap gap-2 pt-1 pl-0 sm:pl-7">
+          <div className="flex flex-wrap gap-3 pt-1 pl-0 sm:pl-9">
             <span
-              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${isDark
-                ? 'bg-black/50 border-white/10 text-slate-200'
-                : 'bg-white/80 border-slate-300 text-slate-800 shadow-xs'
+              className={`px-4 py-2 rounded-full text-sm sm:text-base font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
+                ? 'bg-black/50 border-white/10 text-slate-100 shadow-md'
+                : 'bg-white/85 border-slate-300 text-slate-800 shadow-sm'
                 }`}
             >
-              <span>⚡</span> {t('statutoryFairWageChip', '100% Fair Wages')}
+              <span className="text-base sm:text-lg">⚡</span> {t('statutoryFairWageChip', '100% Fair Wages')}
             </span>
             <span
-              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${isDark
-                ? 'bg-black/50 border-white/10 text-emerald-400'
-                : 'bg-white/80 border-slate-300 text-emerald-700 shadow-xs'
+              className={`px-4 py-2 rounded-full text-sm sm:text-base font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
+                ? 'bg-black/50 border-white/10 text-emerald-300 shadow-md'
+                : 'bg-white/85 border-slate-300 text-emerald-800 shadow-sm'
                 }`}
             >
-              <span>🛡️</span> {t('societyWelfareFundChip', 'Worker Welfare & Safety')}
+              <span className="text-base sm:text-lg">🛡️</span> {t('societyWelfareFundChip', 'Worker Welfare & Safety')}
             </span>
             <span
-              className={`px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 ${isDark
-                ? 'bg-black/50 border-white/10 text-[#e5a65e]'
-                : 'bg-white/80 border-slate-300 text-orange-700 shadow-xs'
+              className={`px-4 py-2 rounded-full text-sm sm:text-base font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
+                ? 'bg-black/50 border-white/10 text-[#e5a65e] shadow-md'
+                : 'bg-white/85 border-slate-300 text-orange-800 shadow-sm'
                 }`}
             >
-              <span>📍</span> {t('aiGeoDispatchChip', 'Fast Local Matching')}
+              <span className="text-base sm:text-lg">📍</span> {t('aiGeoDispatchChip', 'Fast Local Matching')}
             </span>
           </div>
         </div>
@@ -215,36 +215,41 @@ export default function Login() {
         {/* Right Side: Floating Glassmorphic Login Card */}
         <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
           <div
-            className={`w-full max-w-[470px] border rounded-[28px] sm:rounded-[32px] p-6 sm:p-9 backdrop-blur-2xl transition-all duration-300 ${
+            className={`w-full max-w-[430px] border rounded-2xl sm:rounded-3xl p-4 sm:p-5 backdrop-blur-2xl transition-all duration-300 ${
               isDark
-                ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_30px_80px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40 hover:shadow-[0_0_45px_rgba(229,166,94,0.2)]'
-                : 'bg-white/92 border-slate-200 shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:border-orange-300 hover:shadow-[0_15px_40px_rgba(255,107,0,0.15)]'
+                ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_20px_60px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40'
+                : 'bg-white/92 border-slate-200 shadow-[0_20px_50px_rgba(0,0,0,0.12)] hover:border-orange-300'
             }`}
           >
-            {/* Hexagonal Gold Emblem Badge */}
-            <div
-              className={`w-14 h-14 rounded-2xl border flex items-center justify-center mx-auto mb-4 transition-all ${isDark
-                ? 'bg-[#1e232e] border-white/[0.08] text-[#e5a65e] shadow-[0_0_25px_rgba(229,166,94,0.25)]'
-                : 'bg-orange-50 border-orange-200 text-[#d8964d] shadow-sm'
-                }`}
-            >
-              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
-              </svg>
+            {/* Header: Icon at Top-Left, Login text Center */}
+            <div className="relative mb-3 flex items-center justify-center min-h-[40px]">
+              {/* Emblem Icon positioned top-left */}
+              <div
+                className={`absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-xl border flex items-center justify-center shrink-0 transition-all ${isDark
+                  ? 'bg-[#1e232e] border-white/[0.1] text-[#e5a65e] shadow-[0_0_15px_rgba(229,166,94,0.25)]'
+                  : 'bg-orange-50 border-orange-200 text-[#d8964d] shadow-sm'
+                  }`}
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
+                </svg>
+              </div>
+
+              {/* Centered Login Title & Subtitle */}
+              <div className="text-center px-10">
+                <h2 className={`text-xl sm:text-2xl font-black tracking-tight leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  {t('loginTitle', 'Login')}
+                </h2>
+                <p className={`text-xs mt-0.5 truncate font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  {t('loginSubtitle', 'Select persona & enter credentials')}
+                </p>
+              </div>
             </div>
 
-            {/* Heading */}
-            <h2 className={`text-2xl font-black text-center tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              {t('loginTitle', 'Login')}
-            </h2>
-            <p className={`text-xs text-center mt-1 font-normal ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              {t('loginSubtitle', 'Select your persona and enter credentials to continue')}
-            </p>
-
             {/* Persona Switcher Tabs (Structured 2-row layout with zero truncation) */}
-            <div className="mt-5 space-y-2">
+            <div className="space-y-1.5">
               <div
-                className={`p-1.5 border rounded-2xl grid grid-cols-3 gap-1.5 ${
+                className={`p-1 border rounded-xl grid grid-cols-3 gap-1 ${
                   isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                 }`}
               >
@@ -254,23 +259,25 @@ export default function Login() {
                     <button
                       key={p.id}
                       type="button"
-                      onClick={() => handleSelectRoleTab(p.id)}
-                      className={`py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      aria-selected={isActive ? 'true' : undefined}
+                      data-selected={isActive ? 'true' : undefined}
+                      onClick={() => !isActive && handleSelectRoleTab(p.id)}
+                      className={`py-1.5 px-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 ${
                         isActive
-                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
+                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
                           : isDark
-                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
-                          : 'text-slate-700 hover:text-slate-900 hover:bg-white'
+                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.06] hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(232,176,112,0.35)] cursor-pointer'
+                          : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(216,150,77,0.35)] cursor-pointer'
                       }`}
                     >
-                      <span>{p.label}</span>
+                      <span className="truncate">{p.label}</span>
                     </button>
                   )
                 })}
               </div>
 
               <div
-                className={`p-1.5 border rounded-2xl grid grid-cols-2 gap-1.5 ${
+                className={`p-1 border rounded-xl grid grid-cols-2 gap-1 ${
                   isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                 }`}
               >
@@ -280,16 +287,18 @@ export default function Login() {
                     <button
                       key={p.id}
                       type="button"
-                      onClick={() => handleSelectRoleTab(p.id)}
-                      className={`py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      aria-selected={isActive ? 'true' : undefined}
+                      data-selected={isActive ? 'true' : undefined}
+                      onClick={() => !isActive && handleSelectRoleTab(p.id)}
+                      className={`py-1.5 px-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 ${
                         isActive
-                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
+                          ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
                           : isDark
-                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
-                          : 'text-slate-700 hover:text-slate-900 hover:bg-white'
+                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.06] hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(232,176,112,0.35)] cursor-pointer'
+                          : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(216,150,77,0.35)] cursor-pointer'
                       }`}
                     >
-                      <span>{p.label}</span>
+                      <span className="truncate">{p.label}</span>
                     </button>
                   )
                 })}
@@ -298,15 +307,15 @@ export default function Login() {
 
             {/* Premium Demo Credential Auto-Fill Card */}
             <div
-              className={`mt-4 p-3.5 rounded-2xl border flex items-center justify-between gap-3 transition-all ${
+              className={`mt-2.5 p-2.5 rounded-xl border flex items-center justify-between gap-2.5 transition-all ${
                 isDark
                   ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
                   : 'bg-orange-50/70 border-orange-200/80 shadow-xs'
               }`}
             >
-              <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex items-center gap-2 min-w-0">
                 <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0 border ${
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0 border ${
                     isDark
                       ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
                       : 'bg-white border-orange-200 text-orange-600'
@@ -318,7 +327,7 @@ export default function Login() {
                   <div className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {ROLE_CONFIGS[selectedRole]?.hint}
                   </div>
-                  <div className="text-xs text-slate-400 font-mono truncate">
+                  <div className="text-[11px] text-slate-400 font-mono truncate">
                     {ROLE_CONFIGS[selectedRole]?.demoEmail}
                   </div>
                 </div>
@@ -327,7 +336,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all border cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 transition-all border cursor-pointer ${
                   isDark
                     ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25 shadow-sm'
                     : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
@@ -337,31 +346,30 @@ export default function Login() {
               </button>
             </div>
 
-
             {/* Error Message & Email Unconfirmed Banner */}
             {error && (
               <div
-                className={`mt-4 border text-sm p-3.5 rounded-2xl shadow-lg transition-all ${isUnconfirmed
-                  ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
-                  : 'bg-rose-950/80 border-rose-500/50 text-rose-200 shadow-[0_0_12px_rgba(244,63,94,0.3)]'
+                className={`mt-2.5 border text-xs p-2.5 rounded-xl shadow-md transition-all ${isUnconfirmed
+                  ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.25)]'
+                  : 'bg-rose-950/80 border-rose-500/50 text-rose-200 shadow-[0_0_10px_rgba(244,63,94,0.3)]'
                   }`}
               >
-                <div className="flex items-start gap-2.5">
-                  <span className="text-base leading-none">{isUnconfirmed ? '✉️' : '⚠️'}</span>
+                <div className="flex items-start gap-2">
+                  <span className="text-sm leading-none">{isUnconfirmed ? '✉️' : '⚠️'}</span>
                   <div className="flex-1">
                     <p className="font-semibold">{error}</p>
 
                     {isUnconfirmed && (
-                      <div className="mt-2.5 pt-2 border-t border-amber-500/30 flex items-center justify-between gap-2">
+                      <div className="mt-2 pt-1.5 border-t border-amber-500/30 flex items-center justify-between gap-2">
                         <button
                           type="button"
                           onClick={handleResendConfirmation}
-                          className="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black text-xs hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+                          className="px-2.5 py-1 rounded-md bg-amber-500 text-slate-950 font-black text-xs hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
                         >
                           Resend Confirmation Email →
                         </button>
                         {resendStatus && (
-                          <span className="text-xs text-amber-300 font-medium">
+                          <span className="text-[11px] text-amber-300 font-medium">
                             {resendStatus}
                           </span>
                         )}
@@ -373,14 +381,14 @@ export default function Login() {
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+            <form onSubmit={handleSubmit} className="mt-2.5 space-y-2.5">
               {/* Email Address */}
               <div>
-                <label className={`block text-sm font-semibold mb-1.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                   {t('emailAddress', 'Email Address')}
                 </label>
                 <div className="relative flex items-center">
-                  <span className={`absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <span className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
@@ -390,7 +398,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={ROLE_CONFIGS[selectedRole]?.demoEmail || 'you@example.com'}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-xl text-sm focus:outline-none transition-all ${isDark
+                    className={`w-full pl-9 pr-3 py-2 border rounded-xl text-xs sm:text-sm focus:outline-none transition-all ${isDark
                       ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                       : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
                       }`}
@@ -401,11 +409,11 @@ export default function Login() {
 
               {/* Password with inline vertically-centered Eye Icon */}
               <div>
-                <label className={`block text-sm font-semibold mb-1.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                   {t('password', 'Password')}
                 </label>
                 <div className="relative flex items-center">
-                  <span className={`absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <span className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
@@ -415,7 +423,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter password"
-                    className={`w-full pl-10 pr-11 py-3 border rounded-xl text-sm focus:outline-none transition-all ${isDark
+                    className={`w-full pl-9 pr-10 py-2 border rounded-xl text-xs sm:text-sm focus:outline-none transition-all ${isDark
                       ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                       : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
                       }`}
@@ -425,7 +433,7 @@ export default function Login() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center ${isDark ? 'text-slate-400 hover:text-[#e5a65e]' : 'text-slate-500 hover:text-[#d8964d]'
+                    className={`absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center ${isDark ? 'text-slate-400 hover:text-[#e5a65e]' : 'text-slate-500 hover:text-[#d8964d]'
                       }`}
                   >
                     {showPassword ? (
@@ -443,10 +451,10 @@ export default function Login() {
               </div>
 
               {/* Forgot Password Link */}
-              <div className="flex justify-end pt-0.5">
+              <div className="flex justify-end">
                 <Link
                   to="/forgot-password"
-                  className="text-xs sm:text-sm text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium cursor-pointer"
+                  className="text-xs text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium cursor-pointer"
                 >
                   {t('forgotPassword', 'Forgot Password?')}
                 </Link>
@@ -456,15 +464,15 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-sm uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50"
+                className="w-full py-2.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#ffd099] hover:to-[#f0ab5d] text-slate-950 font-black rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_20px_rgba(232,176,112,0.45)] hover:shadow-[0_0_25px_rgba(232,176,112,0.95),0_0_55px_rgba(232,176,112,0.6)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50 hover:scale-[1.02] hover:-translate-y-0.5"
               >
                 <span>{loading ? t('authenticating', 'Authenticating...') : t('loginBtn', 'Login')}</span>
-                <span className="group-hover:translate-x-1 transition-transform font-bold">→</span>
+                <span className="group-hover:translate-x-1.5 transition-transform font-bold">→</span>
               </button>
             </form>
 
             {/* Sign up Link */}
-            <div className={`text-center mt-6 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+            <div className={`text-center mt-3 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
               {t('dontHaveAccount', "Don't have an account?")}{' '}
               <Link
                 to="/register"
@@ -478,7 +486,7 @@ export default function Login() {
       </main>
 
       {/* ----------------- BOTTOM FOOTER ----------------- */}
-      <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium">
+      <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-2 sm:py-3 flex flex-col sm:flex-row items-center justify-between gap-1 text-[11px] font-medium shrink-0">
         <div className={isDark ? 'text-slate-300' : 'text-slate-700'}>
           {t('loginFooterRights', '© 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations')}
         </div>

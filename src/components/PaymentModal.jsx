@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
+import { useTranslation } from '../context/I18nContext'
 
 export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess }) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [method, setMethod] = useState('upi')
   const [upiId, setUpiId] = useState('priya@okhdfcbank')
   const [processing, setProcessing] = useState(false)

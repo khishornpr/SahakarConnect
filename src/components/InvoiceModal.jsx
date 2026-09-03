@@ -1,12 +1,39 @@
+import { useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { generateInvoiceData } from '../lib/invoiceGenerator'
+import { downloadInvoicePdf, getInvoicePdfFilename, exportElementToPdf } from '../lib/pdfExporter'
 import { useTheme } from '../context/ThemeContext'
+import { useTranslation } from '../context/I18nContext'
 
 export default function InvoiceModal({ job, worker, household, wageLedgerItem, onClose }) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
+  const invoiceCardRef = useRef(null)
+  const [isGenerating, setIsGenerating] = useState(false)
+
   if (!job) return null
 
   const inv = generateInvoiceData(job, worker, household, wageLedgerItem)
+
+  async function handleDownloadPdf() {
+    if (isGenerating) return
+    setIsGenerating(true)
+    try {
+      await downloadInvoicePdf(inv)
+    } catch (err) {
+      console.error('Failed to generate invoice PDF:', err)
+      try {
+        if (invoiceCardRef.current) {
+          const filename = getInvoicePdfFilename(inv)
+          await exportElementToPdf(invoiceCardRef.current, filename)
+        }
+      } catch (fallbackErr) {
+        console.error('Fallback export error:', fallbackErr)
+      }
+    } finally {
+      setTimeout(() => setIsGenerating(false), 300)
+    }
+  }
 
   function handlePrint() {
     window.print()
@@ -15,6 +42,7 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
   const modalContent = (
     <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       <div
+        ref={invoiceCardRef}
         className={`rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 border print:m-0 print:p-2 print:border-none print:shadow-none my-auto max-h-[92vh] overflow-y-auto ${
           isDark
             ? 'bg-[#12151b] border-white/[0.08] text-white shadow-[0_0_50px_rgba(0,0,0,0.8)]'
@@ -145,22 +173,53 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
           &quot;{inv.job.completionNotes}&quot;
         </div>
 
-        {/* Actions Button Bar */}
-        <div className="flex justify-end gap-3 pt-2 print:hidden">
+        {/* Actions Button Bar: Save as PDF, Print, Cancel */}
+        <div className="flex flex-wrap items-center justify-end gap-2.5 pt-2 print:hidden no-pdf">
+          {/* Save as PDF Button */}
           <button
-            onClick={handlePrint}
-            className="px-4 py-2 flow-btn-emerald text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5"
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={isGenerating}
+            className="px-4 py-2 flow-btn-emerald text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
-            <span>🖨️</span>
-            <span>Print / Save PDF</span>
+            {isGenerating ? (
+              <>
+                <span className="inline-block animate-spin">⏳</span>
+                <span>{t('generatingPdf', 'Generating...')}</span>
+              </>
+            ) : (
+              <>
+                <span>📥</span>
+                <span>{t('saveAsPdf', 'Save as PDF')}</span>
+              </>
+            )}
           </button>
+
+          {/* Windows Print Dialog Button */}
           <button
-            onClick={onClose}
-            className={`px-4 py-2 font-semibold text-xs rounded-xl transition-all border ${
-              isDark ? 'border-white/[0.08] text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200'
+            type="button"
+            onClick={handlePrint}
+            className={`px-4 py-2 font-bold text-xs rounded-xl transition-all border flex items-center gap-1.5 cursor-pointer ${
+              isDark
+                ? 'bg-[#161a22] border-white/[0.12] text-slate-200 hover:text-white hover:border-[#ff6b00]'
+                : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border-slate-300'
             }`}
           >
-            Close
+            <span>🖨️</span>
+            <span>{t('print', 'Print')}</span>
+          </button>
+
+          {/* Cancel Button */}
+          <button
+            type="button"
+            onClick={onClose}
+            className={`px-4 py-2 font-bold text-xs rounded-xl transition-all border cursor-pointer ${
+              isDark
+                ? 'border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.05]'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200'
+            }`}
+          >
+            <span>{t('cancel', 'Cancel')}</span>
           </button>
         </div>
       </div>

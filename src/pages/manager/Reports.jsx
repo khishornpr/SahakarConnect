@@ -1,11 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
+import { exportElementToPdf } from '../../lib/pdfExporter'
 
 export default function ManagerReports() {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [ledger, setLedger] = useState([])
   const [downloading, setDownloading] = useState(false)
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
+  const reportContainerRef = useRef(null)
 
   useEffect(() => {
     let ignore = false
@@ -54,12 +59,27 @@ export default function ManagerReports() {
     setTimeout(() => setDownloading(false), 800)
   }
 
+  async function handleDownloadPdf() {
+    if (!reportContainerRef.current || isGeneratingPdf) return
+    setIsGeneratingPdf(true)
+    try {
+      const dateStr = new Date().toISOString().split('T')[0]
+      await exportElementToPdf(reportContainerRef.current, `SahakarConnect_Zonal_Financial_Report_${dateStr}.pdf`, {
+        backgroundColor: isDark ? '#0f1217' : '#ffffff',
+      })
+    } catch (err) {
+      console.error('Failed to generate report PDF:', err)
+    } finally {
+      setIsGeneratingPdf(false)
+    }
+  }
+
   function handlePrint() {
     window.print()
   }
 
   return (
-    <div className="space-y-6">
+    <div ref={reportContainerRef} className="space-y-6">
       {/* Header & Export Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -79,22 +99,45 @@ export default function ManagerReports() {
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap items-center gap-2 print:hidden no-pdf">
           <button
+            type="button"
             onClick={exportCSV}
             disabled={downloading}
-            className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md flex items-center gap-2"
+            className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-60"
           >
             <span>📥</span>
             <span>{downloading ? 'Exporting CSV...' : 'Download CSV Export'}</span>
           </button>
+
           <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={isGeneratingPdf}
+            className="px-4 py-2 flow-btn-emerald text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
+          >
+            {isGeneratingPdf ? (
+              <>
+                <span className="inline-block animate-spin">⏳</span>
+                <span>{t('generatingPdf', 'Generating...')}</span>
+              </>
+            ) : (
+              <>
+                <span>📥</span>
+                <span>{t('saveAsPdf', 'Save as PDF')}</span>
+              </>
+            )}
+          </button>
+
+          <button
+            type="button"
             onClick={handlePrint}
-            className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 cursor-pointer ${
               isDark ? 'bg-[#161a22] border-white/[0.08] text-slate-300 hover:text-white' : 'bg-slate-100 border-slate-200 text-slate-800'
             }`}
           >
-            🖨️ Print / Save PDF
+            <span>🖨️</span>
+            <span>{t('print', 'Print')}</span>
           </button>
         </div>
       </div>
