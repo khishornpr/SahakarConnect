@@ -28,9 +28,10 @@ export default function CooperativeDemandForecast() {
   // Interactive Chart 1 Controls (Trade Forecast)
   const [tradeChartType, setTradeChartType] = useState('bar') // 'bar', 'line', 'area', 'composed'
   const [tradeHorizon, setTradeHorizon] = useState('7d') // '7d', '14d', '30d'
+  const [tradeMetricFilter, setTradeMetricFilter] = useState('all') // 'all', 'demand', 'supply'
 
   // Interactive Chart 2 Controls (District Demand)
-  const [districtChartType, setDistrictChartType] = useState('bar') // 'bar', 'vertical', 'area'
+  const [districtChartType, setDistrictChartType] = useState('bar') // 'bar', 'vertical'
 
   async function loadData() {
     setLoading(true)
@@ -242,7 +243,7 @@ export default function CooperativeDemandForecast() {
                   <button
                     key={tItem.id}
                     onClick={() => setTradeChartType(tItem.id)}
-                    className={`px-2 py-0.5 text-xs font-bold rounded-lg transition-all ${
+                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
                       tradeChartType === tItem.id
                         ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)]'
                         : isDark
@@ -255,10 +256,33 @@ export default function CooperativeDemandForecast() {
                 ))}
               </div>
 
+              {/* Series Filter Selector to Declutter Overlapping Lines */}
+              <div className={`hidden sm:flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+                {[
+                  { id: 'all', label: '✨ All Combined' },
+                  { id: 'demand', label: '⚡ Demand Only' },
+                  { id: 'supply', label: '👥 Supply Only' },
+                ].map((fItem) => (
+                  <button
+                    key={fItem.id}
+                    onClick={() => setTradeMetricFilter(fItem.id)}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                      tradeMetricFilter === fItem.id
+                        ? 'bg-gradient-to-r from-[#ff7a00] to-[#ff5500] text-white shadow-sm'
+                        : isDark
+                        ? 'text-slate-400 hover:text-white'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {fItem.label}
+                  </button>
+                ))}
+              </div>
+
               <select
                 value={tradeHorizon}
                 onChange={(e) => setTradeHorizon(e.target.value)}
-                className={`text-xs font-bold px-2.5 py-1 rounded-xl border outline-none cursor-pointer ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer ${
                   isDark
                     ? 'bg-[#161a22] border-white/[0.08] text-slate-200 focus:border-[#ff6b00]'
                     : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
@@ -271,53 +295,71 @@ export default function CooperativeDemandForecast() {
             </div>
           </div>
 
-          <div className="h-72">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               {tradeChartType === 'bar' ? (
-                <BarChart data={activeTradeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.6} />
-                  <XAxis dataKey="displayTrade" tick={{ fontSize: 10, fill: isDark ? '#94a3b8' : '#475569' }} interval={0} angle={-20} textAnchor="end" height={45} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#94a3b8' : '#475569' }} />
+                <BarChart data={activeTradeData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
+                  <XAxis dataKey="displayTrade" tick={{ fontSize: 11, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} interval={0} angle={-15} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                  <Bar dataKey="adjustedDemand" fill="#ff6b00" name={t('projectedDemandBar', 'Projected Job Demand')} radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="adjustedSupply" fill="#10b981" name={t('activeSupplyBar', 'Available Active Workforce')} radius={[4, 4, 0, 0]} />
+                  <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }} />
+                  {(tradeMetricFilter === 'all' || tradeMetricFilter === 'demand') && (
+                    <Bar dataKey="adjustedDemand" fill="#ff6b00" name={t('projectedDemandBar', 'Projected Job Demand')} radius={[6, 6, 0, 0]} />
+                  )}
+                  {(tradeMetricFilter === 'all' || tradeMetricFilter === 'supply') && (
+                    <Bar dataKey="adjustedSupply" fill="#10b981" name={t('activeSupplyBar', 'Available Active Workforce')} radius={[6, 6, 0, 0]} />
+                  )}
                 </BarChart>
               ) : tradeChartType === 'line' ? (
-                <LineChart data={activeTradeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.6} />
-                  <XAxis dataKey="displayTrade" tick={{ fontSize: 10, fill: isDark ? '#94a3b8' : '#475569' }} interval={0} angle={-20} textAnchor="end" height={45} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#94a3b8' : '#475569' }} />
-                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }} />
-                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                  <Line type="monotone" dataKey="adjustedDemand" stroke="#ff6b00" strokeWidth={3} dot={{ r: 5 }} />
-                  <Line type="monotone" dataKey="adjustedSupply" stroke="#10b981" strokeWidth={3} dot={{ r: 5 }} />
+                <LineChart data={activeTradeData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
+                  <XAxis dataKey="displayTrade" tick={{ fontSize: 11, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} interval={0} angle={-15} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                  <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }} />
+                  {(tradeMetricFilter === 'all' || tradeMetricFilter === 'demand') && (
+                    <Line type="monotone" dataKey="adjustedDemand" stroke="#ff6b00" strokeWidth={2.5} name={t('projectedDemandBar', 'Projected Job Demand')} dot={{ r: 3.5, fill: '#ff6b00', stroke: isDark ? '#12151b' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
+                  )}
+                  {(tradeMetricFilter === 'all' || tradeMetricFilter === 'supply') && (
+                    <Line type="monotone" dataKey="adjustedSupply" stroke="#10b981" strokeWidth={2.5} name={t('activeSupplyBar', 'Available Active Workforce')} dot={{ r: 3.5, fill: '#10b981', stroke: isDark ? '#12151b' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
+                  )}
                 </LineChart>
               ) : tradeChartType === 'area' ? (
-                <AreaChart data={activeTradeData}>
+                <AreaChart data={activeTradeData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
                   <defs>
                     <linearGradient id="areaGradDem" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.4} />
+                      <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.35} />
                       <stop offset="100%" stopColor="#ff6b00" stopOpacity={0.0} />
                     </linearGradient>
+                    <linearGradient id="areaGradSup" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#10b981" stopOpacity={0.35} />
+                      <stop offset="100%" stopColor="#10b981" stopOpacity={0.0} />
+                    </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.6} />
-                  <XAxis dataKey="displayTrade" tick={{ fontSize: 10, fill: isDark ? '#94a3b8' : '#475569' }} interval={0} angle={-20} textAnchor="end" height={45} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#94a3b8' : '#475569' }} />
-                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }} />
-                  <Area type="monotone" dataKey="adjustedDemand" stroke="#ff6b00" strokeWidth={3} fill="url(#areaGradDem)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
+                  <XAxis dataKey="displayTrade" tick={{ fontSize: 11, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} interval={0} angle={-15} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                  <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }} />
+                  {(tradeMetricFilter === 'all' || tradeMetricFilter === 'demand') && (
+                    <Area type="monotone" dataKey="adjustedDemand" stroke="#ff6b00" strokeWidth={2.5} fill="url(#areaGradDem)" name={t('projectedDemandBar', 'Projected Job Demand')} dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                  )}
+                  {(tradeMetricFilter === 'all' || tradeMetricFilter === 'supply') && (
+                    <Area type="monotone" dataKey="adjustedSupply" stroke="#10b981" strokeWidth={2.5} fill="url(#areaGradSup)" name={t('activeSupplyBar', 'Available Active Workforce')} dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                  )}
                 </AreaChart>
               ) : (
-                <ComposedChart data={activeTradeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.6} />
-                  <XAxis dataKey="displayTrade" tick={{ fontSize: 10, fill: isDark ? '#94a3b8' : '#475569' }} interval={0} angle={-20} textAnchor="end" height={45} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#94a3b8' : '#475569' }} />
-                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }} />
-                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                  <Bar dataKey="adjustedDemand" fill="#ff6b00" name="Demand Volume" radius={[4, 4, 0, 0]} />
-                  <Line type="monotone" dataKey="adjustedSupply" stroke="#10b981" strokeWidth={3} name="Supply Capacity" />
+                <ComposedChart data={activeTradeData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
+                  <XAxis dataKey="displayTrade" tick={{ fontSize: 11, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} interval={0} angle={-15} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                  <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }} />
+                  <Bar dataKey="adjustedDemand" fill="#ff6b00" name="Demand Volume" radius={[6, 6, 0, 0]} opacity={0.85} />
+                  <Line type="monotone" dataKey="adjustedSupply" stroke="#10b981" strokeWidth={2.5} name="Supply Capacity" dot={{ r: 3.5, fill: '#10b981' }} activeDot={{ r: 6 }} />
                 </ComposedChart>
               )}
             </ResponsiveContainer>
@@ -328,7 +370,7 @@ export default function CooperativeDemandForecast() {
         <div className="flow-card glow-orange-hover p-6 space-y-4">
           <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <div>
-              <h2 className={`text-sm sm:text-base font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <h2 className={`text-base font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('districtDemandTitle', 'District Demand vs Field Allocation')}
               </h2>
               <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -345,7 +387,7 @@ export default function CooperativeDemandForecast() {
                   <button
                     key={c.id}
                     onClick={() => setDistrictChartType(c.id)}
-                    className={`px-2 py-0.5 text-xs font-bold rounded-lg transition-all ${
+                    className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
                       districtChartType === c.id
                         ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)]'
                         : isDark
@@ -360,27 +402,27 @@ export default function CooperativeDemandForecast() {
             </div>
           </div>
 
-          <div className="h-72">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               {districtChartType === 'bar' ? (
-                <BarChart data={filteredDistrictData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.6} />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: isDark ? '#94a3b8' : '#475569' }} />
-                  <YAxis dataKey="displayDistrict" type="category" tick={{ fontSize: 10, fill: isDark ? '#94a3b8' : '#475569' }} width={110} />
-                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }} />
-                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                  <Bar dataKey="forecastedDemand" fill="#ff7a00" name={t('forecastedDemandBar', 'Forecasted Demand')} radius={[0, 4, 4, 0]} />
-                  <Bar dataKey="allocatedWorkers" fill={isDark ? '#64748b' : '#94a3b8'} name={t('allocatedWorkersBar', 'Allocated Workers')} radius={[0, 4, 4, 0]} />
+                <BarChart data={filteredDistrictData} layout="vertical" margin={{ top: 10, right: 15, left: 10, bottom: 10 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} horizontal={false} />
+                  <XAxis type="number" tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
+                  <YAxis dataKey="displayDistrict" type="category" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} width={120} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                  <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }} />
+                  <Bar dataKey="forecastedDemand" fill="#ff7a00" name={t('forecastedDemandBar', 'Forecasted Demand')} radius={[0, 6, 6, 0]} />
+                  <Bar dataKey="allocatedWorkers" fill={isDark ? '#475569' : '#94a3b8'} name={t('allocatedWorkersBar', 'Allocated Workers')} radius={[0, 6, 6, 0]} />
                 </BarChart>
               ) : (
-                <BarChart data={filteredDistrictData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.6} />
-                  <XAxis dataKey="displayDistrict" tick={{ fontSize: 10, fill: isDark ? '#94a3b8' : '#475569' }} interval={0} angle={-20} textAnchor="end" height={45} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#94a3b8' : '#475569' }} />
-                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }} />
-                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                  <Bar dataKey="forecastedDemand" fill="#ff7a00" name={t('forecastedDemandBar', 'Forecasted Demand')} radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="allocatedWorkers" fill={isDark ? '#64748b' : '#94a3b8'} name={t('allocatedWorkersBar', 'Allocated Workers')} radius={[4, 4, 0, 0]} />
+                <BarChart data={filteredDistrictData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
+                  <XAxis dataKey="displayDistrict" tick={{ fontSize: 11, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} interval={0} angle={-15} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                  <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }} />
+                  <Bar dataKey="forecastedDemand" fill="#ff7a00" name={t('forecastedDemandBar', 'Forecasted Demand')} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="allocatedWorkers" fill={isDark ? '#475569' : '#94a3b8'} name={t('allocatedWorkersBar', 'Allocated Workers')} radius={[6, 6, 0, 0]} />
                 </BarChart>
               )}
             </ResponsiveContainer>

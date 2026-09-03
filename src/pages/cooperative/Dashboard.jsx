@@ -348,16 +348,16 @@ export default function CooperativeDashboard() {
           </div>
 
           {/* Dynamic Chart Container */}
-          <div className="h-64 pt-2">
+          <div className="h-72 pt-2">
             <ResponsiveContainer width="100%" height="100%">
               {revenueChartType === 'bar' ? (
-                <BarChart data={activeRevenueData} barGap={4}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
+                <BarChart data={activeRevenueData} barGap={4} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                  <XAxis dataKey="label" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
                   <Tooltip
                     formatter={(val) => [`₹${val.toLocaleString()}`, 'Service Revenue']}
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
                   <Bar dataKey="revenue" radius={[6, 6, 0, 0]} fill="#ff6b00">
                     {activeRevenueData.map((entry, index) => (
@@ -366,45 +366,45 @@ export default function CooperativeDashboard() {
                   </Bar>
                 </BarChart>
               ) : revenueChartType === 'line' ? (
-                <LineChart data={activeRevenueData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
+                <LineChart data={activeRevenueData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                  <XAxis dataKey="label" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
                   <Tooltip
                     formatter={(val) => [`₹${val.toLocaleString()}`, 'Revenue']}
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
-                  <Line type="monotone" dataKey="revenue" stroke="#ff6b00" strokeWidth={3} dot={{ r: 5, fill: '#ff6b00', stroke: isDark ? '#0b0d11' : '#fff', strokeWidth: 2 }} activeDot={{ r: 7, fill: '#ff7a00' }} />
+                  <Line type="monotone" dataKey="revenue" stroke="#ff6b00" strokeWidth={2.5} dot={{ r: 3.5, fill: '#ff6b00', stroke: isDark ? '#0b0d11' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6, fill: '#ff7a00' }} />
                 </LineChart>
               ) : revenueChartType === 'area' ? (
-                <AreaChart data={activeRevenueData}>
+                <AreaChart data={activeRevenueData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                   <defs>
                     <linearGradient id="areaGradRev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.5} />
+                      <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.35} />
                       <stop offset="100%" stopColor="#ff6b00" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                  <XAxis dataKey="label" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
                   <Tooltip
                     formatter={(val) => [`₹${val.toLocaleString()}`, 'Revenue']}
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
-                  <Area type="monotone" dataKey="revenue" stroke="#ff6b00" strokeWidth={3} fill="url(#areaGradRev)" dot={false} />
+                  <Area type="monotone" dataKey="revenue" stroke="#ff6b00" strokeWidth={2.5} fill="url(#areaGradRev)" dot={{ r: 3 }} activeDot={{ r: 6 }} />
                 </AreaChart>
               ) : (
-                <ComposedChart data={activeRevenueData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
+                <ComposedChart data={activeRevenueData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                  <XAxis dataKey="label" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v/1000}k`} />
                   <Tooltip
                     formatter={(val, name) => [`₹${val.toLocaleString()}`, name === 'revenue' ? 'Actual Revenue' : 'Cooperative Target']}
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                  <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
                   <Bar dataKey="revenue" name="Actual GMV" radius={[6, 6, 0, 0]} fill="#ff6b00" opacity={0.85} />
-                  <Line type="monotone" dataKey="target" name="Statutory Target" stroke="#10b981" strokeWidth={2.5} strokeDasharray="4 4" dot={false} />
+                  <Line type="monotone" dataKey="target" name="Statutory Target" stroke="#10b981" strokeWidth={2} strokeDasharray="4 4" dot={{ r: 3 }} activeDot={{ r: 5 }} />
                 </ComposedChart>
               )}
             </ResponsiveContainer>
@@ -467,9 +467,9 @@ export default function CooperativeDashboard() {
               ) : expenseChartType === 'bar' ? (
                 <BarChart data={expenseData} layout="vertical" margin={{ left: 10, right: 10 }}>
                   <XAxis type="number" hide />
-                  <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 9, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
-                  <Tooltip formatter={(val) => [`₹${val}`, 'Volume']} contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }} />
-                  <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                  <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <Tooltip formatter={(val) => [`₹${val}`, 'Volume']} contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                  <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                     {expenseData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
@@ -478,14 +478,14 @@ export default function CooperativeDashboard() {
               ) : (
                 <RadialBarChart cx="50%" cy="50%" innerRadius="20%" outerRadius="90%" barSize={8} data={expenseData}>
                   <RadialBar minAngle={15} background clockWise dataKey="value" cornerRadius={6} />
-                  <Tooltip formatter={(val) => [`₹${val}`, 'Volume']} contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }} />
+                  <Tooltip formatter={(val) => [`₹${val}`, 'Volume']} contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
                 </RadialBarChart>
               )}
             </ResponsiveContainer>
             {expenseChartType === 'donut' && (
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className={`text-[11px] font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total</span>
-                <span className={`text-sm font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹12,347.90</span>
+                <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total</span>
+                <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹12,347.90</span>
               </div>
             )}
           </div>
@@ -495,11 +495,11 @@ export default function CooperativeDashboard() {
               <div key={item.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2 truncate">
                   <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }}></span>
-                  <span className={`truncate ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{item.name}</span>
+                  <span className={`truncate text-xs font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{item.name}</span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{item.value.toLocaleString()}</span>
-                  <span className="text-slate-500 font-mono text-[11px]">{item.percentage}</span>
+                  <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{item.value.toLocaleString()}</span>
+                  <span className="text-slate-400 font-mono text-xs">{item.percentage}</span>
                 </div>
               </div>
             ))}
@@ -596,46 +596,46 @@ export default function CooperativeDashboard() {
             </div>
           </div>
 
-          <div className="h-44">
+          <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               {cashFlowChartType === 'area' ? (
-                <AreaChart data={cashFlowData}>
+                <AreaChart data={cashFlowData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
                   <defs>
                     <linearGradient id="cashFlowGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.5} />
+                      <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.35} />
                       <stop offset="100%" stopColor="#ff6b00" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} vertical={false} />
-                  <XAxis dataKey="day" tick={{ fontSize: 10, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 10, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                  <XAxis dataKey="day" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
                   <Tooltip
                     formatter={(val) => [`₹${val}`, cashFlowMetric.toUpperCase()]}
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
-                  <Area type="monotone" dataKey={cashFlowMetric} stroke="#ff7a00" strokeWidth={3} fill="url(#cashFlowGrad)" dot={{ r: 4, fill: '#ff7a00', stroke: isDark ? '#0b0d11' : '#fff' }} />
+                  <Area type="monotone" dataKey={cashFlowMetric} stroke="#ff7a00" strokeWidth={2.5} fill="url(#cashFlowGrad)" dot={{ r: 3.5, fill: '#ff7a00', stroke: isDark ? '#0b0d11' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
                 </AreaChart>
               ) : cashFlowChartType === 'line' ? (
-                <LineChart data={cashFlowData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} vertical={false} />
-                  <XAxis dataKey="day" tick={{ fontSize: 10, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 10, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
+                <LineChart data={cashFlowData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                  <XAxis dataKey="day" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
                   <Tooltip
                     formatter={(val) => [`₹${val}`, cashFlowMetric.toUpperCase()]}
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
-                  <Line type="monotone" dataKey={cashFlowMetric} stroke="#ff7a00" strokeWidth={3} dot={{ r: 5, fill: '#ff7a00' }} />
+                  <Line type="monotone" dataKey={cashFlowMetric} stroke="#ff7a00" strokeWidth={2.5} dot={{ r: 3.5, fill: '#ff7a00', stroke: isDark ? '#0b0d11' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
                 </LineChart>
               ) : (
-                <BarChart data={cashFlowData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} vertical={false} />
-                  <XAxis dataKey="day" tick={{ fontSize: 10, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 10, fill: isDark ? '#64748b' : '#94a3b8' }} axisLine={false} tickLine={false} />
+                <BarChart data={cashFlowData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                  <XAxis dataKey="day" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
                   <Tooltip
                     formatter={(val) => [`₹${val}`, cashFlowMetric.toUpperCase()]}
-                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000' }}
+                    contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                   />
-                  <Bar dataKey={cashFlowMetric} radius={[4, 4, 0, 0]} fill="#ff7a00" />
+                  <Bar dataKey={cashFlowMetric} radius={[6, 6, 0, 0]} fill="#ff7a00" />
                 </BarChart>
               )}
             </ResponsiveContainer>

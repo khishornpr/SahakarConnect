@@ -242,9 +242,9 @@ export default function Login() {
             </p>
 
             {/* Persona Switcher Tabs (Structured 2-row layout with zero truncation) */}
-            <div className="mt-5 space-y-1.5">
+            <div className="mt-5 space-y-2">
               <div
-                className={`p-1 border rounded-2xl grid grid-cols-3 gap-1 ${
+                className={`p-1.5 border rounded-2xl grid grid-cols-3 gap-1.5 ${
                   isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                 }`}
               >
@@ -255,12 +255,12 @@ export default function Login() {
                       key={p.id}
                       type="button"
                       onClick={() => handleSelectRoleTab(p.id)}
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      className={`py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                         isActive
                           ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
                           : isDark
-                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                          : 'text-slate-700 hover:text-slate-900 hover:bg-white'
                       }`}
                     >
                       <span>{p.label}</span>
@@ -270,7 +270,7 @@ export default function Login() {
               </div>
 
               <div
-                className={`p-1 border rounded-2xl grid grid-cols-2 gap-1 ${
+                className={`p-1.5 border rounded-2xl grid grid-cols-2 gap-1.5 ${
                   isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                 }`}
               >
@@ -281,12 +281,12 @@ export default function Login() {
                       key={p.id}
                       type="button"
                       onClick={() => handleSelectRoleTab(p.id)}
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      className={`py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                         isActive
                           ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md scale-[1.02]'
                           : isDark
-                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                          ? 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                          : 'text-slate-700 hover:text-slate-900 hover:bg-white'
                       }`}
                     >
                       <span>{p.label}</span>
@@ -298,7 +298,7 @@ export default function Login() {
 
             {/* Premium Demo Credential Auto-Fill Card */}
             <div
-              className={`mt-4 p-3 rounded-2xl border flex items-center justify-between gap-3 transition-all ${
+              className={`mt-4 p-3.5 rounded-2xl border flex items-center justify-between gap-3 transition-all ${
                 isDark
                   ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
                   : 'bg-orange-50/70 border-orange-200/80 shadow-xs'
@@ -306,7 +306,7 @@ export default function Login() {
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 border ${
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0 border ${
                     isDark
                       ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
                       : 'bg-white border-orange-200 text-orange-600'
@@ -315,10 +315,10 @@ export default function Login() {
                   ⚡
                 </div>
                 <div className="min-w-0">
-                  <div className={`text-[11px] font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  <div className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {ROLE_CONFIGS[selectedRole]?.hint}
                   </div>
-                  <div className="text-[10px] text-slate-400 font-mono truncate">
+                  <div className="text-xs text-slate-400 font-mono truncate">
                     {ROLE_CONFIGS[selectedRole]?.demoEmail}
                   </div>
                 </div>
@@ -327,7 +327,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
-                className={`px-3 py-1.5 rounded-xl text-[11px] font-bold shrink-0 transition-all border cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all border cursor-pointer ${
                   isDark
                     ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25 shadow-sm'
                     : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
@@ -341,7 +341,7 @@ export default function Login() {
             {/* Error Message & Email Unconfirmed Banner */}
             {error && (
               <div
-                className={`mt-4 border text-xs p-3.5 rounded-2xl shadow-lg transition-all ${isUnconfirmed
+                className={`mt-4 border text-sm p-3.5 rounded-2xl shadow-lg transition-all ${isUnconfirmed
                   ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
                   : 'bg-rose-950/80 border-rose-500/50 text-rose-200 shadow-[0_0_12px_rgba(244,63,94,0.3)]'
                   }`}
@@ -356,12 +356,12 @@ export default function Login() {
                         <button
                           type="button"
                           onClick={handleResendConfirmation}
-                          className="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+                          className="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black text-xs hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
                         >
                           Resend Confirmation Email →
                         </button>
                         {resendStatus && (
-                          <span className="text-[11px] text-amber-300 font-medium">
+                          <span className="text-xs text-amber-300 font-medium">
                             {resendStatus}
                           </span>
                         )}
@@ -376,7 +376,7 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="mt-4 space-y-4">
               {/* Email Address */}
               <div>
-                <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                <label className={`block text-sm font-semibold mb-1.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                   {t('emailAddress', 'Email Address')}
                 </label>
                 <div className="relative flex items-center">
@@ -390,7 +390,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={ROLE_CONFIGS[selectedRole]?.demoEmail || 'you@example.com'}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-xl text-xs focus:outline-none transition-all ${isDark
+                    className={`w-full pl-10 pr-4 py-3 border rounded-xl text-sm focus:outline-none transition-all ${isDark
                       ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                       : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
                       }`}
@@ -401,7 +401,7 @@ export default function Login() {
 
               {/* Password with inline vertically-centered Eye Icon */}
               <div>
-                <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                <label className={`block text-sm font-semibold mb-1.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                   {t('password', 'Password')}
                 </label>
                 <div className="relative flex items-center">
@@ -415,7 +415,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter password"
-                    className={`w-full pl-10 pr-11 py-3 border rounded-xl text-xs focus:outline-none transition-all ${isDark
+                    className={`w-full pl-10 pr-11 py-3 border rounded-xl text-sm focus:outline-none transition-all ${isDark
                       ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                       : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
                       }`}
@@ -446,7 +446,7 @@ export default function Login() {
               <div className="flex justify-end pt-0.5">
                 <Link
                   to="/forgot-password"
-                  className="text-xs text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium cursor-pointer"
+                  className="text-xs sm:text-sm text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium cursor-pointer"
                 >
                   {t('forgotPassword', 'Forgot Password?')}
                 </Link>
@@ -456,7 +456,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50"
+                className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-sm uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50"
               >
                 <span>{loading ? t('authenticating', 'Authenticating...') : t('loginBtn', 'Login')}</span>
                 <span className="group-hover:translate-x-1 transition-transform font-bold">→</span>

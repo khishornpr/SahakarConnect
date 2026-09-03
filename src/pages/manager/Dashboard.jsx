@@ -133,21 +133,31 @@ export default function ManagerDashboard() {
         {/* Weekly Revenue & Payouts */}
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
-            <h3 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               📈 Zonal Revenue vs Net Payouts (₹)
             </h3>
-            <span className="text-xs text-slate-400">Past 7 Days</span>
+            <span className="text-xs text-slate-400 font-medium">Past 7 Days</span>
           </div>
-          <div className="h-56">
+          <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={teamWeeklyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} />
-                <XAxis dataKey="day" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} />
-                <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} />
-                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px' }} />
-                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '4px' }} />
-                <Area type="monotone" dataKey="revenue" name="Gross Revenue" stroke="#ff6b00" fill="#ff6b00" fillOpacity={0.2} strokeWidth={2} />
-                <Area type="monotone" dataKey="payouts" name="Net Worker Payouts" stroke="#10b981" fill="#10b981" fillOpacity={0.2} strokeWidth={2} />
+              <AreaChart data={teamWeeklyData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="mgrRevGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#ff6b00" stopOpacity={0.0} />
+                  </linearGradient>
+                  <linearGradient id="mgrPayGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#10b981" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#10b981" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                <XAxis dataKey="day" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
+                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', fontSize: '13px', color: isDark ? '#fff' : '#000' }} />
+                <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
+                <Area type="monotone" dataKey="revenue" name="Gross Revenue" stroke="#ff6b00" fill="url(#mgrRevGrad)" strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                <Area type="monotone" dataKey="payouts" name="Net Worker Payouts" stroke="#10b981" fill="url(#mgrPayGrad)" strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 6 }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -156,19 +166,20 @@ export default function ManagerDashboard() {
         {/* Daily Jobs Completed */}
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
-            <h3 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ⚡ Completed Jobs by Zonal Team
             </h3>
-            <span className="text-xs text-slate-400">Total: 141 Jobs</span>
+            <span className="text-xs text-slate-400 font-medium">Total: 141 Jobs</span>
           </div>
-          <div className="h-56">
+          <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={teamWeeklyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={0.5} />
-                <XAxis dataKey="day" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} />
-                <YAxis tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} />
-                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#3b82f6', borderRadius: '12px' }} />
-                <Bar dataKey="completedJobs" name="Completed Service Tasks" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              <BarChart data={teamWeeklyData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
+                <XAxis dataKey="day" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#3b82f6', borderRadius: '12px', fontSize: '13px', color: isDark ? '#fff' : '#000' }} />
+                <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
+                <Bar dataKey="completedJobs" name="Completed Service Tasks" fill="#3b82f6" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

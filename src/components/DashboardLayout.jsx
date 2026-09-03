@@ -78,44 +78,43 @@ export default function DashboardLayout() {
             </div>
 
             <div className="hidden md:flex flex-col">
-              <div className="text-xs text-slate-400 font-medium flex items-center gap-1.5">
-                <span>{t('greetingMorning', 'Good morning')}, <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{profile?.full_name?.split(' ')[0] || t('member', 'Member')}</span> 👋</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${roleThemeBadge[role]}`}>
+              <div className="text-xs text-slate-300 font-medium flex items-center gap-2">
+                <span>{t('greetingMorning', 'Good morning')}, <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{profile?.full_name?.split(' ')[0] || t('member', 'Member')}</span> 👋</span>
+                <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border uppercase tracking-wider ${roleThemeBadge[role]}`}>
                   {t(role + 'Role', role)}
                 </span>
               </div>
-              <div className={`text-sm font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <div className={`text-base font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {roleTitles[role]}
               </div>
             </div>
           </div>
 
           {/* Right Controls: Date Badge + Notifications + Theme Toggle + Language Toggle */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* FlowBoard Date Badge */}
             <div
               className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                 isDark
-                  ? 'bg-[#161a22] border-white/[0.08] text-slate-300 hover:border-white/20'
+                  ? 'bg-[#161a22] border-white/[0.08] text-slate-200 hover:border-white/20'
                   : 'bg-slate-100 border-slate-200 text-slate-700'
               }`}
             >
               <span>📅</span>
               <span>{currentDate}</span>
-              <span className="text-slate-500 text-[10px]">⌄</span>
             </div>
 
             {/* Notification Bell with Badge */}
             <button
               type="button"
-              className={`relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center text-xs sm:text-sm border transition-all ${
+              className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-sm border transition-all ${
                 isDark
-                  ? 'bg-[#161a22] border-white/[0.08] text-slate-300 hover:text-white glow-orange-hover'
+                  ? 'bg-[#161a22] border-white/[0.08] text-slate-200 hover:text-white glow-orange-hover'
                   : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
               }`}
             >
-              <span>🔔</span>
-              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#ff5500] text-white text-[8px] sm:text-[9px] font-black flex items-center justify-center shadow-[0_0_10px_rgba(255,107,0,0.8)]">
+              <span className="text-base">🔔</span>
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#ff5500] text-white text-[10px] font-black flex items-center justify-center shadow-[0_0_10px_rgba(255,107,0,0.8)]">
                 3
               </span>
             </button>

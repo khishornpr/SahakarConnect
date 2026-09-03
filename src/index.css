@@ -47,6 +47,58 @@
   --neon-amber-ambient: rgba(245, 158, 11, 0.18);
 }
 
+/* Global Typography & Legibility Tokens */
+html, body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* -------------------------------------------------------------------------- */
+/*       HIGH-READABILITY FONT SCALE (LAPTOP & MOBILE ACCESSIBILITY)          */
+/* -------------------------------------------------------------------------- */
+.text-\[10px\], [class*="text-[10px]"] {
+  font-size: 0.775rem !important; /* ~12.4px instead of microscopic 10px */
+  line-height: 1.25rem !important;
+}
+
+.text-\[11px\], [class*="text-[11px]"] {
+  font-size: 0.825rem !important; /* ~13.2px instead of 11px */
+  line-height: 1.35rem !important;
+}
+
+.text-\[9px\], [class*="text-[9px]"], .text-\[8px\], [class*="text-[8px]"] {
+  font-size: 0.725rem !important; /* ~11.6px instead of 8-9px */
+  line-height: 1.15rem !important;
+}
+
+.text-xs {
+  font-size: 0.875rem !important; /* Elevate text-xs to 14px for effortless legibility */
+  line-height: 1.45rem !important;
+}
+
+.text-sm {
+  font-size: 0.975rem !important; /* 15.6px */
+  line-height: 1.55rem !important;
+}
+
+.text-base {
+  font-size: 1.0625rem !important; /* 17px */
+  line-height: 1.65rem !important;
+}
+
 /* Global FlowBoard Theme Tokens */
 html.dark,
 html[data-theme="dark"],
@@ -664,14 +716,14 @@ textarea:focus {
   -webkit-text-fill-color: transparent;
 }
 
-/* Status Pills with Dynamic Glow */
+/* Status Pills with Dynamic Glow & High Readability */
 .status-pill-emerald {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 9999px;
-  font-size: 11px;
+  font-size: 0.8125rem !important;
   font-weight: 700;
   background: rgba(16, 185, 129, 0.16);
   border: 1px solid rgba(16, 185, 129, 0.45);
@@ -683,9 +735,9 @@ textarea:focus {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 9999px;
-  font-size: 11px;
+  font-size: 0.8125rem !important;
   font-weight: 700;
   background: rgba(255, 107, 0, 0.16);
   border: 1px solid rgba(255, 107, 0, 0.45);
@@ -698,9 +750,9 @@ textarea:focus {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 9999px;
-  font-size: 11px;
+  font-size: 0.8125rem !important;
   font-weight: 700;
   background: rgba(6, 182, 212, 0.16);
   border: 1px solid rgba(6, 182, 212, 0.45);
@@ -712,9 +764,9 @@ textarea:focus {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 9999px;
-  font-size: 11px;
+  font-size: 0.8125rem !important;
   font-weight: 700;
   background: rgba(244, 63, 94, 0.16);
   border: 1px solid rgba(244, 63, 94, 0.45);
@@ -726,9 +778,9 @@ textarea:focus {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 9999px;
-  font-size: 11px;
+  font-size: 0.8125rem !important;
   font-weight: 700;
   background: rgba(168, 85, 247, 0.16);
   border: 1px solid rgba(168, 85, 247, 0.45);
@@ -740,6 +792,50 @@ textarea:focus {
 .glass-panel {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+/* -------------------------------------------------------------------------- */
+/*             RECHARTS CLEAN MODERN DECLUTTERING & ENHANCEMENTS              */
+/* -------------------------------------------------------------------------- */
+/* Eliminate harsh grid mesh lines across all graphs */
+.recharts-cartesian-grid line {
+  stroke-dasharray: 4 4 !important;
+  stroke-opacity: 0.18 !important;
+}
+
+html:not(.dark) .recharts-cartesian-grid line {
+  stroke-opacity: 0.28 !important;
+}
+
+/* Ensure axis tick text is clear, readable, and never crowded */
+.recharts-cartesian-axis-tick text {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.dark .recharts-cartesian-axis-tick text {
+  fill: #94a3b8 !important;
+}
+
+html:not(.dark) .recharts-cartesian-axis-tick text {
+  fill: #475569 !important;
+}
+
+/* Polished high-contrast tooltips */
+.recharts-default-tooltip {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 13px !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Clean legend styling */
+.recharts-legend-wrapper {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
 }
 
 /* Smooth Pulse Animation for Emergency SOS and High Alerts */

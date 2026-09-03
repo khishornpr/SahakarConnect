@@ -109,7 +109,7 @@ export default function Sidebar() {
         {/* Navigation Section */}
         <div className="flex-1 p-3 space-y-4 overflow-y-auto">
           <div>
-            <div className="px-3 text-[10px] font-extrabold tracking-wider uppercase text-slate-500 mb-2">
+            <div className="px-3 text-xs font-extrabold tracking-wider uppercase text-slate-400 mb-2">
               {t('mainMenu', 'MAIN MENU')}
             </div>
             <nav className="space-y-1">
@@ -119,14 +119,14 @@ export default function Sidebar() {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all relative overflow-hidden group ${
+                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all relative overflow-hidden group ${
                       isActive
                         ? isDark
                           ? 'bg-gradient-to-r from-[#ff6b00] to-[#ff8c00] text-white shadow-[0_0_20px_rgba(255,107,0,0.45)]'
                           : 'bg-[#ff6b00] text-white shadow-md'
                         : isDark
-                        ? 'text-slate-300 hover:bg-[#161a22] hover:text-white'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        ? 'text-slate-200 hover:bg-[#161a22] hover:text-white'
+                        : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                   >
                     <span className="text-base group-hover:scale-110 transition-transform">{item.icon}</span>
@@ -142,13 +142,13 @@ export default function Sidebar() {
 
           {/* Rapid Response SOS Trigger */}
           <div>
-            <div className="px-3 text-[10px] font-extrabold tracking-wider uppercase text-slate-500 mb-2">
+            <div className="px-3 text-xs font-extrabold tracking-wider uppercase text-slate-400 mb-2">
               {t('rapidResponse', 'RAPID RESPONSE')}
             </div>
             <button
               type="button"
               onClick={() => setShowEmergency(true)}
-              className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-black transition-all glow-rose-hover neon-pulse-rose ${
+              className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all glow-rose-hover neon-pulse-rose ${
                 isDark
                   ? 'bg-[#181d26] border border-rose-500/50 text-rose-300 hover:border-rose-400'
                   : 'bg-rose-50 border border-rose-200 text-rose-700'
@@ -160,17 +160,17 @@ export default function Sidebar() {
           </div>
 
           {/* FlowBoard Welfare / Pro Banner Box */}
-          <div className="p-3.5 rounded-2xl bg-gradient-to-b from-[#181d26] to-[#12151c] border border-white/[0.08] space-y-2 glow-orange-hover">
-            <div className="flex items-center gap-2 text-xs font-bold text-white">
+          <div className="p-4 rounded-2xl bg-gradient-to-b from-[#181d26] to-[#12151c] border border-white/[0.08] space-y-2 glow-orange-hover">
+            <div className="flex items-center gap-2 text-sm font-bold text-white">
               <span>🚀</span>
               <span>{t('cooperativeWelfare', 'Cooperative Welfare')}</span>
             </div>
-            <p className="text-[10px] text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-300 leading-relaxed">
               {t('welfareCardSub', '100% fair wages with social security fund coverage.')}
             </p>
             <Link
               to={role === 'worker' ? '/worker/welfare' : '/cooperative/financials'}
-              className="w-full block text-center py-1.5 flow-btn-primary font-bold text-[11px] rounded-lg shadow-md transition-all"
+              className="w-full block text-center py-2 flow-btn-primary font-bold text-xs rounded-lg shadow-md transition-all"
             >
               {t('viewProtectionPlan', 'View Protection Plan')}
             </Link>
@@ -184,17 +184,17 @@ export default function Sidebar() {
               {profile?.full_name?.charAt(0) || 'U'}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-xs font-bold flex items-center gap-1 truncate">
+              <div className="text-sm font-bold flex items-center gap-1 truncate">
                 <span className={`truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>{profile?.full_name}</span>
                 <span className="text-[#ff7a00] text-xs">✓</span>
               </div>
-              <div className="text-[10px] text-slate-400 truncate">{profile?.email}</div>
+              <div className="text-xs text-slate-400 truncate">{profile?.email}</div>
             </div>
           </div>
 
           <button
             onClick={signOut}
-            className={`w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-bold transition-all ${
+            className={`w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               isDark
                 ? 'bg-[#161a22] hover:bg-rose-950/60 hover:text-rose-300 border border-white/[0.06] text-slate-300'
                 : 'bg-white hover:bg-slate-100 border border-slate-200 text-slate-700'
@@ -206,9 +206,9 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile Bottom Navigation Bar with touch-friendly buttons */}
+      {/* Mobile Bottom Navigation Bar with touch-friendly buttons & readable text */}
       <div
-        className={`md:hidden fixed bottom-0 left-0 right-0 z-40 px-2 py-1.5 flex justify-around items-center backdrop-blur-xl border-t transition-colors ${
+        className={`md:hidden fixed bottom-0 left-0 right-0 z-40 px-2 py-2 flex justify-around items-center backdrop-blur-xl border-t transition-colors ${
           isDark ? 'bg-[#0f1217]/95 border-white/[0.08] text-white' : 'bg-white/95 border-slate-200 text-slate-900'
         }`}
       >
@@ -218,12 +218,12 @@ export default function Sidebar() {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center py-1 px-2.5 rounded-xl text-[10px] transition-all min-h-[44px] justify-center ${
-                isActive ? 'text-[#ff7a00] font-black scale-105' : 'text-slate-400 hover:text-slate-200'
+              className={`flex flex-col items-center py-1 px-2.5 rounded-xl text-xs transition-all min-h-[46px] justify-center ${
+                isActive ? 'text-[#ff7a00] font-black scale-105' : 'text-slate-300 hover:text-white'
               }`}
             >
-              <span className="text-lg leading-tight">{item.icon}</span>
-              <span className="truncate max-w-[68px] mt-0.5">{item.label}</span>
+              <span className="text-xl leading-tight">{item.icon}</span>
+              <span className="truncate max-w-[78px] mt-0.5 font-bold">{item.label}</span>
             </Link>
           )
         })}
@@ -232,9 +232,9 @@ export default function Sidebar() {
         <button
           type="button"
           onClick={() => setShowEmergency(true)}
-          className="flex flex-col items-center py-1 px-2.5 text-rose-500 text-[10px] font-black min-h-[44px] justify-center"
+          className="flex flex-col items-center py-1 px-2.5 text-rose-400 text-xs font-black min-h-[46px] justify-center"
         >
-          <span className="text-lg leading-tight animate-pulse">🚨</span>
+          <span className="text-xl leading-tight animate-pulse">🚨</span>
           <span className="mt-0.5">SOS</span>
         </button>
 
@@ -242,12 +242,12 @@ export default function Sidebar() {
         <button
           type="button"
           onClick={() => setShowMobileDrawer(true)}
-          className={`flex flex-col items-center py-1 px-2.5 rounded-xl text-[10px] font-bold min-h-[44px] justify-center transition-all ${
-            showMobileDrawer ? 'text-[#ff7a00]' : 'text-slate-400 hover:text-slate-200'
+          className={`flex flex-col items-center py-1 px-2.5 rounded-xl text-xs font-bold min-h-[46px] justify-center transition-all ${
+            showMobileDrawer ? 'text-[#ff7a00]' : 'text-slate-300 hover:text-white'
           }`}
         >
-          <span className="text-lg leading-tight">☰</span>
-          <span className="mt-0.5">{t('menu', 'Menu')}</span>
+          <span className="text-xl leading-tight">☰</span>
+          <span className="mt-0.5 font-bold">{t('menu', 'Menu')}</span>
         </button>
       </div>
 

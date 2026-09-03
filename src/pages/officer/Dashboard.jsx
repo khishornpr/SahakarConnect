@@ -212,18 +212,18 @@ export default function OfficerDashboard() {
         {/* Category Breakdown */}
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
-            <h3 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               📊 Grievance Category Breakdown
             </h3>
-            <span className="text-xs text-slate-400">Delhi-NCR</span>
+            <span className="text-xs text-slate-400 font-medium">Delhi-NCR</span>
           </div>
-          <div className="h-56">
+          <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={categoryChartData} layout="vertical" margin={{ left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} horizontal={false} />
-                <XAxis type="number" tick={{ fontSize: 11, fill: isDark ? '#64748b' : '#94a3b8' }} />
-                <YAxis dataKey="name" type="category" tick={{ fontSize: 11, fill: isDark ? '#94a3b8' : '#475569' }} width={120} />
-                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px' }} />
+              <BarChart data={categoryChartData} layout="vertical" margin={{ top: 10, right: 15, left: 10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} horizontal={false} />
+                <XAxis type="number" tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
+                <YAxis dataKey="name" type="category" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} width={130} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', fontSize: '13px', color: isDark ? '#fff' : '#000' }} />
                 <Bar dataKey="count" fill="#ff6b00" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -233,20 +233,20 @@ export default function OfficerDashboard() {
         {/* Status Distribution */}
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
-            <h3 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ⏱️ Case Status Lifecycle
             </h3>
-            <span className="text-xs text-slate-400">Current Docket</span>
+            <span className="text-xs text-slate-400 font-medium">Current Docket</span>
           </div>
-          <div className="h-56 flex items-center justify-center">
+          <div className="h-64 flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={statusPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={70} label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}>
+                <Pie data={statusPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={75} label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}>
                   {statusPieData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderRadius: '12px' }} />
+                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderRadius: '12px', fontSize: '13px', color: isDark ? '#fff' : '#000' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
