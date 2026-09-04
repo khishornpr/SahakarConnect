@@ -24,7 +24,7 @@ const isPlaceholder =
 
 let client = mockSupabase
 
-if (useMockEnv === 'false' && !isPlaceholder) {
+if (useMockEnv !== 'true' && !isPlaceholder) {
   try {
     client = createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
