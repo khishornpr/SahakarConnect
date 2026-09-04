@@ -26,7 +26,14 @@ let client = mockSupabase
 
 if (useMockEnv === 'false' && !isPlaceholder) {
   try {
-    client = createClient(supabaseUrl, supabaseAnonKey)
+    client = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        flowType: 'pkce',
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    })
   } catch (err) {
     console.warn('[Supabase] Failed to initialize live client, using mock database fallback:', err)
   }

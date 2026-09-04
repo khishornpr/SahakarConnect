@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
-import { useTranslation } from '../../context/I18nContext'
 import { supabase } from '../../lib/supabase'
 import LanguageToggle from '../../components/LanguageToggle'
 
@@ -24,20 +23,39 @@ export default function EmailConfirmation() {
   }
 
   useEffect(() => {
+    let isMounted = true
+
     async function processEmailConfirmation() {
-      // 1. Check Search Parameters (PKCE Flow / Token Hash)
-      const searchParams = new URLSearchParams(location.search)
-      const tokenHash = searchParams.get('token_hash') || searchParams.get('token')
-      const type = searchParams.get('type') || 'signup'
-      const code = searchParams.get('code')
+      // 1. Check Search Parameters (PKCE Flow / Token Hash) across window.location and React Router location
+      const windowParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+      const routerParams = new URLSearchParams(location.search)
+
+      const tokenHash = routerParams.get('token_hash') || routerParams.get('token') || windowParams.get('token_hash') || windowParams.get('token')
+      const type = routerParams.get('type') || windowParams.get('type') || 'signup'
+      const code = routerParams.get('code') || windowParams.get('code')
 
       // 2. Check Hash Fragment (Implicit Grant / SPA token redirect)
-      const hash = location.hash || window.location.hash
+      const hash = location.hash || (typeof window !== 'undefined' ? window.location.hash : '')
       const hashParams = new URLSearchParams(hash.replace(/^#/, ''))
       const accessToken = hashParams.get('access_token')
       const refreshToken = hashParams.get('refresh_token')
 
+      // Listen for auth state change in case detectSessionInUrl completes automatically
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        if (!isMounted) return
+        if ((event === 'SIGNED_IN' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION') && session?.user) {
+          handleVerificationSuccess()
+        }
+      })
+
       try {
+        // Check if session was already established automatically by detectSessionInUrl on load
+        const { data: { session: existingSession } } = await supabase.auth.getSession()
+        if (existingSession?.user) {
+          if (isMounted) handleVerificationSuccess()
+          return () => subscription.unsubscribe()
+        }
+
         if (tokenHash) {
           // Verify via Token Hash
           const { error } = await verifyConfirmationToken({
@@ -45,47 +63,68 @@ export default function EmailConfirmation() {
             type,
           })
           if (error) throw error
-          handleVerificationSuccess()
-          return
+          if (isMounted) handleVerificationSuccess()
+          return () => subscription.unsubscribe()
         }
 
-        if (code && supabase.auth.exchangeCodeForSession) {
-          // Verify PKCE Auth Code
+        if (code && supabase.auth?.exchangeCodeForSession) {
+          // Fallback: Manually exchange code if automatic detectSessionInUrl didn't fire
           const { error } = await supabase.auth.exchangeCodeForSession(code)
-          if (error) throw error
-          handleVerificationSuccess()
-          return
+          if (error) {
+            // Check if detectSessionInUrl already processed it concurrently
+            const { data: { session: checkSession } } = await supabase.auth.getSession()
+            if (checkSession?.user) {
+              if (isMounted) handleVerificationSuccess()
+              return () => subscription.unsubscribe()
+            }
+            throw error
+          }
+          if (isMounted) handleVerificationSuccess()
+          return () => subscription.unsubscribe()
         }
 
-        if (accessToken && refreshToken && supabase.auth.setSession) {
-          // Set session from hash tokens
+        if (accessToken && refreshToken && supabase.auth?.setSession) {
+          // Set session from hash tokens (legacy implicit grant fallback)
           const { error } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
           })
           if (error) throw error
-          handleVerificationSuccess()
-          return
+          if (isMounted) handleVerificationSuccess()
+          return () => subscription.unsubscribe()
         }
 
-        // Check if user is already authenticated & confirmed
-        const { data: { session } } = await supabase.auth.getSession()
-        if (session?.user) {
-          handleVerificationSuccess()
-          return
+        // If code was present, wait briefly for async detectSessionInUrl PKCE resolution
+        if (code) {
+          await new Promise((resolve) => setTimeout(resolve, 600))
+          const { data: { session: delayedSession } } = await supabase.auth.getSession()
+          if (delayedSession?.user) {
+            if (isMounted) handleVerificationSuccess()
+            return () => subscription.unsubscribe()
+          }
         }
 
-        // No tokens found in URL — allow manual confirmation
-        setStatus('manual')
-        setMessage('Please click the link in your email or enter your email to resend.')
+        // No tokens found in URL and no active session — show check inbox / manual resend
+        if (isMounted) {
+          setStatus('manual')
+          setMessage('Please click the link in your email or enter your email to resend.')
+        }
       } catch (err) {
         console.error('[Email Confirmation Error]', err)
-        setStatus('error')
-        setMessage(err.message || 'Verification link is invalid or has expired.')
+        if (isMounted) {
+          setStatus('error')
+          setMessage(err.message || 'Verification link is invalid or has expired.')
+        }
       }
+
+      return () => subscription.unsubscribe()
     }
 
-    processEmailConfirmation()
+    const cleanupPromise = processEmailConfirmation()
+    return () => {
+      isMounted = false
+      cleanupPromise.then((cleanup) => typeof cleanup === 'function' && cleanup())
+    }
   }, [location, verifyConfirmationToken])
 
   // Automatic redirect countdown on success
