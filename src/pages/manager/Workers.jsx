@@ -80,24 +80,42 @@ export default function ManagerWorkers() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
-              {filtered.map((w) => (
-                <tr key={w.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{w.id}</td>
-                  <td className="py-3 px-3 font-bold text-white">{w.primary_trade}</td>
-                  <td className="py-3 px-3 text-slate-300">{w.area}</td>
-                  <td className="py-3 px-3 font-bold text-emerald-400">₹{w.hourly_rate}/hr</td>
-                  <td className="py-3 px-3 font-black text-amber-400">★ {w.rating}</td>
-                  <td className="py-3 px-3 text-slate-200">{w.completed_jobs_count || 12}</td>
-                  <td className="py-3 px-3 font-mono text-[11px] text-slate-400">
-                    {w.gov_id_type}: {w.gov_id_masked}
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className={w.is_verified && w.trade_verification_status !== 'pending' ? 'status-pill-emerald font-bold' : 'status-pill-orange font-bold'}>
-                      {w.is_verified && w.trade_verification_status !== 'pending' ? '✓ VERIFIED' : '⏳ PENDING REVIEW'}
-                    </span>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        👥
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        No workers found matching the selected trade category or area filter.
+                      </p>
+                    </div>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filtered.map((w) => (
+                  <tr key={w.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{w.id}</td>
+                    <td className="py-3 px-3 font-bold text-white">{w.primary_trade}</td>
+                    <td className="py-3 px-3 text-slate-300">{w.area}</td>
+                    <td className="py-3 px-3 font-bold text-emerald-400">₹{w.hourly_rate}/hr</td>
+                    <td className="py-3 px-3 font-black text-amber-400">★ {w.rating}</td>
+                    <td className="py-3 px-3 text-slate-200">{w.completed_jobs_count || 12}</td>
+                    <td className="py-3 px-3 font-mono text-[11px] text-slate-400">
+                      {w.gov_id_type}: {w.gov_id_masked}
+                    </td>
+                    <td className="py-3 px-3">
+                      <span className={w.is_verified && w.trade_verification_status !== 'pending' ? 'status-pill-emerald font-bold' : 'status-pill-orange font-bold'}>
+                        {w.is_verified && w.trade_verification_status !== 'pending' ? '✓ VERIFIED' : '⏳ PENDING REVIEW'}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -130,8 +130,18 @@ export default function WorkerTransactions() {
               ))}
               {transactions.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
-                    {t('noTransactionsFound', 'No transactions found')}
+                  <td colSpan={6} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        💳
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        {t('noTransactionsFound', 'No transactions found in this account.')}
+                      </p>
+                    </div>
                   </td>
                 </tr>
               )}

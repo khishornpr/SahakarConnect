@@ -2,13 +2,11 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
-import { useTranslation } from '../context/I18nContext'
 
 const ALLOWED_EXTENSIONS = ['txt', 'doc', 'docx', 'pdf', 'png', 'jpeg', 'jpg']
 
 export default function ReportIssueModal({ isOpen, onClose, job, currentUser, onSubmitted }) {
   const { isDark } = useTheme()
-  const { t } = useTranslation()
   const [issueType, setIssueType] = useState('Unsatisfactory Service')
   const [subject, setSubject] = useState('')
   const [description, setDescription] = useState('')

@@ -66,39 +66,6 @@ code, pre, .font-mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* -------------------------------------------------------------------------- */
-/*       HIGH-READABILITY FONT SCALE (LAPTOP & MOBILE ACCESSIBILITY)          */
-/* -------------------------------------------------------------------------- */
-.text-\[10px\], [class*="text-[10px]"] {
-  font-size: 0.775rem !important; /* ~12.4px instead of microscopic 10px */
-  line-height: 1.25rem !important;
-}
-
-.text-\[11px\], [class*="text-[11px]"] {
-  font-size: 0.825rem !important; /* ~13.2px instead of 11px */
-  line-height: 1.35rem !important;
-}
-
-.text-\[9px\], [class*="text-[9px]"], .text-\[8px\], [class*="text-[8px]"] {
-  font-size: 0.725rem !important; /* ~11.6px instead of 8-9px */
-  line-height: 1.15rem !important;
-}
-
-.text-xs {
-  font-size: 0.875rem !important; /* Elevate text-xs to 14px for effortless legibility */
-  line-height: 1.45rem !important;
-}
-
-.text-sm {
-  font-size: 0.975rem !important; /* 15.6px */
-  line-height: 1.55rem !important;
-}
-
-.text-base {
-  font-size: 1.0625rem !important; /* 17px */
-  line-height: 1.65rem !important;
-}
-
 /* Global FlowBoard Theme Tokens */
 html.dark,
 html[data-theme="dark"],
@@ -155,7 +122,7 @@ html.dark .neon-glow-orange:hover,
               0 0 65px rgba(255, 107, 0, 0.4),
               0 0 100px rgba(255, 107, 0, 0.2),
               0 14px 40px rgba(0, 0, 0, 0.8) !important;
-  transform: translateY(-4px) scale(1.008);
+  transform: translateY(-3px);
 }
 
 /* Emerald Neon Card Hover in Dark Mode */
@@ -172,7 +139,7 @@ html.dark .neon-glow-green:hover {
               0 0 65px rgba(16, 185, 129, 0.4),
               0 0 100px rgba(16, 185, 129, 0.2),
               0 14px 40px rgba(0, 0, 0, 0.8) !important;
-  transform: translateY(-4px) scale(1.008);
+  transform: translateY(-3px);
 }
 
 /* Cyan Neon Card Hover in Dark Mode */
@@ -189,7 +156,7 @@ html.dark .neon-glow-blue:hover {
               0 0 65px rgba(6, 182, 212, 0.4),
               0 0 100px rgba(6, 182, 212, 0.2),
               0 14px 40px rgba(0, 0, 0, 0.8) !important;
-  transform: translateY(-4px) scale(1.008);
+  transform: translateY(-3px);
 }
 
 /* Purple Neon Card Hover in Dark Mode */
@@ -206,7 +173,7 @@ html.dark .neon-glow-violet:hover {
               0 0 65px rgba(168, 85, 247, 0.4),
               0 0 100px rgba(168, 85, 247, 0.2),
               0 14px 40px rgba(0, 0, 0, 0.8) !important;
-  transform: translateY(-4px) scale(1.008);
+  transform: translateY(-3px);
 }
 
 /* Rose / Red Neon Card Hover in Dark Mode */
@@ -223,7 +190,7 @@ html.dark .neon-glow-red:hover {
               0 0 70px rgba(244, 63, 94, 0.45),
               0 0 110px rgba(244, 63, 94, 0.25),
               0 14px 40px rgba(0, 0, 0, 0.8) !important;
-  transform: translateY(-4px) scale(1.008);
+  transform: translateY(-3px);
 }
 
 /* Amber / Gold Neon Card Hover in Dark Mode */
@@ -357,34 +324,38 @@ input[type="submit"],
 .flow-btn-rose {
   position: relative;
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s ease,
-              filter 0.2s ease,
-              background-color 0.2s ease !important;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.18s ease,
+              filter 0.18s ease,
+              background-color 0.18s ease !important;
 }
 
-/* General interactive button floating neon hover (Dark Mode) - Only for unselected buttons */
-.dark button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):hover,
-html.dark button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):hover,
+/* General interactive button floating neon hover (Dark Mode) - No scaling to prevent overlapping */
+.dark button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(.cursor-default):not(:disabled):hover,
+html.dark button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(.cursor-default):not(:disabled):hover,
 .dark input[type="button"]:not(:disabled):hover,
 .dark input[type="submit"]:not(:disabled):hover {
-  box-shadow: 0 0 0 1px rgba(255, 140, 26, 0.7),
-              0 0 24px rgba(255, 107, 0, 0.65),
-              0 0 50px rgba(255, 107, 0, 0.35),
-              0 6px 20px rgba(0, 0, 0, 0.6) !important;
-  transform: translateY(-2.5px) scale(1.02) !important;
+  box-shadow: 0 0 0 1.5px rgba(255, 140, 26, 0.85),
+              0 0 22px rgba(255, 107, 0, 0.8),
+              0 0 45px rgba(255, 107, 0, 0.4),
+              inset 0 0 10px rgba(255, 107, 0, 0.2) !important;
+  border-color: #ff8c1a !important;
+  transform: translateY(-1.5px) !important;
+  filter: brightness(1.15);
   cursor: pointer !important;
 }
 
-/* General interactive button floating neon hover (Light Mode) - Only for unselected buttons */
-html:not(.dark) button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):hover,
+/* General interactive button floating neon hover (Light Mode) - No scaling to prevent overlapping */
+html:not(.dark) button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(.cursor-default):not(:disabled):hover,
 html:not(.dark) input[type="button"]:not(:disabled):hover,
 html:not(.dark) input[type="submit"]:not(:disabled):hover {
-  box-shadow: 0 0 0 1px #ff6b00,
-              0 4px 18px rgba(255, 107, 0, 0.45),
-              0 8px 30px rgba(255, 107, 0, 0.25) !important;
-  transform: translateY(-2.5px) scale(1.02) !important;
+  box-shadow: 0 0 0 1.5px #ff6b00,
+              0 0 20px rgba(255, 107, 0, 0.65),
+              0 4px 18px rgba(255, 107, 0, 0.35) !important;
+  border-color: #ff6b00 !important;
+  transform: translateY(-1.5px) !important;
+  filter: brightness(1.08);
   cursor: pointer !important;
 }
 
@@ -392,7 +363,7 @@ html:not(.dark) input[type="submit"]:not(:disabled):hover {
 button:not([aria-selected="true"]):not([aria-pressed="true"]):not([aria-current="page"]):not([data-selected="true"]):not([data-active="true"]):not(.active):not(.is-selected):not(.is-active):not(.active-tab):not(.tab-active):not(.btn-selected):not(.sidebar-link-active):not(:disabled):active,
 input[type="button"]:not(:disabled):active,
 input[type="submit"]:not(:disabled):active {
-  transform: translateY(0.5px) scale(0.97) !important;
+  transform: translateY(0.5px) !important;
 }
 
 /* Primary Flow / Neon Orange Buttons */
@@ -404,7 +375,7 @@ input[type="submit"]:not(:disabled):active {
   font-weight: 700;
   border-radius: 12px;
   border: 1px solid rgba(255, 160, 50, 0.7) !important;
-  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.4);
+  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.4), 0 0 12px rgba(255, 107, 0, 0.25) !important;
 }
 
 .flow-btn-primary:not(:disabled):hover,
@@ -412,12 +383,12 @@ input[type="submit"]:not(:disabled):active {
 .neon-btn-orange:not(:disabled):hover {
   background: linear-gradient(135deg, #ff9429 0%, #ff6600 100%) !important;
   border-color: #ffb84d !important;
-  box-shadow: 0 0 0 1.5px rgba(255, 184, 77, 0.9),
-              0 0 30px rgba(255, 107, 0, 0.85),
-              0 0 60px rgba(255, 107, 0, 0.45),
+  box-shadow: 0 0 0 1.5px rgba(255, 184, 77, 0.95),
+              0 0 35px rgba(255, 107, 0, 0.95),
+              0 0 70px rgba(255, 107, 0, 0.55),
               0 6px 25px rgba(0, 0, 0, 0.4) !important;
-  transform: translateY(-2.5px);
-  filter: brightness(1.1);
+  transform: translateY(-2px);
+  filter: brightness(1.12);
 }
 
 /* Emerald / Green Neon Button */
@@ -429,7 +400,7 @@ input[type="submit"]:not(:disabled):active {
   font-weight: 700;
   border-radius: 12px;
   border: 1px solid rgba(52, 211, 153, 0.7) !important;
-  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4), 0 0 12px rgba(16, 185, 129, 0.25) !important;
 }
 
 .flow-btn-emerald:not(:disabled):hover,
@@ -437,12 +408,12 @@ input[type="submit"]:not(:disabled):active {
 .neon-btn-green:not(:disabled):hover {
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
   border-color: #a7f3d0 !important;
-  box-shadow: 0 0 0 1.5px rgba(167, 243, 208, 0.9),
-              0 0 30px rgba(16, 185, 129, 0.85),
-              0 0 60px rgba(16, 185, 129, 0.45),
+  box-shadow: 0 0 0 1.5px rgba(167, 243, 208, 0.95),
+              0 0 35px rgba(16, 185, 129, 0.95),
+              0 0 70px rgba(16, 185, 129, 0.55),
               0 6px 25px rgba(0, 0, 0, 0.4) !important;
-  transform: translateY(-2.5px);
-  filter: brightness(1.1);
+  transform: translateY(-2px);
+  filter: brightness(1.12);
 }
 
 /* Cyan / Blue Neon Button */
@@ -454,7 +425,7 @@ input[type="submit"]:not(:disabled):active {
   font-weight: 700;
   border-radius: 12px;
   border: 1px solid rgba(34, 211, 238, 0.7) !important;
-  box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4);
+  box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4), 0 0 12px rgba(6, 182, 212, 0.25) !important;
 }
 
 .flow-btn-cyan:not(:disabled):hover,
@@ -462,12 +433,12 @@ input[type="submit"]:not(:disabled):active {
 .neon-btn-blue:not(:disabled):hover {
   background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%) !important;
   border-color: #a5f3fc !important;
-  box-shadow: 0 0 0 1.5px rgba(165, 243, 252, 0.9),
-              0 0 30px rgba(6, 182, 212, 0.85),
-              0 0 60px rgba(6, 182, 212, 0.45),
+  box-shadow: 0 0 0 1.5px rgba(165, 243, 252, 0.95),
+              0 0 35px rgba(6, 182, 212, 0.95),
+              0 0 70px rgba(6, 182, 212, 0.55),
               0 6px 25px rgba(0, 0, 0, 0.4) !important;
-  transform: translateY(-2.5px);
-  filter: brightness(1.1);
+  transform: translateY(-2px);
+  filter: brightness(1.12);
 }
 
 /* Purple / Violet Neon Button */
@@ -479,7 +450,7 @@ input[type="submit"]:not(:disabled):active {
   font-weight: 700;
   border-radius: 12px;
   border: 1px solid rgba(192, 132, 252, 0.7) !important;
-  box-shadow: 0 4px 18px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 4px 18px rgba(168, 85, 247, 0.4), 0 0 12px rgba(168, 85, 247, 0.25) !important;
 }
 
 .flow-btn-purple:not(:disabled):hover,
@@ -487,12 +458,12 @@ input[type="submit"]:not(:disabled):active {
 .neon-btn-violet:not(:disabled):hover {
   background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%) !important;
   border-color: #f3e8ff !important;
-  box-shadow: 0 0 0 1.5px rgba(243, 232, 255, 0.9),
-              0 0 30px rgba(168, 85, 247, 0.85),
-              0 0 60px rgba(168, 85, 247, 0.45),
+  box-shadow: 0 0 0 1.5px rgba(243, 232, 255, 0.95),
+              0 0 35px rgba(168, 85, 247, 0.95),
+              0 0 70px rgba(168, 85, 247, 0.55),
               0 6px 25px rgba(0, 0, 0, 0.4) !important;
-  transform: translateY(-2.5px);
-  filter: brightness(1.1);
+  transform: translateY(-2px);
+  filter: brightness(1.12);
 }
 
 /* Rose / Red Neon Button (Emergency & High Alert) */
@@ -939,72 +910,59 @@ html:not(.dark) .recharts-cartesian-axis-tick text {
               0 0 35px rgba(255, 107, 0, 0.9),
               0 0 70px rgba(255, 85, 0, 0.5) !important;
   border-color: #ff9d42 !important;
-  transform: translateY(-2px) scale(1.05);
+  transform: translateY(-2px);
 }
 
 /* -------------------------------------------------------------------------- */
 /*      HYPER-VIBRANT NEON GLOW HOVER & INTERACTIVE BUTTON BEHAVIOR           */
 /* -------------------------------------------------------------------------- */
-/* Unselected buttons: Multi-layered, ultra-radiant neon bloom & smooth lift */
-button:not(:disabled):not([aria-selected="true"]):not([data-selected="true"]):not(.btn-selected):not(.active-tab):not(.cursor-default):hover,
+/* Unselected buttons: Multi-layered, radiant neon bloom & subtle lift without layout disruption */
+button:not(:disabled):not([aria-selected="true"]):not([data-selected="true"]):not([aria-pressed="true"]):not(.btn-selected):not(.active-tab):not(.tab-active):not(.active):not(.is-selected):not(.cursor-default):hover,
 a.flow-btn-primary:not(:disabled):hover,
 a.flow-btn-secondary:not(:disabled):hover,
 .flow-btn-primary:not(:disabled):hover,
 .flow-btn-secondary:not(:disabled):hover,
 .neon-glow-hover:not(:disabled):hover,
 .neon-glow-btn:not(:disabled):hover {
-  box-shadow: 0 0 12px #ff7a00,
-              0 0 28px rgba(255, 107, 0, 0.85),
-              0 0 60px rgba(255, 85, 0, 0.55),
-              0 0 95px rgba(255, 107, 0, 0.35) !important;
+  box-shadow: 0 0 0 1.5px rgba(255, 140, 26, 0.9),
+              0 0 25px rgba(255, 107, 0, 0.85),
+              0 0 50px rgba(255, 107, 0, 0.45) !important;
   border-color: #ffa149 !important;
-  transform: translateY(-2.5px) scale(1.025);
-  filter: brightness(1.15) saturate(1.2);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(-1.5px) !important;
+  filter: brightness(1.12);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Specific glowing class boosters */
 .glow-orange-hover:hover {
-  box-shadow: 0 0 12px #ff7a00,
-              0 0 30px rgba(255, 107, 0, 0.9),
-              0 0 65px rgba(255, 85, 0, 0.6),
-              0 0 100px rgba(255, 107, 0, 0.35) !important;
+  box-shadow: 0 0 10px #ff7a00,
+              0 0 24px rgba(255, 107, 0, 0.4) !important;
   border-color: #ffa149 !important;
-  transform: translateY(-2.5px) scale(1.02);
-  filter: brightness(1.15) saturate(1.25);
+  filter: brightness(1.05);
 }
 
 .glow-emerald-hover:hover {
-  box-shadow: 0 0 12px #10b981,
-              0 0 30px rgba(16, 185, 129, 0.9),
-              0 0 65px rgba(5, 150, 105, 0.6),
-              0 0 100px rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 0 10px #10b981,
+              0 0 24px rgba(16, 185, 129, 0.4) !important;
   border-color: #6ee7b7 !important;
-  transform: translateY(-2.5px) scale(1.02);
-  filter: brightness(1.15) saturate(1.25);
+  filter: brightness(1.05);
 }
 
 .glow-cyan-hover:hover {
-  box-shadow: 0 0 12px #06b6d4,
-              0 0 30px rgba(6, 182, 212, 0.9),
-              0 0 65px rgba(2, 132, 199, 0.6),
-              0 0 100px rgba(6, 182, 212, 0.35) !important;
+  box-shadow: 0 0 10px #06b6d4,
+              0 0 24px rgba(6, 182, 212, 0.4) !important;
   border-color: #67e8f9 !important;
-  transform: translateY(-2.5px) scale(1.02);
-  filter: brightness(1.15) saturate(1.25);
+  filter: brightness(1.05);
 }
 
 .glow-rose-hover:hover {
-  box-shadow: 0 0 12px #f43f5e,
-              0 0 30px rgba(244, 63, 94, 0.9),
-              0 0 65px rgba(225, 29, 72, 0.6),
-              0 0 100px rgba(244, 63, 94, 0.35) !important;
+  box-shadow: 0 0 10px #f43f5e,
+              0 0 24px rgba(244, 63, 94, 0.4) !important;
   border-color: #fda4af !important;
-  transform: translateY(-2.5px) scale(1.02);
-  filter: brightness(1.15) saturate(1.25);
+  filter: brightness(1.05);
 }
 
-/* Selected / clicked buttons: Solid and static - do NOT jump or scale */
+/* Selected / clicked buttons / options: Solid and static - do NOT jump, scale, or glow */
 button[aria-selected="true"],
 button[aria-pressed="true"],
 button[aria-current="page"],
@@ -1027,7 +985,8 @@ a[data-selected="true"],
 .active-tab,
 [data-selected="true"],
 [data-active="true"],
-[aria-selected="true"] {
+[aria-selected="true"],
+.is-selected {
   cursor: default !important;
   transform: none !important;
   scale: 1 !important;
@@ -1057,6 +1016,7 @@ a[data-selected="true"]:hover,
 [data-selected="true"]:hover,
 [data-active="true"]:hover,
 [aria-selected="true"]:hover,
+.is-selected:hover,
 button[aria-selected="true"]:active,
 button[aria-pressed="true"]:active,
 button[aria-current="page"]:active,
@@ -1078,10 +1038,13 @@ a[data-selected="true"]:active,
 .active-tab:active,
 [data-selected="true"]:active,
 [data-active="true"]:active,
-[aria-selected="true"]:active {
+[aria-selected="true"]:active,
+.is-selected:active {
   transform: none !important;
   scale: 1 !important;
   translate: none !important;
+  box-shadow: none !important;
+  filter: none !important;
   cursor: default !important;
 }
 
@@ -1123,7 +1086,7 @@ button[data-active="true"] *,
               0 0 60px rgba(255, 85, 0, 0.55),
               0 0 90px rgba(255, 107, 0, 0.3),
               inset 0 0 15px rgba(255, 107, 0, 0.3) !important;
-  transform: translateY(-2px) scale(1.03) !important;
+  transform: translateY(-2px) !important;
   filter: brightness(1.25) saturate(1.35) !important;
 }
 
@@ -1150,7 +1113,7 @@ html:not(.dark) .sidebar-link-inactive:hover {
               0 0 38px rgba(244, 63, 94, 0.95),
               0 0 75px rgba(225, 29, 72, 0.6),
               inset 0 0 15px rgba(255, 255, 255, 0.35) !important;
-  transform: translateY(-2px) scale(1.03) !important;
+  transform: translateY(-2px) !important;
   filter: brightness(1.2) saturate(1.3) !important;
 }
 
@@ -1167,7 +1130,7 @@ html:not(.dark) .sidebar-link-inactive:hover {
               0 0 38px rgba(255, 107, 0, 0.95),
               0 0 75px rgba(255, 85, 0, 0.6),
               inset 0 0 14px rgba(255, 255, 255, 0.35) !important;
-  transform: translateY(-2px) scale(1.03) !important;
+  transform: translateY(-2px) !important;
   filter: brightness(1.2) saturate(1.3) !important;
 }
 
@@ -1179,6 +1142,104 @@ html:not(.dark) .sidebar-link-inactive:hover {
 
 .mobile-nav-link-inactive:hover {
   color: #ff9d42 !important;
-  transform: translateY(-2px) scale(1.08) !important;
+  transform: translateY(-2px) !important;
   filter: drop-shadow(0 0 10px rgba(255, 122, 0, 0.85)) !important;
 }
+
+/* -------------------------------------------------------------------------- */
+/*             OFFICIAL PRINT & INVOICE MEDIA QUERY STYLES                    */
+/* -------------------------------------------------------------------------- */
+@media print {
+  /* Hide the underlying website (#root) completely when printing an invoice */
+  body:has(.printable-invoice-card) #root,
+  body.printing-invoice #root,
+  #root.hidden-for-print {
+    display: none !important;
+  }
+
+  /* Reset document for clean printing */
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide backdrop and interactive website chrome */
+  nav, header, aside, .sidebar, .navbar, .no-print, .print\:hidden, .no-pdf,
+  button, input, select, textarea {
+    display: none !important;
+  }
+
+  /* Portal overlay should be transparent, static, unconstrained */
+  .invoice-modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    inset: auto !important;
+  }
+
+  /* Printable invoice card must be static, crisp, unclipped, and 100% pure White mode */
+  .printable-invoice-card {
+    position: static !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 28px !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    border-radius: 12px !important;
+  }
+
+  .printable-invoice-card * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Force all child cards to clean light backgrounds in print */
+  .printable-invoice-card .grid,
+  .printable-invoice-card div[class*="rounded-xl"],
+  .printable-invoice-card div[class*="rounded-lg"] {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
+  }
+
+  /* Table styles in print */
+  .printable-invoice-card table thead tr {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    border-color: #e2e8f0 !important;
+  }
+
+  .printable-invoice-card table tbody tr {
+    border-color: #f1f5f9 !important;
+  }
+
+  .printable-invoice-card strong,
+  .printable-invoice-card h2 {
+    color: #0f172a !important;
+  }
+
+  .printable-invoice-card h2 {
+    color: #064e3b !important;
+  }
+}
+

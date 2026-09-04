@@ -86,6 +86,8 @@ export default function OfficerDashboard() {
 
   const pieColors = ['#ff6b00', '#3b82f6', '#10b981', '#f43f5e', '#a855f7', '#eab308']
 
+  const categoryPalette = ['#ff6b00', '#3b82f6', '#10b981', '#a855f7', '#f43f5e', '#eab308', '#06b6d4', '#ec4899']
+
   const statusPieData = [
     { name: 'Submitted / New', value: cases.filter((c) => c.status?.toLowerCase() === 'submitted').length },
     { name: 'Under Review', value: cases.filter((c) => c.status?.toLowerCase() === 'under review').length },
@@ -93,19 +95,69 @@ export default function OfficerDashboard() {
     { name: 'Resolved', value: resolvedCases },
   ].filter((d) => d.value > 0)
 
-  async function handleUpdateCaseStatus(newStatus) {
+  async function handleUpdateCaseStatus(newStatus, actionLabel) {
     if (!selectedCase) return
     setUpdating(true)
+
+    const officerName = profile?.full_name || 'Sanjay Verma (Labor Officer)'
+    const wasResolvedOrClosed = ['resolved', 'rejected', 'closed'].includes(selectedCase.status?.toLowerCase())
+    const willBeReopened = wasResolvedOrClosed && !['resolved', 'rejected', 'closed'].includes(newStatus.toLowerCase())
+    const isReopenedNow = selectedCase.is_reopened || willBeReopened
+
+    const now = new Date()
+    const formattedDate = now.toLocaleString('en-IN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+
+    const newHistoryEntry = {
+      timestamp: now.toISOString(),
+      date: formattedDate,
+      officer_name: officerName,
+      from_status: selectedCase.status || 'submitted',
+      to_status: newStatus,
+      action: actionLabel || (willBeReopened ? 'Case Reopened for Investigation' : `Status Updated to ${newStatus.toUpperCase()}`),
+      notes: resolutionNoteInput.trim() || `Status updated from ${selectedCase.status?.toUpperCase()} to ${newStatus.toUpperCase()}${isReopenedNow ? ' (Reopened)' : ''}.`,
+    }
+
+    const currentHistory = Array.isArray(selectedCase.history) && selectedCase.history.length > 0
+      ? selectedCase.history
+      : [
+          {
+            timestamp: selectedCase.created_at || now.toISOString(),
+            date: new Date(selectedCase.created_at || now).toLocaleString('en-IN', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+            }),
+            officer_name: selectedCase.initiator_role === 'worker' ? selectedCase.user_name || 'Worker' : selectedCase.user_name || 'Household',
+            from_status: 'none',
+            to_status: 'submitted',
+            action: 'Case Docket Registered',
+            notes: selectedCase.description || 'Initial dispute claim registered.',
+          },
+        ]
+
+    const updatedHistory = [...currentHistory, newHistoryEntry]
 
     const updated = {
       ...selectedCase,
       status: newStatus,
-      assigned_officer: profile?.full_name || 'Sanjay Verma (Labor Officer)',
+      is_reopened: isReopenedNow,
+      assigned_officer: officerName,
       resolution_notes: resolutionNoteInput.trim() || selectedCase.resolution_notes,
-      updated_at: new Date().toISOString(),
+      history: updatedHistory,
+      updated_at: now.toISOString(),
       resolved_at: ['resolved', 'rejected', 'closed'].includes(newStatus)
-        ? new Date().toISOString()
-        : selectedCase.resolved_at,
+        ? now.toISOString()
+        : (willBeReopened ? null : selectedCase.resolved_at),
     }
 
     const { error } = await supabase.from('complaints').update(updated).eq('id', selectedCase.id)
@@ -114,8 +166,8 @@ export default function OfficerDashboard() {
     if (!error) {
       setCases((prev) => prev.map((c) => (c.id === selectedCase.id ? updated : c)))
       setSelectedCase(updated)
-      setFeedbackMsg(`Case ${selectedCase.id} successfully updated to "${newStatus.toUpperCase()}"`)
-      setTimeout(() => setFeedbackMsg(''), 3000)
+      setFeedbackMsg(`Case ${selectedCase.id} successfully updated to "${newStatus.toUpperCase()}${isReopenedNow ? ' (Reopened)' : ''}"`)
+      setTimeout(() => setFeedbackMsg(''), 3500)
     }
   }
 
@@ -226,7 +278,11 @@ export default function OfficerDashboard() {
                 <XAxis type="number" tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
                 <YAxis dataKey="name" type="category" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} width={130} axisLine={false} tickLine={false} />
                 <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', fontSize: '13px', color: isDark ? '#fff' : '#000' }} />
-                <Bar dataKey="count" fill="#ff6b00" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="count" radius={[0, 6, 6, 0]}>
+                  {categoryChartData.map((_, index) => (
+                    <Cell key={`cat-cell-${index}`} fill={categoryPalette[index % categoryPalette.length]} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -278,7 +334,7 @@ export default function OfficerDashboard() {
                 className={`px-3 py-1 rounded-lg font-bold capitalize transition-all ${
                   statusFilter === tab
                     ? 'bg-[#ff6b00] text-white cursor-default'
-                    : 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
+                    : 'text-slate-400 hover:text-white cursor-pointer'
                 }`}
               >
                 {tab}
@@ -301,46 +357,66 @@ export default function OfficerDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
-              {filteredCases.map((c) => (
-                <tr
-                  key={c.id}
-                  className={`hover:bg-white/[0.02] transition-colors ${
-                    selectedCase?.id === c.id ? 'bg-orange-500/10' : ''
-                  }`}
-                >
-                  <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{c.id}</td>
-                  <td className="py-3 px-3">
-                    <strong className={isDark ? 'text-white' : 'text-slate-900'}>{c.user_name || 'Worker'}</strong>
-                    <div className="text-[10px] text-slate-400 uppercase font-semibold">
-                      {c.initiator_role || 'worker'}
+              {filteredCases.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        ⚖️
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        No dispute or grievance cases match the selected status tab.
+                      </p>
                     </div>
                   </td>
-                  <td className="py-3 px-3">
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">
-                      {c.complaint_type}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 max-w-xs truncate">
-                    <span className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{c.title}</span>
-                    <p className="text-[10px] text-slate-400 truncate">{c.description}</p>
-                  </td>
-                  <td className="py-3 px-3 text-slate-400">{new Date(c.created_at).toLocaleDateString()}</td>
-                  <td className="py-3 px-3">
-                    <span className={getStatusBadge(c.status)}>{c.status?.toUpperCase()}</span>
-                  </td>
-                  <td className="py-3 px-3 text-right">
-                    <button
-                      onClick={() => {
-                        setSelectedCase(c)
-                        setResolutionNoteInput(c.resolution_notes || '')
-                      }}
-                      className="px-3 py-1.5 rounded-lg flow-btn-primary text-[11px] font-bold shadow-md"
-                    >
-                      Investigate →
-                    </button>
-                  </td>
                 </tr>
-              ))}
+              ) : (
+                filteredCases.map((c) => (
+                  <tr
+                    key={c.id}
+                    className={`hover:bg-white/[0.02] transition-colors ${
+                      selectedCase?.id === c.id ? 'bg-orange-500/10' : ''
+                    }`}
+                  >
+                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{c.id}</td>
+                    <td className="py-3 px-3">
+                      <strong className={isDark ? 'text-white' : 'text-slate-900'}>{c.user_name || 'Worker'}</strong>
+                      <div className="text-[10px] text-slate-400 uppercase font-semibold">
+                        {c.initiator_role || 'worker'}
+                      </div>
+                    </td>
+                    <td className="py-3 px-3">
+                      <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">
+                        {c.complaint_type}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 max-w-xs truncate">
+                      <span className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{c.title}</span>
+                      <p className="text-[10px] text-slate-400 truncate">{c.description}</p>
+                    </td>
+                    <td className="py-3 px-3 text-slate-400">{new Date(c.created_at).toLocaleDateString()}</td>
+                    <td className="py-3 px-3">
+                      <span className={getStatusBadge(c.status)}>
+                        {c.status?.toUpperCase()}{c.is_reopened ? ' (Reopened)' : ''}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-right">
+                      <button
+                        onClick={() => {
+                          setSelectedCase(c)
+                          setResolutionNoteInput(c.resolution_notes || '')
+                        }}
+                        className="px-3 py-1.5 rounded-lg flow-btn-primary text-[11px] font-bold shadow-md"
+                      >
+                        Investigate →
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -366,7 +442,7 @@ export default function OfficerDashboard() {
                       {selectedCase.complaint_type}
                     </span>
                     <span className={getStatusBadge(selectedCase.status)}>
-                      {selectedCase.status?.toUpperCase()}
+                      {selectedCase.status?.toUpperCase()}{selectedCase.is_reopened ? ' (Reopened)' : ''}
                     </span>
                   </div>
                   <h3 className={`text-lg font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -442,9 +518,85 @@ export default function OfficerDashboard() {
                 </div>
               </div>
 
+              {/* Case Action & Status Audit History */}
+              <div className={`p-4 rounded-xl border space-y-3 ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-amber-400 uppercase text-[11px] flex items-center gap-1.5">
+                    <span>📜</span>
+                    <span>Case Action & Status Audit History</span>
+                  </h4>
+                  {selectedCase.is_reopened && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                      Reopened Case
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1 divide-y divide-white/[0.06]">
+                  {(selectedCase.history && selectedCase.history.length > 0
+                    ? selectedCase.history
+                    : [
+                        {
+                          date: new Date(selectedCase.created_at).toLocaleString('en-IN', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true,
+                          }),
+                          officer_name: selectedCase.user_name || 'Complainant',
+                          action: 'Case Docket Registered',
+                          from_status: 'none',
+                          to_status: 'submitted',
+                          notes: selectedCase.description,
+                        },
+                        ...(selectedCase.status !== 'submitted'
+                          ? [
+                              {
+                                date: new Date(selectedCase.updated_at || selectedCase.created_at).toLocaleString('en-IN', {
+                                  day: '2-digit',
+                                  month: '2-digit',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                  hour12: true,
+                                }),
+                                officer_name: selectedCase.assigned_officer || 'Sanjay Verma (Labor Officer)',
+                                action: `Status Updated to ${selectedCase.status?.toUpperCase()}`,
+                                from_status: 'submitted',
+                                to_status: selectedCase.status,
+                                notes: selectedCase.resolution_notes || 'Action recorded by presiding Labor Officer.',
+                              },
+                            ]
+                          : []),
+                      ]
+                  ).map((hist, idx) => (
+                    <div key={idx} className="pt-2 first:pt-0 space-y-1 text-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-1">
+                        <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{hist.action}</span>
+                        <span className="text-[11px] font-mono text-slate-400">{hist.date}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
+                        <span>Officer / Actor: <strong className={isDark ? 'text-slate-300' : 'text-slate-700'}>{hist.officer_name}</strong></span>
+                        <span>•</span>
+                        <span>Transition: <span className="font-mono text-amber-400 font-semibold">{hist.from_status?.toUpperCase()} → {hist.to_status?.toUpperCase()}</span></span>
+                      </div>
+                      {hist.notes && (
+                        <p className={`text-[11px] leading-relaxed p-2 rounded-lg border ${
+                          isDark ? 'bg-black/30 text-slate-300 border-white/[0.04]' : 'bg-white text-slate-700 border-slate-200'
+                        }`}>
+                          {hist.notes}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Adjudication Notes Input */}
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-300">
+                <label className={`block text-xs font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                   Official Adjudication & Resolution Notes *
                 </label>
                 <textarea
@@ -465,34 +617,44 @@ export default function OfficerDashboard() {
                 </span>
 
                 <div className="flex flex-wrap gap-2">
+                  {['resolved', 'rejected', 'closed'].includes(selectedCase.status?.toLowerCase()) ? (
+                    <button
+                      disabled={updating}
+                      onClick={() => handleUpdateCaseStatus('under review', 'Case Reopened for Adjudication')}
+                      className="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow-md cursor-pointer"
+                    >
+                      🔄 Reopen Case
+                    </button>
+                  ) : null}
+
                   <button
                     disabled={updating}
-                    onClick={() => handleUpdateCaseStatus('under review')}
-                    className="px-3 py-1.5 rounded-xl border border-purple-500/50 text-purple-300 hover:bg-purple-500/20 text-xs font-bold"
+                    onClick={() => handleUpdateCaseStatus('under review', 'Marked Under Review')}
+                    className="px-3 py-1.5 rounded-xl border border-purple-500/50 text-purple-300 hover:bg-purple-500/20 text-xs font-bold cursor-pointer"
                   >
                     🔍 Mark Under Review
                   </button>
 
                   <button
                     disabled={updating}
-                    onClick={() => handleUpdateCaseStatus('in progress')}
-                    className="px-3 py-1.5 rounded-xl border border-amber-500/50 text-amber-300 hover:bg-amber-500/20 text-xs font-bold"
+                    onClick={() => handleUpdateCaseStatus('in progress', 'Investigation Initiated')}
+                    className="px-3 py-1.5 rounded-xl border border-amber-500/50 text-amber-300 hover:bg-amber-500/20 text-xs font-bold cursor-pointer"
                   >
                     ⚡ Start Investigation
                   </button>
 
                   <button
                     disabled={updating}
-                    onClick={() => handleUpdateCaseStatus('resolved')}
-                    className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md"
+                    onClick={() => handleUpdateCaseStatus('resolved', 'Case Resolved & Settlement Issued')}
+                    className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md cursor-pointer"
                   >
                     ✓ Resolve & Issue Settlement
                   </button>
 
                   <button
                     disabled={updating}
-                    onClick={() => handleUpdateCaseStatus('rejected')}
-                    className="px-3 py-1.5 rounded-xl border border-rose-500/50 text-rose-400 hover:bg-rose-500/20 text-xs font-bold"
+                    onClick={() => handleUpdateCaseStatus('rejected', 'Case Dismissed / Rejected')}
+                    className="px-3 py-1.5 rounded-xl border border-rose-500/50 text-rose-400 hover:bg-rose-500/20 text-xs font-bold cursor-pointer"
                   >
                     ✕ Dismiss / Reject
                   </button>

@@ -93,8 +93,18 @@ export default function HouseholdInvoices() {
               ))}
               {invoices.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
-                    {t('noInvoicesFound', 'No completed service invoices found yet.')}
+                  <td colSpan={6} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        📄
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        {t('noInvoicesFound', 'No completed service invoices found yet.')}
+                      </p>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -109,7 +119,7 @@ export default function HouseholdInvoices() {
           job={selectedInvoice}
           worker={selectedInvoice.worker || { full_name: 'Verified Cooperative Member', rating: 4.9 }}
           household={{
-            full_name: profile?.full_name || user?.user_metadata?.full_name || (user?.email ? user.email.split('@')[0] : 'Household Customer (Priya Sharma)')
+            full_name: profile?.full_name || user?.user_metadata?.full_name || (user?.email ? user.email.split('@')[0] : 'Priya Sharma')
           }}
           wageLedgerItem={selectedInvoice.wage_ledger?.[0]}
           onClose={() => setSelectedInvoice(null)}

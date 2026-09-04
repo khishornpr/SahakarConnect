@@ -2,11 +2,9 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
-import { useTranslation } from '../context/I18nContext'
 
 export default function RatingModal({ job, currentUserRole, currentUserId, onClose, onRatingSubmitted }) {
   const { isDark } = useTheme()
-  const { t } = useTranslation()
   const [score, setScore] = useState(5)
   const [selectedTags, setSelectedTags] = useState([])
   const [reviewText, setReviewText] = useState('')

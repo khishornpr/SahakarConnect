@@ -170,10 +170,10 @@ export default function WorkerComplaints() {
               data-selected={activeTab === 'list' ? 'true' : undefined}
               className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
                 activeTab === 'list'
-                  ? 'flow-btn-primary cursor-default'
+                  ? 'flow-btn-primary cursor-default shadow-none pointer-events-none'
                   : isDark
-                  ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                  : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                  ? 'text-slate-400 hover:text-white cursor-pointer'
+                  : 'text-slate-600 hover:text-slate-900 cursor-pointer'
               }`}
             >
               📋 {t('myComplaintsTab', 'My Complaints')} ({complaints.length})
@@ -184,10 +184,10 @@ export default function WorkerComplaints() {
               data-selected={activeTab === 'create' ? 'true' : undefined}
               className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
                 activeTab === 'create'
-                  ? 'flow-btn-primary cursor-default'
+                  ? 'flow-btn-primary cursor-default shadow-none pointer-events-none'
                   : isDark
-                  ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                  : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                  ? 'text-slate-400 hover:text-white cursor-pointer'
+                  : 'text-slate-600 hover:text-slate-900 cursor-pointer'
               }`}
             >
               ✍️ {t('raiseComplaintTab', '+ Raise Complaint')}
@@ -206,7 +206,7 @@ export default function WorkerComplaints() {
 
       {/* VIEW 1: RAISE COMPLAINT FORM */}
       {activeTab === 'create' && (
-        <div className="flow-card glow-orange-hover p-6 sm:p-8 max-w-3xl space-y-5">
+        <div className="flow-card p-6 sm:p-8 max-w-3xl space-y-5">
           <div className="border-b pb-4">
             <h2 className={`text-lg font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
               {t('newGrievanceFormTitle', 'File an Official Labor Dispute')}

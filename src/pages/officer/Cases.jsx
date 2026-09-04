@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useTheme } from '../../context/ThemeContext'
-import { useTranslation } from '../../context/I18nContext'
 import { Link } from 'react-router-dom'
 
 export default function OfficerCases() {
   const { isDark } = useTheme()
-  const { t } = useTranslation()
   const [cases, setCases] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
@@ -124,28 +122,48 @@ export default function OfficerCases() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
-              {filtered.map((c) => (
-                <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{c.id}</td>
-                  <td className="py-3 px-3">
-                    <strong className={isDark ? 'text-white' : 'text-slate-900'}>{c.user_name}</strong>
-                    <div className="text-[10px] text-slate-400 uppercase">{c.initiator_role}</div>
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">
-                      {c.complaint_type}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 max-w-xs truncate">
-                    <span className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{c.title}</span>
-                  </td>
-                  <td className="py-3 px-3 text-slate-400">{new Date(c.created_at).toLocaleDateString()}</td>
-                  <td className="py-3 px-3 text-amber-400 font-medium">{c.assigned_officer || 'Unassigned'}</td>
-                  <td className="py-3 px-3">
-                    <span className={getStatusBadge(c.status)}>{c.status?.toUpperCase()}</span>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        ⚖️
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        No grievance or dispute cases found matching the active status filter.
+                      </p>
+                    </div>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filtered.map((c) => (
+                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{c.id}</td>
+                    <td className="py-3 px-3">
+                      <strong className={isDark ? 'text-white' : 'text-slate-900'}>{c.user_name}</strong>
+                      <div className="text-[10px] text-slate-400 uppercase">{c.initiator_role}</div>
+                    </td>
+                    <td className="py-3 px-3">
+                      <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">
+                        {c.complaint_type}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 max-w-xs truncate">
+                      <span className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{c.title}</span>
+                    </td>
+                    <td className="py-3 px-3 text-slate-400">{new Date(c.created_at).toLocaleDateString()}</td>
+                    <td className="py-3 px-3 text-amber-400 font-medium">{c.assigned_officer || 'Unassigned'}</td>
+                    <td className="py-3 px-3">
+                      <span className={getStatusBadge(c.status)}>
+                        {c.status?.toUpperCase()}{c.is_reopened ? ' (Reopened)' : ''}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

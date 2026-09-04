@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
-import { useTranslation } from '../../context/I18nContext'
 import { supabase } from '../../lib/supabase'
 import LanguageToggle from '../../components/LanguageToggle'
 import ThemeToggle from '../../components/ThemeToggle'
 
 export default function VerifyPin() {
   const { isDark } = useTheme()
-  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 

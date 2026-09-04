@@ -181,8 +181,18 @@ export default function WorkerEarnings() {
               ))}
               {ledger.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
-                    No wage records generated yet.
+                  <td colSpan={7} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        💼
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        No completed work wage records generated in your ledger yet.
+                      </p>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -195,8 +205,8 @@ export default function WorkerEarnings() {
       {selectedInvoiceItem && (
         <InvoiceModal
           job={selectedInvoiceItem.job || { id: selectedInvoiceItem.job_id, title: 'Completed Service Task', estimated_amount: selectedInvoiceItem.gross_amount }}
-          worker={{ full_name: profile?.full_name, rating: 4.9 }}
-          household={{ full_name: 'Household Customer (South Delhi)' }}
+          worker={{ full_name: profile?.full_name || 'Member Worker' }}
+          household={{ full_name: 'Priya Sharma' }}
           wageLedgerItem={selectedInvoiceItem}
           onClose={() => setSelectedInvoiceItem(null)}
         />

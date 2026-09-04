@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
-import { useTranslation } from '../../context/I18nContext'
 
 export default function ManagerHelp() {
   const { isDark } = useTheme()
-  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState('')
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
 

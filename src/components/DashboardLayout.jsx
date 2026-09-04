@@ -58,14 +58,16 @@ export default function DashboardLayout() {
   const [showNotifications, setShowNotifications] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [notifications, setNotifications] = useState(() => getStoredNotifications(role, profile?.id))
+  const [prevUserKey, setPrevUserKey] = useState(() => `${role}_${profile?.id}`)
 
   const notifRef = useRef(null)
   const userMenuRef = useRef(null)
 
-  // Sync notifications if role or user changes
-  useEffect(() => {
+  const currentUserKey = `${role}_${profile?.id}`
+  if (currentUserKey !== prevUserKey) {
+    setPrevUserKey(currentUserKey)
     setNotifications(getStoredNotifications(role, profile?.id))
-  }, [role, profile?.id])
+  }
 
   // Click outside listener for popovers
   useEffect(() => {
@@ -200,19 +202,23 @@ export default function DashboardLayout() {
               <span>{currentDate}</span>
             </div>
 
-            {/* Notification Bell with ALWAYS Shaking & Glowing Animation + Functional Popover */}
+            {/* Notification Bell (Shakes and glows ONLY when there are unread notifications / new messages) */}
             <div className="relative" ref={notifRef}>
               <button
                 type="button"
                 onClick={() => setShowNotifications(!showNotifications)}
-                title="Notifications"
-                className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-sm border transition-all cursor-pointer neon-bell-button neon-glow-pulse-orange ${
+                title={unreadCount > 0 ? `${unreadCount} unread notifications` : 'Notifications'}
+                className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-sm border transition-all cursor-pointer ${
+                  unreadCount > 0 ? 'neon-bell-button neon-glow-pulse-orange' : ''
+                } ${
                   isDark
-                    ? 'bg-[#161a22] border-white/[0.15] text-slate-100 hover:text-white'
+                    ? 'bg-[#161a22] border-white/[0.15] text-slate-100 hover:text-white hover:border-white/30'
                     : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
                 }`}
               >
-                <span className="text-base sm:text-lg animate-bell-shake select-none">🔔</span>
+                <span className={`text-base sm:text-lg select-none inline-block ${unreadCount > 0 ? 'animate-bell-shake' : ''}`}>
+                  🔔
+                </span>
                 {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#ff5500] text-white text-[10px] font-black flex items-center justify-center shadow-[0_0_15px_rgba(255,107,0,1)] animate-pulse">
                     {unreadCount}

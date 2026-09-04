@@ -268,8 +268,8 @@ export default function Login() {
                           isActive
                             ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
                             : isDark
-                            ? 'text-slate-300 hover:text-white hover:bg-white/[0.06] hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(232,176,112,0.35)] cursor-pointer'
-                            : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(216,150,77,0.35)] cursor-pointer'
+                            ? 'text-slate-300 hover:text-white hover:bg-white/[0.08] hover:shadow-[0_0_12px_rgba(232,176,112,0.25)] cursor-pointer'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:shadow-[0_0_10px_rgba(216,150,77,0.25)] cursor-pointer'
                         }`}
                       >
                         <span className="truncate">{p.label}</span>
@@ -296,8 +296,8 @@ export default function Login() {
                           isActive
                             ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
                             : isDark
-                            ? 'text-slate-300 hover:text-white hover:bg-white/[0.06] hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(232,176,112,0.35)] cursor-pointer'
-                            : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(216,150,77,0.35)] cursor-pointer'
+                            ? 'text-slate-300 hover:text-white hover:bg-white/[0.08] hover:shadow-[0_0_12px_rgba(232,176,112,0.25)] cursor-pointer'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:shadow-[0_0_10px_rgba(216,150,77,0.25)] cursor-pointer'
                         }`}
                       >
                         <span className="truncate">{p.label}</span>
@@ -462,7 +462,7 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#ffd099] hover:to-[#f0ab5d] text-slate-950 font-black rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_20px_rgba(232,176,112,0.45)] hover:shadow-[0_0_25px_rgba(232,176,112,0.95),0_0_55px_rgba(232,176,112,0.6)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50 hover:scale-[1.02] hover:-translate-y-0.5"
+                  className="w-full py-2.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#ffd099] hover:to-[#f0ab5d] text-slate-950 font-black rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_20px_rgba(232,176,112,0.45)] hover:shadow-[0_0_25px_rgba(232,176,112,0.95),0_0_55px_rgba(232,176,112,0.6)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50 hover:-translate-y-0.5"
                 >
                   <span>{loading ? t('authenticating', 'Authenticating...') : t('loginBtn', 'Login')}</span>
                   <span className="group-hover:translate-x-1.5 transition-transform font-bold">→</span>

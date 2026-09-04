@@ -426,7 +426,7 @@ export default function WorkerJobs() {
                     <span>Your Take-Home: ₹{((otpModalJob.final_amount || otpModalJob.estimated_amount) * 0.95 - 10).toFixed(0)}</span>
                   </div>
                   <div className="text-[10px] text-emerald-400/80">
-                    5% co-op fee + ₹10 welfare deduction.
+                    Statutory cooperative welfare contribution applied.
                   </div>
                 </div>
 
@@ -447,7 +447,7 @@ export default function WorkerJobs() {
         <InvoiceModal
           job={viewInvoiceJob}
           worker={workerInfo}
-          household={{ full_name: 'Household Customer (Priya Sharma)' }}
+          household={viewInvoiceJob.household || { full_name: viewInvoiceJob.household_name || 'Household Customer' }}
           onClose={() => setViewInvoiceJob(null)}
         />
       )}

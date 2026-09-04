@@ -137,7 +137,7 @@ export default function WorkerLearning() {
           </div>
 
           <div className={`px-4 py-2.5 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">{t('earnedBadges', 'Earned Badges')}</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block">{t('earnedBadges', 'Earned Certificates')}</span>
             <span className="text-lg font-black text-emerald-400 mt-0.5 block">{completedModulesCount} / {modules.length}</span>
           </div>
         </div>
@@ -210,7 +210,7 @@ export default function WorkerLearning() {
                   </div>
                 </div>
 
-                {/* Reward Badge Preview */}
+                {/* Reward Certificate Preview */}
                 <div className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-between ${
                   isDone
                     ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
@@ -219,7 +219,7 @@ export default function WorkerLearning() {
                     : 'bg-slate-50 border-slate-200 text-slate-600'
                 }`}>
                   <div className="flex items-center gap-2">
-                    <span>{t(mod.badge, mod.badge || 'Certified Badge')}</span>
+                    <span>{t(mod.badge, mod.badge || 'Certificate')}</span>
                   </div>
                   {isDone ? (
                     <span className="text-emerald-400 text-[11px]">{t('completedBadge', '✓ Certified')}</span>
@@ -295,12 +295,12 @@ export default function WorkerLearning() {
                       data-selected={isCurrent ? 'true' : undefined}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border shrink-0 cursor-pointer ${
                         isCurrent
-                          ? 'bg-[#ff6b00] border-[#ff6b00] text-white shadow-md ring-2 ring-[#ff6b00]/50 scale-[1.03]'
+                          ? 'bg-[#ff6b00] border-[#ff6b00] text-white shadow-md ring-2 ring-[#ff6b00]/50'
                           : les.completed
-                          ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-400 hover:scale-105'
+                          ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-400'
                           : isDark
-                          ? 'bg-[#161a22] border-white/[0.08] text-slate-400 hover:scale-105'
-                          : 'bg-slate-100 border-slate-200 text-slate-700 hover:scale-105'
+                          ? 'bg-[#161a22] border-white/[0.08] text-slate-400'
+                          : 'bg-slate-100 border-slate-200 text-slate-700'
                       }`}
                     >
                       {les.completed ? '✓ ' : `${idx + 1}. `}
@@ -389,7 +389,7 @@ export default function WorkerLearning() {
                             className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-xs rounded-xl flex items-center gap-1.5 cursor-pointer shadow-lg hover:brightness-110 transition-all"
                           >
                             <span>🏆</span>
-                            <span>{t('claimCertificate', 'Claim Certificate Badge')}</span>
+                            <span>{t('claimCertificate', 'Claim Certificate')}</span>
                             <span>→</span>
                           </button>
                         )
@@ -407,7 +407,7 @@ export default function WorkerLearning() {
                           <span>✓</span>
                           <span>
                             {activeLessonIndex === activeModule.lessons.length - 1
-                              ? t('completeFinalLesson', 'Complete Final Lesson & Claim Badge')
+                              ? t('completeFinalLesson', 'Complete Final Lesson & Claim Certificate')
                               : t('markLessonComplete', 'Mark Lesson Complete & Continue')}
                           </span>
                           <span>→</span>
@@ -426,7 +426,7 @@ export default function WorkerLearning() {
                   onClick={() => setActiveModule(null)}
                   className="px-4 py-1.5 rounded-lg border border-slate-600 hover:text-white cursor-pointer"
                 >
-                  {t('closeCourse', 'Close Course')}
+                  {t('close', 'Close')}
                 </button>
               </div>
             </div>
@@ -434,7 +434,7 @@ export default function WorkerLearning() {
           document.body
         )}
 
-      {/* CONGRATULATIONS BADGE UNLOCKED MODAL */}
+      {/* CONGRATULATIONS CERTIFICATE UNLOCKED MODAL */}
       {completedBadgeModal &&
         createPortal(
           <div className="fixed inset-0 z-[999999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
@@ -450,7 +450,7 @@ export default function WorkerLearning() {
                 <h3 className="text-lg font-black text-emerald-400">{t('courseCompleted', 'Course Completed!')}</h3>
                 <h4 className="text-sm font-bold text-white mt-1">{t(completedBadgeModal.title, completedBadgeModal.title)}</h4>
                 <p className="text-xs text-slate-300 mt-2">
-                  {t('badgeUnlockedDesc', 'You have successfully unlocked the official certification badge! This is now attached to your public Skill Profile and enhances your dispatch matching score.')}
+                  {t('badgeUnlockedDesc', 'You have successfully unlocked the official skill certificate! This is now attached to your public Skill Profile and enhances your dispatch matching score.')}
                 </p>
               </div>
               <div className="space-y-2 pt-2">
@@ -459,7 +459,7 @@ export default function WorkerLearning() {
                   onClick={() => setCompletedBadgeModal(null)}
                   className="w-full py-2.5 flow-btn-primary text-xs font-bold rounded-xl cursor-pointer"
                 >
-                  {t('viewMyBadges', 'Awesome, View My Badges!')}
+                  {t('viewMyBadges', 'Awesome, View My Certificates!')}
                 </button>
                 <button
                   type="button"

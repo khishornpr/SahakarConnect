@@ -191,27 +191,45 @@ export default function ManagerReports() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
-              {ledger.map((l) => (
-                <tr key={l.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{l.id}</td>
-                  <td className="py-3 px-3 font-mono text-slate-300">{l.worker_id}</td>
-                  <td className="py-3 px-3 text-slate-400">{new Date(l.created_at).toLocaleDateString()}</td>
-                  <td className="py-3 px-3 font-bold text-white">₹{l.gross_amount}</td>
-                  <td className="py-3 px-3 text-[#ff7a00]">₹{l.cooperative_fee_amount}</td>
-                  <td className="py-3 px-3 text-cyan-400">₹{l.welfare_fund_amount}</td>
-                  <td className="py-3 px-3 font-black text-emerald-400">₹{l.net_payout}</td>
-                  <td className="py-3 px-3">
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]">
-                      {l.payment_mode}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className={l.is_anomalous ? 'status-pill-rose' : 'status-pill-emerald'}>
-                      {l.is_anomalous ? 'FLAGGED' : 'COMPLETED'}
-                    </span>
+              {ledger.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        📊
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        No financial audit report ledger records available to display.
+                      </p>
+                    </div>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                ledger.map((l) => (
+                  <tr key={l.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{l.id}</td>
+                    <td className="py-3 px-3 font-mono text-slate-300">{l.worker_id}</td>
+                    <td className="py-3 px-3 text-slate-400">{new Date(l.created_at).toLocaleDateString()}</td>
+                    <td className="py-3 px-3 font-bold text-white">₹{l.gross_amount}</td>
+                    <td className="py-3 px-3 text-[#ff7a00]">₹{l.cooperative_fee_amount}</td>
+                    <td className="py-3 px-3 text-cyan-400">₹{l.welfare_fund_amount}</td>
+                    <td className="py-3 px-3 font-black text-emerald-400">₹{l.net_payout}</td>
+                    <td className="py-3 px-3">
+                      <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]">
+                        {l.payment_mode}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3">
+                      <span className={l.is_anomalous ? 'status-pill-rose' : 'status-pill-emerald'}>
+                        {l.is_anomalous ? 'FLAGGED' : 'COMPLETED'}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

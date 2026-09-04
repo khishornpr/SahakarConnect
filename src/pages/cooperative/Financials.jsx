@@ -435,29 +435,47 @@ export default function CooperativeFinancials() {
               </tr>
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-white/[0.06] text-slate-200' : 'divide-slate-200 text-slate-800'}`}>
-              {normalEntries.map((row) => (
-                <tr key={row.id} className="interactive-row">
-                  <td className="px-4 py-3.5 font-mono font-bold text-emerald-400">{row.id}</td>
-                  <td className={`px-4 py-3.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                    {new Date(row.created_at).toLocaleDateString()}
-                  </td>
-                  <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    ₹{row.gross_amount}
-                  </td>
-                  <td className="px-4 py-3.5 text-amber-400 font-bold">+ ₹{row.cooperative_fee_amount}</td>
-                  <td className="px-4 py-3.5 text-cyan-400 font-bold">+ ₹{row.welfare_fund_amount}</td>
-                  <td className="px-4 py-3.5 font-black text-emerald-400 text-sm">₹{row.net_payout}</td>
-                  <td className="px-4 py-3.5">
-                    <button
-                      onClick={() => setSelectedInvoice(row)}
-                      className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm"
-                    >
-                      <span>📄</span>
-                      <span>Invoice</span>
-                    </button>
+              {normalEntries.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 px-4 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-orange-500/10 border border-orange-500/30 text-[#ff7a00]">
+                        💳
+                      </div>
+                      <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                        No Data Available
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        No standard verified disbursal entries recorded in the ledger yet.
+                      </p>
+                    </div>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                normalEntries.map((row) => (
+                  <tr key={row.id} className="interactive-row">
+                    <td className="px-4 py-3.5 font-mono font-bold text-emerald-400">{row.id}</td>
+                    <td className={`px-4 py-3.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {new Date(row.created_at).toLocaleDateString()}
+                    </td>
+                    <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                      ₹{row.gross_amount}
+                    </td>
+                    <td className="px-4 py-3.5 text-amber-400 font-bold">+ ₹{row.cooperative_fee_amount}</td>
+                    <td className="px-4 py-3.5 text-cyan-400 font-bold">+ ₹{row.welfare_fund_amount}</td>
+                    <td className="px-4 py-3.5 font-black text-emerald-400 text-sm">₹{row.net_payout}</td>
+                    <td className="px-4 py-3.5">
+                      <button
+                        onClick={() => setSelectedInvoice(row)}
+                        className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm"
+                      >
+                        <span>📄</span>
+                        <span>Invoice</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

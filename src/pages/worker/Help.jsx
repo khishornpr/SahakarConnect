@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
-import { useTranslation } from '../../context/I18nContext'
 
 export default function WorkerHelp() {
   const { isDark } = useTheme()
-  const { t } = useTranslation()
   const [openSection, setOpenSection] = useState(null)
 
   const toggleAccordion = (id) => {
@@ -98,12 +96,12 @@ export default function WorkerHelp() {
     {
       id: 'sos',
       icon: '🚨',
-      title: '30-Minute Emergency SOS',
-      desc: 'Quick emergency alert for on-site accidents or physical threats.',
+      title: 'Emergency Rapid Response',
+      desc: 'Quick emergency protocol for on-site accidents, medical issues, or physical hazards.',
       howTo: [
-        'Click the flashing "🚨 30-Min Emergency SOS" button at the bottom of the sidebar.',
+        'Contact the 24/7 Zonal Co-op Emergency Rapid Response desk via Welfare & Insurance.',
         'Select the emergency type (Medical Emergency, Physical Threat, or Severe Site Hazard).',
-        'Your live GPS coordinates and details are sent immediately to the Zonal Rapid Response Team.',
+        'Your live GPS coordinates and service logs are prioritized immediately by the Zonal Safety Officer.',
       ],
     },
   ]
@@ -252,11 +250,11 @@ export default function WorkerHelp() {
         </div>
       </div>
 
-      {/* SECTION 3: Tips & suggestions */}
+      {/* SECTION 3: Mandatory Requirements */}
       <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
         <h2 className={`text-lg font-black mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          <span>💡</span>
-          <span>3. Tips & suggestions</span>
+          <span>📌</span>
+          <span>3. Mandatory Requirements</span>
         </h2>
         <ul className="space-y-2.5 text-xs">
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>

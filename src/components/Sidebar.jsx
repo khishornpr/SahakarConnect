@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { useTranslation } from '../context/I18nContext'
 import { useTheme } from '../context/ThemeContext'
 import EmergencyModal from './EmergencyModal'
+import ProtectionPlanModal from './ProtectionPlanModal'
 
 export default function Sidebar() {
   const { profile, signOut } = useAuth()
@@ -11,6 +12,7 @@ export default function Sidebar() {
   const { isDark } = useTheme()
   const location = useLocation()
   const [showEmergency, setShowEmergency] = useState(false)
+  const [showProtectionPlan, setShowProtectionPlan] = useState(false)
   const [showMobileDrawer, setShowMobileDrawer] = useState(false)
   const role = profile?.role || 'worker'
 
@@ -127,38 +129,43 @@ export default function Sidebar() {
             </nav>
           </div>
 
-          {/* Rapid Response SOS Trigger */}
-          <div>
-            <div className="px-3 text-xs font-extrabold tracking-wider uppercase text-slate-400 mb-2">
-              {t('rapidResponse', 'RAPID RESPONSE')}
+          {/* Rapid Response SOS Trigger - Customer / Household Portal Only */}
+          {role === 'household' && (
+            <div>
+              <div className="px-3 text-xs font-extrabold tracking-wider uppercase text-slate-400 mb-2">
+                {t('rapidResponse', 'RAPID RESPONSE')}
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowEmergency(true)}
+                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all sidebar-sos-btn neon-pulse-rose cursor-pointer bg-[#181d26] border border-rose-500/60 text-rose-300"
+              >
+                <span className="animate-pulse text-base">🚨</span>
+                <span className="truncate">{t('emergencySosButton', '30-Min Emergency SOS')}</span>
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowEmergency(true)}
-              className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all sidebar-sos-btn neon-pulse-rose cursor-pointer bg-[#181d26] border border-rose-500/60 text-rose-300"
-            >
-              <span className="animate-pulse text-base">🚨</span>
-              <span className="truncate">{t('emergencySosButton', '30-Min Emergency SOS')}</span>
-            </button>
-          </div>
+          )}
 
-          {/* FlowBoard Welfare / Pro Banner Box */}
-          <div className="p-4 rounded-2xl bg-gradient-to-b from-[#181d26] to-[#12151c] border border-white/[0.08] space-y-2 glow-orange-hover">
-            <div className="flex items-center gap-2 text-sm font-bold text-white">
-              <span>🚀</span>
-              <span>{t('cooperativeWelfare', 'Cooperative Welfare')}</span>
+          {/* FlowBoard Welfare / Pro Banner Box - Worker Portal Only */}
+          {role === 'worker' && (
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#181d26] to-[#12151c] border border-white/[0.08] space-y-2 glow-orange-hover">
+              <div className="flex items-center gap-2 text-sm font-bold text-white">
+                <span>🚀</span>
+                <span>{t('cooperativeWelfare', 'Cooperative Welfare')}</span>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                {t('welfareCardSub', '100% fair wages with social security fund coverage.')}
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowProtectionPlan(true)}
+                className="w-full text-center py-2 font-bold text-xs rounded-lg shadow-md transition-all sidebar-welfare-btn flow-btn-primary flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>{t('viewProtectionPlan', 'View Protection Plan')}</span>
+                <span>→</span>
+              </button>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              {t('welfareCardSub', '100% fair wages with social security fund coverage.')}
-            </p>
-            <Link
-              to={role === 'worker' ? '/worker/welfare' : '/cooperative/financials'}
-              className="w-full text-center py-2 font-bold text-xs rounded-lg shadow-md transition-all sidebar-welfare-btn flow-btn-primary flex items-center justify-center gap-1.5"
-            >
-              <span>{t('viewProtectionPlan', 'View Protection Plan')}</span>
-              <span>→</span>
-            </Link>
-          </div>
+          )}
         </div>
       </aside>
 
@@ -168,7 +175,7 @@ export default function Sidebar() {
           isDark ? 'bg-[#0f1217]/95 border-white/[0.08] text-white' : 'bg-white/95 border-slate-200 text-slate-900'
         }`}
       >
-        {items.slice(0, 3).map((item) => {
+        {items.slice(0, role === 'household' ? 3 : 4).map((item) => {
           const isActive = location.pathname === item.path
           return (
             <Link
@@ -184,15 +191,17 @@ export default function Sidebar() {
           )
         })}
 
-        {/* Emergency SOS Button */}
-        <button
-          type="button"
-          onClick={() => setShowEmergency(true)}
-          className="flex flex-col items-center py-1 px-2.5 text-rose-400 text-xs font-black min-h-[46px] justify-center hover:scale-105 transition-transform cursor-pointer"
-        >
-          <span className="text-xl leading-tight animate-pulse">🚨</span>
-          <span className="mt-0.5">SOS</span>
-        </button>
+        {/* Emergency SOS Button - Customer / Household Portal Only */}
+        {role === 'household' && (
+          <button
+            type="button"
+            onClick={() => setShowEmergency(true)}
+            className="flex flex-col items-center py-1 px-2.5 text-rose-400 text-xs font-black min-h-[46px] justify-center hover:scale-105 transition-transform cursor-pointer"
+          >
+            <span className="text-xl leading-tight animate-pulse">🚨</span>
+            <span className="mt-0.5">SOS</span>
+          </button>
+        )}
 
         {/* Mobile Full Menu / Drawer Trigger */}
         <button
@@ -269,18 +278,35 @@ export default function Sidebar() {
               })}
             </div>
 
-            {/* Emergency SOS Drawer Action */}
-            <button
-              type="button"
-              onClick={() => {
-                setShowMobileDrawer(false)
-                setShowEmergency(true)
-              }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black sidebar-sos-btn bg-rose-950/80 border border-rose-500/50 text-rose-300 cursor-pointer"
-            >
-              <span>🚨</span>
-              <span>{t('emergencySosButton', '30-Min Emergency SOS')}</span>
-            </button>
+            {/* Mobile Welfare Protection Plan Trigger - Worker Only */}
+            {role === 'worker' && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMobileDrawer(false)
+                  setShowProtectionPlan(true)
+                }}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black sidebar-welfare-btn flow-btn-primary shadow-md cursor-pointer"
+              >
+                <span>🚀</span>
+                <span>{t('viewProtectionPlan', 'View Protection Plan')}</span>
+              </button>
+            )}
+
+            {/* Emergency SOS Drawer Action - Customer / Household Portal Only */}
+            {role === 'household' && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMobileDrawer(false)
+                  setShowEmergency(true)
+                }}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black sidebar-sos-btn bg-rose-950/80 border border-rose-500/50 text-rose-300 cursor-pointer"
+              >
+                <span>🚨</span>
+                <span>{t('emergencySosButton', '30-Min Emergency SOS')}</span>
+              </button>
+            )}
 
             {/* Sign Out Button */}
             <button
@@ -300,7 +326,14 @@ export default function Sidebar() {
         </div>
       )}
 
-      <EmergencyModal isOpen={showEmergency} onClose={() => setShowEmergency(false)} />
+      {role === 'household' && (
+        <EmergencyModal isOpen={showEmergency} onClose={() => setShowEmergency(false)} />
+      )}
+
+      <ProtectionPlanModal
+        isOpen={showProtectionPlan}
+        onClose={() => setShowProtectionPlan(false)}
+      />
     </>
   )
 }

@@ -184,35 +184,11 @@ export default function HouseholdBookService() {
   const hasNoSlotsAvailable = availableSlotsForSelectedDate.length === 0
   const currentSlotGap = getSlotGapLabel(estimatedHours)
 
-  // When estimatedHours or scheduledDate changes, adapt timeSlot to match the new duration + 15m arrival
-  useEffect(() => {
-    const slots = generateDynamicSlots(estimatedHours)
-    const today = getTodayDateString()
-
-    if (scheduledDate < today) {
-      const todaySlots = slots.filter((s) => isSlotAvailable(s, today))
-      if (todaySlots.length > 0) {
-        setScheduledDate(today)
-        setTimeSlot(todaySlots[0].value)
-      } else {
-        setScheduledDate(getTomorrowDateString())
-        setTimeSlot(slots[0].value)
-      }
-      return
-    }
-
-    // Check if the current timeSlot is valid for the new duration and date
-    const matchingSlot = slots.find((s) => s.value === timeSlot)
-    const available = slots.filter((s) => isSlotAvailable(s, scheduledDate))
-
-    if (!matchingSlot || !isSlotAvailable(matchingSlot, scheduledDate)) {
-      if (available.length > 0) {
-        setTimeSlot(available[0].value)
-      } else if (slots.length > 0) {
-        setTimeSlot(slots[0].value)
-      }
-    }
-  }, [estimatedHours, scheduledDate])
+  // Derive active time slot: fallback to first available if current selection is invalid
+  const matchingSlot = currentSlots.find((s) => s.value === timeSlot)
+  const effectiveTimeSlot = (matchingSlot && isSlotAvailable(matchingSlot, scheduledDate))
+    ? timeSlot
+    : (availableSlotsForSelectedDate[0]?.value || currentSlots[0]?.value || '')
 
   useEffect(() => {
     let ignore = false
@@ -292,7 +268,7 @@ export default function HouseholdBookService() {
     }
 
     const slots = generateDynamicSlots(estimatedHours)
-    const selectedSlotConfig = slots.find((s) => s.value === timeSlot)
+    const selectedSlotConfig = slots.find((s) => s.value === effectiveTimeSlot)
     if (!selectedSlotConfig || !isSlotAvailable(selectedSlotConfig, scheduledDate)) {
       alert('The selected time slot is in the past or unavailable. Please choose an upcoming time slot or future date.')
       return
@@ -315,7 +291,7 @@ export default function HouseholdBookService() {
       latitude: coords.lat,
       longitude: coords.lng,
       scheduled_date: scheduledDate,
-      scheduled_time_slot: timeSlot,
+      scheduled_time_slot: effectiveTimeSlot,
       estimated_hours: parseFloat(estimatedHours || 2.0),
       estimated_amount: estimatedTotal,
       otp_code: otpCode,
@@ -638,7 +614,7 @@ export default function HouseholdBookService() {
                     </span>
                   </div>
                   <select
-                    value={timeSlot}
+                    value={effectiveTimeSlot}
                     disabled={hasNoSlotsAvailable}
                     onChange={(e) => setTimeSlot(e.target.value)}
                     className={`w-full px-3.5 py-2.5 border rounded-xl text-xs font-semibold outline-none transition-all ${
@@ -683,7 +659,7 @@ export default function HouseholdBookService() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                   {currentSlots.map((slot) => {
                     const isAvailable = isSlotAvailable(slot, scheduledDate)
-                    const isSelected = timeSlot === slot.value && isAvailable
+                    const isSelected = effectiveTimeSlot === slot.value && isAvailable
 
                     return (
                       <button
