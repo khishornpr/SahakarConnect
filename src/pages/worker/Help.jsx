@@ -123,14 +123,6 @@ export default function WorkerHelp() {
               Simple, step-by-step instructions on how to use every feature in your SahakarConnect Worker Portal.
             </p>
           </div>
-
-          <Link
-            to="/worker/dashboard"
-            className="flow-btn-primary px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-md hover:scale-105 transition-all self-start sm:self-auto flex items-center gap-1.5"
-          >
-            <span>Go to Dashboard 📊</span>
-            <span>→</span>
-          </Link>
         </div>
       </div>
 
@@ -250,11 +242,11 @@ export default function WorkerHelp() {
         </div>
       </div>
 
-      {/* SECTION 3: Mandatory Requirements */}
+      {/* SECTION 3: Mandatory procedure */}
       <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
         <h2 className={`text-lg font-black mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           <span>📌</span>
-          <span>3. Mandatory Requirements</span>
+          <span>3. Mandatory procedure</span>
         </h2>
         <ul className="space-y-2.5 text-xs">
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>

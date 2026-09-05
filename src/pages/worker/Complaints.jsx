@@ -261,14 +261,20 @@ export default function WorkerComplaints() {
               </div>
             </div>
 
-            {/* Subject / Title */}
+            {/* Detailed Statement (First) */}
             <div>
-              <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                {t('detailedDescription', 'Subject / Issue Summary')} *
-              </label>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className={`block text-xs font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {t('detailedStatement', 'Detailed Statement')} *
+                </label>
+                <span className={`text-[10px] ${title.length >= 250 ? 'text-rose-500 font-bold' : 'text-slate-500'}`}>
+                  {title.length}/250
+                </span>
+              </div>
               <input
                 type="text"
                 required
+                maxLength={250}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="example: Wage dispute / Safety issue"
@@ -278,17 +284,23 @@ export default function WorkerComplaints() {
               />
             </div>
 
-            {/* Description */}
+            {/* Detailed Statement Description (Second) */}
             <div>
-              <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                {t('detailedDescription', 'Detailed Description')} *
-              </label>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className={`block text-xs font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  {t('detailedStatementDescription', 'Detailed Statement Description')} *
+                </label>
+                <span className={`text-[10px] ${description.length >= 10000 ? 'text-rose-500 font-bold' : 'text-slate-500'}`}>
+                  {description.length}/10000
+                </span>
+              </div>
               <textarea
                 required
                 rows={4}
+                maxLength={10000}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder={t('descriptionPlaceholder', 'Explain clearly what happened, location details, timestamps, customer communication, and requested resolution...')}
+                placeholder={t('descriptionPlaceholder', 'Describe the incident or dispute with dates and specific facts...')}
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-xs outline-none transition-all ${
                   isDark ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
                 }`}

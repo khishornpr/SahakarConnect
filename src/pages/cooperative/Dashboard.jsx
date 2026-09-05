@@ -323,7 +323,7 @@ export default function CooperativeDashboard() {
             {/* Interactive Chart Options Bar */}
             <div className="flex flex-wrap items-center gap-2">
               {/* Chart Type Selector Buttons */}
-              <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+              <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
                 {[
                   { id: 'bar', label: '📊 Bar', tooltip: 'Bar Chart' },
                   { id: 'line', label: '📈 Line', tooltip: 'Line Trend' },
@@ -340,8 +340,8 @@ export default function CooperativeDashboard() {
                       revenueChartType === type.id
                         ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                        : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.08] cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200 cursor-pointer'
                     }`}
                   >
                     {type.label}
@@ -355,7 +355,7 @@ export default function CooperativeDashboard() {
                 onChange={(e) => setRevenueTimeframe(e.target.value)}
                 className={`px-2.5 py-1.5 rounded-xl text-xs font-bold border outline-none cursor-pointer transition-all ${
                   isDark
-                    ? 'bg-[#161a22] border-white/[0.08] text-slate-200 focus:border-[#ff6b00]'
+                    ? 'bg-[#12151c] border-white/[0.1] text-slate-200 focus:border-[#ff6b00]'
                     : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
                 }`}
               >
@@ -438,7 +438,7 @@ export default function CooperativeDashboard() {
             </h2>
 
             {/* Chart Type Toggle */}
-            <div className={`flex items-center p-0.5 rounded-lg border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'donut', label: '🍩', title: 'Donut Chart' },
                 { id: 'pie', label: '🥧', title: 'Pie Chart' },
@@ -451,12 +451,12 @@ export default function CooperativeDashboard() {
                   aria-selected={expenseChartType === tItem.id}
                   data-selected={expenseChartType === tItem.id ? 'true' : undefined}
                   title={tItem.title}
-                  className={`px-2 py-0.5 text-xs rounded transition-all ${
+                  className={`px-2 py-1 text-xs rounded-lg transition-all ${
                     expenseChartType === tItem.id
-                      ? 'bg-[#ff6b00] text-white shadow-sm font-bold cursor-default'
+                      ? 'bg-[#ff6b00] text-white shadow-[0_0_10px_rgba(255,107,0,0.5)] font-bold cursor-default'
                       : isDark
-                      ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                      : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                      ? 'text-slate-400 hover:text-white hover:bg-white/[0.08] cursor-pointer'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200 cursor-pointer'
                   }`}
                 >
                   {tItem.label}
@@ -581,12 +581,14 @@ export default function CooperativeDashboard() {
             </div>
 
             {/* Metric & Chart Switcher */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-2">
               <select
                 value={cashFlowMetric}
                 onChange={(e) => setCashFlowMetric(e.target.value)}
-                className={`text-[10px] font-bold px-2 py-1 rounded-lg border outline-none ${
-                  isDark ? 'bg-[#161a22] border-white/[0.08] text-slate-300' : 'bg-white border-slate-200 text-slate-700'
+                className={`text-[11px] font-bold px-2.5 py-1.5 rounded-xl border outline-none cursor-pointer transition-all ${
+                  isDark
+                    ? 'bg-[#12151c] border-white/[0.1] text-slate-200 focus:border-[#ff6b00]'
+                    : 'bg-white border-slate-300 text-slate-700 focus:border-[#ff6b00]'
                 }`}
               >
                 <option value="net">Net Disbursed</option>
@@ -594,23 +596,24 @@ export default function CooperativeDashboard() {
                 <option value="coop">5% Co-op Fee</option>
               </select>
 
-              <div className={`flex items-center p-0.5 rounded-lg border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+              <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
                 {[
-                  { id: 'area', label: '🌊' },
-                  { id: 'line', label: '📈' },
-                  { id: 'bar', label: '📊' },
+                  { id: 'area', label: '🌊', title: 'Area Chart' },
+                  { id: 'line', label: '📈', title: 'Line Chart' },
+                  { id: 'bar', label: '📊', title: 'Bar Chart' },
                 ].map((c) => (
                   <button
                     key={c.id}
                     onClick={() => setCashFlowChartType(c.id)}
                     aria-selected={cashFlowChartType === c.id}
                     data-selected={cashFlowChartType === c.id ? 'true' : undefined}
-                    className={`px-1.5 py-0.5 text-xs rounded ${
+                    title={c.title}
+                    className={`px-2 py-1 text-xs rounded-lg transition-all ${
                       cashFlowChartType === c.id
-                        ? 'bg-[#ff6b00] text-white font-bold cursor-default'
+                        ? 'bg-[#ff6b00] text-white shadow-[0_0_10px_rgba(255,107,0,0.5)] font-bold cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                        : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.08] cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200 cursor-pointer'
                     }`}
                   >
                     {c.label}
@@ -677,59 +680,61 @@ export default function CooperativeDashboard() {
           </div>
 
           <div className="space-y-4 text-xs pt-1">
-            {/* Target 1 */}
-            <div>
-              <div className="flex justify-between items-center mb-1.5">
-                <span className={`font-semibold flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  <span>🎯</span>
-                  <span>Monthly Service GMV Target</span>
-                </span>
-                <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>86%</span>
-              </div>
-              <div className={`w-full h-2 rounded-full overflow-hidden ${isDark ? 'bg-[#161a22]' : 'bg-slate-200'}`}>
-                <div className="bg-[#ff6b00] h-full rounded-full shadow-[0_0_8px_#ff6b00]" style={{ width: '86%' }}></div>
-              </div>
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>₹86,420</span>
-                <span>Goal: ₹100,000</span>
-              </div>
-            </div>
-
-            {/* Target 2 */}
-            <div>
-              <div className="flex justify-between items-center mb-1.5">
-                <span className={`font-semibold flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  <span>🛡️</span>
-                  <span>Social Security Coverage</span>
-                </span>
-                <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>94%</span>
-              </div>
-              <div className={`w-full h-2 rounded-full overflow-hidden ${isDark ? 'bg-[#161a22]' : 'bg-slate-200'}`}>
-                <div className="bg-emerald-500 h-full rounded-full shadow-[0_0_8px_#10b981]" style={{ width: '94%' }}></div>
-              </div>
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>32/34 Workers Enrolled</span>
-                <span>Goal: 100%</span>
-              </div>
-            </div>
-
-            {/* Target 3 */}
-            <div>
-              <div className="flex justify-between items-center mb-1.5">
-                <span className={`font-semibold flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  <span>⚡</span>
-                  <span>Zero Fee-Anomaly Rate</span>
-                </span>
-                <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>98%</span>
-              </div>
-              <div className={`w-full h-2 rounded-full overflow-hidden ${isDark ? 'bg-[#161a22]' : 'bg-slate-200'}`}>
-                <div className="bg-[#ff6b00] h-full rounded-full shadow-[0_0_8px_#ff6b00]" style={{ width: '98%' }}></div>
-              </div>
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>100% Statutory Compliant</span>
-                <span>Goal: 100%</span>
-              </div>
-            </div>
+            {[
+              {
+                id: 't1',
+                icon: '🎯',
+                title: 'Monthly Service GMV Target',
+                pct: 86,
+                current: '₹86,420',
+                goal: 'Goal: ₹100,000',
+              },
+              {
+                id: 't2',
+                icon: '🛡️',
+                title: 'Social Security Coverage',
+                pct: 94,
+                current: '32/34 Workers Enrolled',
+                goal: 'Goal: 100%',
+              },
+              {
+                id: 't3',
+                icon: '⚡',
+                title: 'Zero Fee-Anomaly Rate',
+                pct: 98,
+                current: '100% Statutory Compliant',
+                goal: 'Goal: 100%',
+              },
+            ].map((tItem) => {
+              const barColor = getCompletionColor(tItem.pct)
+              return (
+                <div key={tItem.id}>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <span className={`font-semibold flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                      <span>{tItem.icon}</span>
+                      <span>{tItem.title}</span>
+                    </span>
+                    <span className="font-bold" style={{ color: barColor }}>
+                      {tItem.pct}%
+                    </span>
+                  </div>
+                  <div className={`w-full h-2 rounded-full overflow-hidden ${isDark ? 'bg-[#161a22]' : 'bg-slate-200'}`}>
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${tItem.pct}%`,
+                        backgroundColor: barColor,
+                        boxShadow: `0 0 10px ${barColor}`,
+                      }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-[10px] text-slate-500 mt-1">
+                    <span>{tItem.current}</span>
+                    <span>{tItem.goal}</span>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

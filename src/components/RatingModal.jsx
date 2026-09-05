@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext'
 
 export default function RatingModal({ job, currentUserRole, currentUserId, onClose, onRatingSubmitted }) {
   const { isDark } = useTheme()
-  const [score, setScore] = useState(5)
+  const [score, setScore] = useState(1)
   const [selectedTags, setSelectedTags] = useState([])
   const [reviewText, setReviewText] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -48,6 +48,8 @@ export default function RatingModal({ job, currentUserRole, currentUserId, onClo
         ? job.assigned_worker_id
         : job.household_id
 
+    const finalReview = reviewText.trim() || 'No comments'
+
     await supabase.from('ratings').insert({
       job_id: job.id,
       rater_user_id: currentUserId,
@@ -55,12 +57,12 @@ export default function RatingModal({ job, currentUserRole, currentUserId, onClo
       rater_role: currentUserRole,
       score,
       tags: selectedTags,
-      review_text: reviewText || (currentUserRole === 'household' ? 'Great work by worker.' : 'Polite customer.'),
+      review_text: finalReview,
     })
 
     setSubmitting(false)
     setSuccess(true)
-    if (onRatingSubmitted) onRatingSubmitted()
+    if (onRatingSubmitted) onRatingSubmitted(score, finalReview)
     setTimeout(() => {
       onClose()
     }, 1500)

@@ -17,6 +17,13 @@ export default function HouseholdBookings() {
   const [ratingModalJob, setRatingModalJob] = useState(null)
   const [paymentModalJob, setPaymentModalJob] = useState(null)
   const [reportIssueModalJob, setReportIssueModalJob] = useState(null)
+  const [ratedBookings, setRatedBookings] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('sahakar_rated_jobs') || '{}')
+    } catch {
+      return {}
+    }
+  })
 
   async function loadBookings() {
     if (!user) return
@@ -245,19 +252,33 @@ export default function HouseholdBookings() {
                   Scheduled: <strong>{b.scheduled_date} ({b.scheduled_time_slot})</strong>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {b.status === 'completed' && (
                     <>
-                      <button
-                        onClick={() => setRatingModalJob(b)}
-                        className={`px-3 py-1.5 rounded-xl font-bold border transition-all flex items-center gap-1 ${
-                          isDark
-                            ? 'bg-[#1c222d] border-amber-500/40 text-amber-300 hover:bg-[#252d3c]'
-                            : 'bg-amber-50 border-amber-300 text-amber-900'
-                        }`}
-                      >
-                        ★ Rate Worker
-                      </button>
+                      {ratedBookings[b.id] ? (
+                        <div className="flex items-center gap-1.5">
+                          <span className="px-2.5 py-1 text-xs font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 rounded-xl flex items-center gap-1 shadow-xs">
+                            ★ {ratedBookings[b.id]} / 5 Rated
+                          </span>
+                          <button
+                            disabled
+                            className="px-3 py-1.5 rounded-xl font-bold border opacity-50 cursor-not-allowed bg-slate-800/40 text-slate-400 border-white/10 text-xs"
+                          >
+                            Rated ✓
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setRatingModalJob(b)}
+                          className={`px-3 py-1.5 rounded-xl font-bold border transition-all flex items-center gap-1 cursor-pointer ${
+                            isDark
+                              ? 'bg-[#1c222d] border-amber-500/40 text-amber-300 hover:bg-[#252d3c]'
+                              : 'bg-amber-50 border-amber-300 text-amber-900'
+                          }`}
+                        >
+                          ★ Rate Worker
+                        </button>
+                      )}
                       <button
                         onClick={() => setReportIssueModalJob(b)}
                         className={`px-3 py-1.5 rounded-xl font-bold border transition-all flex items-center gap-1 ${
@@ -325,7 +346,18 @@ export default function HouseholdBookings() {
           currentUserId={user.id}
           targetUser={{ full_name: ratingModalJob.worker?.full_name || 'Cooperative Worker' }}
           onClose={() => setRatingModalJob(null)}
-          onRatingSubmitted={() => loadBookings()}
+          onRatingSubmitted={(score) => {
+            if (ratingModalJob) {
+              const updated = { ...ratedBookings, [ratingModalJob.id]: score }
+              setRatedBookings(updated)
+              try {
+                localStorage.setItem('sahakar_rated_jobs', JSON.stringify(updated))
+              } catch {
+                // ignore
+              }
+            }
+            loadBookings()
+          }}
         />
       )}
 

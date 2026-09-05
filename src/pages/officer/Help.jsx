@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
 
 export default function OfficerHelp() {
@@ -82,16 +81,6 @@ export default function OfficerHelp() {
               Operational standard for statutory conciliation hearings, evidence verification, dispute adjudication, and binding escrow settlement orders.
             </p>
           </div>
-
-          <div className="flex items-center gap-2">
-            <Link
-              to="/officer/dashboard"
-              className="flow-btn-primary px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-md hover:scale-105 transition-all flex items-center gap-1.5"
-            >
-              <span>Adjudication Docket 🏛️</span>
-              <span>→</span>
-            </Link>
-          </div>
         </div>
 
         {/* Search Bar */}
@@ -132,14 +121,6 @@ export default function OfficerHelp() {
                     <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">{m.description}</p>
                   </div>
                 </div>
-                {m.path && (
-                  <Link
-                    to={m.path}
-                    className="text-[11px] font-bold text-[#ff7a00] hover:underline shrink-0"
-                  >
-                    Open ↗
-                  </Link>
-                )}
               </div>
 
               <div className={`p-3 rounded-xl border text-xs space-y-1.5 ${

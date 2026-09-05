@@ -23,6 +23,13 @@ export default function WorkerJobs() {
   const [otpError, setOtpError] = useState('')
   const [viewInvoiceJob, setViewInvoiceJob] = useState(null)
   const [ratingCustomerJob, setRatingCustomerJob] = useState(null)
+  const [ratedJobs, setRatedJobs] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('sahakar_worker_rated_jobs') || '{}')
+    } catch {
+      return {}
+    }
+  })
   const otpInputRef = useRef(null)
 
   useEffect(() => {
@@ -310,17 +317,31 @@ export default function WorkerJobs() {
                       </button>
                     )}
                     {job.status === 'completed' && (
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setRatingCustomerJob(job)}
-                          className={`px-3 py-1.5 text-xs font-bold rounded-xl flex items-center gap-1 border ${
-                            isDark
-                              ? 'bg-[#1c222d] border-amber-500/40 text-amber-300 hover:bg-[#252d3c]'
-                              : 'bg-amber-50 border-amber-300 text-amber-900'
-                          }`}
-                        >
-                          ★ {t('rateCustomer', 'Rate Customer')}
-                        </button>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {ratedJobs[job.id] ? (
+                          <div className="flex items-center gap-1.5">
+                            <span className="px-2.5 py-1 text-xs font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 rounded-xl flex items-center gap-1 shadow-xs">
+                              ★ {ratedJobs[job.id]} / 5 Rated
+                            </span>
+                            <button
+                              disabled
+                              className="px-3 py-1.5 text-xs font-bold rounded-xl border opacity-50 cursor-not-allowed bg-slate-800/40 text-slate-400 border-white/10"
+                            >
+                              Rated ✓
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setRatingCustomerJob(job)}
+                            className={`px-3 py-1.5 text-xs font-bold rounded-xl flex items-center gap-1 border cursor-pointer ${
+                              isDark
+                                ? 'bg-[#1c222d] border-amber-500/40 text-amber-300 hover:bg-[#252d3c]'
+                                : 'bg-amber-50 border-amber-300 text-amber-900'
+                            }`}
+                          >
+                            ★ {t('rateCustomer', 'Rate Customer')}
+                          </button>
+                        )}
                         <button
                           onClick={() => setViewInvoiceJob(job)}
                           className="px-3.5 py-1.5 flow-btn-primary text-xs font-bold rounded-xl flex items-center gap-1 shadow-sm"
@@ -460,7 +481,18 @@ export default function WorkerJobs() {
           currentUserId={user.id}
           targetUser={{ full_name: 'Priya Sharma (Household Customer)' }}
           onClose={() => setRatingCustomerJob(null)}
-          onRatingSubmitted={() => loadJobs()}
+          onRatingSubmitted={(score) => {
+            if (ratingCustomerJob) {
+              const updated = { ...ratedJobs, [ratingCustomerJob.id]: score }
+              setRatedJobs(updated)
+              try {
+                localStorage.setItem('sahakar_worker_rated_jobs', JSON.stringify(updated))
+              } catch {
+                // ignore
+              }
+            }
+            loadJobs()
+          }}
         />
       )}
     </div>

@@ -95,7 +95,7 @@ export function generateVectorInvoicePdf(inv, filename) {
     welfareFundAmount: 10,
     netWorkerPayout: 750,
     paymentMode: 'UPI Instant Settlement',
-    paymentStatus: 'PAID & SETTLED',
+    paymentStatus: 'PAID',
   }
 
   const hourlyTariff = Math.round(financials.grossAmount / (job.estimatedHours || 1))
@@ -383,7 +383,7 @@ export async function downloadInvoicePdf(inv, customFilename) {
     welfareFundAmount: 10,
     netWorkerPayout: 750,
     paymentMode: 'UPI Instant Settlement',
-    paymentStatus: 'PAID & SETTLED',
+    paymentStatus: 'PAID',
   }
 
   const hourlyTariff = Math.round(financials.grossAmount / (job.estimatedHours || 1))

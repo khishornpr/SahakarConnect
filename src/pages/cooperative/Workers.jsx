@@ -110,8 +110,8 @@ export default function CooperativeWorkers() {
       )}
 
       <div className="flow-card glow-orange-hover overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className={`w-full text-left text-xs ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+        <div className="overflow-x-auto min-w-full pb-3">
+          <table className={`w-full text-left text-xs min-w-[1050px] ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
             <thead className={`border-b font-bold uppercase tracking-wider text-[11px] ${
               isDark ? 'bg-[#161a22] text-[#ff7a00] border-white/[0.08]' : 'bg-slate-50 text-slate-700 border-slate-200'
             }`}>
@@ -122,7 +122,7 @@ export default function CooperativeWorkers() {
                 <th className="px-4 py-3.5 whitespace-nowrap">KYC Document</th>
                 <th className="px-4 py-3.5 whitespace-nowrap">Reputation</th>
                 <th className="px-4 py-3.5 whitespace-nowrap">Verification Status</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Verification</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Status</th>
                 <th className="px-4 py-3.5 whitespace-nowrap">Admin Action</th>
               </tr>
             </thead>
@@ -182,7 +182,7 @@ export default function CooperativeWorkers() {
                       <td className="px-4 py-3.5 whitespace-nowrap">
                         {isFullyVerified ? (
                           <span className="status-pill-emerald font-bold">
-                            ✓ VERIFIED
+                            ✓ APPROVED
                           </span>
                         ) : (
                           <span className="status-pill-orange font-bold animate-pulse">
@@ -208,22 +208,21 @@ export default function CooperativeWorkers() {
                         <button
                           type="button"
                           onClick={() => setConfirmModal({ type: isFullyVerified ? 'revoke' : 'approve', worker: w })}
-                          disabled={updatingId === w.user_id}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap inline-flex items-center justify-center ${
+                          disabled={updatingId === w.user_id || (!isFullyVerified && !isKycVerified)}
+                          title={!isFullyVerified && !isKycVerified ? 'Complete KYC verification first to enable approval' : ''}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap inline-flex items-center justify-center ${
                             isFullyVerified
-                              ? 'bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-500/40'
+                              ? 'bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-500/40 cursor-pointer'
                               : !isKycVerified
-                              ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white shadow-md'
-                              : 'flow-btn-primary shadow-md'
+                              ? 'opacity-40 cursor-not-allowed bg-slate-700 text-slate-400 border border-slate-600'
+                              : 'flow-btn-primary shadow-md cursor-pointer'
                           }`}
                         >
                           {updatingId === w.user_id
                             ? 'Updating...'
                             : isFullyVerified
                             ? 'Revoke Status'
-                            : !isKycVerified
-                            ? '⚠️ Approve Worker'
-                            : '✓ Verified & Approved'}
+                            : 'Approve'}
                         </button>
                       </td>
                     </tr>
@@ -254,9 +253,7 @@ export default function CooperativeWorkers() {
                     {confirmModal.type === 'verify'
                       ? '🛡️'
                       : confirmModal.type === 'approve'
-                      ? !confirmModal.worker.is_verified
-                        ? '⚠️'
-                        : '✅'
+                      ? '✅'
                       : '⛔'}
                   </span>
                   <div>
@@ -264,9 +261,7 @@ export default function CooperativeWorkers() {
                       {confirmModal.type === 'verify'
                         ? 'Confirm KYC Document Verification'
                         : confirmModal.type === 'approve'
-                        ? !confirmModal.worker.is_verified
-                          ? 'Warning: Approve Unverified Worker?'
-                          : 'Confirm Worker Approval'
+                        ? 'Approve'
                         : 'Confirm Status Revocation'}
                     </h3>
                     <p className={`text-[11px] font-medium ${
@@ -275,9 +270,7 @@ export default function CooperativeWorkers() {
                       {confirmModal.type === 'verify'
                         ? 'Validate government ID & KYC records'
                         : confirmModal.type === 'approve'
-                        ? !confirmModal.worker.is_verified
-                          ? 'KYC Verification not yet completed'
-                          : 'Enable automatic dispatch allocations'
+                        ? 'Enable automatic dispatch allocations'
                         : 'Pause active dispatch allocations'}
                     </p>
                   </div>
@@ -292,19 +285,6 @@ export default function CooperativeWorkers() {
                   ✕
                 </button>
               </div>
-
-              {/* Prominent Warning Banner if Approving an Unverified Worker */}
-              {confirmModal.type === 'approve' && !confirmModal.worker.is_verified && (
-                <div className="p-3.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-200 space-y-1 animate-pulse">
-                  <div className="flex items-center gap-1.5 font-black text-xs text-amber-400 uppercase tracking-wider">
-                    <span>⚠️</span>
-                    <span>Warning: Verification Status Is Not Verified</span>
-                  </div>
-                  <p className="text-[11px] text-amber-200/90 leading-relaxed">
-                    This worker has <strong>not completed KYC document verification</strong> ({confirmModal.worker.gov_id_type || 'Gov ID'}). Approving an unverified worker bypasses standard federation safety and compliance checks.
-                  </p>
-                </div>
-              )}
 
               {/* Worker Summary Card */}
               <div className={`p-4 rounded-xl border space-y-2 text-xs ${
@@ -339,35 +319,17 @@ export default function CooperativeWorkers() {
               </div>
 
               {/* Explanatory Prompt */}
-              <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                {confirmModal.type === 'verify' && (
-                  <>
-                    Are you sure you want to verify the government ID and credentials for{' '}
-                    <strong>{confirmModal.worker.profiles?.full_name || 'this worker'}</strong>?
-                  </>
-                )}
-                {confirmModal.type === 'approve' && (
-                  <>
-                    {!confirmModal.worker.is_verified ? (
-                      <>
-                        Are you sure you want to proceed and grant <strong>Verified & Approved</strong> status to{' '}
-                        <strong>{confirmModal.worker.profiles?.full_name || 'this worker'}</strong> despite the pending KYC status?
-                      </>
-                    ) : (
-                      <>
-                        Are you sure you want to grant full <strong>Verified & Approved</strong> status to{' '}
-                        <strong>{confirmModal.worker.profiles?.full_name || 'this worker'}</strong>? This enables active geo-dispatch job matching across Delhi-NCR cooperative clusters.
-                      </>
-                    )}
-                  </>
-                )}
-                {confirmModal.type === 'revoke' && (
-                  <>
-                    Are you sure you want to revoke the verified status of{' '}
-                    <strong>{confirmModal.worker.profiles?.full_name || 'this worker'}</strong>? This will pause automated job dispatch allocations.
-                  </>
-                )}
-              </p>
+              {confirmModal.type === 'verify' && (
+                <p className={`text-xs font-semibold leading-relaxed ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
+                  Please click verify to confirm
+                </p>
+              )}
+              {confirmModal.type === 'revoke' && (
+                <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  Are you sure you want to revoke the status of{' '}
+                  <strong>{confirmModal.worker.profiles?.full_name || 'this worker'}</strong>? This will pause automated job dispatch allocations.
+                </p>
+              )}
 
               {/* Action Buttons */}
               <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-white/[0.08]">
@@ -386,17 +348,13 @@ export default function CooperativeWorkers() {
                   className={`px-4 py-2 rounded-xl text-xs font-bold text-white shadow-md transition-all cursor-pointer ${
                     confirmModal.type === 'revoke'
                       ? 'bg-rose-600 hover:bg-rose-500'
-                      : confirmModal.type === 'approve' && !confirmModal.worker.is_verified
-                      ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 shadow-amber-600/30'
                       : 'flow-btn-primary'
                   }`}
                 >
                   {confirmModal.type === 'verify'
-                    ? 'Confirm Verification'
+                    ? 'Verify'
                     : confirmModal.type === 'approve'
-                    ? !confirmModal.worker.is_verified
-                      ? 'Confirm & Approve (With Warning)'
-                      : 'Confirm Verified & Approved'
+                    ? 'Approve'
                     : 'Confirm Revocation'}
                 </button>
               </div>

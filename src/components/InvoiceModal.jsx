@@ -83,36 +83,34 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
         }`}
       >
         {/* Header with Federation Emblem */}
-        <div className={`flex flex-col sm:flex-row justify-between items-start gap-3 border-b pb-5 print:border-slate-200 ${
+        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-5 print:border-slate-200 ${
           isDark ? 'border-white/[0.08]' : 'border-slate-200'
         }`}>
-          <div className="space-y-1">
-            <div className="flex items-center gap-2.5">
-              <span className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
-                🤝
-              </span>
-              <div>
-                <h2 className={`text-base sm:text-lg font-black tracking-tight print:text-emerald-900 ${
-                  isDark ? 'text-emerald-400' : 'text-emerald-900'
-                }`}>
-                  {inv.society.name}
-                </h2>
-                <div className={`text-[10px] font-bold uppercase tracking-wider print:text-slate-500 ${
-                  isDark ? 'text-slate-400' : 'text-slate-500'
-                }`}>
-                  Registration No: {inv.society.regNo}
-                </div>
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-sm shrink-0">
+              🤝
+            </span>
+            <div className="min-w-0">
+              <h2 className={`text-base sm:text-lg font-black tracking-tight truncate print:text-emerald-900 ${
+                isDark ? 'text-emerald-400' : 'text-emerald-900'
+              }`}>
+                {inv.society.name}
+              </h2>
+              <div className={`text-[10px] font-bold uppercase tracking-wider truncate print:text-slate-500 ${
+                isDark ? 'text-slate-400' : 'text-slate-500'
+              }`}>
+                Registration No: {inv.society.regNo} • Multi-State Cooperative
               </div>
+              <p className={`text-[11px] truncate print:text-slate-500 ${
+                isDark ? 'text-slate-400' : 'text-slate-500'
+              }`}>
+                {inv.society.address} • Phone: {inv.society.phone}
+              </p>
             </div>
-            <p className={`text-[11px] sm:pl-10.5 print:text-slate-500 ${
-              isDark ? 'text-slate-400' : 'text-slate-500'
-            }`}>
-              {inv.society.address} • Phone: {inv.society.phone}
-            </p>
           </div>
 
-          <div className="sm:text-right self-start sm:self-auto">
-            <span className={`text-xs font-bold px-2.5 py-1 rounded-md border inline-block sm:block shadow-sm print:text-emerald-800 print:bg-emerald-50 print:border-emerald-300 ${
+          <div className="sm:text-right shrink-0">
+            <span className={`text-xs font-bold px-3 py-1 rounded-lg border inline-block shadow-sm print:text-emerald-800 print:bg-emerald-50 print:border-emerald-300 ${
               isDark
                 ? 'text-emerald-300 bg-emerald-950/80 border-emerald-500/40'
                 : 'text-emerald-800 bg-emerald-50 border-emerald-300'

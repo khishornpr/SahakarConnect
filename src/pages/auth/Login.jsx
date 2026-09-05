@@ -238,11 +238,11 @@ export default function Login() {
                   </svg>
                 </div>
 
-                <div className="text-center px-10">
-                  <h2 className={`text-xl sm:text-2xl font-black tracking-tight leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <div className="text-center px-6">
+                  <h2 className={`text-2xl sm:text-3xl font-black tracking-tight leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {t('loginTitle', 'Login')}
                   </h2>
-                  <p className={`text-xs mt-0.5 truncate font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <p className={`text-sm mt-1 truncate font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                     {t('loginSubtitle', 'Select persona & enter credentials')}
                   </p>
                 </div>
@@ -264,7 +264,7 @@ export default function Login() {
                         aria-selected={isActive ? 'true' : undefined}
                         data-selected={isActive ? 'true' : undefined}
                         onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                        className={`py-1.5 px-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 ${
+                        className={`py-2 px-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 ${
                           isActive
                             ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
                             : isDark
@@ -292,7 +292,7 @@ export default function Login() {
                         aria-selected={isActive ? 'true' : undefined}
                         data-selected={isActive ? 'true' : undefined}
                         onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                        className={`py-1.5 px-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 ${
+                        className={`py-2 px-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 ${
                           isActive
                             ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
                             : isDark
@@ -309,15 +309,15 @@ export default function Login() {
 
               {/* Desktop Demo Credential Auto-Fill Card */}
               <div
-                className={`mt-2.5 p-2.5 rounded-xl border flex items-center justify-between gap-2.5 transition-all ${
+                className={`mt-2.5 p-3 rounded-xl border flex items-center justify-between gap-2.5 transition-all ${
                   isDark
                     ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
                     : 'bg-orange-50/70 border-orange-200/80 shadow-xs'
                 }`}
               >
-                <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-2.5 min-w-0">
                   <div
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0 border ${
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 border ${
                       isDark
                         ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
                         : 'bg-white border-orange-200 text-orange-600'
@@ -326,10 +326,10 @@ export default function Login() {
                     ⚡
                   </div>
                   <div className="min-w-0">
-                    <div className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    <div className={`text-sm font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
                       {ROLE_CONFIGS[selectedRole]?.hint}
                     </div>
-                    <div className="text-[11px] text-slate-400 font-mono truncate">
+                    <div className="text-xs text-slate-400 font-mono truncate">
                       {ROLE_CONFIGS[selectedRole]?.demoEmail}
                     </div>
                   </div>
@@ -338,7 +338,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 transition-all border cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold shrink-0 transition-all border cursor-pointer ${
                     isDark
                       ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25 shadow-sm'
                       : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
@@ -351,13 +351,13 @@ export default function Login() {
               {/* Desktop Error Message & Email Unconfirmed Banner */}
               {error && (
                 <div
-                  className={`mt-2.5 border text-xs p-2.5 rounded-xl shadow-md transition-all ${isUnconfirmed
+                  className={`mt-2.5 border text-xs sm:text-sm p-3 rounded-xl shadow-md transition-all ${isUnconfirmed
                     ? 'bg-amber-950/80 border-amber-500/50 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.25)]'
                     : 'bg-rose-950/80 border-rose-500/50 text-rose-200 shadow-[0_0_10px_rgba(244,63,94,0.3)]'
                     }`}
                 >
                   <div className="flex items-start gap-2">
-                    <span className="text-sm leading-none">{isUnconfirmed ? '✉️' : '⚠️'}</span>
+                    <span className="text-base leading-none">{isUnconfirmed ? '✉️' : '⚠️'}</span>
                     <div className="flex-1">
                       <p className="font-semibold">{error}</p>
 
@@ -366,12 +366,12 @@ export default function Login() {
                           <button
                             type="button"
                             onClick={handleResendConfirmation}
-                            className="px-2.5 py-1 rounded-md bg-amber-500 text-slate-950 font-black text-xs hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+                            className="px-3 py-1.5 rounded-md bg-amber-500 text-slate-950 font-black text-xs sm:text-sm hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
                           >
                             Resend Confirmation Email →
                           </button>
                           {resendStatus && (
-                            <span className="text-[11px] text-amber-300 font-medium">
+                            <span className="text-xs text-amber-300 font-medium">
                               {resendStatus}
                             </span>
                           )}
@@ -383,14 +383,14 @@ export default function Login() {
               )}
 
               {/* Desktop Form */}
-              <form onSubmit={handleSubmit} className="mt-2.5 space-y-2.5">
+              <form onSubmit={handleSubmit} className="mt-3 space-y-3">
                 <div>
-                  <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                  <label className={`block text-xs sm:text-sm font-bold mb-1.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                     {t('emailAddress', 'Email Address')}
                   </label>
                   <div className="relative flex items-center">
-                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className={`absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </span>
@@ -399,7 +399,7 @@ export default function Login() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder={ROLE_CONFIGS[selectedRole]?.demoEmail || 'you@example.com'}
-                      className={`w-full pl-9 pr-3 py-2 border rounded-xl text-xs sm:text-sm focus:outline-none transition-all ${isDark
+                      className={`w-full pl-10 pr-3 py-2.5 border rounded-xl text-sm sm:text-base focus:outline-none transition-all ${isDark
                         ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                         : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
                         }`}
@@ -409,12 +409,12 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                  <label className={`block text-xs sm:text-sm font-bold mb-1.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                     {t('password', 'Password')}
                   </label>
                   <div className="relative flex items-center">
-                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className={`absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
                     </span>
@@ -423,7 +423,7 @@ export default function Login() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter password"
-                      className={`w-full pl-9 pr-10 py-2 border rounded-xl text-xs sm:text-sm focus:outline-none transition-all ${isDark
+                      className={`w-full pl-10 pr-10 py-2.5 border rounded-xl text-sm sm:text-base focus:outline-none transition-all ${isDark
                         ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                         : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
                         }`}
@@ -437,11 +437,11 @@ export default function Login() {
                         }`}
                     >
                       {showPassword ? (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
                         </svg>
                       ) : (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
@@ -453,7 +453,7 @@ export default function Login() {
                 <div className="flex justify-end">
                   <Link
                     to="/forgot-password"
-                    className="text-xs text-[#d8964d] hover:text-[#b8762d] transition-colors font-medium cursor-pointer"
+                    className="text-xs sm:text-sm text-[#d8964d] hover:text-[#b8762d] transition-colors font-semibold cursor-pointer"
                   >
                     {t('forgotPassword', 'Forgot Password?')}
                   </Link>
@@ -462,14 +462,14 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#ffd099] hover:to-[#f0ab5d] text-slate-950 font-black rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_20px_rgba(232,176,112,0.45)] hover:shadow-[0_0_25px_rgba(232,176,112,0.95),0_0_55px_rgba(232,176,112,0.6)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50 hover:-translate-y-0.5"
+                  className="w-full py-3 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#ffd099] hover:to-[#f0ab5d] text-slate-950 font-black rounded-xl text-sm sm:text-base uppercase tracking-wider shadow-[0_4px_20px_rgba(232,176,112,0.45)] hover:shadow-[0_0_25px_rgba(232,176,112,0.95),0_0_55px_rgba(232,176,112,0.6)] flex items-center justify-center gap-2 transition-all cursor-pointer group disabled:opacity-50 hover:-translate-y-0.5"
                 >
                   <span>{loading ? t('authenticating', 'Authenticating...') : t('loginBtn', 'Login')}</span>
                   <span className="group-hover:translate-x-1.5 transition-transform font-bold">→</span>
                 </button>
               </form>
 
-              <div className={`text-center mt-3 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              <div className={`text-center mt-3.5 text-xs sm:text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                 {t('dontHaveAccount', "Don't have an account?")}{' '}
                 <Link
                   to="/register"

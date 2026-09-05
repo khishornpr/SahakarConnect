@@ -47,7 +47,7 @@ export function generateInvoiceData(job, worker, household, wageLedgerItem) {
       welfareFundAmount: welfareFund,
       netWorkerPayout: netPayout,
       paymentMode: wageLedgerItem?.payment_mode || 'UPI Instant Settlement',
-      paymentStatus: 'PAID & SETTLED',
+      paymentStatus: 'PAID',
     },
   }
 }

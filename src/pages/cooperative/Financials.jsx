@@ -241,14 +241,17 @@ export default function CooperativeFinancials() {
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             {chartType === 'bar' ? (
-              <BarChart data={chartData} barGap={4} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+              <BarChart data={chartData} barGap={6} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
                 <XAxis dataKey="label" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
-                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                <Tooltip
+                  itemSorter={(item) => (item.dataKey === 'gross' ? 0 : item.dataKey === 'net' ? 1 : 2)}
+                  contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
+                />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
                 {(metricFilter === 'all' || metricFilter === 'gross') && (
-                  <Bar dataKey="gross" name="Gross Billed" fill={isDark ? '#334155' : '#cbd5e1'} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="gross" name="Gross Billed" fill={isDark ? '#475569' : '#94a3b8'} radius={[6, 6, 0, 0]} />
                 )}
                 {(metricFilter === 'all' || metricFilter === 'net') && (
                   <Bar dataKey="net" name="Net Direct Payout (95%)" fill="#10b981" radius={[6, 6, 0, 0]} />
@@ -262,7 +265,10 @@ export default function CooperativeFinancials() {
                 <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
                 <XAxis dataKey="label" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
-                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                <Tooltip
+                  itemSorter={(item) => (item.dataKey === 'gross' ? 0 : item.dataKey === 'net' ? 1 : 2)}
+                  contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
+                />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
                 {metricFilter === 'all' && (
                   <Line type="monotone" dataKey="gross" name="Gross Billed" stroke={isDark ? '#475569' : '#94a3b8'} strokeWidth={1.5} strokeDasharray="3 3" dot={{ r: 3 }} activeDot={{ r: 5 }} />
@@ -287,18 +293,21 @@ export default function CooperativeFinancials() {
                 <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                 <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                <Area type="monotone" dataKey="net" stroke="#10b981" strokeWidth={2.5} fill="url(#areaFin)" name="Net Direct Payout" dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                <Area type="monotone" dataKey="net" stroke="#10b981" strokeWidth={2.5} fill="url(#areaFin)" name="Net Direct Payout (95%)" dot={{ r: 3 }} activeDot={{ r: 6 }} />
               </AreaChart>
             ) : (
               <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.2 : 0.4} vertical={false} />
                 <XAxis dataKey="label" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
-                <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
+                <Tooltip
+                  itemSorter={(item) => (item.dataKey === 'net' ? 0 : item.dataKey === 'coop' ? 1 : 2)}
+                  contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
+                />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                <Bar dataKey="net" stackId="a" name="Net Worker Disbursal" fill="#10b981" />
-                <Bar dataKey="coop" stackId="a" name="Co-op 5% Surplus" fill="#ff6b00" />
-                <Bar dataKey="welfare" stackId="a" name="Welfare Fund" fill="#06b6d4" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="net" stackId="a" name="Net Direct Payout (95%)" fill="#10b981" />
+                <Bar dataKey="coop" stackId="a" name="Co-op 5% Retained" fill="#ff6b00" />
+                <Bar dataKey="welfare" stackId="a" name="Welfare Fund (2%)" fill="#06b6d4" radius={[6, 6, 0, 0]} />
               </BarChart>
             )}
           </ResponsiveContainer>

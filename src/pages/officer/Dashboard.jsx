@@ -651,13 +651,15 @@ export default function OfficerDashboard() {
                     ✓ Resolve & Issue Settlement
                   </button>
 
-                  <button
-                    disabled={updating}
-                    onClick={() => handleUpdateCaseStatus('rejected', 'Case Dismissed / Rejected')}
-                    className="px-3 py-1.5 rounded-xl border border-rose-500/50 text-rose-400 hover:bg-rose-500/20 text-xs font-bold cursor-pointer"
-                  >
-                    ✕ Dismiss / Reject
-                  </button>
+                  {selectedCase.status?.toLowerCase() !== 'resolved' && (
+                    <button
+                      disabled={updating}
+                      onClick={() => handleUpdateCaseStatus('rejected', 'Case Dismissed / Rejected')}
+                      className="px-3 py-1.5 rounded-xl border border-rose-500/50 text-rose-400 hover:bg-rose-500/20 text-xs font-bold cursor-pointer"
+                    >
+                      ✕ Dismiss / Reject
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
