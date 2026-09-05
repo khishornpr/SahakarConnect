@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { supabase as mockSupabase } from './supabase-mock.js'
 
+console.log('[SUPABASE DEBUG] ALL import.meta.env keys:', Object.keys(import.meta.env))
+
 const supabaseUrl =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_URL) ||
   globalThis.process?.env?.VITE_SUPABASE_URL ||
