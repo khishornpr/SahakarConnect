@@ -2,9 +2,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-console.log('[BUILD DEBUG] process.env.VITE_SUPABASE_URL at build time:', process.env.VITE_SUPABASE_URL)
-console.log('[BUILD DEBUG] process.env.VITE_SUPABASE_ANON_KEY exists:', !!process.env.VITE_SUPABASE_ANON_KEY)
-
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
