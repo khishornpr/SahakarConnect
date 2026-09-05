@@ -22,6 +22,11 @@ const isPlaceholder =
   supabaseUrl.includes('placeholder') ||
   supabaseUrl.includes('your-supabase-url')
 
+console.log('[SUPABASE DEBUG] useMockEnv:', useMockEnv, 'typeof:', typeof useMockEnv)
+console.log('[SUPABASE DEBUG] isPlaceholder:', isPlaceholder)
+console.log('[SUPABASE DEBUG] supabaseUrl:', supabaseUrl)
+console.log('[SUPABASE DEBUG] supabaseAnonKey exists:', !!supabaseAnonKey, 'length:', supabaseAnonKey?.length)
+
 let client = mockSupabase
 
 if (useMockEnv !== 'true' && !isPlaceholder) {
@@ -36,8 +41,11 @@ if (useMockEnv !== 'true' && !isPlaceholder) {
     })
   } catch (err) {
     console.warn('[Supabase] Failed to initialize live client, using mock database fallback:', err)
+    console.error('[SUPABASE DEBUG] Full error object:', err)
   }
 }
+
+console.log('[SUPABASE DEBUG] Final client type:', client === mockSupabase ? 'MOCK' : 'REAL')
 
 export const supabase = client
 export { mockSupabase }

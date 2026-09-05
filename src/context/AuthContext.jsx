@@ -45,6 +45,11 @@ export function AuthProvider({ children }) {
         ? `${window.location.origin}/#/auth/confirm`
         : undefined
 
+    console.log(
+      '[SUPABASE DEBUG] Calling signUp with client:',
+      supabase === undefined ? 'UNDEFINED' : 'defined'
+    )
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -59,6 +64,9 @@ export function AuthProvider({ children }) {
         emailRedirectTo: redirectUrl,
       },
     })
+
+    console.log('[SUPABASE DEBUG] signUp result:', { data, error })
+
     if (error) return { error }
 
     // If email confirmation is enabled in Supabase, session is null until user confirms email
