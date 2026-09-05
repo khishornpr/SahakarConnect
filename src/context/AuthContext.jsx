@@ -48,8 +48,6 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      role,
-      fullName,
       options: {
         data: {
           role,
