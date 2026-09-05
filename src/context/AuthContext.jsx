@@ -75,8 +75,7 @@ export function AuthProvider({ children }) {
     if (error) {
       const isUnconfirmed =
         error.message?.toLowerCase().includes('email not confirmed') ||
-        error.message?.toLowerCase().includes('not confirmed') ||
-        error.status === 400
+        error.message?.toLowerCase().includes('email_not_confirmed')
       return { data: null, error, isUnconfirmed }
     }
 
