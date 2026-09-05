@@ -81,6 +81,148 @@ html[data-theme="light"] {
 }
 
 /* -------------------------------------------------------------------------- */
+/*             HIGH CONTRAST & LEGIBILITY ENGINE (WCAG AAA COMPLIANT)         */
+/* -------------------------------------------------------------------------- */
+
+/* Light Mode: Elevate faint gray text to sharp, highly visible slate tones */
+html:not(.dark) .text-slate-400,
+html:not(.dark) .text-gray-400,
+html:not(.dark) .text-zinc-400,
+html:not(.dark) .text-neutral-400 {
+  color: #334155 !important; /* Slate-700: sharp 7.5:1 contrast against white */
+}
+
+html:not(.dark) .text-slate-500,
+html:not(.dark) .text-gray-500,
+html:not(.dark) .text-zinc-500,
+html:not(.dark) .text-neutral-500 {
+  color: #1e293b !important; /* Slate-800: deep readable charcoal */
+}
+
+html:not(.dark) .text-slate-300,
+html:not(.dark) .text-gray-300,
+html:not(.dark) .text-zinc-300 {
+  color: #475569 !important; /* Slate-600: strong legible contrast */
+}
+
+html:not(.dark) .text-slate-600,
+html:not(.dark) .text-gray-600 {
+  color: #0f172a !important; /* Slate-900 */
+}
+
+/* Dark Mode: Elevate dark/invisible text to radiant, crisp silver/white tones */
+html.dark .text-slate-700,
+html.dark .text-slate-800,
+html.dark .text-gray-700,
+html.dark .text-gray-800,
+html.dark .text-zinc-700,
+html.dark .text-zinc-800 {
+  color: #cbd5e1 !important; /* Slate-300: bright and clear on dark card */
+}
+
+html.dark .text-slate-600,
+html.dark .text-gray-600,
+html.dark .text-zinc-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-gray-500,
+html.dark .text-zinc-500 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-400,
+html.dark .text-gray-400,
+html.dark .text-zinc-400 {
+  color: #e2e8f0 !important; /* Slate-200: radiant and clear */
+}
+
+/* -------------------------------------------------------------------------- */
+/*              GLOBAL RECHARTS CHART & TOOLTIP LEGIBILITY RULES              */
+/* -------------------------------------------------------------------------- */
+/* Light Mode Chart Elements */
+html:not(.dark) .recharts-text,
+html:not(.dark) .recharts-cartesian-axis-tick-value,
+html:not(.dark) .recharts-legend-item-text,
+html:not(.dark) .recharts-label {
+  fill: #0f172a !important;
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+}
+
+html:not(.dark) .recharts-cartesian-grid line {
+  stroke: #cbd5e1 !important;
+  stroke-opacity: 0.6 !important;
+}
+
+/* Dark Mode Chart Elements */
+html.dark .recharts-text,
+html.dark .recharts-cartesian-axis-tick-value,
+html.dark .recharts-legend-item-text,
+html.dark .recharts-label {
+  fill: #e2e8f0 !important;
+  color: #e2e8f0 !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+}
+
+html.dark .recharts-cartesian-grid line {
+  stroke: #334155 !important;
+  stroke-opacity: 0.5 !important;
+}
+
+/* Universal Recharts Tooltip Styling */
+html:not(.dark) .recharts-default-tooltip {
+  background-color: #ffffff !important;
+  border: 1.5px solid #ff6b00 !important;
+  border-radius: 12px !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+  padding: 10px 14px !important;
+}
+
+html:not(.dark) .recharts-tooltip-label {
+  color: #ea580c !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  margin-bottom: 4px !important;
+}
+
+html:not(.dark) .recharts-tooltip-item,
+html:not(.dark) .recharts-tooltip-item-name,
+html:not(.dark) .recharts-tooltip-item-value {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  font-size: 12.5px !important;
+}
+
+html.dark .recharts-default-tooltip {
+  background-color: #0f131a !important;
+  border: 1.5px solid #ff7a00 !important;
+  border-radius: 12px !important;
+  color: #f8fafc !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75) !important;
+  padding: 10px 14px !important;
+}
+
+html.dark .recharts-tooltip-label {
+  color: #ff9d42 !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  margin-bottom: 4px !important;
+}
+
+html.dark .recharts-tooltip-item,
+html.dark .recharts-tooltip-item-name,
+html.dark .recharts-tooltip-item-value {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  font-size: 12.5px !important;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                  DARK MODE SURFACES & POWERFUL NEON GLOW                   */
 /* -------------------------------------------------------------------------- */
 html.dark .flow-card,

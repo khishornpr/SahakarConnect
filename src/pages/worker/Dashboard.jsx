@@ -340,58 +340,66 @@ export default function WorkerDashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 {chartType === 'bar' ? (
                   <BarChart data={activeChartData} barGap={4} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
+                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val, name) => [`₹${val}`, name === 'gross' ? t('grossBilled', 'Gross Billed') : t('netTakeHome', 'Net Take-Home')]}
-                      contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
+                      contentStyle={{ backgroundColor: isDark ? '#0f131a' : '#ffffff', borderColor: isDark ? '#ff7a00' : '#ff6b00', borderRadius: '12px', color: isDark ? '#ffffff' : '#0f172a', fontSize: '13px', boxShadow: isDark ? '0 12px 35px rgba(0,0,0,0.8)' : '0 10px 25px rgba(0,0,0,0.12)' }}
+                      itemStyle={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 700 }}
+                      labelStyle={{ color: isDark ? '#ff9d42' : '#ea580c', fontWeight: 800 }}
                     />
-                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                    <Bar dataKey="gross" name={t('grossCustomerTariff', 'Gross Customer Tariff')} fill={isDark ? '#334155' : '#cbd5e1'} radius={[6, 6, 0, 0]} />
+                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px', color: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} />
+                    <Bar dataKey="gross" name={t('grossCustomerTariff', 'Gross Customer Tariff')} fill={isDark ? '#475569' : '#64748b'} radius={[6, 6, 0, 0]} />
                     <Bar dataKey="netPayout" name={t('netWorkerPayout', 'Net Worker Payout (95%)')} fill="#ff6b00" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 ) : chartType === 'line' ? (
                   <LineChart data={activeChartData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
+                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val, name) => [`₹${val}`, name === 'gross' ? t('grossBilled', 'Gross') : t('netTakeHome', 'Net Payout')]}
-                      contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
+                      contentStyle={{ backgroundColor: isDark ? '#0f131a' : '#ffffff', borderColor: isDark ? '#ff7a00' : '#ff6b00', borderRadius: '12px', color: isDark ? '#ffffff' : '#0f172a', fontSize: '13px' }}
+                      itemStyle={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 700 }}
+                      labelStyle={{ color: isDark ? '#ff9d42' : '#ea580c', fontWeight: 800 }}
                     />
-                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                    <Line type="monotone" dataKey="gross" name={t('grossBilled', 'Gross Billed')} stroke={isDark ? '#475569' : '#94a3b8'} strokeWidth={1.5} strokeDasharray="3 3" dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px', color: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} />
+                    <Line type="monotone" dataKey="gross" name={t('grossBilled', 'Gross Billed')} stroke={isDark ? '#94a3b8' : '#475569'} strokeWidth={2} strokeDasharray="3 3" dot={{ r: 3.5 }} activeDot={{ r: 5.5 }} />
                     <Line type="monotone" dataKey="netPayout" name={t('netTakeHome', 'Net Take-Home')} stroke="#ff6b00" strokeWidth={2.5} dot={{ r: 3.5, fill: '#ff6b00', stroke: isDark ? '#12151b' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
                   </LineChart>
                 ) : chartType === 'area' ? (
                   <AreaChart data={activeChartData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                     <defs>
                       <linearGradient id="areaGradWorker" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.35} />
+                        <stop offset="0%" stopColor="#ff6b00" stopOpacity={0.4} />
                         <stop offset="100%" stopColor="#ff6b00" stopOpacity={0.0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
+                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val) => [`₹${val}`, t('netTakeHome', 'Net Take-Home Payout')]}
-                      contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
+                      contentStyle={{ backgroundColor: isDark ? '#0f131a' : '#ffffff', borderColor: isDark ? '#ff7a00' : '#ff6b00', borderRadius: '12px', color: isDark ? '#ffffff' : '#0f172a', fontSize: '13px' }}
+                      itemStyle={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 700 }}
+                      labelStyle={{ color: isDark ? '#ff9d42' : '#ea580c', fontWeight: 800 }}
                     />
-                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                    <Area type="monotone" dataKey="netPayout" stroke="#ff6b00" strokeWidth={2.5} fill="url(#areaGradWorker)" name={t('netTakeHome', 'Net Take-Home Payout')} dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px', color: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} />
+                    <Area type="monotone" dataKey="netPayout" stroke="#ff6b00" strokeWidth={2.5} fill="url(#areaGradWorker)" name={t('netTakeHome', 'Net Take-Home Payout')} dot={{ r: 3.5 }} activeDot={{ r: 6 }} />
                   </AreaChart>
                 ) : (
                   <BarChart data={activeChartData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1f242e' : '#e2e8f0'} opacity={isDark ? 0.18 : 0.35} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#cbd5e1' : '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
+                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val, name) => [`₹${val}`, name === 'netPayout' ? t('netWorkerPayout', 'Net Worker Payout') : t('coopRetentionDeduction', '5% Co-op + Welfare Fund')]}
-                      contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
+                      contentStyle={{ backgroundColor: isDark ? '#0f131a' : '#ffffff', borderColor: isDark ? '#ff7a00' : '#ff6b00', borderRadius: '12px', color: isDark ? '#ffffff' : '#0f172a', fontSize: '13px' }}
+                      itemStyle={{ color: isDark ? '#ffffff' : '#0f172a', fontWeight: 700 }}
+                      labelStyle={{ color: isDark ? '#ff9d42' : '#ea580c', fontWeight: 800 }}
                     />
-                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
+                    <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px', color: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} />
                     <Bar dataKey="netPayout" stackId="a" name={t('netWorkerPayout', 'Net Direct Disbursed (95%)')} fill="#ff6b00" radius={[0, 0, 6, 6]} />
                     <Bar dataKey="deductions" stackId="a" name={t('coopRetentionDeduction', 'Cooperative 5% + ₹10 Welfare')} fill="#10b981" radius={[6, 6, 0, 0]} />
                   </BarChart>
