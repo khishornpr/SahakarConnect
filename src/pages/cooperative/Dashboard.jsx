@@ -26,6 +26,19 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
+function getCompletionColor(pct) {
+  if (pct < 10) return '#ef4444' // 0-10%
+  if (pct < 20) return '#f97316' // 10-20%
+  if (pct < 30) return '#f59e0b' // 20-30%
+  if (pct < 40) return '#eab308' // 30-40%
+  if (pct < 50) return '#84cc16' // 40-50%
+  if (pct < 60) return '#22c55e' // 50-60%
+  if (pct < 70) return '#10b981' // 60-70%
+  if (pct < 80) return '#06b6d4' // 70-80%
+  if (pct < 90) return '#3b82f6' // 80-90%
+  return '#8b5cf6' // 90-100%
+}
+
 export default function CooperativeDashboard() {
   const { profile } = useAuth()
   const { t } = useTranslation()
