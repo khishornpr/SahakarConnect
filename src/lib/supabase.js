@@ -5,6 +5,8 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 const useMockEnv = import.meta.env.VITE_USE_MOCK
 
+console.log('[SUPABASE DEBUG] supabaseUrl:', supabaseUrl)
+
 // Use real client only when explicitly configured with valid non-placeholder credentials and VITE_USE_MOCK !== 'true'
 const isPlaceholder =
   !supabaseUrl ||
@@ -28,6 +30,8 @@ if (useMockEnv !== 'true' && !isPlaceholder) {
     console.error('[Supabase] Failed to initialize live client, using mock database fallback:', err)
   }
 }
+
+console.log('[SUPABASE DEBUG] Final client type:', client === mockSupabase ? 'MOCK' : 'REAL')
 
 export const supabase = client
 export { mockSupabase }
