@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from '../../context/I18nContext'
 import { useTheme } from '../../context/ThemeContext'
 import { Link } from 'react-router-dom'
-import { TRADE_GROUPS } from '../../lib/serviceCategories'
+import { TRADE_GROUPS, TRADE_GROUP_COLORS } from '../../lib/serviceCategories'
 import {
   BarChart,
   Bar,
@@ -99,16 +99,11 @@ export default function CooperativeDashboard() {
       : fullYearData
 
   // Service Trade Sector Distribution Data
-  const groupColors = {
-    'Repair & maintenance trades': '#ff6b00',
-    'Cleaning & housekeeping': '#fb923c',
-    'Domestic works': '#e11d48',
-    'Care & household support': '#ea580c',
-    'Outdoor & occasional': '#c2410c',
-  }
+  const groupColors = TRADE_GROUP_COLORS
 
   const tradeSectorTotals = {
     'Repair & maintenance trades': 4850,
+    'Home improvement / renovation': 1500,
     'Cleaning & housekeeping': 2840,
     'Domestic works': 3120,
     'Care & household support': 2280,
@@ -124,8 +119,8 @@ export default function CooperativeDashboard() {
       name: groupName,
       value: val,
       percentage: pct,
-      fill: groupColors[groupName] || '#ff6b00',
-      color: groupColors[groupName] || '#ff6b00',
+      fill: groupColors[groupName] || '#f97316',
+      color: groupColors[groupName] || '#f97316',
     }
   })
 
@@ -511,7 +506,7 @@ export default function CooperativeDashboard() {
             {expenseChartType === 'donut' && (
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total</span>
-                <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹12,347.90</span>
+                <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{totalExpenseVal.toLocaleString('en-IN')}</span>
               </div>
             )}
           </div>

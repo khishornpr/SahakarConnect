@@ -414,6 +414,18 @@ export const TRADE_GROUPS = [
 ]
 
 /**
+ * Standard high-contrast distinct color palette for trade groups across charts & legends
+ */
+export const TRADE_GROUP_COLORS = {
+  'Repair & maintenance trades': '#f97316', // Vibrant Orange
+  'Home improvement / renovation': '#8b5cf6', // Violet / Purple
+  'Cleaning & housekeeping': '#06b6d4', // Aqua / Cyan
+  'Domestic works': '#ec4899', // Rose / Pink
+  'Care & household support': '#10b981', // Emerald / Green
+  'Outdoor & occasional': '#3b82f6', // Royal / Electric Blue
+}
+
+/**
  * Helper to safely lookup category details
  */
 export function getCategoryByTrade(tradeName) {
