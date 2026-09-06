@@ -108,8 +108,10 @@ export default function WorkerDashboard() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-sm border ${
+            isDark ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+          }`}>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             {t('verifiedCooperativeMember', 'Active Cooperative Member')}
           </span>
         </div>
@@ -133,10 +135,12 @@ export default function WorkerDashboard() {
                 <span className="text-xl">💰</span>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-emerald-400">
+            <div className={`flex items-center gap-1.5 mt-2 text-xs font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
               {totalNet > 0 ? (
                 <>
-                  <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">↑ 12.5%</span>
+                  <span className={`px-2 py-0.5 rounded-md border ${
+                    isDark ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                  }`}>↑ 12.5%</span>
                   <span className={`font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {t('directBankUpi', 'Direct Bank/UPI')}
                   </span>
@@ -238,8 +242,10 @@ export default function WorkerDashboard() {
                 <span className="text-xl">🛡️</span>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-emerald-400">
-              <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">
+            <div className={`flex items-center gap-1.5 mt-2 text-xs font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
+              <span className={`px-2 py-0.5 rounded-md border ${
+                isDark ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+              }`}>
                 ✓ {t('verifiedMember', 'Verified Member')}
               </span>
             </div>
@@ -257,8 +263,8 @@ export default function WorkerDashboard() {
       {/* Chart & Active Assignments */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 flow-card glow-orange-hover p-6 space-y-4">
-          <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-            <div>
+          <div className={`flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+            <div className="min-w-0">
               <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('netPayoutVelocity', 'Net Payout & Fair Wage Velocity')}
               </h2>
@@ -268,9 +274,9 @@ export default function WorkerDashboard() {
             </div>
 
             {/* Interactive Chart Controls */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
               {/* Chart Types */}
-              <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+              <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
                 {[
                   { id: 'bar', label: t('bar', '📊 Bar') },
                   { id: 'line', label: t('line', '📈 Line') },
@@ -281,6 +287,7 @@ export default function WorkerDashboard() {
                   return (
                     <button
                       key={tItem.id}
+                      type="button"
                       aria-selected={isSelected ? 'true' : undefined}
                       data-selected={isSelected ? 'true' : undefined}
                       onClick={() => !isSelected && setChartType(tItem.id)}
@@ -288,8 +295,8 @@ export default function WorkerDashboard() {
                         isSelected
                           ? 'flow-btn-primary shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
                           : isDark
-                          ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
-                          : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                       }`}
                     >
                       {tItem.label}
@@ -302,7 +309,7 @@ export default function WorkerDashboard() {
               <select
                 value={chartTimeframe}
                 onChange={(e) => setChartTimeframe(e.target.value)}
-                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold border outline-none cursor-pointer transition-all ${
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold border outline-none cursor-pointer transition-all shrink-0 ${
                   isDark
                     ? 'bg-[#161a22] border-white/[0.08] text-slate-200 focus:border-[#ff6b00]'
                     : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
@@ -432,8 +439,18 @@ export default function WorkerDashboard() {
                   >
                     <div className="flex justify-between items-start">
                       <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>{job.title}</span>
-                      <span className="px-2 py-0.5 rounded-md bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 text-[10px] font-bold uppercase">
-                        {t(job.status, job.status)}
+                      <span
+                        className={`px-2 py-0.5 rounded-md text-[10px] font-black uppercase border tracking-wider transition-colors ${
+                          job.status === 'completed'
+                            ? isDark
+                              ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
+                              : 'bg-emerald-100/90 text-emerald-900 border-emerald-300 font-black shadow-xs'
+                            : isDark
+                              ? 'bg-[#ff6b00]/20 text-[#ff7a00] border-[#ff6b00]/40'
+                              : 'bg-orange-100 text-orange-900 border-orange-300 font-black shadow-xs'
+                        }`}
+                      >
+                        {t(job.status, job.status.replace('_', ' '))}
                       </span>
                     </div>
                     <div className={`text-[11px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>📍 {job.address}</div>
@@ -480,9 +497,9 @@ export default function WorkerDashboard() {
               <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
                 <div className="h-full bg-gradient-to-r from-[#ff6b00] to-amber-400 w-3/4"></div>
               </div>
-              <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+              <div className={`flex items-center justify-between text-[11px] pt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                 <span>{t('badgesEarned', '🏆 2 Badges Earned')}</span>
-                <span className="text-emerald-400 font-bold">{t('matchPriority', '+15% Match Priority')}</span>
+                <span className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{t('matchPriority', '+15% Match Priority')}</span>
               </div>
             </div>
           </div>

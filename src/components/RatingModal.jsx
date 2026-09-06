@@ -96,9 +96,11 @@ export default function RatingModal({ job, currentUserRole, currentUserId, onClo
         </div>
 
         {success ? (
-          <div className="p-6 text-center text-emerald-400 bg-emerald-950/60 rounded-xl font-bold text-sm border border-emerald-500/40 space-y-1">
+          <div className={`p-6 text-center rounded-xl font-bold text-sm border space-y-1 ${
+            isDark ? 'text-emerald-400 bg-emerald-950/60 border-emerald-500/40' : 'text-emerald-900 bg-emerald-50 border-emerald-300'
+          }`}>
             <div>✓ Rating & Review Saved!</div>
-            <p className="text-xs text-emerald-300 font-normal">
+            <p className={`text-xs font-normal ${isDark ? 'text-emerald-300' : 'text-emerald-700'}`}>
               Thank you for sharing your feedback.
             </p>
           </div>

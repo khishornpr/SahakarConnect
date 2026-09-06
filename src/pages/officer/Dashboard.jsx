@@ -217,12 +217,14 @@ export default function OfficerDashboard() {
           <div className={`font-black text-sm mt-0.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {profile?.full_name || 'Sanjay Verma (Labor Officer)'}
           </div>
-          <div className="text-[11px] text-emerald-400 mt-0.5">● Active Session • Delhi NCR Zone</div>
+          <div className={`text-[11px] mt-0.5 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>● Active Session • Delhi NCR Zone</div>
         </div>
       </div>
 
       {feedbackMsg && (
-        <div className="p-4 rounded-2xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-xs font-bold flex items-center gap-2 shadow-lg animate-fade-in-up">
+        <div className={`p-4 rounded-2xl border text-xs font-bold flex items-center gap-2 shadow-lg animate-fade-in-up ${
+          isDark ? 'bg-emerald-950/80 border-emerald-500/50 text-emerald-200' : 'bg-emerald-50 border-emerald-300 text-emerald-900'
+        }`}>
           <span>✅</span>
           <span>{feedbackMsg}</span>
         </div>
@@ -231,33 +233,33 @@ export default function OfficerDashboard() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Total Case Docket</span>
-          <div className="text-2xl font-black text-white">{totalCases}</div>
-          <span className="text-[10px] text-slate-400 block">Registered Claims</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Case Docket</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalCases}</div>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Registered Claims</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-amber-400 block">Active & In Review</span>
-          <div className="text-2xl font-black text-amber-400">{pendingCases}</div>
-          <span className="text-[10px] text-amber-400/80 block">Requires Attention</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>Active & In Review</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>{pendingCases}</div>
+          <span className={`text-[10px] block font-medium ${isDark ? 'text-amber-400/80' : 'text-amber-700'}`}>Requires Attention</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-emerald-400 block">Resolved Cases</span>
-          <div className="text-2xl font-black text-emerald-400">{resolvedCases}</div>
-          <span className="text-[10px] text-emerald-400/80 block">Settled with Payout</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Resolved Cases</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{resolvedCases}</div>
+          <span className={`text-[10px] block font-medium ${isDark ? 'text-emerald-400/80' : 'text-emerald-700'}`}>Settled with Payout</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-rose-400 block">Rejected / Closed</span>
-          <div className="text-2xl font-black text-rose-400">{rejectedCases}</div>
-          <span className="text-[10px] text-slate-400 block">No Merit Found</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-rose-400' : 'text-rose-700'}`}>Rejected / Closed</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>{rejectedCases}</div>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>No Merit Found</span>
         </div>
 
         <div className="flow-card p-4 space-y-1 col-span-2 lg:col-span-1">
-          <span className="text-[10px] uppercase font-bold text-cyan-400 block">Avg. Resolution Time</span>
-          <div className="text-2xl font-black text-cyan-400">2.4 Days</div>
-          <span className="text-[10px] text-slate-400 block">Statutory Benchmark: 7d</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>Avg. Resolution Time</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>2.4 Days</div>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Statutory Benchmark: 7d</span>
         </div>
       </div>
 
@@ -434,11 +436,11 @@ export default function OfficerDashboard() {
               }`}
             >
               {/* Modal Header */}
-              <div className="flex justify-between items-start border-b pb-3.5 border-white/[0.08]">
+              <div className={`flex justify-between items-start border-b pb-3.5 ${isDark ? 'border-white/[0.08]' : 'border-slate-200'}`}>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-xs font-black text-[#ff7a00]">{selectedCase.id}</span>
-                    <span className="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold">
+                    <span className={`text-xs px-2 py-0.5 rounded font-bold ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
                       {selectedCase.complaint_type}
                     </span>
                     <span className={getStatusBadge(selectedCase.status)}>
@@ -452,7 +454,7 @@ export default function OfficerDashboard() {
                 <button
                   onClick={() => setSelectedCase(null)}
                   className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${
-                    isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-600'
+                    isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
                   ✕
@@ -463,55 +465,55 @@ export default function OfficerDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 {/* Complainant Statement */}
                 <div className={`p-4 rounded-xl border space-y-2.5 ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-                  <h4 className="font-bold text-[#ff7a00] uppercase text-[11px]">
+                  <h4 className={`font-bold uppercase text-[11px] ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>
                     👤 Complainant Evidence & Statement
                   </h4>
                   <div>
-                    <span className="text-slate-400 block text-[11px]">Filed By</span>
-                    <strong className="text-white text-sm">{selectedCase.user_name}</strong> ({selectedCase.initiator_role})
+                    <span className={`block text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Filed By</span>
+                    <strong className={`text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{selectedCase.user_name}</strong> <span className={isDark ? 'text-slate-400' : 'text-slate-600'}>({selectedCase.initiator_role})</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 block text-[11px]">Statement</span>
-                    <p className="mt-0.5 text-slate-300 leading-relaxed">{selectedCase.description}</p>
+                    <span className={`block text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Statement</span>
+                    <p className={`mt-0.5 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{selectedCase.description}</p>
                   </div>
                   {selectedCase.attachment_name && (
-                    <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px]">
-                      <span>📎 Attachment:</span>
-                      <span className="font-mono text-cyan-400 font-bold">{selectedCase.attachment_name}</span>
+                    <div className={`pt-2 border-t flex items-center justify-between text-[11px] ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+                      <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>📎 Attachment:</span>
+                      <span className={`font-mono font-bold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>{selectedCase.attachment_name}</span>
                     </div>
                   )}
                 </div>
 
                 {/* Linked Geo-Dispatch Record */}
                 <div className={`p-4 rounded-xl border space-y-2.5 ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-                  <h4 className="font-bold text-cyan-400 uppercase text-[11px]">
+                  <h4 className={`font-bold uppercase text-[11px] ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>
                     📍 Linked Geo-Dispatch Audit Log
                   </h4>
                   {linkedJob ? (
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Job Title:</span>
-                        <strong className="text-white">{linkedJob.title}</strong>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Job Title:</span>
+                        <strong className={isDark ? 'text-white' : 'text-slate-900'}>{linkedJob.title}</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Trade:</span>
-                        <strong className="text-slate-200">{linkedJob.trade_category}</strong>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Trade:</span>
+                        <strong className={isDark ? 'text-slate-200' : 'text-slate-800'}>{linkedJob.trade_category}</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Site Address:</span>
-                        <span className="text-slate-300 truncate max-w-[150px]">{linkedJob.address}</span>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Site Address:</span>
+                        <span className={`truncate max-w-[150px] ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{linkedJob.address}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Final Tariff:</span>
-                        <strong className="text-emerald-400 font-bold">₹{linkedJob.final_amount || linkedJob.estimated_amount}</strong>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Final Tariff:</span>
+                        <strong className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{linkedJob.final_amount || linkedJob.estimated_amount}</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-400">Completed At:</span>
-                        <span className="text-slate-300">{new Date(linkedJob.created_at).toLocaleDateString()}</span>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Completed At:</span>
+                        <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>{new Date(linkedJob.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
                   ) : (
-                    <div className="py-6 text-center text-slate-400">
+                    <div className={`py-6 text-center ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       <span>No specific job ID attached. (General dispute filed).</span>
                     </div>
                   )}

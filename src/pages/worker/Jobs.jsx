@@ -273,10 +273,14 @@ export default function WorkerJobs() {
                   <div className="flex items-center gap-2.5">
                     <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{job.title}</h3>
                     <span
-                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase border ${
+                      className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase border tracking-wider transition-colors ${
                         job.status === 'completed'
-                          ? 'bg-emerald-950/40 text-emerald-400 border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
-                          : 'bg-[#ff6b00]/20 text-[#ff7a00] border-[#ff6b00]/40'
+                          ? isDark
+                            ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
+                            : 'bg-emerald-100/90 text-emerald-900 border-emerald-300 font-black shadow-xs'
+                          : isDark
+                            ? 'bg-[#ff6b00]/20 text-[#ff7a00] border-[#ff6b00]/40'
+                            : 'bg-orange-100 text-orange-900 border-orange-300 font-black shadow-xs'
                       }`}
                     >
                       {job.status.replace('_', ' ')}
@@ -441,12 +445,14 @@ export default function WorkerJobs() {
                   />
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-300 space-y-1">
+                <div className={`p-3.5 rounded-xl border text-xs space-y-1 ${
+                  isDark ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300' : 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                }`}>
                   <div className="flex justify-between font-bold">
                     <span>Total Bill: ₹{otpModalJob.final_amount || otpModalJob.estimated_amount}</span>
                     <span>Your Take-Home: ₹{((otpModalJob.final_amount || otpModalJob.estimated_amount) * 0.95 - 10).toFixed(0)}</span>
                   </div>
-                  <div className="text-[10px] text-emerald-400/80">
+                  <div className={`text-[10px] ${isDark ? 'text-emerald-400/80' : 'text-emerald-700 font-medium'}`}>
                     Statutory cooperative welfare contribution applied.
                   </div>
                 </div>

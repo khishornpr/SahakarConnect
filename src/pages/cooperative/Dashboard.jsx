@@ -322,8 +322,8 @@ export default function CooperativeDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Overview Card */}
         <div className="lg:col-span-2 flow-card glow-orange-hover p-6 space-y-4">
-          <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-            <div>
+          <div className={`flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+            <div className="min-w-0">
               <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                 Monthly Marketplace GMV
               </span>
@@ -334,9 +334,9 @@ export default function CooperativeDashboard() {
             </div>
 
             {/* Interactive Chart Options Bar */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
               {/* Chart Type Selector Buttons */}
-              <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
+              <div className={`flex items-center gap-1 p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
                 {[
                   { id: 'bar', label: '📊 Bar', tooltip: 'Bar Chart' },
                   { id: 'line', label: '📈 Line', tooltip: 'Line Trend' },
@@ -345,6 +345,7 @@ export default function CooperativeDashboard() {
                 ].map((type) => (
                   <button
                     key={type.id}
+                    type="button"
                     onClick={() => setRevenueChartType(type.id)}
                     aria-selected={revenueChartType === type.id}
                     data-selected={revenueChartType === type.id ? 'true' : undefined}
@@ -366,7 +367,7 @@ export default function CooperativeDashboard() {
               <select
                 value={revenueTimeframe}
                 onChange={(e) => setRevenueTimeframe(e.target.value)}
-                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold border outline-none cursor-pointer transition-all ${
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold border outline-none cursor-pointer transition-all shrink-0 ${
                   isDark
                     ? 'bg-[#12151c] border-white/[0.1] text-slate-200 focus:border-[#ff6b00]'
                     : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
@@ -445,13 +446,13 @@ export default function CooperativeDashboard() {
 
         {/* Expense Breakdown (with Donut / Pie / Bar / Radial Switcher) */}
         <div className="flow-card glow-orange-hover p-6 space-y-4 flex flex-col justify-between">
-          <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+          <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Service Trade Distribution
             </h2>
 
             {/* Chart Type Toggle */}
-            <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`flex items-center gap-1 p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'donut', label: '🍩', title: 'Donut Chart' },
                 { id: 'pie', label: '🥧', title: 'Pie Chart' },
@@ -460,6 +461,7 @@ export default function CooperativeDashboard() {
               ].map((tItem) => (
                 <button
                   key={tItem.id}
+                  type="button"
                   onClick={() => setExpenseChartType(tItem.id)}
                   aria-selected={expenseChartType === tItem.id}
                   data-selected={expenseChartType === tItem.id ? 'true' : undefined}
@@ -587,18 +589,18 @@ export default function CooperativeDashboard() {
 
         {/* Cash Flow Velocity (with interactive Chart Options) */}
         <div className="flow-card glow-orange-hover p-6 space-y-4 flex flex-col justify-between">
-          <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-            <div>
+          <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+            <div className="min-w-0">
               <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Disbursal Velocity</span>
               <div className={`text-xl font-black mt-0.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>₹9,642.30</div>
             </div>
 
             {/* Metric & Chart Switcher */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
               <select
                 value={cashFlowMetric}
                 onChange={(e) => setCashFlowMetric(e.target.value)}
-                className={`text-[11px] font-bold px-2.5 py-1.5 rounded-xl border outline-none cursor-pointer transition-all ${
+                className={`text-[11px] font-bold px-2.5 py-1.5 rounded-xl border outline-none cursor-pointer transition-all shrink-0 ${
                   isDark
                     ? 'bg-[#12151c] border-white/[0.1] text-slate-200 focus:border-[#ff6b00]'
                     : 'bg-white border-slate-300 text-slate-700 focus:border-[#ff6b00]'
@@ -609,7 +611,7 @@ export default function CooperativeDashboard() {
                 <option value="coop">5% Co-op Fee</option>
               </select>
 
-              <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
+              <div className={`flex items-center gap-1 p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
                 {[
                   { id: 'area', label: '🌊', title: 'Area Chart' },
                   { id: 'line', label: '📈', title: 'Line Chart' },
@@ -617,6 +619,7 @@ export default function CooperativeDashboard() {
                 ].map((c) => (
                   <button
                     key={c.id}
+                    type="button"
                     onClick={() => setCashFlowChartType(c.id)}
                     aria-selected={cashFlowChartType === c.id}
                     data-selected={cashFlowChartType === c.id ? 'true' : undefined}

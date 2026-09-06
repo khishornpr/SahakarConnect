@@ -189,11 +189,11 @@ export default function HouseholdHelp() {
         </div>
       </div>
 
-      {/* SECTION 3: Mandatory procedure */}
-      <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
+      {/* SECTION 3: Mandatory Procedures */}
+      <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
         <h2 className={`text-lg font-black mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           <span>📌</span>
-          <span>3. Mandatory procedure</span>
+          <span>3. Mandatory Procedures</span>
         </h2>
         <ul className="space-y-2.5 text-xs">
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
@@ -216,26 +216,38 @@ export default function HouseholdHelp() {
       </div>
 
       {/* SECTION 4: Need more help? */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-orange-950/40 via-amber-950/20 to-transparent border border-orange-500/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span className="text-3xl">🤝</span>
+      <div className={`p-6 rounded-2xl border flex flex-col sm:flex-row items-center justify-between gap-4 ${
+        isDark
+          ? 'bg-gradient-to-r from-orange-950/60 via-amber-950/30 to-[#12151b] border-orange-500/40 text-white shadow-[0_0_30px_rgba(255,107,0,0.15)]'
+          : 'bg-gradient-to-r from-orange-50 via-amber-50 to-orange-100/60 border-2 border-orange-200/90 text-slate-900 shadow-sm'
+      }`}>
+        <div className="flex items-center gap-3.5">
+          <span className={`text-3xl p-2.5 rounded-2xl shrink-0 ${
+            isDark ? 'bg-orange-500/15 border border-orange-500/30' : 'bg-white border border-orange-200 shadow-xs'
+          }`}>
+            🤝
+          </span>
           <div>
-            <h4 className="text-xs font-bold text-orange-300">4. Need more help?</h4>
-            <p className="text-[11px] text-orange-200/80 mt-0.5">
+            <h4 className={`text-sm font-black ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>4. Need more help?</h4>
+            <p className={`text-xs mt-0.5 font-medium leading-relaxed ${isDark ? 'text-orange-200/90' : 'text-orange-900/90'}`}>
               Our cooperative customer service desk is available to assist you with bookings, invoices, or service feedback.
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           <a
             href="mailto:support@sahakar.in"
-            className="px-4 py-2 bg-[#ff6b00] hover:bg-orange-500 text-white rounded-xl text-xs font-bold shadow-md transition-all whitespace-nowrap"
+            className="px-4 py-2.5 bg-[#ff6b00] hover:bg-[#e05e00] text-white rounded-xl text-xs font-black shadow-md transition-all whitespace-nowrap cursor-pointer"
           >
             ✉️ Email Support
           </a>
           <a
             href="tel:1800112233"
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold shadow-md transition-all whitespace-nowrap border border-white/10"
+            className={`px-4 py-2.5 rounded-xl text-xs font-black shadow-sm transition-all whitespace-nowrap border cursor-pointer ${
+              isDark
+                ? 'bg-slate-800 hover:bg-slate-700 text-white border-white/10'
+                : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+            }`}
           >
             📞 1800-11-2233
           </a>

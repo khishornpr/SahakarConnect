@@ -323,17 +323,17 @@ export default function CooperativeDemandForecast() {
       {/* Forecasting Hero Chart 1: Trade Demand Projection with In-Box Category Classification */}
       <div className="flow-card glow-orange-hover p-6 sm:p-7 space-y-5">
         {/* Card Header & Primary Chart Controls */}
-        <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-          <div className="flex items-start gap-3">
+        <div className={`flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+          <div className="flex items-start gap-3 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-[#ff6b00]/15 border border-[#ff6b00]/30 text-[#ff7a00] flex items-center justify-center text-xl shrink-0 shadow-[0_0_15px_rgba(255,107,0,0.2)] mt-0.5">
               📊
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className={`text-base sm:text-lg font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   {t('projectedDemandVsSupplyTitle', 'Expected Service Demand vs Available Workers')}
                 </h2>
-                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border shrink-0 ${
                   isDark ? 'bg-orange-500/15 border-orange-500/30 text-[#ff7a00]' : 'bg-orange-50 border-orange-200 text-orange-800'
                 }`}>
                   {activeTradeData.length} {activeTradeData.length === 1 ? 'Trade' : 'Trades'} Showing
@@ -346,9 +346,9 @@ export default function CooperativeDemandForecast() {
           </div>
 
           {/* Chart Type, Metric Visibility & Horizon Controls */}
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             {/* Chart Type Selector */}
-            <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'bar', label: '📊 Bar' },
                 { id: 'line', label: '📈 Line' },
@@ -359,6 +359,7 @@ export default function CooperativeDemandForecast() {
                 return (
                   <button
                     key={tItem.id}
+                    type="button"
                     aria-selected={isSelected ? 'true' : undefined}
                     data-selected={isSelected ? 'true' : undefined}
                     onClick={() => !isSelected && setTradeChartType(tItem.id)}
@@ -366,8 +367,8 @@ export default function CooperativeDemandForecast() {
                       isSelected
                         ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
-                        : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                     }`}
                   >
                     {tItem.label}
@@ -377,7 +378,7 @@ export default function CooperativeDemandForecast() {
             </div>
 
             {/* Series Filter Selector */}
-            <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'all', label: '✨ All Combined' },
                 { id: 'demand', label: '⚡ Demand Only' },
@@ -387,6 +388,7 @@ export default function CooperativeDemandForecast() {
                 return (
                   <button
                     key={fItem.id}
+                    type="button"
                     aria-selected={isSelected ? 'true' : undefined}
                     data-selected={isSelected ? 'true' : undefined}
                     onClick={() => !isSelected && setTradeMetricFilter(fItem.id)}
@@ -394,8 +396,8 @@ export default function CooperativeDemandForecast() {
                       isSelected
                         ? 'bg-gradient-to-r from-[#ff7a00] to-[#ff5500] text-white shadow-sm cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
-                        : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                     }`}
                   >
                     {fItem.label}
@@ -408,7 +410,7 @@ export default function CooperativeDemandForecast() {
             <select
               value={tradeHorizon}
               onChange={(e) => setTradeHorizon(e.target.value)}
-              className={`text-xs font-bold px-3 py-2 rounded-xl border outline-none cursor-pointer transition-all shadow-sm ${
+              className={`text-xs font-bold px-3 py-2 rounded-xl border outline-none cursor-pointer transition-all shadow-sm shrink-0 ${
                 isDark
                   ? 'bg-[#161a22] border-white/[0.08] text-slate-200 focus:border-[#ff6b00]'
                   : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
@@ -779,12 +781,12 @@ export default function CooperativeDemandForecast() {
 
       {/* Chart 2: District Demand Breakdown in its own Spacious Card */}
       <div className="flow-card glow-orange-hover p-6 sm:p-7 space-y-4">
-        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3.5 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-          <div className="flex items-center gap-3">
+        <div className={`flex flex-col md:flex-row md:items-center justify-between gap-3 border-b pb-3.5 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+          <div className="flex items-center gap-3 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xl shrink-0">
               📍
             </div>
-            <div>
+            <div className="min-w-0">
               <h2 className={`text-base sm:text-lg font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('districtDemandTitle', 'District Demand vs Field Worker Allocation')}
               </h2>
@@ -794,14 +796,15 @@ export default function CooperativeDemandForecast() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+          <div className="flex items-center gap-2 shrink-0">
+            <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'bar', label: '📊 Horizontal' },
                 { id: 'vertical', label: '📈 Vertical' },
               ].map((c) => (
                 <button
                   key={c.id}
+                  type="button"
                   onClick={() => setDistrictChartType(c.id)}
                   aria-selected={districtChartType === c.id}
                   data-selected={districtChartType === c.id ? 'true' : undefined}
@@ -809,8 +812,8 @@ export default function CooperativeDemandForecast() {
                     districtChartType === c.id
                       ? 'bg-[#ff6b00] text-white shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
                       : isDark
-                      ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                      : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                      ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                   }`}
                 >
                   {c.label}

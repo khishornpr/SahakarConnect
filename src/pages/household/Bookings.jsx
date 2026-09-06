@@ -111,24 +111,24 @@ export default function HouseholdBookings() {
             {t('serviceBookingsSubheading', 'Track the status of your booked services in real-time')}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-          <div className={`flex p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          {/* Segmented Filter Control */}
+          <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200 shadow-inner'}`}>
             {[
-              { id: 'all', label: t('all', 'All') },
-              { id: 'active', label: t('active', 'Active') },
-              { id: 'completed', label: t('completed', 'Completed') },
+              { id: 'all', label: t('allFilter', 'All') },
+              { id: 'active', label: t('activeFilter', 'Active') },
+              { id: 'completed', label: t('completedFilter', 'Completed') },
             ].map((tab) => (
               <button
                 key={tab.id}
+                type="button"
                 onClick={() => setActiveTab(tab.id)}
-                aria-selected={activeTab === tab.id}
-                data-selected={activeTab === tab.id ? 'true' : undefined}
-                className={`px-3 py-1 rounded-lg capitalize font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   activeTab === tab.id
-                    ? 'flow-btn-primary cursor-default'
+                    ? 'bg-[#ff6b00] text-white shadow-md'
                     : isDark
-                    ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                    : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                    ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                    : 'text-slate-700 hover:text-slate-900 hover:bg-white/80 cursor-pointer font-bold'
                 }`}
               >
                 {tab.label}
@@ -137,7 +137,7 @@ export default function HouseholdBookings() {
           </div>
           <Link
             to="/household/book"
-            className="flow-btn-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl shadow transition-all ml-auto sm:ml-0"
+            className="flow-btn-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl shadow transition-all ml-auto sm:ml-0 shrink-0"
           >
             {t('bookServiceBtn', '+ Book Service')}
           </Link>
@@ -158,10 +158,14 @@ export default function HouseholdBookings() {
                   <div className="flex items-center gap-2.5">
                     <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
                     <span
-                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase border ${
+                      className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase border tracking-wider transition-colors ${
                         b.status === 'completed'
-                          ? 'bg-emerald-950/40 text-emerald-400 border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
-                          : 'bg-[#ff6b00]/20 text-[#ff7a00] border-[#ff6b00]/40'
+                          ? isDark
+                            ? 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
+                            : 'bg-emerald-100/90 text-emerald-900 border-emerald-300 font-black shadow-xs'
+                          : isDark
+                            ? 'bg-[#ff6b00]/20 text-[#ff7a00] border-[#ff6b00]/40'
+                            : 'bg-orange-100 text-orange-900 border-orange-300 font-black shadow-xs'
                       }`}
                     >
                       {getStatusLabel(b.status)}
@@ -208,9 +212,11 @@ export default function HouseholdBookings() {
                           }`}
                         ></div>
                         <span
-                          className={`block truncate ${
+                          className={`block truncate font-bold ${
                             isCompletedWork
-                              ? 'text-emerald-400 font-bold'
+                              ? isDark
+                                ? 'text-emerald-400'
+                                : 'text-emerald-800 font-black'
                               : isCurrent
                               ? 'text-[#ff7a00] font-black'
                               : isDone

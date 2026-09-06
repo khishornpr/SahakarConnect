@@ -390,8 +390,8 @@ export default function HouseholdBookService() {
                     isSelected
                       ? 'flow-btn-primary shadow-sm cursor-default'
                       : isDark
-                      ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                      : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                      ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                   }`}
                 >
                   {label}
@@ -828,7 +828,7 @@ export default function HouseholdBookService() {
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="font-bold text-white">
+                            <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                               {w.profiles?.full_name || `Worker #${idx + 1}`}
                             </span>
                             {idx === 0 && (
@@ -837,7 +837,7 @@ export default function HouseholdBookService() {
                               </span>
                             )}
                           </div>
-                          <div className="text-[11px] text-[#ff7a00] font-semibold mt-0.5">
+                          <div className={`text-[11px] font-semibold mt-0.5 ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>
                             ★ {w.rating_avg || 4.9} ({w.total_jobs_completed || 12} jobs) • {w.area || area}
                           </div>
                         </div>
@@ -848,7 +848,7 @@ export default function HouseholdBookService() {
                             e.stopPropagation()
                             setShowScoreModalFor(w)
                           }}
-                          className="text-[10px] text-slate-400 hover:text-[#ff7a00] underline font-bold"
+                          className={`text-[10px] underline font-bold ${isDark ? 'text-slate-400 hover:text-[#ff7a00]' : 'text-slate-600 hover:text-amber-700'}`}
                         >
                           Score Breakdown
                         </button>
@@ -858,7 +858,7 @@ export default function HouseholdBookService() {
                 })}
 
                 {rankedWorkers.length === 0 && !loading && (
-                  <div className="p-4 text-center text-xs text-slate-400">
+                  <div className={`p-4 text-center text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     No active verified workers in this specific cluster right now. Booking will broadcast to nearby cooperative pool.
                   </div>
                 )}
@@ -872,30 +872,30 @@ export default function HouseholdBookService() {
       {showScoreModalFor &&
         createPortal(
           <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-            <div className={`p-6 rounded-2xl max-w-sm w-full space-y-4 border ${isDark ? 'bg-[#12151b] border-white/[0.08] text-white' : 'bg-white border-slate-200 text-slate-900'}`}>
-              <h3 className="text-sm font-bold">AI Match Score Breakdown</h3>
+            <div className={`p-6 rounded-2xl max-w-sm w-full space-y-4 border ${isDark ? 'bg-[#12151b] border-white/[0.08] text-white' : 'bg-white border-slate-200 text-slate-900 shadow-2xl'}`}>
+              <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>AI Match Score Breakdown</h3>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span>Proximity Score:</span>
-                  <span className="font-mono text-emerald-400">{showScoreModalFor.proximityScore} pts</span>
+                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>Proximity Score:</span>
+                  <span className={`font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{showScoreModalFor.proximityScore} pts</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Rating & Feedback Weight:</span>
-                  <span className="font-mono text-emerald-400">{showScoreModalFor.ratingScore} pts</span>
+                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>Rating & Feedback Weight:</span>
+                  <span className={`font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{showScoreModalFor.ratingScore} pts</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Workload Fairness Factor:</span>
-                  <span className="font-mono text-emerald-400">{showScoreModalFor.fairnessScore} pts</span>
+                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>Workload Fairness Factor:</span>
+                  <span className={`font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{showScoreModalFor.fairnessScore} pts</span>
                 </div>
-                <div className="flex justify-between pt-2 border-t font-black">
-                  <span>Total Composite Match:</span>
-                  <span className="text-[#ff7a00] font-mono">{showScoreModalFor.score} / 100</span>
+                <div className={`flex justify-between pt-2 border-t font-black ${isDark ? 'border-white/[0.08]' : 'border-slate-200'}`}>
+                  <span className={isDark ? 'text-white' : 'text-slate-900'}>Total Composite Match:</span>
+                  <span className={`font-mono ${isDark ? 'text-[#ff7a00]' : 'text-amber-600'}`}>{showScoreModalFor.score} / 100</span>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowScoreModalFor(null)}
-                className="w-full py-2 flow-btn-primary font-bold text-xs rounded-xl"
+                className="w-full py-2 flow-btn-primary font-bold text-xs rounded-xl cursor-pointer"
               >
                 Close
               </button>

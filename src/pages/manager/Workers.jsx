@@ -90,7 +90,7 @@ export default function ManagerWorkers() {
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                         No Data Available
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         No workers found matching the selected trade category or area filter.
                       </p>
                     </div>
@@ -98,18 +98,26 @@ export default function ManagerWorkers() {
                 </tr>
               ) : (
                 filtered.map((w) => (
-                  <tr key={w.id} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{w.id}</td>
-                    <td className="py-3 px-3 font-bold text-white">{w.primary_trade}</td>
-                    <td className="py-3 px-3 text-slate-300">{w.area}</td>
-                    <td className="py-3 px-3 font-bold text-emerald-400">₹{w.hourly_rate}/hr</td>
-                    <td className="py-3 px-3 font-black text-amber-400">★ {w.rating}</td>
-                    <td className="py-3 px-3 text-slate-200">{w.completed_jobs_count || 12}</td>
-                    <td className="py-3 px-3 font-mono text-[11px] text-slate-400">
+                  <tr key={w.id} className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'}`}>
+                    <td className={`py-3 px-3 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>{w.id}</td>
+                    <td className={`py-3 px-3 font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{w.primary_trade}</td>
+                    <td className={`py-3 px-3 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{w.area}</td>
+                    <td className={`py-3 px-3 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{w.hourly_rate}/hr</td>
+                    <td className={`py-3 px-3 font-black ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>★ {w.rating}</td>
+                    <td className={`py-3 px-3 font-medium ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{w.completed_jobs_count || 12}</td>
+                    <td className={`py-3 px-3 font-mono text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       {w.gov_id_type}: {w.gov_id_masked}
                     </td>
                     <td className="py-3 px-3">
-                      <span className={w.is_verified && w.trade_verification_status !== 'pending' ? 'status-pill-emerald font-bold' : 'status-pill-orange font-bold'}>
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm ${
+                        w.is_verified && w.trade_verification_status !== 'pending'
+                          ? isDark
+                            ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
+                            : 'bg-emerald-100 border-emerald-300 text-emerald-800'
+                          : isDark
+                          ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
+                          : 'bg-amber-100 border-amber-300 text-amber-900'
+                      }`}>
                         {w.is_verified && w.trade_verification_status !== 'pending' ? '✓ VERIFIED' : '⏳ PENDING REVIEW'}
                       </span>
                     </td>

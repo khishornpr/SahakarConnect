@@ -195,7 +195,7 @@ const extraEn = {
   statutoryMax: '5% Statutory Max',
   statutoryHourlyFloor: 'Statutory Hourly Floor',
   perHour: '/hr',
-  verifiedMember: '✓ Verified Member',
+  verifiedMember: 'Verified Member',
   netPayoutVelocity: 'Net Payout & Fair Wage Velocity',
   netPayoutSub: 'Transparent breakdown of gross billings vs 100% direct take-home pay',
   bar: '📊 Bar',

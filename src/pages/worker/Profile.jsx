@@ -141,12 +141,20 @@ export default function WorkerProfile() {
               <div className="flex items-center gap-2">
                 <h2 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{profile?.full_name}</h2>
                 {isPendingVerification ? (
-                  <span className="status-pill-orange flex items-center gap-1.5 animate-pulse font-bold">
-                    <span>⏳</span>
+                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black border shadow-sm ${
+                    isDark
+                      ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.2)]'
+                      : 'bg-amber-100 border-amber-300 text-amber-900'
+                  }`}>
+                    <span className="animate-pulse">⏳</span>
                     <span>Verification in Progress</span>
                   </span>
                 ) : (
-                  <span className="status-pill-emerald flex items-center gap-1 font-bold">
+                  <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black border shadow-sm ${
+                    isDark
+                      ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                      : 'bg-emerald-100 border-emerald-300 text-emerald-800'
+                  }`}>
                     <span>✓</span>
                     <span>Verified</span>
                   </span>
@@ -199,18 +207,26 @@ export default function WorkerProfile() {
             </div>
 
             {saveSuccess && (
-              <div className="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
+              <div className={`p-2.5 rounded-xl border text-xs font-bold ${
+                isDark ? 'bg-emerald-950/60 border-emerald-500/30 text-emerald-300' : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+              }`}>
                 ✓ {saveSuccess}
               </div>
             )}
 
             {isPendingVerification && (
-              <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs flex items-start gap-2.5 shadow-md">
-                <span className="text-lg shrink-0">⏳</span>
-                <div>
-                  <span className="font-bold block text-amber-300">Verification In Progress</span>
-                  <span className="text-[11px] text-amber-200/90 leading-relaxed block mt-0.5">
-                    Your craft credentials for <strong>{workerInfo?.primary_trade}</strong> ({formatExperience(workerInfo?.experience_years ?? experienceYears, workerInfo?.experience_months ?? experienceMonths)} exp) have been submitted to the Cooperative Admin Department. Until verified, your status will show <strong>Verification in Progress</strong>. Once approved by Admin, it will automatically update to <strong>Verified</strong>.
+              <div className={`p-4 rounded-2xl border text-xs flex items-start gap-3 shadow-md ${
+                isDark
+                  ? 'bg-gradient-to-r from-amber-950/60 to-orange-950/40 border-amber-500/40 text-amber-200'
+                  : 'bg-gradient-to-r from-amber-50 to-orange-50/70 border-2 border-amber-300 text-amber-950 shadow-sm'
+              }`}>
+                <span className="text-xl shrink-0 mt-0.5 animate-bounce">⏳</span>
+                <div className="space-y-1">
+                  <span className={`font-black text-xs sm:text-sm block ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
+                    Verification In Progress
+                  </span>
+                  <span className={`text-xs leading-relaxed block ${isDark ? 'text-amber-200/90' : 'text-amber-900 font-medium'}`}>
+                    Your craft credentials for <strong className={`font-bold ${isDark ? 'text-white' : 'text-amber-950 underline decoration-amber-400'}`}>{workerInfo?.primary_trade}</strong> ({formatExperience(workerInfo?.experience_years ?? experienceYears, workerInfo?.experience_months ?? experienceMonths)} exp) have been submitted to the Cooperative Admin Department. Until verified, your status will show <strong className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>Verification in Progress</strong>. Once approved by Admin, it will automatically update to <strong className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>Verified</strong>.
                   </span>
                 </div>
               </div>
@@ -408,7 +424,7 @@ export default function WorkerProfile() {
             <span className="text-2xl">🏆</span>
             <div>
               <strong className="text-xs block">Electrical Safety (LOTO)</strong>
-              <span className="text-[10px] text-slate-400">Score: 100% • Verified</span>
+              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>Score: 100% • Verified</span>
             </div>
           </div>
 
@@ -418,7 +434,7 @@ export default function WorkerProfile() {
             <span className="text-2xl">⭐</span>
             <div>
               <strong className="text-xs block">5-Star Customer Etiquette</strong>
-              <span className="text-[10px] text-slate-400">Score: 100% • Verified</span>
+              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>Score: 100% • Verified</span>
             </div>
           </div>
 
@@ -428,7 +444,7 @@ export default function WorkerProfile() {
             <span className="text-2xl">⚡</span>
             <div>
               <strong className="text-xs block">Smart Relay Specialist</strong>
-              <span className="text-[10px] text-slate-400">In Progress (50%)</span>
+              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>In Progress (50%)</span>
             </div>
           </div>
         </div>

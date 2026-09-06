@@ -63,7 +63,7 @@ export default function WorkerEarnings() {
         <div className="flow-card glow-orange-hover p-5 flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                 {t('grossAmount', 'Gross Billed to Customers')}
               </span>
               <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -74,55 +74,55 @@ export default function WorkerEarnings() {
               <span className="text-xl">💼</span>
             </div>
           </div>
-          <div className="text-xs text-slate-400 mt-2 font-medium">Total Service Value</div>
+          <div className={`text-xs mt-2 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Service Value</div>
         </div>
 
         {/* Co-op 5% */}
         <div className="flow-card glow-orange-hover p-5 flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                 {t('coopFee', 'Cooperative 5% Retained')}
               </span>
-              <div className="text-2xl font-black text-[#ff7a00] mt-1.5">₹{totalCoopFee.toLocaleString()}</div>
+              <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-[#ff7a00]' : 'text-amber-600'}`}>₹{totalCoopFee.toLocaleString()}</div>
             </div>
             <div className="flow-icon-badge-orange shrink-0">
               <span className="text-xl">🏛️</span>
             </div>
           </div>
-          <div className="text-xs text-slate-400 mt-2 font-medium">Federation operations</div>
+          <div className={`text-xs mt-2 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Federation operations</div>
         </div>
 
         {/* Welfare Fund */}
         <div className="flow-card glow-orange-hover p-5 flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                 {t('welfareCorpus', 'Welfare & Insurance Fund')}
               </span>
-              <div className="text-2xl font-black text-cyan-400 mt-1.5">₹{totalWelfare.toLocaleString()}</div>
+              <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-cyan-400' : 'text-teal-600'}`}>₹{totalWelfare.toLocaleString()}</div>
             </div>
             <div className="flow-icon-badge-orange shrink-0">
               <span className="text-xl">🛡️</span>
             </div>
           </div>
-          <div className="text-xs text-slate-400 mt-2 font-medium">₹10/job welfare corpus</div>
+          <div className={`text-xs mt-2 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>₹10/job welfare corpus</div>
         </div>
 
         {/* Net Direct Disbursed */}
         <div className="flow-card glow-emerald-hover p-5 flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                 {t('netDisbursed', 'Net Direct Disbursed')}
               </span>
-              <div className="text-2xl font-black text-emerald-400 mt-1.5">₹{totalNet.toLocaleString()}</div>
+              <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{totalNet.toLocaleString()}</div>
             </div>
             <div className="flow-icon-badge-emerald shrink-0">
               <span className="text-xl">💰</span>
             </div>
           </div>
-          <div className="text-xs text-emerald-400 mt-2 font-bold">Settled to your Bank/UPI</div>
+          <div className={`text-xs mt-2 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Settled to your Bank/UPI</div>
         </div>
       </div>
 
@@ -151,27 +151,27 @@ export default function WorkerEarnings() {
                 <th className="px-4 py-3.5">Gross Amount</th>
                 <th className="px-4 py-3.5">Co-op Fee (5%)</th>
                 <th className="px-4 py-3.5">Welfare Fund</th>
-                <th className="px-4 py-3.5 text-emerald-400">Net Worker Payout</th>
+                <th className={`px-4 py-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Net Worker Payout</th>
                 <th className="px-4 py-3.5">Invoice Action</th>
               </tr>
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-white/[0.06]' : 'divide-slate-200'}`}>
               {ledger.map((row) => (
-                <tr key={row.id} className="interactive-row">
-                  <td className="px-4 py-3.5 font-mono text-[#ff7a00] font-bold">{row.job_id}</td>
+                <tr key={row.id} className={`interactive-row ${isDark ? '' : 'hover:bg-slate-50'}`}>
+                  <td className={`px-4 py-3.5 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>{row.job_id}</td>
                   <td className={`px-4 py-3.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {new Date(row.created_at).toLocaleDateString()}
                   </td>
                   <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     ₹{row.gross_amount}
                   </td>
-                  <td className="px-4 py-3.5 text-amber-400 font-bold">- ₹{row.cooperative_fee_amount}</td>
-                  <td className="px-4 py-3.5 text-cyan-400 font-bold">- ₹{row.welfare_fund_amount}</td>
-                  <td className="px-4 py-3.5 font-black text-emerald-400 text-sm">₹{row.net_payout}</td>
+                  <td className={`px-4 py-3.5 font-bold ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>- ₹{row.cooperative_fee_amount}</td>
+                  <td className={`px-4 py-3.5 font-bold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>- ₹{row.welfare_fund_amount}</td>
+                  <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{row.net_payout}</td>
                   <td className="px-4 py-3.5">
                     <button
                       onClick={() => setSelectedInvoiceItem(row)}
-                      className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm"
+                      className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm cursor-pointer"
                     >
                       <span>📄</span>
                       <span>Invoice</span>
@@ -189,7 +189,7 @@ export default function WorkerEarnings() {
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                         No Data Available
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         No completed work wage records generated in your ledger yet.
                       </p>
                     </div>

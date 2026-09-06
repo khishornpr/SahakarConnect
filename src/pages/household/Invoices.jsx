@@ -69,8 +69,8 @@ export default function HouseholdInvoices() {
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-white/[0.06]' : 'divide-slate-100'}`}>
               {invoices.map((inv) => (
-                <tr key={inv.id} className="interactive-row">
-                  <td className="px-4 py-3.5 font-mono text-[#ff7a00] font-bold">
+                <tr key={inv.id} className={`interactive-row ${isDark ? '' : 'hover:bg-slate-50'}`}>
+                  <td className={`px-4 py-3.5 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>
                     INV-{inv.id.slice(0, 8).toUpperCase()}
                   </td>
                   <td className={`px-4 py-3.5 font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{inv.title}</td>
@@ -78,7 +78,7 @@ export default function HouseholdInvoices() {
                   <td className={`px-4 py-3.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {new Date(inv.completed_at || inv.created_at).toLocaleDateString()}
                   </td>
-                  <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                  <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                     ₹{inv.final_amount || inv.estimated_amount}
                   </td>
                   <td className="px-4 py-3.5">
@@ -101,7 +101,7 @@ export default function HouseholdInvoices() {
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                         No Data Available
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         {t('noInvoicesFound', 'No completed service invoices found yet.')}
                       </p>
                     </div>

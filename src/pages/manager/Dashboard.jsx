@@ -97,39 +97,39 @@ export default function ManagerDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         {/* Total Workers */}
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Supervised Workers</span>
-          <div className="text-2xl font-black text-white">{totalWorkers} Active</div>
-          <span className="text-[10px] text-emerald-400 block">✓ 100% KYC Verified</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Supervised Workers</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalWorkers} Active</div>
+          <span className={`text-[10px] block font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>✓ 100% KYC Verified</span>
         </div>
 
         {/* Total Processed */}
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Total Team Volume</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Team Volume</span>
           <div className="text-2xl font-black text-[#ff7a00]">₹{totalProcessed.toLocaleString()}</div>
-          <span className="text-[10px] text-slate-400 block">Gross Household Billing</span>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Gross Household Billing</span>
         </div>
 
         {/* Total Net Take-Home */}
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Net Worker Payouts</span>
-          <div className="text-2xl font-black text-emerald-400">₹{totalNet.toLocaleString()}</div>
-          <span className="text-[10px] text-emerald-400 block">Direct Member Bank Remittance</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Net Worker Payouts</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{totalNet.toLocaleString()}</div>
+          <span className={`text-[10px] block font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Direct Member Bank Remittance</span>
         </div>
 
         {/* Overpaid / Shortfall Anomalies */}
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Wage Ledger Anomalies</span>
-          <div className={`text-2xl font-black ${anomalousCount > 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Wage Ledger Anomalies</span>
+          <div className={`text-2xl font-black ${anomalousCount > 0 ? (isDark ? 'text-rose-400' : 'text-rose-600') : (isDark ? 'text-emerald-400' : 'text-emerald-700')}`}>
             {anomalousCount} Flagged
           </div>
-          <span className="text-[10px] text-slate-400 block">0 Shortfalls Pending</span>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>0 Shortfalls Pending</span>
         </div>
 
         {/* Team Complaints */}
         <div className="flow-card p-4 space-y-1 col-span-2 lg:col-span-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Team Grievances</span>
-          <div className="text-2xl font-black text-purple-400">{teamComplaintsCount} Cases</div>
-          <span className="text-[10px] text-slate-400 block">Routed to Labor Officer</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Team Grievances</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-purple-400' : 'text-purple-700'}`}>{teamComplaintsCount} Cases</div>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Routed to Labor Officer</span>
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export default function ManagerDashboard() {
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               📈 Zonal Revenue vs Net Payouts (₹)
             </h3>
-            <span className="text-xs text-slate-400 font-medium">Past 7 Days</span>
+            <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Past 7 Days</span>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -174,7 +174,7 @@ export default function ManagerDashboard() {
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ⚡ Completed Jobs by Zonal Team
             </h3>
-            <span className="text-xs text-slate-400 font-medium">Total: 141 Jobs</span>
+            <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total: 141 Jobs</span>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -198,7 +198,7 @@ export default function ManagerDashboard() {
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
               👥 Managed Worker Team (South Delhi Cluster)
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
               Real-time verification status, trade assignments, and rating health.
             </p>
           </div>
@@ -223,14 +223,14 @@ export default function ManagerDashboard() {
                   <h3 className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {w.primary_trade} Worker
                   </h3>
-                  <span className="text-[11px] text-slate-400">📍 {w.area}</span>
+                  <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>📍 {w.area}</span>
                 </div>
                 <span className="text-xs font-black text-amber-400">★ {w.rating}</span>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] pt-2 border-t border-white/[0.06]">
-                <span className="text-slate-400">Hourly: ₹{w.hourly_rate}/hr</span>
-                <span className={w.is_verified ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>
+              <div className={`flex items-center justify-between text-[11px] pt-2 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+                <span className={isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}>Hourly: ₹{w.hourly_rate}/hr</span>
+                <span className={w.is_verified ? (isDark ? 'text-emerald-400 font-bold' : 'text-emerald-700 font-bold') : (isDark ? 'text-amber-400 font-bold' : 'text-amber-700 font-bold')}>
                   {w.is_verified ? '✓ Verified' : 'Pending KYC'}
                 </span>
               </div>

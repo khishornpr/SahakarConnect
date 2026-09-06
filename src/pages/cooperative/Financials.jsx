@@ -118,7 +118,7 @@ export default function CooperativeFinancials() {
               <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                 {t('coopRetained', 'Co-op 5% Surplus Pool')}
               </span>
-              <div className="text-2xl font-black mt-1.5 text-[#ff7a00]">
+              <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-[#ff7a00]' : 'text-amber-600'}`}>
                 ₹{totalCoopRetained.toLocaleString()}
               </div>
             </div>
@@ -126,7 +126,7 @@ export default function CooperativeFinancials() {
               <span className="text-xl">🏛️</span>
             </div>
           </div>
-          <div className="text-xs text-slate-400 mt-2 font-medium">Federation Operations</div>
+          <div className={`text-xs mt-2 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Federation Operations</div>
         </div>
 
         <div className="flow-card glow-emerald-hover p-5 flex flex-col justify-between">
@@ -135,7 +135,7 @@ export default function CooperativeFinancials() {
               <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                 {t('netDisbursed', 'Net Direct Disbursed')}
               </span>
-              <div className="text-2xl font-black mt-1.5 text-emerald-400">
+              <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                 ₹{totalNetDisbursed.toLocaleString()}
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function CooperativeFinancials() {
               <span className="text-xl">💰</span>
             </div>
           </div>
-          <div className="text-xs text-emerald-400 mt-2 font-bold">100% Settled to Workers</div>
+          <div className={`text-xs mt-2 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>100% Settled to Workers</div>
         </div>
 
         <div className="flow-card glow-rose-hover p-5 flex flex-col justify-between">
@@ -152,7 +152,7 @@ export default function CooperativeFinancials() {
               <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                 {t('aiAnomalyAlerts', 'AI Anomaly Alerts')}
               </span>
-              <div className="text-2xl font-black mt-1.5 text-rose-400">
+              <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
                 {activeAnomalies.length} Flagged
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function CooperativeFinancials() {
               <span className="text-xl">🚨</span>
             </div>
           </div>
-          <div className="text-xs text-rose-400 mt-2 font-bold">
+          <div className={`text-xs mt-2 font-bold ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
             {activeAnomalies.length > 0 ? 'Requires Federation Audit' : 'All Clear'}
           </div>
         </div>
@@ -168,8 +168,8 @@ export default function CooperativeFinancials() {
 
       {/* Interactive Financial Velocity & Audit Chart */}
       <div className="flow-card glow-orange-hover p-6 space-y-4">
-        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-          <div>
+        <div className={`flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
+          <div className="min-w-0">
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Fee Retention & Disbursal Velocity Chart
             </h2>
@@ -179,8 +179,8 @@ export default function CooperativeFinancials() {
           </div>
 
           {/* Chart Controls & Series Filter */}
-          <div className="flex flex-wrap items-center gap-2">
-            <div className={`flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'bar', label: '📊 Bar' },
                 { id: 'line', label: '📈 Line' },
@@ -191,6 +191,7 @@ export default function CooperativeFinancials() {
                 return (
                   <button
                     key={c.id}
+                    type="button"
                     aria-selected={isSelected ? 'true' : undefined}
                     data-selected={isSelected ? 'true' : undefined}
                     onClick={() => !isSelected && setChartType(c.id)}
@@ -198,8 +199,8 @@ export default function CooperativeFinancials() {
                       isSelected
                         ? 'flow-btn-primary shadow-[0_0_12px_rgba(255,107,0,0.5)] cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
-                        : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                     }`}
                   >
                     {c.label}
@@ -209,7 +210,7 @@ export default function CooperativeFinancials() {
             </div>
 
             {/* Metric Filter Selector to Declutter Multi-Series */}
-            <div className={`hidden sm:flex items-center p-1 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'all', label: '✨ All' },
                 { id: 'net', label: '💰 Net Payouts' },
@@ -219,6 +220,7 @@ export default function CooperativeFinancials() {
                 return (
                   <button
                     key={m.id}
+                    type="button"
                     aria-selected={isSelected ? 'true' : undefined}
                     data-selected={isSelected ? 'true' : undefined}
                     onClick={() => !isSelected && setMetricFilter(m.id)}
@@ -226,8 +228,8 @@ export default function CooperativeFinancials() {
                       isSelected
                         ? 'bg-gradient-to-r from-[#10b981] to-[#059669] text-white shadow-sm cursor-default'
                         : isDark
-                        ? 'text-slate-400 hover:text-white hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
-                        : 'text-slate-600 hover:text-slate-900 hover:scale-105 hover:-translate-y-0.5 cursor-pointer'
+                        ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                     }`}
                   >
                     {m.label}
@@ -373,34 +375,34 @@ export default function CooperativeFinancials() {
                 </div>
                 <div className={`p-2.5 rounded-lg border ${isDark ? 'bg-[#1c222d] border-white/[0.06]' : 'bg-white border-slate-200'}`}>
                   <span className="block text-[10px] uppercase font-bold text-slate-400">Deducted Fee</span>
-                  <strong className="text-rose-400 text-sm">
+                  <strong className={`text-sm ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
                     ₹{anomaly.cooperative_fee_amount} ({anomaly.cooperative_fee_pct}%)
                   </strong>
                 </div>
                 <div className={`p-2.5 rounded-lg border ${isDark ? 'bg-[#1c222d] border-white/[0.06]' : 'bg-white border-slate-200'}`}>
                   <span className="block text-[10px] uppercase font-bold text-slate-400">Worker Net Payout</span>
-                  <strong className="text-emerald-400 text-sm">₹{anomaly.net_payout}</strong>
+                  <strong className={`text-sm ${isDark ? 'text-emerald-400' : 'text-emerald-700 font-bold'}`}>₹{anomaly.net_payout}</strong>
                 </div>
                 <div className={`p-2.5 rounded-lg border ${isDark ? 'bg-[#1c222d] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
                   <span className="block text-[10px] uppercase font-bold text-slate-400">Statutory Ceiling</span>
-                  <strong className="text-slate-300 text-sm">5.0% Max</strong>
+                  <strong className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>5.0% Max</strong>
                 </div>
               </div>
 
               <div className={`flex justify-end gap-2 pt-2 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
                 <button
                   onClick={() => setSelectedInvoice(anomaly)}
-                  className={`px-3.5 py-1.5 font-bold rounded-lg text-xs transition-all border ${
+                  className={`px-3.5 py-1.5 font-bold rounded-lg text-xs transition-all border cursor-pointer ${
                     isDark
                       ? 'bg-[#161a22] border-white/[0.08] text-slate-300 hover:text-white'
-                      : 'bg-slate-100 border-slate-200 text-slate-700'
+                      : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
                   Inspect Invoice 📄
                 </button>
                 <button
                   onClick={() => handleResolveAnomaly(anomaly.id)}
-                  className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-lg text-xs shadow-md transition-all"
+                  className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-lg text-xs shadow-md transition-all cursor-pointer"
                 >
                   ✓ Mark Audited & Resolve Flag
                 </button>
@@ -439,7 +441,7 @@ export default function CooperativeFinancials() {
                 <th className="px-4 py-3.5">Gross Billing</th>
                 <th className="px-4 py-3.5">Co-op 5% Surplus</th>
                 <th className="px-4 py-3.5">Welfare Fund</th>
-                <th className="px-4 py-3.5 text-emerald-400">Net Disbursal</th>
+                <th className={`px-4 py-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Net Disbursal</th>
                 <th className="px-4 py-3.5">Audit Action</th>
               </tr>
             </thead>
@@ -454,7 +456,7 @@ export default function CooperativeFinancials() {
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                         No Data Available
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         No standard verified disbursal entries recorded in the ledger yet.
                       </p>
                     </div>
@@ -462,21 +464,21 @@ export default function CooperativeFinancials() {
                 </tr>
               ) : (
                 normalEntries.map((row) => (
-                  <tr key={row.id} className="interactive-row">
-                    <td className="px-4 py-3.5 font-mono font-bold text-emerald-400">{row.id}</td>
+                  <tr key={row.id} className={`interactive-row ${isDark ? '' : 'hover:bg-slate-50'}`}>
+                    <td className={`px-4 py-3.5 font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{row.id}</td>
                     <td className={`px-4 py-3.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       {new Date(row.created_at).toLocaleDateString()}
                     </td>
                     <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
                       ₹{row.gross_amount}
                     </td>
-                    <td className="px-4 py-3.5 text-amber-400 font-bold">+ ₹{row.cooperative_fee_amount}</td>
-                    <td className="px-4 py-3.5 text-cyan-400 font-bold">+ ₹{row.welfare_fund_amount}</td>
-                    <td className="px-4 py-3.5 font-black text-emerald-400 text-sm">₹{row.net_payout}</td>
+                    <td className={`px-4 py-3.5 font-bold ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>+ ₹{row.cooperative_fee_amount}</td>
+                    <td className={`px-4 py-3.5 font-bold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>+ ₹{row.welfare_fund_amount}</td>
+                    <td className={`px-4 py-3.5 font-black text-sm ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{row.net_payout}</td>
                     <td className="px-4 py-3.5">
                       <button
                         onClick={() => setSelectedInvoice(row)}
-                        className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm"
+                        className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm cursor-pointer"
                       >
                         <span>📄</span>
                         <span>Invoice</span>

@@ -181,12 +181,17 @@ export default function CooperativeWorkers() {
                       </td>
                       <td className="px-4 py-3.5 whitespace-nowrap">
                         {isFullyVerified ? (
-                          <span className="status-pill-emerald font-bold">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm ${
+                            isDark ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400' : 'bg-emerald-100 border-emerald-300 text-emerald-800'
+                          }`}>
                             ✓ APPROVED
                           </span>
                         ) : (
-                          <span className="status-pill-orange font-bold animate-pulse">
-                            ⏳ VERIFICATION IN PROGRESS
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm ${
+                            isDark ? 'bg-amber-500/15 border-amber-500/40 text-amber-300' : 'bg-amber-100 border-amber-300 text-amber-900'
+                          }`}>
+                            <span className="animate-pulse">⏳</span>
+                            <span>VERIFICATION IN PROGRESS</span>
                           </span>
                         )}
                       </td>
@@ -197,7 +202,9 @@ export default function CooperativeWorkers() {
                           disabled={updatingId === w.user_id || isKycVerified}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap inline-flex items-center justify-center ${
                             isKycVerified
-                              ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 cursor-default'
+                              ? isDark
+                                ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 cursor-default'
+                                : 'bg-emerald-100 text-emerald-800 border border-emerald-300 cursor-default'
                               : 'bg-blue-600 hover:bg-blue-500 text-white shadow-md cursor-pointer'
                           }`}
                         >

@@ -138,7 +138,11 @@ export default function Sidebar() {
               <button
                 type="button"
                 onClick={() => setShowEmergency(true)}
-                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all sidebar-sos-btn neon-pulse-rose cursor-pointer bg-[#181d26] border border-rose-500/60 text-rose-300"
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all sidebar-sos-btn cursor-pointer ${
+                  isDark
+                    ? 'bg-[#181d26] border border-rose-500/60 text-rose-300 neon-pulse-rose'
+                    : 'bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 shadow-sm'
+                }`}
               >
                 <span className="animate-pulse text-base">🚨</span>
                 <span className="truncate">{t('emergencySosButton', '30-Min Emergency SOS')}</span>
@@ -148,18 +152,26 @@ export default function Sidebar() {
 
           {/* FlowBoard Welfare / Pro Banner Box - Worker Portal Only */}
           {role === 'worker' && (
-            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#181d26] to-[#12151c] border border-white/[0.08] space-y-2 glow-orange-hover">
-              <div className="flex items-center gap-2 text-sm font-bold text-white">
-                <span>🚀</span>
-                <span>{t('cooperativeWelfare', 'Cooperative Welfare')}</span>
+            <div
+              className={`p-4 rounded-2xl border space-y-2.5 glow-orange-hover transition-colors ${
+                isDark
+                  ? 'bg-gradient-to-b from-[#181d26] to-[#12151c] border-white/[0.08] text-white shadow-lg'
+                  : 'bg-gradient-to-b from-orange-50/90 to-amber-50/40 border-orange-200/80 text-slate-900 shadow-sm'
+              }`}
+            >
+              <div className="flex items-center gap-2 text-sm font-black">
+                <span className="text-base">🚀</span>
+                <span className={isDark ? 'text-white' : 'text-slate-900'}>
+                  {t('cooperativeWelfare', 'Cooperative Welfare')}
+                </span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className={`text-xs leading-relaxed font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                 {t('welfareCardSub', '100% fair wages with social security fund coverage.')}
               </p>
               <button
                 type="button"
                 onClick={() => setShowProtectionPlan(true)}
-                className="w-full text-center py-2 font-bold text-xs rounded-lg shadow-md transition-all sidebar-welfare-btn flow-btn-primary flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full text-center py-2 font-bold text-xs rounded-xl shadow-md transition-all sidebar-welfare-btn flow-btn-primary flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>{t('viewProtectionPlan', 'View Protection Plan')}</span>
                 <span>→</span>

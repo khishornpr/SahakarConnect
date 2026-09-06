@@ -126,19 +126,19 @@ export default function WorkerLearning() {
 
         {/* Quick Academy Stats */}
         <div className="flex items-center gap-3">
-          <div className={`px-4 py-2.5 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">{t('overallProgress', 'Overall Progress')}</span>
+          <div className={`px-4 py-2.5 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('overallProgress', 'Overall Progress')}</span>
             <div className="flex items-center gap-2 mt-0.5">
               <span className="text-lg font-black text-[#ff7a00]">{avgProgress}%</span>
-              <div className="w-16 h-2 rounded-full bg-slate-700 overflow-hidden">
+              <div className={`w-16 h-2 rounded-full overflow-hidden ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`}>
                 <div className="h-full bg-gradient-to-r from-orange-500 to-amber-400" style={{ width: `${avgProgress}%` }}></div>
               </div>
             </div>
           </div>
 
-          <div className={`px-4 py-2.5 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">{t('earnedBadges', 'Earned Certificates')}</span>
-            <span className="text-lg font-black text-emerald-400 mt-0.5 block">{completedModulesCount} / {modules.length}</span>
+          <div className={`px-4 py-2.5 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('earnedBadges', 'Earned Certificates')}</span>
+            <span className={`text-lg font-black mt-0.5 block ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{completedModulesCount} / {modules.length}</span>
           </div>
         </div>
       </div>
@@ -159,10 +159,16 @@ export default function WorkerLearning() {
                   <span
                     className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border ${
                       mod.category === 'Safety Training'
-                        ? 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+                        ? isDark
+                          ? 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+                          : 'bg-rose-50 border-rose-200 text-rose-700'
                         : mod.category === 'Upskilling'
-                        ? 'bg-purple-500/10 border-purple-500/30 text-purple-400'
-                        : 'bg-blue-500/10 border-blue-500/30 text-blue-400'
+                        ? isDark
+                          ? 'bg-purple-500/10 border-purple-500/30 text-purple-400'
+                          : 'bg-purple-50 border-purple-200 text-purple-700'
+                        : isDark
+                        ? 'bg-blue-500/10 border-blue-500/30 text-blue-400'
+                        : 'bg-blue-50 border-blue-200 text-blue-700'
                     }`}
                   >
                     {t(mod.category, mod.category)} • {t(mod.trade, mod.trade)}
@@ -171,10 +177,16 @@ export default function WorkerLearning() {
                   <span
                     className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
                       isDone
-                        ? 'bg-emerald-500/15 border border-emerald-500/40 text-emerald-400'
+                        ? isDark
+                          ? 'bg-emerald-500/15 border border-emerald-500/40 text-emerald-400'
+                          : 'bg-emerald-100 border border-emerald-300 text-emerald-800'
                         : isInProgress
-                        ? 'bg-amber-500/15 border border-amber-500/40 text-amber-400'
-                        : 'bg-slate-500/15 border border-slate-500/30 text-slate-400'
+                        ? isDark
+                          ? 'bg-amber-500/15 border border-amber-500/40 text-amber-400'
+                          : 'bg-amber-100 border border-amber-300 text-amber-800'
+                        : isDark
+                        ? 'bg-slate-500/15 border border-slate-500/30 text-slate-400'
+                        : 'bg-slate-100 border border-slate-300 text-slate-700'
                     }`}
                   >
                     {isDone ? t('completedBadge', '✓ Certified') : isInProgress ? t('inProgressTab', 'In Progress') : t('notStarted', 'Not Started')}
@@ -191,14 +203,14 @@ export default function WorkerLearning() {
                 </div>
 
                 {/* Progress Bar & Details */}
-                <div className="space-y-1.5 pt-2 border-t border-white/[0.06]">
+                <div className={`space-y-1.5 pt-2 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
                   <div className="flex justify-between text-xs font-bold">
-                    <span className="text-slate-400">{t('approxDuration', 'Duration')}: {mod.duration}</span>
-                    <span className={isDone ? 'text-emerald-400' : 'text-[#ff7a00]'}>
+                    <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('approxDuration', 'Duration')}: {mod.duration}</span>
+                    <span className={isDone ? (isDark ? 'text-emerald-400' : 'text-emerald-700') : 'text-[#ff7a00]'}>
                       {mod.completed_lessons || 0}/{mod.total_lessons} {t('moduleLessons', 'Lessons')} ({mod.progress_pct}%)
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div className={`w-full h-2 rounded-full overflow-hidden ${isDark ? 'bg-slate-800' : 'bg-slate-200'}`}>
                     <div
                       className={`h-full transition-all duration-500 ${
                         isDone
@@ -211,20 +223,26 @@ export default function WorkerLearning() {
                 </div>
 
                 {/* Reward Certificate Preview */}
-                <div className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-between ${
+                <div className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-between transition-colors ${
                   isDone
-                    ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
+                    ? isDark
+                      ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
+                      : 'bg-emerald-50 border-emerald-200 text-emerald-900 shadow-sm'
                     : isDark
-                    ? 'bg-[#161a22] border-white/[0.06] text-slate-400'
-                    : 'bg-slate-50 border-slate-200 text-slate-600'
+                    ? 'bg-[#161a22] border-white/[0.06] text-slate-300'
+                    : 'bg-slate-100/80 border-slate-200 text-slate-800'
                 }`}>
                   <div className="flex items-center gap-2">
                     <span>{t(mod.badge, mod.badge || 'Certificate')}</span>
                   </div>
                   {isDone ? (
-                    <span className="text-emerald-400 text-[11px]">{t('completedBadge', '✓ Certified')}</span>
+                    <span className={`text-[11px] font-extrabold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
+                      {t('completedBadge', '✓ Certified')}
+                    </span>
                   ) : (
-                    <span className="text-[11px] text-slate-500">{t('unlockCertificate', 'Unlocks on completion')}</span>
+                    <span className={`text-[11px] font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {t('unlockCertificate', 'Claim Certificate 🏆')}
+                    </span>
                   )}
                 </div>
               </div>
@@ -234,7 +252,9 @@ export default function WorkerLearning() {
                 onClick={() => handleOpenModule(mod)}
                 className={`w-full py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   isDone
-                    ? 'border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10'
+                    ? isDark
+                      ? 'border border-emerald-500/40 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-500/10'
+                      : 'border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 shadow-sm font-bold'
                     : 'flow-btn-primary shadow-lg'
                 }`}
               >
@@ -254,11 +274,11 @@ export default function WorkerLearning() {
               className={`rounded-2xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl space-y-5 border my-auto max-h-[90vh] overflow-y-auto ${
                 isDark
                   ? 'bg-[#12151b] border-white/[0.1] text-white shadow-[0_0_40px_rgba(0,0,0,0.8)]'
-                  : 'bg-white border-slate-200 text-slate-900'
+                  : 'bg-white border-slate-200 text-slate-900 shadow-xl'
               }`}
             >
               {/* Header */}
-              <div className="flex justify-between items-start border-b pb-3 border-white/[0.08]">
+              <div className={`flex justify-between items-start border-b pb-3 ${isDark ? 'border-white/[0.08]' : 'border-slate-200'}`}>
                 <div>
                   <span className="text-[11px] font-bold text-[#ff7a00] uppercase tracking-wider">
                     {t(activeModule.category, activeModule.category)} • {t('moduleLessons', 'Lesson')} {activeLessonIndex + 1} / {activeModule.lessons?.length || 4}
@@ -270,8 +290,8 @@ export default function WorkerLearning() {
                 <button
                   type="button"
                   onClick={() => setActiveModule(null)}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm cursor-pointer ${
-                    isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-600'
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm cursor-pointer transition-colors ${
+                    isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
                   ✕
@@ -297,7 +317,9 @@ export default function WorkerLearning() {
                         isCurrent
                           ? 'bg-[#ff6b00] border-[#ff6b00] text-white shadow-md ring-2 ring-[#ff6b00]/50'
                           : les.completed
-                          ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-400'
+                          ? isDark
+                            ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-400'
+                            : 'bg-emerald-50 border-emerald-300 text-emerald-800'
                           : isDark
                           ? 'bg-[#161a22] border-white/[0.08] text-slate-400'
                           : 'bg-slate-100 border-slate-200 text-slate-700'
@@ -325,20 +347,24 @@ export default function WorkerLearning() {
                         {t(activeModule.lessons[activeLessonIndex].title, activeModule.lessons[activeLessonIndex].title)}
                       </span>
                     </h4>
-                    <span className="text-[11px] text-slate-400 font-mono shrink-0">
+                    <span className={`text-[11px] font-mono shrink-0 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       ⏱ {activeModule.lessons[activeLessonIndex].duration}
                     </span>
                   </div>
 
                   {/* Interactive Micro-Lesson Text */}
-                  <div className="space-y-2 text-xs leading-relaxed text-slate-300">
+                  <div className={`space-y-2 text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                     <p>
-                      <strong>{t('standardOperatingProtocol', 'Standard Operating Protocol')}:</strong>{' '}
+                      <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('standardOperatingProtocol', 'Standard Operating Protocol')}:</strong>{' '}
                       {t('lessonProtocolText', 'Always conduct a visual audit before starting service. Ensure main switches or secondary isolators are clearly locked out with tagout warnings.')}
                     </p>
-                    <div className="p-3 rounded-xl bg-black/30 border border-white/5 space-y-1.5 text-[11px]">
-                      <div className="font-bold text-amber-300">{t('keySafetyChecklist', 'Key Safety Checklist')}:</div>
-                      <ul className="list-disc list-inside space-y-1 text-slate-300">
+                    <div className={`p-3 rounded-xl border space-y-1.5 text-[11px] ${
+                      isDark
+                        ? 'bg-black/30 border-white/5 text-slate-300'
+                        : 'bg-amber-50/70 border-amber-200/80 text-slate-800'
+                    }`}>
+                      <div className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-900'}`}>{t('keySafetyChecklist', 'Key Safety Checklist')}:</div>
+                      <ul className={`list-disc list-inside space-y-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                         <li>{t('checklistItem1', 'Test tool handles for 1000V dielectric insulation certification.')}</li>
                         <li>{t('checklistItem2', 'Always wear rubber-soled ISI-approved footwear on tile or wet floors.')}</li>
                         <li>{t('checklistItem3', 'Inform household occupants not to touch auxiliary fuse boards during work.')}</li>
@@ -347,21 +373,25 @@ export default function WorkerLearning() {
                   </div>
 
                   {/* Micro-Lesson Navigation & Completion Actions */}
-                  <div className="pt-3 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2.5 border-t border-white/[0.06]">
+                  <div className={`pt-3 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2.5 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
                     <div className="flex items-center gap-2">
                       {activeLessonIndex > 0 && (
                         <button
                           type="button"
                           onClick={handlePreviousLesson}
-                          className="px-3.5 py-2 rounded-xl border border-slate-600 text-slate-300 hover:text-white hover:border-white/40 text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                          className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                            isDark
+                              ? 'border-slate-600 text-slate-300 hover:text-white hover:border-white/40'
+                              : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100 shadow-sm'
+                          }`}
                         >
                           <span>←</span>
                           <span>{t('previousLesson', 'Previous Lesson')}</span>
                         </button>
                       )}
-                      <span className="text-xs text-slate-400">
+                      <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                         {activeModule.lessons[activeLessonIndex].completed ? (
-                          <span className="text-emerald-400 font-bold">✓ {t('done', 'Lesson Finished')}</span>
+                          <span className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>✓ {t('done', 'Lesson Finished')}</span>
                         ) : (
                           <span>{t('readyToComplete', 'Ready to complete?')}</span>
                         )}
@@ -419,12 +449,14 @@ export default function WorkerLearning() {
               )}
 
               {/* Progress Summary in Modal */}
-              <div className="flex items-center justify-between text-xs text-slate-400 border-t pt-3 border-white/[0.08]">
+              <div className={`flex items-center justify-between text-xs border-t pt-3 ${isDark ? 'text-slate-400 border-white/[0.08]' : 'text-slate-600 border-slate-200'}`}>
                 <span>{t('overallModuleProgress', 'Overall Module Progress')}: {activeModule.progress_pct}%</span>
                 <button
                   type="button"
                   onClick={() => setActiveModule(null)}
-                  className="px-4 py-1.5 rounded-lg border border-slate-600 hover:text-white cursor-pointer"
+                  className={`px-4 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer transition-colors ${
+                    isDark ? 'border-slate-600 text-slate-300 hover:text-white' : 'border-slate-300 text-slate-700 bg-slate-50 hover:bg-slate-100'
+                  }`}
                 >
                   {t('close', 'Close')}
                 </button>
@@ -440,16 +472,18 @@ export default function WorkerLearning() {
           <div className="fixed inset-0 z-[999999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
             <div
               className={`rounded-2xl max-w-md w-full p-6 text-center space-y-4 border my-auto animate-fade-in-up ${
-                isDark ? 'bg-[#12151b] border-emerald-500/50 text-white shadow-[0_0_50px_rgba(16,185,129,0.3)]' : 'bg-white border-emerald-300 text-slate-900'
+                isDark ? 'bg-[#12151b] border-emerald-500/50 text-white shadow-[0_0_50px_rgba(16,185,129,0.3)]' : 'bg-white border-emerald-300 text-slate-900 shadow-xl'
               }`}
             >
-              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-3xl mx-auto animate-bounce">
+              <div className={`w-16 h-16 rounded-full border-2 flex items-center justify-center text-3xl mx-auto animate-bounce ${
+                isDark ? 'bg-emerald-500/20 border-emerald-400' : 'bg-emerald-100 border-emerald-500'
+              }`}>
                 {completedBadgeModal.badge?.split(' ')[0] || '🏆'}
               </div>
               <div>
-                <h3 className="text-lg font-black text-emerald-400">{t('courseCompleted', 'Course Completed!')}</h3>
-                <h4 className="text-sm font-bold text-white mt-1">{t(completedBadgeModal.title, completedBadgeModal.title)}</h4>
-                <p className="text-xs text-slate-300 mt-2">
+                <h3 className={`text-lg font-black ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{t('courseCompleted', 'Course Completed!')}</h3>
+                <h4 className={`text-sm font-bold mt-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>{t(completedBadgeModal.title, completedBadgeModal.title)}</h4>
+                <p className={`text-xs mt-2 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                   {t('badgeUnlockedDesc', 'You have successfully unlocked the official skill certificate! This is now attached to your public Skill Profile and enhances your dispatch matching score.')}
                 </p>
               </div>
@@ -469,7 +503,11 @@ export default function WorkerLearning() {
                     setActiveModule(mod)
                     setActiveLessonIndex(0)
                   }}
-                  className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold rounded-xl border border-white/10 cursor-pointer transition-colors"
+                  className={`w-full py-2 text-xs font-bold rounded-xl border cursor-pointer transition-colors ${
+                    isDark
+                      ? 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border-white/10'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300'
+                  }`}
                 >
                   {t('reviewCourseLessons', 'Review Course Lessons Again')}
                 </button>

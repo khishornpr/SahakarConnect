@@ -53,7 +53,7 @@ export default function WorkerSalary() {
         <h2 className={`text-sm font-bold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
           {t('currentSalary', 'Current Statutory Base Wage')}
         </h2>
-        <p className="text-3xl font-black text-emerald-400">₹{salary?.amount?.toLocaleString() || '18,500'}</p>
+        <p className={`text-3xl font-black ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{salary?.amount?.toLocaleString() || '18,500'}</p>
       </div>
 
       <div className="flow-card glow-orange-hover p-6">
@@ -78,7 +78,7 @@ export default function WorkerSalary() {
                   <td className="px-4 py-3">{new Date(inc.created_at).toLocaleDateString()}</td>
                   <td className="px-4 py-3">₹{inc.previous_amount?.toLocaleString()}</td>
                   <td className="px-4 py-3 font-bold">₹{inc.new_amount?.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-emerald-400 font-bold">+₹{(inc.new_amount - inc.previous_amount)?.toLocaleString()}</td>
+                  <td className={`px-4 py-3 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>+₹{(inc.new_amount - inc.previous_amount)?.toLocaleString()}</td>
                 </tr>
               ))}
               {increments.length === 0 && (

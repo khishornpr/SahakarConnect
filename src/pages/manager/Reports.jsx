@@ -145,27 +145,27 @@ export default function ManagerReports() {
       {/* Financial Overview Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400">Total Billed Volume</span>
-          <div className="text-xl sm:text-2xl font-black text-white">₹{totalGross.toLocaleString()}</div>
-          <span className="text-[10px] text-slate-400">100% Gross Value</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Total Billed Volume</span>
+          <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{totalGross.toLocaleString()}</div>
+          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>100% Gross Value</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-[#ff7a00]">Co-op Fee Retained (5%)</span>
-          <div className="text-xl sm:text-2xl font-black text-[#ff7a00]">₹{totalCoopFee.toLocaleString()}</div>
-          <span className="text-[10px] text-slate-400">Statutory Ceiling</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>Co-op Fee Retained (5%)</span>
+          <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-[#ff7a00]' : 'text-amber-600'}`}>₹{totalCoopFee.toLocaleString()}</div>
+          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Statutory Ceiling</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-cyan-400">Welfare Pool (PMSBY)</span>
-          <div className="text-xl sm:text-2xl font-black text-cyan-400">₹{totalWelfare.toLocaleString()}</div>
-          <span className="text-[10px] text-slate-400">Worker Safety Corpus</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>Welfare Pool (PMSBY)</span>
+          <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-cyan-400' : 'text-teal-600'}`}>₹{totalWelfare.toLocaleString()}</div>
+          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Worker Safety Corpus</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-emerald-400">Net Disbursed to Workers</span>
-          <div className="text-xl sm:text-2xl font-black text-emerald-400">₹{totalNet.toLocaleString()}</div>
-          <span className="text-[10px] text-emerald-400/80">94.5% Effective Payout</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Net Disbursed to Workers</span>
+          <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>₹{totalNet.toLocaleString()}</div>
+          <span className={`text-[10px] ${isDark ? 'text-emerald-400/80' : 'text-emerald-700 font-medium'}`}>94.5% Effective Payout</span>
         </div>
       </div>
 
@@ -209,16 +209,16 @@ export default function ManagerReports() {
                 </tr>
               ) : (
                 ledger.map((l) => (
-                  <tr key={l.id} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{l.id}</td>
-                    <td className="py-3 px-3 font-mono text-slate-300">{l.worker_id}</td>
-                    <td className="py-3 px-3 text-slate-400">{new Date(l.created_at).toLocaleDateString()}</td>
-                    <td className="py-3 px-3 font-bold text-white">₹{l.gross_amount}</td>
-                    <td className="py-3 px-3 text-[#ff7a00]">₹{l.cooperative_fee_amount}</td>
-                    <td className="py-3 px-3 text-cyan-400">₹{l.welfare_fund_amount}</td>
-                    <td className="py-3 px-3 font-black text-emerald-400">₹{l.net_payout}</td>
+                  <tr key={l.id} className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'}`}>
+                    <td className={`py-3 px-3 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>{l.id}</td>
+                    <td className={`py-3 px-3 font-mono ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{l.worker_id}</td>
+                    <td className={`py-3 px-3 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{new Date(l.created_at).toLocaleDateString()}</td>
+                    <td className={`py-3 px-3 font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{l.gross_amount}</td>
+                    <td className={`py-3 px-3 font-semibold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>₹{l.cooperative_fee_amount}</td>
+                    <td className={`py-3 px-3 font-semibold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>₹{l.welfare_fund_amount}</td>
+                    <td className={`py-3 px-3 font-black ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{l.net_payout}</td>
                     <td className="py-3 px-3">
-                      <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]">
+                      <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-medium ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
                         {l.payment_mode}
                       </span>
                     </td>

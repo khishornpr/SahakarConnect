@@ -419,20 +419,22 @@ export default function WorkerComplaints() {
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t text-[11px] border-white/[0.06] text-slate-400">
+                  <div className={`flex flex-wrap items-center justify-between gap-2 pt-2 border-t text-[11px] ${isDark ? 'border-white/[0.06] text-slate-400' : 'border-slate-200 text-slate-500'}`}>
                     <div>
                       <span>{t('dateRaised', 'Date Raised')}: </span>
-                      <strong className="text-slate-300">{new Date(c.created_at).toLocaleDateString()}</strong>
+                      <strong className={isDark ? 'text-slate-300' : 'text-slate-700'}>{new Date(c.created_at).toLocaleDateString()}</strong>
                       {c.assigned_officer && (
                         <span className="ml-3">
-                          {t('officerRole', 'Assigned')}: <strong className="text-amber-400">{c.assigned_officer}</strong>
+                          {t('officerRole', 'Assigned')}: <strong className={isDark ? 'text-amber-400' : 'text-amber-700 font-bold'}>{c.assigned_officer}</strong>
                         </span>
                       )}
                     </div>
 
                     <button
                       onClick={() => setSelectedCase(c)}
-                      className="px-3 py-1 rounded-lg border text-xs font-bold text-[#ff7a00] border-[#ff6b00]/40 hover:bg-[#ff6b00]/10 transition-colors"
+                      className={`px-3 py-1 rounded-lg border text-xs font-bold transition-colors cursor-pointer ${
+                        isDark ? 'text-[#ff7a00] border-[#ff6b00]/40 hover:bg-[#ff6b00]/10' : 'text-orange-700 border-orange-300 hover:bg-orange-50'
+                      }`}
                     >
                       {t('viewInvestigation', 'View Case Timeline & Notes →')}
                     </button>
@@ -455,7 +457,7 @@ export default function WorkerComplaints() {
                   : 'bg-white border-slate-200 text-slate-900'
               }`}
             >
-              <div className="flex justify-between items-start border-b pb-3 border-white/[0.08]">
+              <div className={`flex justify-between items-start border-b pb-3 ${isDark ? 'border-white/[0.08]' : 'border-slate-200'}`}>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-xs font-black text-[#ff7a00]">{selectedCase.id}</span>
@@ -469,8 +471,8 @@ export default function WorkerComplaints() {
                 </div>
                 <button
                   onClick={() => setSelectedCase(null)}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${
-                    isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-600'
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm cursor-pointer ${
+                    isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
                   ✕
@@ -480,18 +482,18 @@ export default function WorkerComplaints() {
               {/* Complaint Details */}
               <div className="space-y-3 text-xs">
                 <div className={`p-3.5 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-                  <span className="text-slate-400 font-medium block mb-1">{t('detailedDescription', 'Detailed Description')}:</span>
-                  <p className="leading-relaxed">{selectedCase.description}</p>
+                  <span className={`font-medium block mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('detailedDescription', 'Detailed Description')}:</span>
+                  <p className={`leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{selectedCase.description}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-[11px]">
                   <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-                    <span className="text-slate-400 block">{t('complaintType', 'Complaint Type')}</span>
-                    <strong className="text-slate-200">{t(selectedCase.complaint_type, selectedCase.complaint_type)}</strong>
+                    <span className={`block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('complaintType', 'Complaint Type')}</span>
+                    <strong className={isDark ? 'text-slate-200' : 'text-slate-800'}>{t(selectedCase.complaint_type, selectedCase.complaint_type)}</strong>
                   </div>
                   <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-                    <span className="text-slate-400 block">{t('officerRole', 'Assigned Labor Officer')}</span>
-                    <strong className="text-amber-400">{selectedCase.assigned_officer || 'Unassigned'}</strong>
+                    <span className={`block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('officerRole', 'Assigned Labor Officer')}</span>
+                    <strong className={isDark ? 'text-amber-400' : 'text-amber-700 font-bold'}>{selectedCase.assigned_officer || 'Unassigned'}</strong>
                   </div>
                 </div>
 
@@ -500,9 +502,9 @@ export default function WorkerComplaints() {
                   <div className={`p-3 rounded-xl border flex items-center justify-between ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
                     <div className="flex items-center gap-2">
                       <span>📄</span>
-                      <span className="font-mono">{selectedCase.attachment_name}</span>
+                      <span className={`font-mono ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{selectedCase.attachment_name}</span>
                     </div>
-                    <span className="text-emerald-400 font-bold text-[10px]">✓ {t('verified', 'Document Verified')}</span>
+                    <span className={`font-bold text-[10px] ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>✓ {t('verified', 'Document Verified')}</span>
                   </div>
                 )}
 

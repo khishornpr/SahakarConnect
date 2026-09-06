@@ -108,12 +108,16 @@ export default function WorkerTransactions() {
             <tbody className={`divide-y ${isDark ? 'divide-white/[0.06]' : 'divide-slate-100'}`}>
               {transactions.map((tItem) => (
                 <tr key={tItem.id} className={`transition-colors ${isDark ? 'hover:bg-[#161a22]' : 'hover:bg-slate-50'}`}>
-                  <td className="px-4 py-3 font-mono text-[#ff7a00]">{tItem.id?.slice(0, 8)}</td>
+                  <td className={`px-4 py-3 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>{tItem.id?.slice(0, 8)}</td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                       tItem.type === 'credit'
-                        ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
-                        : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                        ? isDark
+                          ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                          : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                        : isDark
+                        ? 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                        : 'bg-rose-100 text-rose-800 border border-rose-300'
                     }`}>
                       {tItem.type}
                     </span>
@@ -125,7 +129,7 @@ export default function WorkerTransactions() {
                     {new Date(tItem.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 capitalize">{tItem.status}</td>
-                  <td className={`px-4 py-3 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{tItem.remarks}</td>
+                  <td className={`px-4 py-3 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{tItem.remarks}</td>
                 </tr>
               ))}
               {transactions.length === 0 && (
@@ -138,7 +142,7 @@ export default function WorkerTransactions() {
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                         No Data Available
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         {t('noTransactionsFound', 'No transactions found in this account.')}
                       </p>
                     </div>

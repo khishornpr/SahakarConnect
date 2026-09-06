@@ -140,22 +140,22 @@ export default function OfficerCases() {
                 </tr>
               ) : (
                 filtered.map((c) => (
-                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{c.id}</td>
+                  <tr key={c.id} className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'}`}>
+                    <td className={`py-3 px-3 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>{c.id}</td>
                     <td className="py-3 px-3">
                       <strong className={isDark ? 'text-white' : 'text-slate-900'}>{c.user_name}</strong>
-                      <div className="text-[10px] text-slate-400 uppercase">{c.initiator_role}</div>
+                      <div className={`text-[10px] uppercase ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{c.initiator_role}</div>
                     </td>
                     <td className="py-3 px-3">
-                      <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">
+                      <span className={`px-2 py-0.5 rounded font-semibold text-[11px] ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
                         {c.complaint_type}
                       </span>
                     </td>
                     <td className="py-3 px-3 max-w-xs truncate">
                       <span className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{c.title}</span>
                     </td>
-                    <td className="py-3 px-3 text-slate-400">{new Date(c.created_at).toLocaleDateString()}</td>
-                    <td className="py-3 px-3 text-amber-400 font-medium">{c.assigned_officer || 'Unassigned'}</td>
+                    <td className={`py-3 px-3 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{new Date(c.created_at).toLocaleDateString()}</td>
+                    <td className={`py-3 px-3 font-medium ${isDark ? 'text-amber-400' : 'text-amber-700 font-bold'}`}>{c.assigned_officer || 'Unassigned'}</td>
                     <td className="py-3 px-3">
                       <span className={getStatusBadge(c.status)}>
                         {c.status?.toUpperCase()}{c.is_reopened ? ' (Reopened)' : ''}

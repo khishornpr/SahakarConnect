@@ -82,8 +82,8 @@ export default function HouseholdDashboard() {
 
       {/* Quick Service Categories Grid */}
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <div>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <div className="min-w-0">
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
               {t('coopServiceCategories', 'Cooperative Service Categories')} ({POPULAR_SERVICES.length})
             </h2>
@@ -93,7 +93,7 @@ export default function HouseholdDashboard() {
           </div>
 
           {/* Group Filter Tabs */}
-          <div className={`flex flex-wrap items-center gap-1.5 p-1 rounded-xl border text-xs ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+          <div className={`flex flex-wrap items-center gap-1.5 p-1 rounded-xl border text-xs shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
             {['All', ...TRADE_GROUPS].map((group) => {
               const isSelected = (selectedGroup || 'All') === group
               const label =
@@ -121,8 +121,8 @@ export default function HouseholdDashboard() {
                     isSelected
                       ? 'flow-btn-primary shadow-sm cursor-default'
                       : isDark
-                      ? 'text-slate-400 hover:text-white cursor-pointer hover:scale-105'
-                      : 'text-slate-600 hover:text-slate-900 cursor-pointer hover:scale-105'
+                      ? 'text-slate-400 hover:text-white hover:bg-white/[0.06] cursor-pointer'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer'
                   }`}
                 >
                   {label}
@@ -211,7 +211,7 @@ export default function HouseholdDashboard() {
                   </span>
                 </div>
                 <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
-                  <span>{t('assignedWorker', 'Assigned Worker')}: <strong className="text-emerald-400 font-bold">{b.worker?.full_name || t('matchingNearestWorker', 'Matching nearest worker...')}</strong></span>
+                  <span>{t('assignedWorker', 'Assigned Worker')}: <strong className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{b.worker?.full_name || t('matchingNearestWorker', 'Matching nearest worker...')}</strong></span>
                   <span className={`font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{b.estimated_amount}</span>
                 </div>
               </div>
@@ -234,7 +234,7 @@ export default function HouseholdDashboard() {
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Completed Services & Digital Invoices
             </h2>
-            <Link to="/household/invoices" className="text-xs text-emerald-400 hover:underline font-bold flex items-center gap-1">
+            <Link to="/household/invoices" className={`text-xs hover:underline font-bold flex items-center gap-1 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
               <span>{t('invoices', 'Invoices')}</span>
               <span>→</span>
             </Link>
@@ -261,7 +261,7 @@ export default function HouseholdDashboard() {
                 </div>
                 <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
                   <span>Total Billed: <strong className={isDark ? 'text-white' : 'text-slate-900'}>₹{b.final_amount || b.estimated_amount}</strong></span>
-                  <Link to="/household/invoices" className="text-emerald-400 font-bold hover:underline inline-flex items-center gap-1">
+                  <Link to="/household/invoices" className={`font-bold hover:underline inline-flex items-center gap-1 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                     <span>Download Invoice 📄</span>
                     <span>→</span>
                   </Link>
