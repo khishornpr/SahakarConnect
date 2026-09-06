@@ -78,10 +78,10 @@ export default function ForgotPassword() {
       </div>
 
       {/* ----------------- TOP NAVBAR ----------------- */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-3.5 sm:px-10 pt-4 sm:pt-8 flex items-center justify-between gap-2 sm:gap-4">
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-3.5 sm:px-10 pt-3 sm:pt-8 flex items-center justify-between gap-2 sm:gap-4">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all shrink-0 ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all shrink-0 ${
               isDark
                 ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_20px_rgba(229,166,94,0.3)]'
                 : 'bg-white/90 border-slate-300 text-[#d8964d]'

@@ -10,7 +10,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggleTheme}
       aria-label="Toggle Neon Dark and White Mode"
-      className={`inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-400 active:scale-95 shrink-0 ${
+      className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-400 active:scale-95 shrink-0 ${
         isDark
           ? 'bg-slate-900 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.4)]'
           : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-100 shadow-sm'

@@ -183,7 +183,7 @@ export default function Sidebar() {
 
       {/* Mobile Bottom Navigation Bar with touch-friendly buttons & readable text */}
       <div
-        className={`md:hidden fixed bottom-0 left-0 right-0 z-40 px-2 py-2 flex justify-around items-center backdrop-blur-xl border-t transition-colors ${
+        className={`md:hidden fixed bottom-0 left-0 right-0 z-40 px-1.5 py-1.5 flex justify-around items-center backdrop-blur-xl border-t transition-colors ${
           isDark ? 'bg-[#0f1217]/95 border-white/[0.08] text-white' : 'bg-white/95 border-slate-200 text-slate-900'
         }`}
       >
@@ -193,12 +193,12 @@ export default function Sidebar() {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center py-1 px-2.5 rounded-xl text-xs transition-all min-h-[46px] justify-center ${
+              className={`flex flex-col items-center py-1 px-1.5 rounded-xl transition-all min-h-[44px] justify-center ${
                 isActive ? 'mobile-nav-link-active font-black scale-105' : 'mobile-nav-link-inactive text-slate-300'
               }`}
             >
-              <span className="text-xl leading-tight">{item.icon}</span>
-              <span className="truncate max-w-[78px] mt-0.5 font-bold">{item.label}</span>
+              <span className="text-lg leading-tight">{item.icon}</span>
+              <span className="truncate max-w-[62px] sm:max-w-[78px] text-[10px] mt-0.5 font-bold leading-none">{item.label}</span>
             </Link>
           )
         })}
@@ -208,10 +208,10 @@ export default function Sidebar() {
           <button
             type="button"
             onClick={() => setShowEmergency(true)}
-            className="flex flex-col items-center py-1 px-2.5 text-rose-400 text-xs font-black min-h-[46px] justify-center hover:scale-105 transition-transform cursor-pointer"
+            className="flex flex-col items-center py-1 px-1.5 text-rose-400 text-xs font-black min-h-[44px] justify-center hover:scale-105 transition-transform cursor-pointer"
           >
-            <span className="text-xl leading-tight animate-pulse">🚨</span>
-            <span className="mt-0.5">SOS</span>
+            <span className="text-lg leading-tight animate-pulse">🚨</span>
+            <span className="mt-0.5 text-[10px] font-black leading-none">SOS</span>
           </button>
         )}
 
@@ -219,19 +219,19 @@ export default function Sidebar() {
         <button
           type="button"
           onClick={() => setShowMobileDrawer(true)}
-          className={`flex flex-col items-center py-1 px-2.5 rounded-xl text-xs font-bold min-h-[46px] justify-center transition-all cursor-pointer ${
+          className={`flex flex-col items-center py-1 px-1.5 rounded-xl text-xs font-bold min-h-[44px] justify-center transition-all cursor-pointer ${
             showMobileDrawer ? 'text-[#ff7a00] mobile-nav-link-active' : 'text-slate-300 hover:text-white hover:scale-105'
           }`}
         >
-          <span className="text-xl leading-tight">☰</span>
-          <span className="truncate max-w-[78px] mt-0.5 font-bold">{t('menu', 'Menu')}</span>
+          <span className="text-lg leading-tight">☰</span>
+          <span className="truncate max-w-[62px] sm:max-w-[78px] text-[10px] mt-0.5 font-bold leading-none">{t('menu', 'Menu')}</span>
         </button>
       </div>
 
       {/* Mobile Drawer Navigation Popout */}
       {showMobileDrawer && (
         <div className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col justify-end animate-fade-in-up">
-          <div className={`p-6 rounded-t-3xl border-t space-y-4 max-h-[85vh] overflow-y-auto ${
+          <div className={`p-5 rounded-t-3xl border-t space-y-4 max-h-[88vh] overflow-y-auto pb-10 ${
             isDark ? 'bg-[#0f1217] border-white/[0.1] text-white' : 'bg-white border-slate-200 text-slate-900'
           }`}>
             <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">

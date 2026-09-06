@@ -346,9 +346,9 @@ export default function CooperativeDemandForecast() {
           </div>
 
           {/* Chart Type, Metric Visibility & Horizon Controls */}
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0 max-w-full">
             {/* Chart Type Selector */}
-            <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`flex items-center p-1 rounded-xl border shrink-0 overflow-x-auto max-w-full ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'bar', label: '📊 Bar' },
                 { id: 'line', label: '📈 Line' },
@@ -378,7 +378,7 @@ export default function CooperativeDemandForecast() {
             </div>
 
             {/* Series Filter Selector */}
-            <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`flex items-center p-1 rounded-xl border shrink-0 overflow-x-auto max-w-full ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
                 { id: 'all', label: '✨ All Combined' },
                 { id: 'demand', label: '⚡ Demand Only' },

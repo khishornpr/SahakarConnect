@@ -189,6 +189,31 @@ export default function OfficerDashboard() {
     }
   }
 
+  function getComplaintTypeBadge(type) {
+    switch (type) {
+      case 'Non-Payment':
+        return isDark
+          ? 'bg-amber-500/15 text-amber-300 border border-amber-500/40 font-bold'
+          : 'bg-amber-100 text-amber-900 border border-amber-300 font-bold'
+      case 'Unsafe Job Site':
+        return isDark
+          ? 'bg-rose-500/15 text-rose-300 border border-rose-500/40 font-bold'
+          : 'bg-rose-100 text-rose-900 border border-rose-300 font-bold'
+      case 'Customer Dispute':
+        return isDark
+          ? 'bg-blue-500/15 text-blue-300 border border-blue-500/40 font-bold'
+          : 'bg-blue-100 text-blue-900 border border-blue-300 font-bold'
+      case 'Harassment':
+        return isDark
+          ? 'bg-purple-500/15 text-purple-300 border border-purple-500/40 font-bold'
+          : 'bg-purple-100 text-purple-900 border border-purple-300 font-bold'
+      default:
+        return isDark
+          ? 'bg-slate-800 text-slate-200 border border-white/10 font-bold'
+          : 'bg-slate-100 text-slate-800 border border-slate-300 font-bold'
+    }
+  }
+
   const linkedJob = selectedCase?.job_id ? jobs.find((j) => j.id === selectedCase.job_id) : null
 
   return (
@@ -326,17 +351,19 @@ export default function OfficerDashboard() {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex gap-1.5 p-1 rounded-xl bg-slate-900/40 border border-white/5 text-xs">
+          <div className={`flex gap-1.5 p-1 rounded-xl border text-xs ${isDark ? 'bg-slate-900/40 border-white/5' : 'bg-slate-100 border-slate-200'}`}>
             {['all', 'pending', 'resolved', 'closed'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setStatusFilter(tab)}
                 aria-selected={statusFilter === tab}
                 data-selected={statusFilter === tab ? 'true' : undefined}
-                className={`px-3 py-1 rounded-lg font-bold capitalize transition-all ${
+                className={`px-3 py-1 rounded-lg font-bold capitalize transition-all cursor-pointer ${
                   statusFilter === tab
-                    ? 'bg-[#ff6b00] text-white cursor-default'
-                    : 'text-slate-400 hover:text-white cursor-pointer'
+                    ? 'bg-[#ff6b00] text-white shadow-sm'
+                    : isDark
+                    ? 'text-slate-400 hover:text-white'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
                 {tab}
@@ -369,7 +396,7 @@ export default function OfficerDashboard() {
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                         No Data Available
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         No dispute or grievance cases match the selected status tab.
                       </p>
                     </div>
@@ -379,27 +406,27 @@ export default function OfficerDashboard() {
                 filteredCases.map((c) => (
                   <tr
                     key={c.id}
-                    className={`hover:bg-white/[0.02] transition-colors ${
-                      selectedCase?.id === c.id ? 'bg-orange-500/10' : ''
+                    className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'} ${
+                      selectedCase?.id === c.id ? (isDark ? 'bg-orange-500/10' : 'bg-orange-50') : ''
                     }`}
                   >
-                    <td className="py-3 px-3 font-mono font-bold text-[#ff7a00]">{c.id}</td>
+                    <td className={`py-3 px-3 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>{c.id}</td>
                     <td className="py-3 px-3">
                       <strong className={isDark ? 'text-white' : 'text-slate-900'}>{c.user_name || 'Worker'}</strong>
-                      <div className="text-[10px] text-slate-400 uppercase font-semibold">
+                      <div className={`text-[10px] uppercase font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         {c.initiator_role || 'worker'}
                       </div>
                     </td>
                     <td className="py-3 px-3">
-                      <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">
+                      <span className={`px-2.5 py-1 rounded-md text-[11px] inline-block whitespace-nowrap ${getComplaintTypeBadge(c.complaint_type)}`}>
                         {c.complaint_type}
                       </span>
                     </td>
                     <td className="py-3 px-3 max-w-xs truncate">
                       <span className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{c.title}</span>
-                      <p className="text-[10px] text-slate-400 truncate">{c.description}</p>
+                      <p className={`text-[10px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{c.description}</p>
                     </td>
-                    <td className="py-3 px-3 text-slate-400">{new Date(c.created_at).toLocaleDateString()}</td>
+                    <td className={`py-3 px-3 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{new Date(c.created_at).toLocaleDateString()}</td>
                     <td className="py-3 px-3">
                       <span className={getStatusBadge(c.status)}>
                         {c.status?.toUpperCase()}{c.is_reopened ? ' (Reopened)' : ''}
@@ -411,7 +438,7 @@ export default function OfficerDashboard() {
                           setSelectedCase(c)
                           setResolutionNoteInput(c.resolution_notes || '')
                         }}
-                        className="px-3 py-1.5 rounded-lg flow-btn-primary text-[11px] font-bold shadow-md"
+                        className="px-3 py-1.5 rounded-lg flow-btn-primary text-[11px] font-bold shadow-md cursor-pointer"
                       >
                         Investigate →
                       </button>
@@ -440,7 +467,7 @@ export default function OfficerDashboard() {
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-xs font-black text-[#ff7a00]">{selectedCase.id}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded font-bold ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
+                    <span className={`text-xs px-2.5 py-1 rounded-md ${getComplaintTypeBadge(selectedCase.complaint_type)}`}>
                       {selectedCase.complaint_type}
                     </span>
                     <span className={getStatusBadge(selectedCase.status)}>

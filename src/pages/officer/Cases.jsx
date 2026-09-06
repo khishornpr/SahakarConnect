@@ -50,6 +50,31 @@ export default function OfficerCases() {
     }
   }
 
+  function getComplaintTypeBadge(type) {
+    switch (type) {
+      case 'Non-Payment':
+        return isDark
+          ? 'bg-amber-500/15 text-amber-300 border border-amber-500/40 font-bold'
+          : 'bg-amber-100 text-amber-900 border border-amber-300 font-bold'
+      case 'Unsafe Job Site':
+        return isDark
+          ? 'bg-rose-500/15 text-rose-300 border border-rose-500/40 font-bold'
+          : 'bg-rose-100 text-rose-900 border border-rose-300 font-bold'
+      case 'Customer Dispute':
+        return isDark
+          ? 'bg-blue-500/15 text-blue-300 border border-blue-500/40 font-bold'
+          : 'bg-blue-100 text-blue-900 border border-blue-300 font-bold'
+      case 'Harassment':
+        return isDark
+          ? 'bg-purple-500/15 text-purple-300 border border-purple-500/40 font-bold'
+          : 'bg-purple-100 text-purple-900 border border-purple-300 font-bold'
+      default:
+        return isDark
+          ? 'bg-slate-800 text-slate-200 border border-white/10 font-bold'
+          : 'bg-slate-100 text-slate-800 border border-slate-300 font-bold'
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -147,7 +172,7 @@ export default function OfficerCases() {
                       <div className={`text-[10px] uppercase ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{c.initiator_role}</div>
                     </td>
                     <td className="py-3 px-3">
-                      <span className={`px-2 py-0.5 rounded font-semibold text-[11px] ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
+                      <span className={`px-2.5 py-1 rounded-md text-[11px] inline-block whitespace-nowrap ${getComplaintTypeBadge(c.complaint_type)}`}>
                         {c.complaint_type}
                       </span>
                     </td>

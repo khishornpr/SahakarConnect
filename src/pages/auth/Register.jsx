@@ -19,11 +19,6 @@ export default function Register() {
   const [experience, setExperience] = useState('3')
   const [area, setArea] = useState(DELHI_NCR_AREAS[0].name)
   const [coopName, setCoopName] = useState('Delhi Shramik Sahakari Federation Ltd.')
-  const [managerDistrict, setManagerDistrict] = useState('South Delhi')
-  const [managedTrade, setManagedTrade] = useState('All Trades')
-  const [departmentId, setDepartmentId] = useState('DEL-LAB-2026')
-  const [designation, setDesignation] = useState('Assistant Labor Commissioner')
-  const [jurisdiction, setJurisdiction] = useState('Delhi NCR Region')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
@@ -55,12 +50,7 @@ export default function Register() {
       experience,
       area,
       coopName,
-      district: role === 'manager' ? managerDistrict : role === 'officer' ? jurisdiction : area,
-      managerDistrict,
-      managedTrade,
-      departmentId,
-      designation,
-      jurisdiction,
+      district: area,
     })
     setLoading(false)
     if (error) {
@@ -119,11 +109,11 @@ export default function Register() {
       </div>
 
       {/* ----------------- TOP NAVBAR ----------------- */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-3.5 sm:px-10 pt-4 sm:pt-8 flex items-center justify-between gap-2 sm:gap-4">
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-3.5 sm:px-10 pt-3 sm:pt-8 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Emblem */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all shrink-0 ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-2xl border backdrop-blur-xl flex items-center justify-center shadow-lg transition-all shrink-0 ${
               isDark
                 ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_20px_rgba(229,166,94,0.3)]'
                 : 'bg-white/90 border-slate-300 text-[#d8964d]'
@@ -275,17 +265,15 @@ export default function Register() {
                   Choose your persona and create an account
                 </p>
 
-                {/* 4 Role Switcher Tabs */}
+                {/* 2 Role Switcher Tabs */}
                 <div
-                  className={`grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 border rounded-2xl my-5 ${
+                  className={`grid grid-cols-2 gap-1.5 p-1 border rounded-2xl my-5 ${
                     isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                   }`}
                 >
                   {[
                     { id: 'worker', label: '🛠️ Worker' },
                     { id: 'household', label: '🏡 Customer' },
-                    { id: 'manager', label: '👔 Manager' },
-                    { id: 'officer', label: '🏛️ Labor Officer' },
                   ].map((r) => (
                     <button
                       key={r.id}
@@ -297,8 +285,8 @@ export default function Register() {
                         role === r.id
                           ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-md cursor-default'
                           : isDark
-                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04] cursor-pointer hover:scale-105'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer hover:scale-105'
+                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.04] cursor-pointer hover:scale-[1.02]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer hover:scale-[1.02]'
                       }`}
                     >
                       {r.label}
@@ -510,119 +498,6 @@ export default function Register() {
                     </div>
                   )}
 
-                  {/* Manager Specific */}
-                  {role === 'manager' && (
-                    <div
-                      className={`p-4 border rounded-2xl space-y-3 ${
-                        isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
-                      }`}
-                    >
-                      <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
-                        Zonal Management & Supervision
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                            Supervised District / Zone
-                          </label>
-                          <select
-                            value={managerDistrict}
-                            onChange={(e) => setManagerDistrict(e.target.value)}
-                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
-                            }`}
-                          >
-                            <option value="South Delhi">South Delhi Zonal Unit</option>
-                            <option value="West Delhi">West Delhi Zonal Unit</option>
-                            <option value="Central Delhi">Central Delhi Operations</option>
-                            <option value="North Delhi">North Delhi Cluster</option>
-                            <option value="East Delhi">East Delhi Cluster</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                            Managed Trades Scope
-                          </label>
-                          <select
-                            value={managedTrade}
-                            onChange={(e) => setManagedTrade(e.target.value)}
-                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
-                            }`}
-                          >
-                            <option value="All Trades">All Trades (Integrated)</option>
-                            <option value="Electrical & Plumbing">Electrical & Plumbing</option>
-                            <option value="Carpentry & Masonry">Carpentry & Masonry</option>
-                            <option value="Home Hygiene & Care">Home Hygiene & Care</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Labor Officer Specific */}
-                  {role === 'officer' && (
-                    <div
-                      className={`p-4 border rounded-2xl space-y-3 ${
-                        isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
-                      }`}
-                    >
-                      <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
-                        Labor Department Credential
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div>
-                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                            Government / Officer ID
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            value={departmentId}
-                            onChange={(e) => setDepartmentId(e.target.value)}
-                            placeholder="example: DL-LAB-2026-88"
-                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
-                            }`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                            Official Designation
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            value={designation}
-                            onChange={(e) => setDesignation(e.target.value)}
-                            placeholder="example: Labor Welfare Officer"
-                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
-                            }`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                            District Jurisdiction
-                          </label>
-                          <select
-                            value={jurisdiction}
-                            onChange={(e) => setJurisdiction(e.target.value)}
-                            className={`w-full px-3 py-2 border rounded-xl text-xs outline-none ${
-                              isDark ? 'bg-[#12151c] border-white/[0.08] text-white' : 'bg-white border-slate-300 text-slate-900'
-                            }`}
-                          >
-                            <option value="Delhi NCR Region">Delhi NCR (All Jurisdictions)</option>
-                            <option value="South Delhi">South Delhi Division</option>
-                            <option value="West Delhi">West Delhi Division</option>
-                            <option value="North Delhi">North Delhi Division</option>
-                            <option value="East Delhi">East Delhi Division</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
                   <button
                     type="submit"
                     disabled={loading}
@@ -631,18 +506,34 @@ export default function Register() {
                     {loading
                       ? 'Creating Account...'
                       : `Register as ${
-                          role === 'worker'
-                            ? 'Cooperative Worker'
-                            : role === 'household'
-                            ? 'Household Customer'
-                            : role === 'manager'
-                            ? 'Zonal Manager'
-                            : 'Labor Department Officer'
+                          role === 'worker' ? 'Cooperative Worker' : 'Household Customer'
                         }`}
                   </button>
                 </form>
 
-                <div className={`text-center mt-5 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                {/* Institutional Roles Notice */}
+                <div
+                  className={`mt-4 p-3 rounded-2xl border text-[11px] leading-relaxed flex items-start gap-2.5 ${
+                    isDark
+                      ? 'bg-[#181c24]/90 border-white/[0.08] text-slate-400'
+                      : 'bg-slate-50 border-slate-200 text-slate-600'
+                  }`}
+                >
+                  <span className="text-sm shrink-0">🏛️</span>
+                  <div>
+                    <span className={`font-bold block ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>
+                      Co-op Admin, Manager, or Labor Officer?
+                    </span>
+                    <p className="mt-0.5">
+                      Administrative & official accounts are pre-authorized by the Federation. Please{' '}
+                      <Link to="/login" className="text-[#d8964d] font-bold hover:underline">
+                        Sign In directly →
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+
+                <div className={`text-center mt-4 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                   Already have an account?{' '}
                   <Link to="/login" className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline">
                     Sign In

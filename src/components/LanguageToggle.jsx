@@ -16,7 +16,7 @@ export default function LanguageToggle() {
   return (
     <>
       <div
-        className={`inline-flex items-center rounded-xl p-0.5 sm:p-1 text-[11px] sm:text-xs border transition-all shrink-0 select-none ${
+        className={`inline-flex items-center rounded-xl p-0.5 sm:p-1 text-[10px] sm:text-xs border transition-all shrink-0 select-none ${
           isDark
             ? 'bg-[#0a0f1d] border-cyan-500/30 shadow-[0_0_15px_rgba(0,0,0,0.4)]'
             : 'bg-slate-100 border-slate-200 text-slate-700 shadow-sm'
@@ -25,7 +25,7 @@ export default function LanguageToggle() {
         <button
           type="button"
           onClick={() => setLanguage('en')}
-          className={`px-2 sm:px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+          className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-bold transition-all cursor-pointer ${
             language === 'en'
               ? 'bg-emerald-600 text-white shadow-sm font-black'
               : isDark
@@ -39,7 +39,7 @@ export default function LanguageToggle() {
         <button
           type="button"
           onClick={() => setLanguage('hi')}
-          className={`px-2 sm:px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+          className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-bold transition-all cursor-pointer ${
             language === 'hi'
               ? 'bg-emerald-600 text-white shadow-sm font-black'
               : isDark
@@ -47,14 +47,15 @@ export default function LanguageToggle() {
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
-          हिन्दी
+          <span className="hidden sm:inline">हिन्दी</span>
+          <span className="sm:hidden">हि</span>
         </button>
 
         {/* Third Slot: If another official Indian language is selected, show that language name, otherwise show Others */}
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className={`px-2 sm:px-2.5 py-1 rounded-lg font-bold transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer ${
+          className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-bold transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer ${
             language !== 'en' && language !== 'hi'
               ? 'bg-teal-600 text-white shadow-sm font-black'
               : isDark
@@ -62,8 +63,8 @@ export default function LanguageToggle() {
               : 'text-emerald-700 hover:text-emerald-800 hover:bg-slate-200/60'
           }`}
         >
-          <span className="text-xs">🌐</span>
-          <span className="truncate max-w-[50px] sm:max-w-[80px]">
+          <span className="text-[10px] sm:text-xs">🌐</span>
+          <span className="truncate max-w-[32px] sm:max-w-[80px]">
             {language !== 'en' && language !== 'hi' ? currentLangObj.name : 'More'}
           </span>
         </button>

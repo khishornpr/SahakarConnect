@@ -515,29 +515,29 @@ export default function Login() {
         </div>
 
         {/* Mobile Top Header Bar */}
-        <header className="relative z-10 w-full px-4 pt-3.5 pb-2 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2.5">
+        <header className="relative z-10 w-full px-3.5 pt-3 pb-2 flex items-center justify-between gap-2 shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
             <div
-              className={`w-9 h-9 rounded-xl border backdrop-blur-xl flex items-center justify-center shadow-md ${isDark
+              className={`w-8 h-8 rounded-xl border backdrop-blur-xl flex items-center justify-center shadow-md shrink-0 ${isDark
                 ? 'bg-black/60 border-white/20 text-[#e5a65e] shadow-[0_0_15px_rgba(229,166,94,0.25)]'
                 : 'bg-white/95 border-slate-300 text-[#d8964d]'
                 }`}
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 7v10l9 5 9-5V7l-9-5zM12 22V12M12 12L3 7M12 12l9-5" />
               </svg>
             </div>
-            <div>
-              <span className={`text-xs font-black tracking-[0.2em] uppercase block leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <div className="min-w-0">
+              <span className={`text-xs font-black tracking-[0.15em] uppercase block leading-tight truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('brandTitle', 'SAHAKARCONNECT')}
               </span>
-              <span className={`text-[10px] block font-medium leading-none mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              <span className={`text-[9px] block font-medium leading-none mt-0.5 truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                 {t('loginSubHeader', 'SIH26089 • Cooperative Marketplace')}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 shrink-0">
             <ThemeToggle />
             <LanguageToggle />
           </div>
@@ -561,7 +561,7 @@ export default function Login() {
             <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
               Select Persona
             </label>
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none no-scrollbar touch-pan-x -mx-1 px-1">
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none no-scrollbar touch-pan-x -mx-1 px-1">
               {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative, ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {
                 const isActive = selectedRole === p.id
                 return (
@@ -571,7 +571,7 @@ export default function Login() {
                     aria-selected={isActive ? 'true' : undefined}
                     data-selected={isActive ? 'true' : undefined}
                     onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                    className={`min-h-[42px] px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center justify-center gap-1.5 border active:scale-95 cursor-pointer ${
+                    className={`min-h-[38px] px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center justify-center gap-1.5 border active:scale-95 cursor-pointer ${
                       isActive
                         ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 border-[#c4833b] shadow-md shadow-orange-500/20 ring-1 ring-[#e5a65e]'
                         : isDark
@@ -596,7 +596,7 @@ export default function Login() {
           >
             {/* Mobile Demo Auto-Fill Banner (Enhanced Touch Target) */}
             <div
-              className={`p-2.5 rounded-xl border flex items-center justify-between gap-2.5 mb-3 transition-all ${
+              className={`p-2.5 rounded-xl border flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 mb-3 transition-all ${
                 isDark
                   ? 'bg-[#181d26]/90 border-white/[0.08]'
                   : 'bg-orange-50/80 border-orange-200/80'
@@ -604,7 +604,7 @@ export default function Login() {
             >
               <div className="flex items-center gap-2 min-w-0">
                 <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 border ${
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0 border ${
                     isDark
                       ? 'bg-[#12151c] border-white/[0.08] text-[#e8b070]'
                       : 'bg-white border-orange-200 text-orange-600'
@@ -612,11 +612,11 @@ export default function Login() {
                 >
                   ⚡
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {ROLE_CONFIGS[selectedRole]?.hint}
                   </div>
-                  <div className="text-[11px] text-slate-400 font-mono truncate">
+                  <div className="text-[10px] text-slate-400 font-mono truncate">
                     {ROLE_CONFIGS[selectedRole]?.demoEmail}
                   </div>
                 </div>
@@ -625,13 +625,14 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => handleFillDemoCredentials(ROLE_CONFIGS[selectedRole]?.demoEmail)}
-                className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition-all border cursor-pointer active:scale-95 ${
+                className={`w-full sm:w-auto min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all border cursor-pointer active:scale-95 flex items-center justify-center gap-1 ${
                   isDark
                     ? 'bg-[#e8b070]/15 border-[#e8b070]/40 text-[#e8b070] hover:bg-[#e8b070]/25'
                     : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b]'
                 }`}
               >
-                Auto-Fill ⚡
+                <span>Auto-Fill</span>
+                <span>⚡</span>
               </button>
             </div>
 

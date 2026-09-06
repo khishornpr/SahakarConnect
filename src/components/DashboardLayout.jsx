@@ -161,22 +161,22 @@ export default function DashboardLayout() {
       <Sidebar />
 
       {/* Main Content Workspace */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen pb-16 md:pb-0 relative z-10">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen pb-20 md:pb-0 relative z-10">
         {/* FlowBoard Top Navigation Header */}
         <header
-          className={`sticky top-0 z-20 px-4 sm:px-6 py-3 flex items-center justify-between transition-all duration-300 border-b backdrop-blur-xl ${
+          className={`sticky top-0 z-20 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between transition-all duration-300 border-b backdrop-blur-xl ${
             isDark
               ? 'bg-[#0f1217]/90 border-white/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
               : 'bg-white/90 border-slate-200 shadow-sm'
           }`}
         >
           {/* Left Title / Greeting with "Welcome" */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="md:hidden flex items-center gap-1.5 sm:gap-2">
-              <span className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#ff5500] to-[#ff8c00] text-white flex items-center justify-center font-black text-sm shadow-[0_0_15px_rgba(255,107,0,0.6)] shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
+            <div className="md:hidden flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-[#ff5500] to-[#ff8c00] text-white flex items-center justify-center font-black text-xs sm:text-sm shadow-[0_0_15px_rgba(255,107,0,0.6)] shrink-0">
                 ⚡
               </span>
-              <span className={`font-black text-xs sm:text-sm tracking-tight truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <span className={`font-black text-xs sm:text-sm tracking-tight truncate max-w-[100px] sm:max-w-none ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('brandTitle', 'SahakarConnect')}
               </span>
             </div>
@@ -189,7 +189,7 @@ export default function DashboardLayout() {
           </div>
 
           {/* Right Controls: Date Badge + Notifications + Theme Toggle + Language Toggle + Profile Avatar / Logout */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* FlowBoard Date Badge */}
             <div
               className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
@@ -208,7 +208,7 @@ export default function DashboardLayout() {
                 type="button"
                 onClick={() => setShowNotifications(!showNotifications)}
                 title={unreadCount > 0 ? `${unreadCount} unread notifications` : 'Notifications'}
-                className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-sm border transition-all cursor-pointer ${
+                className={`relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-xs sm:text-sm border transition-all cursor-pointer ${
                   unreadCount > 0 ? 'neon-bell-button neon-glow-pulse-orange' : ''
                 } ${
                   isDark
@@ -216,7 +216,7 @@ export default function DashboardLayout() {
                     : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
                 }`}
               >
-                <span className={`text-base sm:text-lg select-none inline-block ${unreadCount > 0 ? 'animate-bell-shake' : ''}`}>
+                <span className={`text-sm sm:text-lg select-none inline-block ${unreadCount > 0 ? 'animate-bell-shake' : ''}`}>
                   🔔
                 </span>
                 {unreadCount > 0 && (
@@ -229,7 +229,7 @@ export default function DashboardLayout() {
               {/* Notification Popover Dropdown */}
               {showNotifications && (
                 <div
-                  className={`absolute right-0 mt-2.5 w-80 sm:w-96 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up ${
+                  className={`fixed left-3 right-3 sm:left-auto sm:right-0 mt-2.5 sm:w-96 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up ${
                     isDark
                       ? 'bg-[#12151c]/95 border-white/[0.12] text-white shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
                       : 'bg-white/95 border-slate-200 text-slate-900 shadow-[0_15px_35px_rgba(0,0,0,0.15)]'
@@ -324,7 +324,7 @@ export default function DashboardLayout() {
                 type="button"
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 title={`${profile?.full_name || 'User'} (Account & Logout)`}
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#ff6b00] to-[#ffaa00] text-white flex items-center justify-center font-black text-sm sm:text-base shadow-[0_0_15px_rgba(255,107,0,0.5)] transition-all cursor-pointer border border-white/20 ${
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#ff6b00] to-[#ffaa00] text-white flex items-center justify-center font-black text-xs sm:text-base shadow-[0_0_15px_rgba(255,107,0,0.5)] transition-all cursor-pointer border border-white/20 ${
                   showUserMenu ? 'ring-2 ring-[#ff6b00] scale-105' : 'hover:scale-105 hover:shadow-[0_0_25px_rgba(255,107,0,0.8)]'
                 }`}
               >
@@ -334,7 +334,7 @@ export default function DashboardLayout() {
               {/* Popover Dropdown with Details & Logout */}
               {showUserMenu && (
                 <div
-                  className={`absolute right-0 mt-2.5 w-64 sm:w-72 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up transition-all ${
+                  className={`fixed left-3 right-3 sm:left-auto sm:right-0 mt-2.5 sm:w-72 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up transition-all ${
                     isDark
                       ? 'bg-[#12151c]/95 border-white/[0.12] text-white shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
                       : 'bg-white/95 border-slate-200 text-slate-900 shadow-[0_15px_35px_rgba(0,0,0,0.15)]'
