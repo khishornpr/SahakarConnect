@@ -111,7 +111,7 @@ export default function Login() {
       {/* ========================================================================= */}
       {/*                     DESKTOP LAYOUT (md breakpoint and up)                 */}
       {/* ========================================================================= */}
-      <div className="hidden md:flex h-screen max-h-screen w-full relative flex-col justify-between overflow-hidden">
+      <div className="hidden md:flex min-h-screen w-full relative flex-col justify-between overflow-x-hidden">
         {/* Full-Screen Immersive Panoramic Background */}
         <div className="fixed inset-0 z-0 pointer-events-none">
           <img
@@ -128,7 +128,7 @@ export default function Login() {
         </div>
 
         {/* Desktop Top Navbar */}
-        <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-3 sm:pt-4 pb-1 flex items-center justify-between shrink-0">
+        <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-4 sm:pt-5 pb-2 flex items-center justify-between shrink-0">
           {/* Brand Emblem */}
           <div className="flex items-center gap-3">
             <div
@@ -143,7 +143,7 @@ export default function Login() {
             </div>
             <div>
               <span
-                className={`text-xs sm:text-sm font-black tracking-[0.25em] uppercase drop-shadow-sm block ${isDark ? 'text-white' : 'text-slate-900'
+                className={`text-xs sm:text-sm font-black tracking-normal uppercase drop-shadow-sm block ${isDark ? 'text-white' : 'text-slate-900'
                   }`}
               >
                 {t('brandTitle', 'SAHAKARCONNECT')}
@@ -162,23 +162,23 @@ export default function Login() {
         </header>
 
         {/* Desktop Main Viewport Content */}
-        <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-2 sm:py-4 my-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center overflow-hidden">
+        <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-10 py-4 sm:py-6 my-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
           {/* Left Side: Welcome Typography & Cooperative Badges */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-5 sm:space-y-7">
+          <div className="lg:col-span-7 xl:col-span-7 space-y-4 sm:space-y-6">
             <div className="flex items-start gap-4 sm:gap-6">
-              <div className="w-3 h-32 sm:h-52 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_18px_rgba(229,166,94,0.75)] shrink-0 mt-1"></div>
+              <div className="w-2.5 sm:w-3 h-28 sm:h-44 bg-gradient-to-b from-[#e5a65e] via-[#d8964d] to-transparent rounded-full shadow-[0_0_18px_rgba(229,166,94,0.75)] shrink-0 mt-1"></div>
               <div>
                 <h1
-                  className={`text-5xl sm:text-7xl lg:text-7xl xl:text-8xl font-light tracking-tight leading-[1.02] ${isDark ? 'text-white drop-shadow-lg' : 'text-slate-900'
+                  className={`text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-light tracking-tight leading-[1.12] ${isDark ? 'text-white drop-shadow-lg' : 'text-slate-900'
                     }`}
                 >
-                  {t('welcome', 'Welcome')}<br />
-                  <strong className={`font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-950'}`}>
+                  <span>{t('welcome', 'Welcome')}</span>{' '}
+                  <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>
                     {t('back', 'Back')}
                   </strong>
                 </h1>
                 <p
-                  className={`text-lg sm:text-2xl lg:text-3xl mt-4 sm:mt-5 max-w-xl leading-snug font-normal ${isDark ? 'text-slate-100 drop-shadow-sm' : 'text-slate-800'
+                  className={`text-base sm:text-xl lg:text-2xl mt-3 sm:mt-4 max-w-xl leading-snug font-normal ${isDark ? 'text-slate-100 drop-shadow-sm' : 'text-slate-800'
                     }`}
                 >
                   {t('loginHeroGreeting', 'Glad to see you again.')}<br />
@@ -188,30 +188,30 @@ export default function Login() {
             </div>
 
             {/* Quick Highlight Chips */}
-            <div className="flex flex-wrap gap-3 pt-1 pl-0 sm:pl-9">
+            <div className="flex flex-wrap gap-2.5 pt-1 pl-0 sm:pl-9">
               <span
-                className={`px-4 py-2 rounded-full text-sm sm:text-base font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
+                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
                   ? 'bg-black/50 border-white/10 text-slate-100 shadow-md'
                   : 'bg-white/85 border-slate-300 text-slate-800 shadow-sm'
                   }`}
               >
-                <span className="text-base sm:text-lg">⚡</span> {t('statutoryFairWageChip', '100% Fair Wages')}
+                <span className="text-sm sm:text-base">⚡</span> {t('statutoryFairWageChip', '100% Fair Wages')}
               </span>
               <span
-                className={`px-4 py-2 rounded-full text-sm sm:text-base font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
+                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
                   ? 'bg-black/50 border-white/10 text-emerald-300 shadow-md'
                   : 'bg-white/85 border-slate-300 text-emerald-800 shadow-sm'
                   }`}
               >
-                <span className="text-base sm:text-lg">🛡️</span> {t('societyWelfareFundChip', 'Worker Welfare & Safety')}
+                <span className="text-sm sm:text-base">🛡️</span> {t('societyWelfareFundChip', 'Worker Welfare & Safety')}
               </span>
               <span
-                className={`px-4 py-2 rounded-full text-sm sm:text-base font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
+                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold border backdrop-blur-md flex items-center gap-2 ${isDark
                   ? 'bg-black/50 border-white/10 text-[#e5a65e] shadow-md'
                   : 'bg-white/85 border-slate-300 text-orange-800 shadow-sm'
                   }`}
               >
-                <span className="text-base sm:text-lg">📍</span> {t('aiGeoDispatchChip', 'Fast Local Matching')}
+                <span className="text-sm sm:text-base">📍</span> {t('aiGeoDispatchChip', 'Fast Local Matching')}
               </span>
             </div>
           </div>
@@ -219,7 +219,7 @@ export default function Login() {
           {/* Right Side: Floating Glassmorphic Login Card */}
           <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
             <div
-              className={`w-full max-w-[465px] min-w-[320px] border rounded-2xl sm:rounded-3xl p-4 sm:p-5 backdrop-blur-2xl transition-all duration-300 ${
+              className={`w-full max-w-[480px] min-w-[320px] border rounded-2xl sm:rounded-3xl p-4 sm:p-5 backdrop-blur-2xl transition-all duration-300 ${
                 isDark
                   ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_20px_60px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40'
                   : 'bg-white/92 border-slate-200 shadow-[0_20px_50px_rgba(0,0,0,0.12)] hover:border-orange-300'
@@ -242,21 +242,28 @@ export default function Login() {
                   <h2 className={`text-2xl sm:text-3xl font-black tracking-tight leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {t('loginTitle', 'Login')}
                   </h2>
-                  <p className={`text-sm mt-1 truncate font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  <p className={`text-xs sm:text-sm mt-0.5 truncate font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                     {t('loginSubtitle', 'Select persona & enter credentials')}
                   </p>
                 </div>
               </div>
 
-              {/* Persona Switcher Tabs */}
-              <div className="space-y-1.5">
+              {/* Persona Switcher Tabs - Unified 2-Column Responsive Layout */}
+              <div className="w-full mb-3">
                 <div
-                  className={`p-1 border rounded-xl grid grid-cols-3 gap-1 ${
+                  className={`p-1.5 border rounded-2xl grid grid-cols-2 gap-1.5 ${
                     isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
                   }`}
                 >
-                  {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative].map((p) => {
+                  {[
+                    ROLE_CONFIGS.worker,
+                    ROLE_CONFIGS.household,
+                    ROLE_CONFIGS.cooperative,
+                    ROLE_CONFIGS.manager,
+                    ROLE_CONFIGS.officer
+                  ].map((p, idx) => {
                     const isActive = selectedRole === p.id
+                    const isLastSingle = idx === 4
                     return (
                       <button
                         key={p.id}
@@ -265,7 +272,9 @@ export default function Login() {
                         aria-selected={isActive ? 'true' : undefined}
                         data-selected={isActive ? 'true' : undefined}
                         onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                        className={`min-h-[48px] sm:min-h-[52px] py-1.5 px-1.5 sm:px-2 rounded-lg text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center text-center gap-1 leading-tight break-words i18n-tab-pill ${
+                        className={`min-h-[44px] py-2 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold transition-all flex items-center justify-center text-center gap-1.5 leading-snug break-words i18n-tab-pill ${
+                          isLastSingle ? 'col-span-2' : ''
+                        } ${
                           isActive
                             ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default font-black'
                             : isDark
@@ -273,36 +282,7 @@ export default function Login() {
                             : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:shadow-[0_0_10px_rgba(216,150,77,0.25)] cursor-pointer'
                         }`}
                       >
-                        <span className="whitespace-normal leading-tight text-center">{p.label}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-
-                <div
-                  className={`p-1 border rounded-xl grid grid-cols-2 gap-1 ${
-                    isDark ? 'bg-[#181c24] border-white/[0.06]' : 'bg-slate-100/90 border-slate-200'
-                  }`}
-                >
-                  {[ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {
-                    const isActive = selectedRole === p.id
-                    return (
-                      <button
-                        key={p.id}
-                        type="button"
-                        title={p.label}
-                        aria-selected={isActive ? 'true' : undefined}
-                        data-selected={isActive ? 'true' : undefined}
-                        onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                        className={`min-h-[48px] sm:min-h-[52px] py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center text-center gap-1 leading-tight break-words i18n-tab-pill ${
-                          isActive
-                            ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default font-black'
-                            : isDark
-                            ? 'text-slate-300 hover:text-white hover:bg-white/[0.08] hover:shadow-[0_0_12px_rgba(232,176,112,0.25)] cursor-pointer'
-                            : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:shadow-[0_0_10px_rgba(216,150,77,0.25)] cursor-pointer'
-                        }`}
-                      >
-                        <span className="whitespace-normal leading-tight text-center">{p.label}</span>
+                        <span className="whitespace-normal leading-snug text-center">{p.label}</span>
                       </button>
                     )
                   })}
@@ -311,13 +291,13 @@ export default function Login() {
 
               {/* Desktop Demo Credential Auto-Fill Card */}
               <div
-                className={`mt-2.5 p-3 rounded-xl border flex items-center justify-between gap-2.5 transition-all ${
+                className={`mb-3 p-3 rounded-xl border flex items-center justify-between gap-2.5 transition-all ${
                   isDark
                     ? 'bg-[#181d26]/80 border-white/[0.08] shadow-inner'
                     : 'bg-orange-50/70 border-orange-200/80 shadow-xs'
                 }`}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
                   <div
                     className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 border ${
                       isDark
@@ -327,11 +307,11 @@ export default function Login() {
                   >
                     ⚡
                   </div>
-                  <div className="min-w-0">
-                    <div className={`text-sm font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  <div className="min-w-0 flex-1 space-y-0.5">
+                    <div className={`text-xs sm:text-sm font-bold truncate leading-snug ${isDark ? 'text-white' : 'text-slate-900'}`}>
                       {ROLE_CONFIGS[selectedRole]?.hint}
                     </div>
-                    <div className="text-xs text-slate-400 font-mono truncate">
+                    <div className="text-[11px] text-slate-400 font-mono truncate leading-normal">
                       {ROLE_CONFIGS[selectedRole]?.demoEmail}
                     </div>
                   </div>
@@ -485,7 +465,7 @@ export default function Login() {
         </main>
 
         {/* Desktop Bottom Footer */}
-        <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-2 sm:py-3 flex flex-col sm:flex-row items-center justify-between gap-1 text-[11px] font-medium shrink-0">
+        <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-medium shrink-0 mt-auto border-t border-black/5 dark:border-white/5">
           <div className={isDark ? 'text-slate-300' : 'text-slate-700'}>
             {t('loginFooterRights', '© 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations')}
           </div>
@@ -530,7 +510,7 @@ export default function Login() {
               </svg>
             </div>
             <div className="min-w-0">
-              <span className={`text-xs font-black tracking-[0.15em] uppercase block leading-tight truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <span className={`text-xs font-black tracking-normal uppercase block leading-tight truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {t('brandTitle', 'SAHAKARCONNECT')}
               </span>
               <span className={`text-[9px] block font-medium leading-none mt-0.5 truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
@@ -615,11 +595,11 @@ export default function Login() {
                 >
                   ⚡
                 </div>
-                <div className="min-w-0 flex-1">
-                  <div className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <div className="min-w-0 flex-1 space-y-0.5">
+                  <div className={`text-xs font-bold truncate leading-snug ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {ROLE_CONFIGS[selectedRole]?.hint}
                   </div>
-                  <div className="text-[10px] text-slate-400 font-mono truncate">
+                  <div className="text-[10px] text-slate-400 font-mono truncate leading-normal">
                     {ROLE_CONFIGS[selectedRole]?.demoEmail}
                   </div>
                 </div>

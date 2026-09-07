@@ -213,7 +213,7 @@ export default {
   "signUpLink": "سائن اپ کریں",
   "loginFooterRights": "© 2026 سہکار کنیکٹ۔ تمام حقوق محفوظ ہیں۔ • وزارت کوآپریشن اور لیبر فیڈریشنز",
   "loginFooterSecure": "آپ کا ڈیٹا کوآپریٹو انکرپشن کے ساتھ محفوظ ہے",
-  "brandTitle": "سہکار کنیکٹ | SAHAKARCONNECT",
+  "brandTitle": "سہکار کنیکٹ",
   "tagline": "لیبر کوآپریٹو سوسائٹیز کا ڈیجیٹل سروس پلیٹ فارم",
   "subTagline": "SIH26089 • کوآپریٹو پلیٹ فارم",
   "workerPortal": "کوآپریٹو ورکر پورٹل",

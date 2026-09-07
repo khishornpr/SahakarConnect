@@ -213,7 +213,7 @@ export default {
   "signUpLink": "સાઇન અપ કરો",
   "loginFooterRights": "© 2026 સહકાર કનેક્ટ. સર્વાધિકાર સુરક્ષિત. • સહકાર મંત્રાલય અને શ્રમિક ફેડરેશન",
   "loginFooterSecure": "તમારો ડેટા સહકારી એન્ક્રિપ્શન સાથે સુરક્ષિત છે",
-  "brandTitle": "સહકાર કનેક્ટ | SAHAKARCONNECT",
+  "brandTitle": "સહકાર કનેક્ટ",
   "tagline": "શ્રમિક સહકારી મંડળીઓનું ડિજિટલ સેવા મંચ",
   "subTagline": "SIH26089 • સહકારી પ્લેટફોર્મ",
   "workerPortal": "સહકારી કાર્યકર પોર્ટલ",

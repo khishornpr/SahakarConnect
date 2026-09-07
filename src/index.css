@@ -1595,3 +1595,29 @@ html[lang="sat"] {
   letter-spacing: 0.02em;
 }
 
+/* -------------------------------------------------------------------------- */
+/*         INTERNATIONALIZATION & MULTI-SCRIPT FLUID CONTAINER UTILITIES      */
+/* -------------------------------------------------------------------------- */
+.i18n-tab-pill {
+  min-height: 44px;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
+.i18n-fluid-container {
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
+.mobile-nav-label {
+  font-size: 9px;
+  line-height: 1.08;
+  max-width: 92px;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
+

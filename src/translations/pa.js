@@ -213,7 +213,7 @@ export default {
   "signUpLink": "ਸਾਈਨ ਅੱਪ ਕਰੋ",
   "loginFooterRights": "© 2026 ਸਹਿਕਾਰ ਕਨੈਕਟ। ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ। • ਸਹਿਕਾਰਤਾ ਮੰਤਰਾਲਾ ਅਤੇ ਲੇਬਰ ਫੈਡਰੇਸ਼ਨਾਂ",
   "loginFooterSecure": "ਤੁਹਾਡਾ ਡਾਟਾ ਸਹਿਕਾਰੀ ਐਨਕ੍ਰਿਪਸ਼ਨ ਨਾਲ ਸੁਰੱਖਿਅਤ ਹੈ",
-  "brandTitle": "ਸਹਕਾਰ ਕਨੈਕਟ | SAHAKARCONNECT",
+  "brandTitle": "ਸਹਿਕਾਰ ਕਨੈਕਟ",
   "tagline": "ਮਜ਼ਦੂਰ ਸਹਿਕਾਰੀ ਸਭਾਵਾਂ ਦਾ ਡਿਜੀਟਲ ਸੇਵਾ ਪਲੇਟਫਾਰਮ",
   "subTagline": "SIH26089 • ਸਹਿਕਾਰੀ ਪਲੇਟਫਾਰਮ",
   "workerPortal": "ਸਹਿਕਾਰੀ ਵਰਕਰ ਪੋਰਟਲ",

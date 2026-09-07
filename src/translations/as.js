@@ -213,7 +213,7 @@ export default {
   "signUpLink": "পঞ্জীয়ন কৰক",
   "loginFooterRights": "© ২০২৬ সহকাৰ কানেক্ট। সৰ্বস্বত্ব সংৰক্ষিত। • সমবায় মন্ত্ৰালয় আৰু শ্ৰমিক ফেডাৰেচন",
   "loginFooterSecure": "আপোনাৰ তথ্য সমবায় এনক্ৰিপশ্বনৰ সৈতে সুৰক্ষিত",
-  "brandTitle": "সহকাৰ কানেক্ট | SAHAKARCONNECT",
+  "brandTitle": "সহকাৰ কানেক্ট",
   "tagline": "শ্ৰমিক সমবায় সন্থাসমূহৰ ডিজিটেল সেৱা মঞ্চ",
   "subTagline": "SIH26089 • সমবায় মঞ্চ",
   "workerPortal": "সমবায় কৰ্মী প'ৰ্টেল",

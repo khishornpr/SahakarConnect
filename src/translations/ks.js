@@ -213,7 +213,7 @@ export default {
   "signUpLink": "पंजीकरण करें",
   "loginFooterRights": "© 2026 सहकार कनेक्ट। सर्वाधिकार सुरक्षित। • सहकारिता मंत्रालय और श्रम महासंघ",
   "loginFooterSecure": "आपका डेटा सहकारी एन्क्रिप्शन के साथ सुरक्षित है",
-  "brandTitle": "سہکار کنیکٹ | SAHAKARCONNECT",
+  "brandTitle": "سہکار کنیکٹ",
   "tagline": "श्रम सहकारी संघों का डिजिटल सेवा मंच",
   "subTagline": "एस.आई.एच. २६०८९ • सहकारी मंच",
   "workerPortal": "سہکاری مزدور پورٹل",
