@@ -3,9 +3,11 @@ import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { DELHI_NCR_AREAS } from '../lib/geoService'
 import { useTheme } from '../context/ThemeContext'
+import { useTranslation } from '../context/I18nContext'
 
 export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [selectedEmergency, setSelectedEmergency] = useState('Electrical Sparking / Short Circuit')
   const [area, setArea] = useState(DELHI_NCR_AREAS[0].name)
   const [address, setAddress] = useState('B-42, South Extension Part 2, New Delhi')
@@ -15,10 +17,10 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
   if (!isOpen) return null
 
   const emergencies = [
-    { type: 'Electrical Sparking / Short Circuit', icon: '⚡', time: '15-25 min', tariff: '₹500' },
-    { type: 'Major Pipe Burst / Water Flooding', icon: '🌊', time: '20-30 min', tariff: '₹500' },
-    { type: 'Main Door Lockout / Broken Key', icon: '🔐', time: '25-35 min', tariff: '₹600' },
-    { type: 'Gas Line Appliance Safety Inspection', icon: '🔥', time: '15-20 min', tariff: '₹450' },
+    { type: 'Electrical Sparking / Short Circuit', labelKey: 'electricalSparking', icon: '⚡', time: '15-25 min', tariff: '₹500' },
+    { type: 'Major Pipe Burst / Water Flooding', labelKey: 'pipeBurst', icon: '🌊', time: '20-30 min', tariff: '₹500' },
+    { type: 'Main Door Lockout / Broken Key', labelKey: 'doorLockout', icon: '🔐', time: '25-35 min', tariff: '₹600' },
+    { type: 'Gas Line Appliance Safety Inspection', labelKey: 'gasLineSafety', icon: '🔥', time: '15-20 min', tariff: '₹450' },
   ]
 
   async function handleTriggerEmergency() {
@@ -77,10 +79,10 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
             </span>
             <div>
               <div className="inline-block px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 text-[10px] font-bold border border-rose-300 dark:border-rose-800 uppercase tracking-wider mb-0.5">
-                Quick Response
+                {t('quickResponse', 'Quick Response')}
               </div>
               <h2 className={`text-base sm:text-lg font-black ${isDark ? 'text-rose-100' : 'text-slate-900'}`}>
-                30-Min Emergency Help
+                {t('emergencySos', '30-Min Emergency Help')}
               </h2>
             </div>
           </div>
@@ -98,16 +100,16 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
         {dispatched ? (
           <div className="p-6 text-center space-y-3 bg-rose-50 dark:bg-rose-950/40 rounded-xl border border-rose-200 dark:border-rose-800/80">
             <div className="text-4xl animate-bounce">🚑</div>
-            <h3 className="text-base font-bold text-rose-800 dark:text-rose-200">Worker Dispatched!</h3>
+            <h3 className="text-base font-bold text-rose-800 dark:text-rose-200">{t('workerDispatchedTitle', 'Worker Dispatched!')}</h3>
             <p className="text-xs text-slate-700 dark:text-slate-300">
-              Nearest on-duty worker assigned (Ramesh Kumar - 1.8 km away).
-              Expected arrival: <strong className="text-rose-600 dark:text-rose-400">18 minutes</strong>.
+              {t('workerDispatchedDesc', 'Nearest on-duty worker assigned (Ramesh Kumar - 1.8 km away).')}
+              {' '}{t('expectedArrival', 'Expected arrival:')} <strong className="text-rose-600 dark:text-rose-400">18 {t('minutesUnit', 'minutes')}</strong>.
             </p>
             <button
               onClick={onClose}
-              className="mt-2 px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow"
+              className="mt-2 px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow cursor-pointer"
             >
-              Done & Return
+              {t('doneAndReturn', 'Done & Return')}
             </button>
           </div>
         ) : searching ? (
@@ -118,15 +120,15 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
               <span className="text-2xl">📡</span>
             </div>
             <div className="text-sm font-bold text-rose-700 dark:text-rose-200">
-              Finding nearest available emergency workers in {area}...
+              {t('findingNearestEmergency', 'Finding nearest available emergency workers in')} {t(area, area)}...
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Connecting directly...</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{t('connectingDirectly', 'Connecting directly...')}</p>
           </div>
         ) : (
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                Select Emergency Issue
+                {t('selectEmergencyIssue', 'Select Emergency Issue')}
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {emergencies.map((e) => (
@@ -146,8 +148,8 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
                       <span className="text-lg">{e.icon}</span>
                       <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold">⏱️ {e.time}</span>
                     </div>
-                    <div className={`mt-1.5 font-semibold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{e.type}</div>
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Rate: {e.tariff}</div>
+                    <div className={`mt-1.5 font-semibold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{t(e.type, t(e.labelKey, e.type))}</div>
+                    <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{t('rateLabel', 'Rate:')} {e.tariff}</div>
                   </button>
                 ))}
               </div>
@@ -155,7 +157,7 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="block text-slate-500 dark:text-slate-400 mb-1 font-medium">Area / Hub</label>
+                <label className="block text-slate-500 dark:text-slate-400 mb-1 font-medium">{t('areaHub', 'Area / Hub')}</label>
                 <select
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
@@ -165,14 +167,14 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
                 >
                   {DELHI_NCR_AREAS.map((a) => (
                     <option key={a.id} value={a.name}>
-                      {a.name}
+                      {t(a.name, a.name)}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label className="block text-slate-500 dark:text-slate-400 mb-1 font-medium">Street Address</label>
+                <label className="block text-slate-500 dark:text-slate-400 mb-1 font-medium">{t('streetAddress', 'Street Address')}</label>
                 <input
                   type="text"
                   value={address}
@@ -188,9 +190,9 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
             <button
               type="button"
               onClick={handleTriggerEmergency}
-              className="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>🚨 Request 30-Min Emergency Help</span>
+              <span>🚨 {t('request30MinHelp', 'Request 30-Min Emergency Help')}</span>
             </button>
           </div>
         )}
@@ -200,3 +202,4 @@ export default function EmergencyModal({ isOpen, onClose, onConfirmEmergency }) 
 
   return createPortal(content, document.body)
 }
+

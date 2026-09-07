@@ -540,11 +540,11 @@ export default function HouseholdBookService() {
                       : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
                   }`}
                 >
-                  <option value="1.5">1.5 Hours (Quick Fix)</option>
-                  <option value="2.0">2.0 Hours (Standard)</option>
-                  <option value="3.0">3.0 Hours (Comprehensive)</option>
-                  <option value="4.0">4.0 Hours (Half Day)</option>
-                  <option value="8.0">8.0 Hours (Full Day)</option>
+                  <option value="1.5">{t('durQuickFix', '1.5 Hours (Quick Fix)')}</option>
+                  <option value="2.0">{t('durStandard', '2.0 Hours (Standard)')}</option>
+                  <option value="3.0">{t('durComprehensive', '3.0 Hours (Comprehensive)')}</option>
+                  <option value="4.0">{t('durHalfDay', '4.0 Hours (Half Day)')}</option>
+                  <option value="8.0">{t('durFullDay', '8.0 Hours (Full Day)')}</option>
                 </select>
               </div>
             </div>
@@ -737,39 +737,39 @@ export default function HouseholdBookService() {
                 </span>
               </div>
 
-              <div className="space-y-2.5 text-xs">
+                <div className="space-y-2.5 text-xs">
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  <span>Selected Trade Rate:</span>
+                  <span>{t('selectedTradeRateLabel', 'Selected Trade Rate:')}</span>
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    ₹{currentTariff.rate}/hr ({trade})
+                    ₹{currentTariff.rate}/{t('hourUnit', 'hr')} ({trade})
                   </span>
                 </div>
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  <span>Estimated Work Duration:</span>
+                  <span>{t('estimatedWorkDurationLabel', 'Estimated Work Duration:')}</span>
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    {estimatedHours} Hours
+                    {estimatedHours} {t('hoursUnit', 'Hours')}
                   </span>
                 </div>
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  <span>Arrival & Setup Buffer:</span>
-                  <span className="text-amber-400 font-bold">+15 Minutes (Free Buffer)</span>
+                  <span>{t('arrivalSetupBufferLabel', 'Arrival & Setup Buffer:')}</span>
+                  <span className="text-amber-400 font-bold">{t('fifteenMinFreeBuffer', '+15 Minutes (Free Buffer)')}</span>
                 </div>
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  <span>Scheduled Time Slot Window:</span>
+                  <span>{t('scheduledSlotWindowLabel', 'Scheduled Time Slot Window:')}</span>
                   <span className="text-emerald-400 font-bold font-mono">{timeSlot}</span>
                 </div>
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  <span>Statutory Co-op Admin Fee:</span>
-                  <span className="text-amber-400 font-bold">5% (Included)</span>
+                  <span>{t('statutoryCoopFeeLabel', 'Statutory Co-op Admin Fee:')}</span>
+                  <span className="text-amber-400 font-bold">{t('fivePctIncluded', '5% (Included)')}</span>
                 </div>
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  <span>Worker Accident Insurance:</span>
-                  <span className="text-cyan-400 font-bold">PMSBY Covered</span>
+                  <span>{t('workerAccidentInsuranceLabel', 'Worker Accident Insurance:')}</span>
+                  <span className="text-cyan-400 font-bold">{t('pmsbyCovered', 'PMSBY Covered')}</span>
                 </div>
 
                 <div className="pt-3 border-t border-white/[0.08] flex justify-between items-baseline">
                   <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Total Estimated Payable:
+                    {t('totalEstimatedPayable', 'Total Estimated Payable:')}
                   </span>
                   <span className="text-2xl font-black text-emerald-400">₹{estimatedTotal}</span>
                 </div>

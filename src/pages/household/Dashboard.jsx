@@ -253,16 +253,16 @@ export default function HouseholdDashboard() {
                 <div className="flex justify-between items-start">
                   <div>
                     <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
-                    <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Completed by {b.worker?.full_name || 'Cooperative Member'}</p>
+                    <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('completedByPrefix', 'Completed by')} {b.worker?.full_name || t('cooperativeMember', 'Cooperative Member')}</p>
                   </div>
                   <span className="status-pill-emerald">
-                    ✓ COMPLETED
+                    ✓ {t('completedStatus', 'COMPLETED')}
                   </span>
                 </div>
                 <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
-                  <span>Total Billed: <strong className={isDark ? 'text-white' : 'text-slate-900'}>₹{b.final_amount || b.estimated_amount}</strong></span>
+                  <span>{t('totalBilledLabel', 'Total Billed:')} <strong className={isDark ? 'text-white' : 'text-slate-900'}>₹{b.final_amount || b.estimated_amount}</strong></span>
                   <Link to="/household/invoices" className={`font-bold hover:underline inline-flex items-center gap-1 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
-                    <span>Download Invoice 📄</span>
+                    <span>{t('downloadInvoiceText', 'Download Invoice 📄')}</span>
                     <span>→</span>
                   </Link>
                 </div>
@@ -270,7 +270,7 @@ export default function HouseholdDashboard() {
             ))}
             {pastBookings.length === 0 && (
               <div className={`p-8 text-center rounded-xl border ${isDark ? 'bg-[#161a22]/50 border-white/[0.04] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
-                No completed bookings yet.
+                {t('noCompletedBookingsYet', 'No completed bookings yet.')}
               </div>
             )}
           </div>

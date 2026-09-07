@@ -416,9 +416,9 @@ export default function CooperativeDemandForecast() {
                   : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
               }`}
             >
-              <option value="7d">📅 Next 7 Days</option>
-              <option value="14d">📅 Next 14 Days</option>
-              <option value="30d">📅 Next 30 Days</option>
+              <option value="7d">📅 {t('next7Days', 'Next 7 Days')}</option>
+              <option value="14d">📅 {t('next14Days', 'Next 14 Days')}</option>
+              <option value="30d">📅 {t('next30Days', 'Next 30 Days')}</option>
             </select>
           </div>
         </div>
@@ -428,10 +428,10 @@ export default function CooperativeDemandForecast() {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="text-xs font-black uppercase tracking-wider text-[#ff7a00]">
-                📁 Category Classification
+                📁 {t('categoryClassificationTitle', 'Category Classification')}
               </span>
               <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                (Select a category to declutter & focus trade forecast)
+                {t('categoryClassificationHint', '(Select a category to declutter & focus trade forecast)')}
               </span>
             </div>
 
@@ -447,11 +447,11 @@ export default function CooperativeDemandForecast() {
                 }`}
                 title="Sort Trade Order"
               >
-                <option value="default">🔀 Sort: Default</option>
-                <option value="demand_desc">🔥 Sort: Highest Demand</option>
-                <option value="deficit_desc">🚨 Sort: Highest Deficit</option>
-                <option value="supply_desc">👥 Sort: Highest Supply</option>
-                <option value="alpha">🔤 Sort: A to Z</option>
+                <option value="default">🔀 {t('sortDefault', 'Sort: Default')}</option>
+                <option value="demand_desc">🔥 {t('sortHighestDemand', 'Sort: Highest Demand')}</option>
+                <option value="deficit_desc">🚨 {t('sortHighestDeficit', 'Sort: Highest Deficit')}</option>
+                <option value="supply_desc">👥 {t('sortHighestSupply', 'Sort: Highest Supply')}</option>
+                <option value="alpha">🔤 {t('sortAtoZ', 'Sort: A to Z')}</option>
               </select>
 
               <select

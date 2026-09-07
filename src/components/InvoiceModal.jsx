@@ -177,10 +177,10 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
                 : 'bg-slate-100 text-slate-700 border-slate-200'
             }`}>
               <tr>
-                <th className="px-4 py-3 font-bold">Service Task</th>
-                <th className="px-3 py-3 text-center font-bold whitespace-nowrap">Duration</th>
-                <th className="px-3 py-3 text-right font-bold whitespace-nowrap">Standard Tariff</th>
-                <th className="px-4 py-3 text-right font-bold whitespace-nowrap">Total Amount</th>
+                <th className="px-4 py-3 font-bold">{t('serviceTaskHeader', 'Service Task')}</th>
+                <th className="px-3 py-3 text-center font-bold whitespace-nowrap">{t('durationHeader', 'Duration')}</th>
+                <th className="px-3 py-3 text-right font-bold whitespace-nowrap">{t('standardTariffHeader', 'Standard Tariff')}</th>
+                <th className="px-4 py-3 text-right font-bold whitespace-nowrap">{t('totalAmountHeader', 'Total Amount')}</th>
               </tr>
             </thead>
             <tbody className={`divide-y print:divide-slate-100 ${
@@ -198,12 +198,12 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
                 <td className={`px-3 py-3.5 text-center font-medium whitespace-nowrap print:text-slate-700 ${
                   isDark ? 'text-slate-300' : 'text-slate-700'
                 }`}>
-                  {inv.job.estimatedHours} hrs
+                  {inv.job.estimatedHours} {t('hrsLabel', 'hrs')}
                 </td>
                 <td className={`px-3 py-3.5 text-right whitespace-nowrap print:text-slate-600 ${
                   isDark ? 'text-slate-300' : 'text-slate-600'
                 }`}>
-                  ₹ {hourlyTariff} / hr
+                  ₹ {hourlyTariff} / {t('hourUnit', 'hr')}
                 </td>
                 <td className={`px-4 py-3.5 text-right font-black text-sm whitespace-nowrap print:text-emerald-700 ${
                   isDark ? 'text-emerald-400' : 'text-emerald-700'
@@ -225,19 +225,19 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
             <span className={`text-[10px] uppercase font-bold tracking-wider print:text-emerald-700 ${
               isDark ? 'text-emerald-400' : 'text-emerald-700'
             }`}>
-              Payment & Worker Wage Settlement
+              {t('paymentSettlementTitle', 'Payment & Worker Wage Settlement')}
             </span>
             <span className={`text-[10px] font-medium print:text-slate-500 ${
               isDark ? 'text-slate-400' : 'text-slate-500'
             }`}>
-              Statutory Cooperative Ledger
+              {t('statutoryCoopLedger', 'Statutory Cooperative Ledger')}
             </span>
           </div>
 
           <div className={`flex justify-between items-center gap-4 print:text-slate-800 ${
             isDark ? 'text-slate-200' : 'text-slate-800'
           }`}>
-            <span>Total Customer Payment (Gross Amount):</span>
+            <span>{t('totalCustomerGrossPayment', 'Total Customer Payment (Gross Amount):')}</span>
             <span className={`font-bold shrink-0 print:text-slate-950 ${
               isDark ? 'text-white' : 'text-slate-950'
             }`}>₹ {inv.financials.grossAmount}</span>
@@ -246,14 +246,14 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
           <div className={`flex justify-between items-center gap-4 print:text-amber-700 ${
             isDark ? 'text-amber-300' : 'text-amber-700'
           }`}>
-            <span>Less: Co-op 5% Maintenance Contribution:</span>
+            <span>{t('lessCoopMaintenance', 'Less: Co-op 5% Maintenance Contribution:')}</span>
             <span className="font-bold shrink-0">- ₹ {inv.financials.cooperativeFeeAmount}</span>
           </div>
 
           <div className={`flex justify-between items-center gap-4 print:text-sky-700 ${
             isDark ? 'text-cyan-300' : 'text-sky-700'
           }`}>
-            <span>Less: Worker Welfare & Social Security Fund:</span>
+            <span>{t('lessWorkerWelfare', 'Less: Worker Welfare & Social Security Fund:')}</span>
             <span className="font-bold shrink-0">- ₹ {inv.financials.welfareFundAmount}</span>
           </div>
 
@@ -267,11 +267,11 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
             <div className="space-y-0.5">
               <span className={`block text-sm font-black print:text-emerald-700 ${
                 isDark ? 'text-emerald-400' : 'text-emerald-700'
-              }`}>Direct Worker Take-Home Pay:</span>
+              }`}>{t('directWorkerTakeHomePay', 'Direct Worker Take-Home Pay:')}</span>
               <span className={`text-[10px] font-normal block print:text-slate-500 ${
                 isDark ? 'text-slate-400' : 'text-slate-500'
               }`}>
-                Amount Calculation: ₹ {inv.financials.grossAmount} - ₹ {inv.financials.cooperativeFeeAmount} - ₹ {inv.financials.welfareFundAmount} = ₹ {inv.financials.netWorkerPayout}
+                {t('amountCalculationLabel', 'Amount Calculation:')} ₹ {inv.financials.grossAmount} - ₹ {inv.financials.cooperativeFeeAmount} - ₹ {inv.financials.welfareFundAmount} = ₹ {inv.financials.netWorkerPayout}
               </span>
             </div>
             <span className={`text-base font-black shrink-0 print:text-emerald-700 ${

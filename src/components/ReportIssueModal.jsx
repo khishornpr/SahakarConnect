@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
+import { useTranslation } from '../context/I18nContext'
 
 const ALLOWED_EXTENSIONS = ['txt', 'doc', 'docx', 'pdf', 'png', 'jpeg', 'jpg']
 
 export default function ReportIssueModal({ isOpen, onClose, job, currentUser, onSubmitted }) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [issueType, setIssueType] = useState('Unsatisfactory Service')
   const [subject, setSubject] = useState('')
   const [description, setDescription] = useState('')
@@ -88,16 +90,16 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
             </span>
             <div>
               <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Report an Issue / Dispute
+                {t('reportIssueDispute', 'Report an Issue / Dispute')}
               </h2>
               <span className="text-[11px] text-slate-400">
-                Routed to Labor Department Adjudication Queue
+                {t('routedToLaborQueue', 'Routed to Labor Department Adjudication Queue')}
               </span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs ${
+            className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs cursor-pointer ${
               isDark ? 'bg-slate-800 text-slate-300 hover:text-white' : 'bg-slate-100 text-slate-600'
             }`}
           >
@@ -108,9 +110,9 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
         {success ? (
           <div className="py-8 text-center space-y-3">
             <div className="text-4xl animate-bounce">⚖️</div>
-            <h3 className="text-sm font-bold text-emerald-400">Dispute Filed Successfully</h3>
+            <h3 className="text-sm font-bold text-emerald-400">{t('disputeFiledSuccess', 'Dispute Filed Successfully')}</h3>
             <p className="text-xs text-slate-300 max-w-xs mx-auto">
-              Your claim has been logged with the Labor Department Officer. You will be notified when an investigation is completed.
+              {t('disputeFiledDesc', 'Your claim has been logged with the Labor Department Officer. You will be notified when an investigation is completed.')}
             </p>
           </div>
         ) : (
@@ -120,15 +122,15 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
               isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
             }`}>
               <div>
-                <span className="text-slate-400 block text-[10px]">Service Booking</span>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{job.title}</strong>
+                <span className="text-slate-400 block text-[10px]">{t('serviceBooking', 'Service Booking')}</span>
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t(job.title, job.title)}</strong>
               </div>
               <span className="font-mono text-[#ff7a00] font-bold">₹{job.final_amount || job.estimated_amount}</span>
             </div>
 
             {/* Issue Type */}
             <div>
-              <label className="block font-bold mb-1 text-slate-300">Issue Category *</label>
+              <label className="block font-bold mb-1 text-slate-300">{t('issueCategory', 'Issue Category *')}</label>
               <select
                 value={issueType}
                 onChange={(e) => setIssueType(e.target.value)}
@@ -137,23 +139,23 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
                 }`}
                 required
               >
-                <option value="Unsatisfactory Service">🛠️ Unsatisfactory Work / Defective Service</option>
-                <option value="Overcharging">💰 Overcharging / Unwarranted Price Hike</option>
-                <option value="Unsafe Behavior">⚠️ Unsafe Behavior / Security Concern</option>
-                <option value="Property Damage">💥 Accidental Property Damage</option>
-                <option value="Other">📝 Other Dispute</option>
+                <option value="Unsatisfactory Service">{t('unsatisfactoryServiceOption', '🛠️ Unsatisfactory Work / Defective Service')}</option>
+                <option value="Overcharging">{t('overchargingOption', '💰 Overcharging / Unwarranted Price Hike')}</option>
+                <option value="Unsafe Behavior">{t('unsafeBehaviorOption', '⚠️ Unsafe Behavior / Security Concern')}</option>
+                <option value="Property Damage">{t('propertyDamageOption', '💥 Accidental Property Damage')}</option>
+                <option value="Other">{t('otherDisputeOption', '📝 Other Dispute')}</option>
               </select>
             </div>
 
             {/* Subject */}
             <div>
-              <label className="block font-bold mb-1 text-slate-300">Summary / Subject *</label>
+              <label className="block font-bold mb-1 text-slate-300">{t('summarySubject', 'Summary / Subject *')}</label>
               <input
                 type="text"
                 required
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                placeholder="example: Pipe started leaking 24 hrs after repair"
+                placeholder={t('subjectPlaceholder', 'example: Pipe started leaking 24 hrs after repair')}
                 className={`w-full p-2.5 rounded-xl border outline-none transition-all ${
                   isDark ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900'
                 }`}
@@ -162,13 +164,13 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
 
             {/* Description */}
             <div>
-              <label className="block font-bold mb-1 text-slate-300">Description of What Happened *</label>
+              <label className="block font-bold mb-1 text-slate-300">{t('descriptionWhatHappened', 'Description of What Happened *')}</label>
               <textarea
                 required
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Explain what went wrong, damages observed, or communication with the worker..."
+                placeholder={t('descriptionPlaceholderGrievance', 'Explain what went wrong, damages observed, or communication with the worker...')}
                 className={`w-full p-2.5 rounded-xl border outline-none transition-all ${
                   isDark ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900'
                 }`}
@@ -177,9 +179,9 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
 
             {/* File Upload */}
             <div>
-              <label className="block font-bold mb-1 text-slate-300">Evidence Photo / Receipt / Document</label>
+              <label className="block font-bold mb-1 text-slate-300">{t('evidenceDocsLabel', 'Evidence Photo / Receipt / Document')}</label>
               <p className="text-[11px] text-slate-400 mb-1.5 font-medium">
-                Upload the files in any of these formats: <span className="font-bold text-[#ff7a00]">TXT, DOC, DOCX, PDF, PNG, JPEG, JPG</span>
+                {t('uploadFormatsHint', 'Upload the files in any of these formats:')} <span className="font-bold text-[#ff7a00]">TXT, DOC, DOCX, PDF, PNG, JPEG, JPG</span>
               </p>
 
               {fileError && (
@@ -190,7 +192,7 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
 
               {fileName && !fileError && (
                 <div className="mb-2 text-xs font-bold text-emerald-400">
-                  ✓ Attached: {fileName}
+                  {t('attachedLabel', '✓ Attached:')} {fileName}
                 </div>
               )}
 
@@ -206,18 +208,18 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
               <button
                 type="button"
                 onClick={onClose}
-                className={`px-4 py-2 rounded-xl font-bold ${
+                className={`px-4 py-2 rounded-xl font-bold cursor-pointer ${
                   isDark ? 'border border-slate-700 text-slate-300' : 'border border-slate-300 text-slate-700'
                 }`}
               >
-                Cancel
+                {t('cancel', 'Cancel')}
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 flow-btn-primary font-black uppercase tracking-wider rounded-xl shadow-md disabled:opacity-50"
+                className="px-4 py-2 flow-btn-primary font-black uppercase tracking-wider rounded-xl shadow-md disabled:opacity-50 cursor-pointer"
               >
-                {submitting ? 'Filing Claim...' : 'Submit to Labor Officer'}
+                {submitting ? t('filingClaim', 'Filing Claim...') : t('submitToLaborOfficer', 'Submit to Labor Officer')}
               </button>
             </div>
           </form>
@@ -228,3 +230,4 @@ export default function ReportIssueModal({ isOpen, onClose, job, currentUser, on
 
   return typeof document !== 'undefined' ? createPortal(content, document.body) : null
 }
+

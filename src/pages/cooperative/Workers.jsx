@@ -116,14 +116,14 @@ export default function CooperativeWorkers() {
               isDark ? 'bg-[#161a22] text-[#ff7a00] border-white/[0.08]' : 'bg-slate-50 text-slate-700 border-slate-200'
             }`}>
               <tr>
-                <th className="px-4 py-3.5 whitespace-nowrap">Worker Name</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Primary Trade</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Base Locality</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">KYC Document</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Reputation</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Verification Status</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Status</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Admin Action</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('workerNameHeader', 'Worker Name')}</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('primaryTradeHeader', 'Primary Trade')}</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('baseLocalityHeader', 'Base Locality')}</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('kycDocHeader', 'KYC Document')}</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('reputationHeader', 'Reputation')}</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('verificationStatusHeader', 'Verification Status')}</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('statusHeader', 'Status')}</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">{t('adminActionHeader', 'Admin Action')}</th>
               </tr>
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-white/[0.06]' : 'divide-slate-200'}`}>

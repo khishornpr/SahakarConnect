@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 
 export default function OfficerHelp() {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState('')
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
 
@@ -10,50 +12,50 @@ export default function OfficerHelp() {
     {
       id: 'dashboard',
       icon: '🏛️',
-      title: 'Dispute Docket & Case Queue',
+      title: t('helpOfficerModDashTitle', 'Dispute Docket & Case Queue'),
       path: '/officer/dashboard',
-      description: 'Statutory bench for reviewing filed worker and household disputes, inspecting evidence, and issuing binding rulings.',
+      description: t('helpOfficerModDashDesc', 'Statutory bench for reviewing filed worker and household disputes, inspecting evidence, and issuing binding rulings.'),
       steps: [
-        'Filter disputes by status ("All", "Pending", "Resolved", "Closed") or case type.',
-        'Click on any Case ID to open the detailed Evidence & Adjudication Inspector.',
-        'Inspect the claimant statement, uploaded documents/photos, linked Geo-Dispatch logs, and job tariff details.',
+        t('helpOfficerModDashStep1', 'Filter disputes by status ("All", "Pending", "Resolved", "Closed") or case type.'),
+        t('helpOfficerModDashStep2', 'Click on any Case ID to open the detailed Evidence & Adjudication Inspector.'),
+        t('helpOfficerModDashStep3', 'Inspect the claimant statement, uploaded documents/photos, linked Geo-Dispatch logs, and job tariff details.'),
       ],
     },
     {
       id: 'cases',
       icon: '🗂️',
-      title: 'Dispute Registry & Conciliation Records',
+      title: t('helpOfficerModCasesTitle', 'Dispute Registry & Conciliation Records'),
       path: '/officer/cases',
-      description: 'Comprehensive historical archive of labor conciliations, wage enforcement orders, and statutory settlements.',
+      description: t('helpOfficerModCasesDesc', 'Comprehensive historical archive of labor conciliations, wage enforcement orders, and statutory settlements.'),
       steps: [
-        'Search across full case database by Case ID, worker name, or household client.',
-        'Review past recorded rulings and conciliation settlements.',
-        'Audit compliance with statutory fair wage thresholds and safety mandates.',
+        t('helpOfficerModCasesStep1', 'Search across full case database by Case ID, worker name, or household client.'),
+        t('helpOfficerModCasesStep2', 'Review past recorded rulings and conciliation settlements.'),
+        t('helpOfficerModCasesStep3', 'Audit compliance with statutory fair wage thresholds and safety mandates.'),
       ],
     },
     {
       id: 'ruling',
       icon: '⚖️',
-      title: 'Evidence Review & Binding Rulings Workflow',
+      title: t('helpOfficerModRulingTitle', 'Evidence Review & Binding Rulings Workflow'),
       path: '/officer/dashboard',
-      description: 'Step-by-step procedure for recording statutory dispute resolutions and releasing escrow funds.',
+      description: t('helpOfficerModRulingDesc', 'Step-by-step procedure for recording statutory dispute resolutions and releasing escrow funds.'),
       steps: [
-        'Step 1 (Evidence Audit): Inspect timestamped chats, site photos, and completion logs.',
-        'Step 2 (Record Hearing Notes): Enter official conciliation findings and legal rationale into the case record.',
-        'Step 3 (Select Outcome): Order full wage disbursement to worker, escrow refund to household, or split conciliation settlement.',
-        'Step 4 (Submit Ruling): Click "Record Official Ruling" to execute the judgment and notify all parties.',
+        t('helpOfficerModRulingStep1', 'Step 1 (Evidence Audit): Inspect timestamped chats, site photos, and completion logs.'),
+        t('helpOfficerModRulingStep2', 'Step 2 (Record Hearing Notes): Enter official conciliation findings and legal rationale into the case record.'),
+        t('helpOfficerModRulingStep3', 'Step 3 (Select Outcome): Order full wage disbursement to worker, escrow refund to household, or split conciliation settlement.'),
+        t('helpOfficerModRulingStep4', 'Step 4 (Submit Ruling): Click "Record Official Ruling" to execute the judgment and notify all parties.'),
       ],
     },
   ]
 
   const faqs = [
     {
-      q: 'Are rulings issued by the Labor Officer legally binding?',
-      a: 'Yes. Under the cooperative dispute framework, decisions recorded by registered Labor Department Officers are binding on cooperative escrow settlements and platform standings.',
+      q: t('helpOfficerFaq1Q', 'Are rulings issued by the Labor Officer legally binding?'),
+      a: t('helpOfficerFaq1A', 'Yes. Under the cooperative dispute framework, decisions recorded by registered Labor Department Officers are binding on cooperative escrow settlements and platform standings.'),
     },
     {
-      q: 'How does the system ensure evidence integrity?',
-      a: 'All evidence attachments (photos, chat logs, bills) and Geo-Dispatch timestamps are cryptographically anchored to prevent tampering.',
+      q: t('helpOfficerFaq2Q', 'How does the system ensure evidence integrity?'),
+      a: t('helpOfficerFaq2A', 'All evidence attachments (photos, chat logs, bills) and Geo-Dispatch timestamps are cryptographically anchored to prevent tampering.'),
     },
   ]
 
@@ -72,13 +74,13 @@ export default function OfficerHelp() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 bg-[#ff6b00]/15 text-[#ff7a00] border border-[#ff6b00]/30">
               <span>📖</span>
-              <span>Labor Officer Manual</span>
+              <span>{t('officerManualTag', 'Labor Officer Manual')}</span>
             </div>
             <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Labor Protection Officer Adjudication Manual
+              {t('officerManualTitle', 'Labor Protection Officer Adjudication Manual')}
             </h1>
             <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-              Operational standard for statutory conciliation hearings, evidence verification, dispute adjudication, and binding escrow settlement orders.
+              {t('officerManualDesc', 'Operational standard for statutory conciliation hearings, evidence verification, dispute adjudication, and binding escrow settlement orders.')}
             </p>
           </div>
         </div>
@@ -89,7 +91,7 @@ export default function OfficerHelp() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="🔍 Search adjudication procedures, evidence rules, statutory rulings..."
+            placeholder={t('searchAdjudicationPlaceholder', '🔍 Search adjudication procedures, evidence rules, statutory rulings...')}
             className={`w-full px-4 py-3 rounded-xl text-xs font-semibold outline-none border transition-all ${
               isDark
                 ? 'bg-[#12151c] border-white/[0.1] text-white focus:border-[#ff6b00] shadow-inner'
@@ -102,7 +104,7 @@ export default function OfficerHelp() {
       {/* Module Overview Grid */}
       <div>
         <h2 className={`text-lg font-black mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          ⚖️ Adjudication Procedures & Legal Protocols
+          ⚖️ {t('adjudicationProceduresTitle', 'Adjudication Procedures & Legal Protocols')}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -127,7 +129,7 @@ export default function OfficerHelp() {
                 isDark ? 'bg-black/30 border-white/[0.05]' : 'bg-slate-50 border-slate-100'
               }`}>
                 <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#ff7a00]">
-                  Adjudication Step:
+                  {t('adjudicationStepLabel', 'Adjudication Step:')}
                 </div>
                 <ul className="space-y-1">
                   {m.steps.map((step, idx) => (
@@ -147,7 +149,7 @@ export default function OfficerHelp() {
       <div className={`p-6 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
         <h2 className={`text-base font-black mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           <span>❓</span>
-          <span>Statutory Compliance FAQs</span>
+          <span>{t('officerComplianceFaqsTitle', 'Statutory Compliance FAQs')}</span>
         </h2>
 
         <div className="space-y-2.5">
@@ -192,9 +194,9 @@ export default function OfficerHelp() {
             ⚖️
           </span>
           <div>
-            <h4 className={`text-sm font-black ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>Need more help with statutory rulings?</h4>
+            <h4 className={`text-sm font-black ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>{t('needMoreHelpStatutoryRulings', 'Need more help with statutory rulings?')}</h4>
             <p className={`text-xs mt-0.5 font-medium leading-relaxed ${isDark ? 'text-orange-200/90' : 'text-orange-900/90'}`}>
-              Contact the State Labor Commissioner Secretariat or platform technical legal counsel.
+              {t('needMoreHelpStatutoryRulingsDesc', 'Contact the State Labor Commissioner Secretariat or platform technical legal counsel.')}
             </p>
           </div>
         </div>
@@ -203,7 +205,7 @@ export default function OfficerHelp() {
             href="mailto:legal-officer@sahakar.in"
             className="px-4 py-2.5 bg-[#ff6b00] hover:bg-[#e05e00] text-white rounded-xl text-xs font-black shadow-md transition-all whitespace-nowrap cursor-pointer"
           >
-            ✉️ Email Legal Desk
+            ✉️ {t('emailLegalDesk', 'Email Legal Desk')}
           </a>
           <a
             href="tel:1800112233"
@@ -220,3 +222,4 @@ export default function OfficerHelp() {
     </div>
   )
 }
+

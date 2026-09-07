@@ -112,23 +112,23 @@ export default function WorkerWelfare() {
               className="w-full accent-[#ff6b00] cursor-pointer"
             />
             <div className="flex justify-between text-[11px] text-slate-500">
-              <span>₹5,000 (Micro)</span>
-              <span>₹25,000 (Standard)</span>
-              <span>₹50,000 (Maximum Limit)</span>
+              <span>{t('fiveThousandMicro', '₹5,000 (Micro)')}</span>
+              <span>{t('twentyFiveThousandStd', '₹25,000 (Standard)')}</span>
+              <span>{t('fiftyThousandMax', '₹50,000 (Maximum Limit)')}</span>
             </div>
           </div>
 
           <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-2 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-50 border-slate-200'}`}>
-            <div className="text-xs text-slate-400">Monthly Auto-Deduction (6 Months)</div>
+            <div className="text-xs text-slate-400">{t('monthlyAutoDeduction', 'Monthly Auto-Deduction (6 Months)')}</div>
             <div className="text-2xl font-black text-emerald-400">
-              ₹{Math.round(loanAmount / 6).toLocaleString()} /mo
+              ₹{Math.round(loanAmount / 6).toLocaleString()} /{t('monthUnit', 'mo')}
             </div>
-            <div className="text-[11px] text-slate-500">Zero Interest • Directly reconciled from completed service jobs</div>
+            <div className="text-[11px] text-slate-500">{t('zeroInterestWageReconciled', 'Zero Interest • Directly reconciled from completed service jobs')}</div>
             <button
               onClick={() => alert(`Emergency advance request of ₹${loanAmount.toLocaleString()} submitted to Federation Board for instant verification.`)}
-              className="w-full py-2 flow-btn-emerald text-xs font-bold rounded-xl shadow-sm"
+              className="w-full py-2 flow-btn-emerald text-xs font-bold rounded-xl shadow-sm cursor-pointer"
             >
-              ⚡ Request Instant Advance
+              ⚡ {t('requestInstantAdvanceBtn', 'Request Instant Advance')}
             </button>
           </div>
         </div>

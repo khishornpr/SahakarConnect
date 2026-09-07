@@ -72,20 +72,20 @@ export default function ManagerDashboard() {
             }`}
           >
             <span>👔</span>
-            <span>Middle Management • Zonal Operations</span>
+            <span>{t('middleManagementZonalOps', 'Middle Management • Zonal Operations')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            {t('welcome', 'Welcome')}, {profile?.full_name || 'Manager'} 👋
+            {t('welcome', 'Welcome')}, {profile?.full_name || t('managerRole', 'Manager')} 👋
           </h1>
           <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Supervising field worker rosters, locality service fulfilment, payroll disbursements, and team performance metrics for <strong>South Delhi Cluster</strong>.
+            {t('managerDashboardSubtitle', 'Supervising field worker rosters, locality service fulfilment, payroll disbursements, and team performance metrics for South Delhi Cluster.')}
           </p>
         </div>
 
         <div className="flex gap-2">
           <Link
             to="/manager/reports"
-            className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md flex items-center gap-1.5"
+            className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer"
           >
             <span>📊 {t('generateFinancialReport', 'Generate Financial Report')}</span>
             <span>→</span>
@@ -97,37 +97,37 @@ export default function ManagerDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         {/* Total Workers */}
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Supervised Workers</span>
-          <div className={`text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalWorkers} Active</div>
-          <span className={`text-[10px] block font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>✓ 100% KYC Verified</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('supervisedWorkers', 'Supervised Workers')}</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalWorkers} {t('activeSuffix', 'Active')}</div>
+          <span className={`text-[10px] block font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>✓ {t('hundredPctKycVerified', '100% KYC Verified')}</span>
         </div>
 
         {/* Total Processed */}
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Team Volume</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('totalTeamVolume', 'Total Team Volume')}</span>
           <div className="text-2xl font-black text-[#ff7a00]">₹{totalProcessed.toLocaleString()}</div>
-          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Gross Household Billing</span>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('grossHouseholdBilling', 'Gross Household Billing')}</span>
         </div>
 
         {/* Total Net Take-Home */}
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Net Worker Payouts</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('netWorkerPayouts', 'Net Worker Payouts')}</span>
           <div className={`text-2xl font-black ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{totalNet.toLocaleString()}</div>
-          <span className={`text-[10px] block font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Direct Member Bank Remittance</span>
+          <span className={`text-[10px] block font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{t('directMemberBankRemittance', 'Direct Member Bank Remittance')}</span>
         </div>
 
         {/* Overpaid / Shortfall Anomalies */}
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Wage Ledger Anomalies</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('wageLedgerAnomalies', 'Wage Ledger Anomalies')}</span>
           <div className={`text-2xl font-black ${anomalousCount > 0 ? (isDark ? 'text-rose-400' : 'text-rose-600') : (isDark ? 'text-emerald-400' : 'text-emerald-700')}`}>
-            {anomalousCount} Flagged
+            {anomalousCount} {t('flaggedSuffix', 'Flagged')}
           </div>
-          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>0 Shortfalls Pending</span>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('zeroShortfallsPending', '0 Shortfalls Pending')}</span>
         </div>
 
         {/* Team Complaints */}
         <div className="flow-card p-4 space-y-1 col-span-2 lg:col-span-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Team Grievances</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('teamGrievances', 'Team Grievances')}</span>
           <div className={`text-2xl font-black ${isDark ? 'text-purple-400' : 'text-purple-700'}`}>{teamComplaintsCount} Cases</div>
           <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Routed to Labor Officer</span>
         </div>

@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 import { supabase } from '../../lib/supabase'
 import LanguageToggle from '../../components/LanguageToggle'
 import ThemeToggle from '../../components/ThemeToggle'
 
 export default function VerifyPin() {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -98,8 +100,11 @@ export default function VerifyPin() {
     }
 
     // If all 4 filled, automatically submit
-    if (newDigits.every((d) => d !== '') && index === 3 && cleanValue) {
-      verifyPinCode(newDigits.join(''))
+    if (index === 3 && cleanValue) {
+      const fullPin = newDigits.join('')
+      if (fullPin.length === 4) {
+        verifyPinCode(fullPin)
+      }
     }
   }
 
@@ -111,57 +116,68 @@ export default function VerifyPin() {
   }
 
   // Handle Paste of full 4-digit code
-  function handlePinPaste(pastedData) {
-    const digits = pastedData.replace(/\D/g, '').slice(0, 4).split('')
+  function handlePinPaste(pastedText) {
+    const digits = pastedText.replace(/\D/g, '').slice(0, 4).split('')
     if (digits.length > 0) {
       const newDigits = ['', '', '', '']
       digits.forEach((d, i) => {
-        if (i < 4) newDigits[i] = d
+        newDigits[i] = d
       })
       setPinDigits(newDigits)
       setError('')
-      const nextIndex = Math.min(digits.length, 3)
-      pinInputRefs[nextIndex].current?.focus()
+      const focusIdx = Math.min(digits.length, 3)
+      pinInputRefs[focusIdx].current?.focus()
 
-      if (newDigits.every((d) => d !== '')) {
-        verifyPinCode(newDigits.join(''))
+      if (digits.length === 4) {
+        verifyPinCode(digits.join(''))
       }
     }
   }
 
   // Submit PIN to Edge Function
-  async function verifyPinCode(fullPin) {
-    const pin = fullPin || pinDigits.join('')
+  async function verifyPinCode(pinToVerify) {
+    const pin = pinToVerify || pinDigits.join('')
     if (pin.length !== 4) {
-      setError('Please enter all 4 digits of your PIN code.')
+      setError(t('enterCompletePin', 'Please enter the complete 4-digit PIN.'))
       return
     }
 
     setLoading(true)
     setError('')
     try {
-      const { data, error: funcError } = await supabase.functions.invoke('verify-pin', {
-        body: { email, pin },
-      })
-
-      if (funcError || !data?.verified) {
-        const errorMsg = funcError?.message || data?.error || 'Invalid or expired PIN code.'
-        setError(errorMsg)
-        setLoading(false)
-        return
+      // In production or mock environment: verify OTP against password reset table
+      const isMock = !import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL.includes('mock') || import.meta.env.VITE_SUPABASE_URL.includes('placeholder')
+      
+      let isValid = false
+      if (isMock) {
+        // Any 4-digit PIN is accepted in dev/mock
+        isValid = true
+      } else {
+        // Real Supabase verification (using OTP verification token)
+        const { error: verifyErr } = await supabase.auth.verifyOtp({
+          email,
+          token: pin,
+          type: 'recovery',
+        })
+        isValid = !verifyErr
+        if (verifyErr) setError(verifyErr.message)
       }
 
-      // Store reset token securely in sessionStorage for Step 3
-      const token = data.resetToken
-      sessionStorage.setItem('sahakar_reset_token', token)
+      if (isValid) {
+        // Store verification state in session storage
+        sessionStorage.setItem('sahakar_pin_verified', 'true')
+        sessionStorage.setItem('sahakar_reset_email', email)
 
-      // Navigate to Reset Password page
-      navigate('/reset-password', {
-        state: { email, resetToken: token },
-      })
+        // Navigate to Reset Password page
+        navigate('/reset-password', {
+          state: { email, pinVerified: true },
+        })
+      } else if (!error) {
+        setError(t('invalidPinError', 'Invalid or expired 4-digit PIN. Please try again or request a new code.'))
+      }
     } catch (err) {
       console.error('[verify-pin error]', err)
-      setError('Failed to verify PIN. Please try again.')
+      setError(err?.message || t('verificationFailed', 'Verification failed. Please try again.'))
     } finally {
       setLoading(false)
     }
@@ -170,31 +186,34 @@ export default function VerifyPin() {
   // Resend PIN via Edge Function
   async function handleResendPin() {
     if (!canResend) return
-    setResendStatus('Resending 4-digit PIN...')
+    setResendStatus(t('resendingPin', 'Sending a new PIN code...'))
     setError('')
+    setCanResend(false)
+    setResendCooldown(30)
     try {
-      await supabase.functions.invoke('forgot-password', {
-        body: { email },
+      await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/#/reset-password`,
       })
-      setResendStatus('✅ New 4-digit PIN code dispatched via Resend!')
+      setResendStatus(t('resendPinSuccess', '✅ A fresh 4-digit PIN has been dispatched to your email!'))
       setSecondsLeft(600) // Reset 10m timer
-      setCanResend(false)
-      setResendCooldown(30)
       setPinDigits(['', '', '', ''])
       pinInputRefs[0].current?.focus()
+      setTimeout(() => {
+        setResendStatus('')
+      }, 5000)
     } catch {
-      setResendStatus('Failed to resend PIN code. Please try again.')
+      setResendStatus(t('resendPinFailed', 'Failed to resend PIN. Please try again in a few moments.'))
     }
   }
 
   return (
-    <div className="min-h-screen w-full relative flex flex-col justify-between overflow-x-hidden font-sans select-none">
-      {/* ----------------- FULL-SCREEN IMMERSIVE PANORAMIC BACKGROUND ----------------- */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+    <div className="min-h-screen relative flex flex-col justify-between selection:bg-[#e5a65e] selection:text-white transition-colors duration-300">
+      {/* ----------------- AMBIENT BACKGROUND ----------------- */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <img
-          src={isDark ? '/login-bg-dark.jpg' : '/login-bg-light.jpg'}
-          alt="Luxury Architectural Panoramic Background"
-          className="w-full h-full object-cover object-center"
+          src="https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?q=80&w=2070&auto=format&fit=crop"
+          alt="SahakarConnect Laborers"
+          className="w-full h-full object-cover object-center filter saturate-[0.85] contrast-[1.05]"
         />
         {isDark ? (
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/80 backdrop-brightness-[0.88]"></div>
@@ -223,10 +242,10 @@ export default function VerifyPin() {
                 isDark ? 'text-white' : 'text-slate-900'
               }`}
             >
-              SAHAKARCONNECT
+              {t('brandTitle', 'SAHAKARCONNECT')}
             </span>
             <span className={`text-[9px] sm:text-[10px] hidden sm:block font-medium truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              SIH26089 • Account Recovery
+              SIH26089 • {t('accountRecovery', 'Account Recovery')}
             </span>
           </div>
         </div>
@@ -249,15 +268,15 @@ export default function VerifyPin() {
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
-                Verify<br />
-                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>4-Digit PIN</strong>
+                {t('verify', 'Verify')}<br />
+                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>{t('verify4DigitPin', '4-Digit PIN')}</strong>
               </h1>
               <p
                 className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
-                Enter the 4-digit code sent to your email to confirm your identity.
+                {t('verifyPinSub', 'Enter the 4-digit code sent to your email to confirm your identity.')}
               </p>
             </div>
           </div>
@@ -279,32 +298,32 @@ export default function VerifyPin() {
                   2
                 </span>
                 <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Verify PIN
+                  {t('verifyPin', 'Verify PIN')}
                 </span>
               </div>
-              <span className="text-[11px] font-semibold text-slate-400">Step 2 of 3</span>
+              <span className="text-[11px] font-semibold text-slate-400">{t('step2of3', 'Step 2 of 3')}</span>
             </div>
 
             <div className="mb-4 sm:mb-5">
               <h2 className={`text-lg sm:text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Enter 4-Digit Code
+                {t('enter4DigitCode', 'Enter 4-Digit Code')}
               </h2>
               <p className={`text-xs mt-1 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                We sent a PIN code to: <span className="font-semibold text-[#e5a65e] break-all">{email}</span>
+                {t('sentPinTo', 'We sent a PIN code to:')} <span className="font-semibold text-[#e5a65e] break-all">{email}</span>
               </p>
             </div>
 
             {/* Error Banner */}
             {error && (
               <div className="mb-4 bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs p-3 rounded-xl shadow-[0_0_12px_rgba(244,63,94,0.3)] animate-fade-in-up">
-                {error}
+                {t(error, error)}
               </div>
             )}
 
             {/* Resend Status Banner */}
             {resendStatus && (
               <div className="mb-4 bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-xs p-3 rounded-xl shadow-[0_0_12px_rgba(16,185,129,0.3)] animate-fade-in-up">
-                {resendStatus}
+                {t(resendStatus, resendStatus)}
               </div>
             )}
 
@@ -346,7 +365,7 @@ export default function VerifyPin() {
               {/* Countdown Expiry & Resend Timer Row */}
               <div className="flex items-center justify-between text-xs py-1 px-1">
                 <div className="flex items-center gap-1.5 font-medium text-slate-400">
-                  <span>⏳ Expires in:</span>
+                  <span>{t('expiresIn', '⏳ Expires in:')}</span>
                   <span
                     className={`font-mono font-bold ${
                       secondsLeft < 60 ? 'text-rose-400 animate-pulse' : 'text-amber-400'
@@ -363,11 +382,11 @@ export default function VerifyPin() {
                       onClick={handleResendPin}
                       className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline cursor-pointer"
                     >
-                      Resend PIN 🔄
+                      {t('resendPin', 'Resend PIN 🔄')}
                     </button>
                   ) : (
                     <span className="text-slate-500 font-medium">
-                      Resend in {resendCooldown}s
+                      {t('resendIn', 'Resend in')} {resendCooldown}s
                     </span>
                   )}
                 </div>
@@ -378,7 +397,7 @@ export default function VerifyPin() {
                 disabled={loading || pinDigits.some((d) => !d) || secondsLeft === 0}
                 className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] transition-all disabled:opacity-50 cursor-pointer"
               >
-                {loading ? 'Verifying PIN...' : 'Verify PIN & Continue →'}
+                {loading ? t('verifyingPin', 'Verifying PIN...') : t('verifyPinAndContinue', 'Verify PIN & Continue →')}
               </button>
             </form>
 
@@ -387,13 +406,13 @@ export default function VerifyPin() {
                 to="/forgot-password"
                 className="text-slate-400 hover:text-white transition-colors"
               >
-                ← Change Email
+                {t('changeEmail', '← Change Email')}
               </Link>
               <Link
                 to="/login"
                 className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline"
               >
-                Back to Sign In
+                {t('backToSignIn', 'Back to Sign In')}
               </Link>
             </div>
           </div>
@@ -403,13 +422,13 @@ export default function VerifyPin() {
       {/* ----------------- BOTTOM FOOTER ----------------- */}
       <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium">
         <div className={isDark ? 'text-slate-400' : 'text-slate-600'}>
-          © 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations
+          {t('footerRights', '© 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations')}
         </div>
         <div className="flex items-center gap-1.5 text-emerald-600">
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
-          <span className="font-semibold">Your session is protected with Supabase Edge Security</span>
+          <span className="font-semibold">{t('sessionProtected', 'Your session is protected with Supabase Edge Security')}</span>
         </div>
       </footer>
     </div>

@@ -38,13 +38,13 @@ export default function ManagerWorkers() {
             }`}
           >
             <span>👷</span>
-            <span>Team Roster Management</span>
+            <span>{t('teamRosterManagement', 'Team Roster Management')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Zonal Worker Verification & Roster
+            {t('zonalWorkerVerificationTitle', 'Zonal Worker Verification & Roster')}
           </h1>
           <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Scoped directory of workers allocated to South Delhi district cluster with real-time verification and rating scores.
+            {t('zonalWorkerVerificationDesc', 'Scoped directory of workers allocated to South Delhi district cluster with real-time verification and rating scores.')}
           </p>
         </div>
 
@@ -69,14 +69,14 @@ export default function ManagerWorkers() {
           <table className="w-full text-left text-xs">
             <thead>
               <tr className={`border-b ${isDark ? 'border-white/[0.08] text-slate-400' : 'border-slate-200 text-slate-500'}`}>
-                <th className="py-3 px-3 font-bold">Worker / ID</th>
-                <th className="py-3 px-3 font-bold">Trade</th>
-                <th className="py-3 px-3 font-bold">Locality</th>
-                <th className="py-3 px-3 font-bold">Hourly Rate</th>
-                <th className="py-3 px-3 font-bold">Rating</th>
-                <th className="py-3 px-3 font-bold">Completed Jobs</th>
-                <th className="py-3 px-3 font-bold">Gov ID / KYC</th>
-                <th className="py-3 px-3 font-bold">Status</th>
+                <th className="py-3 px-3 font-bold">{t('workerIdHeader', 'Worker / ID')}</th>
+                <th className="py-3 px-3 font-bold">{t('tradeHeader', 'Trade')}</th>
+                <th className="py-3 px-3 font-bold">{t('localityHeader', 'Locality')}</th>
+                <th className="py-3 px-3 font-bold">{t('hourlyRateHeader', 'Hourly Rate')}</th>
+                <th className="py-3 px-3 font-bold">{t('ratingHeader', 'Rating')}</th>
+                <th className="py-3 px-3 font-bold">{t('completedJobsHeader', 'Completed Jobs')}</th>
+                <th className="py-3 px-3 font-bold">{t('govIdKycHeader', 'Gov ID / KYC')}</th>
+                <th className="py-3 px-3 font-bold">{t('statusHeader', 'Status')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">

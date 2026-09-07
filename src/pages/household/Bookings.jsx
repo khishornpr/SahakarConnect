@@ -240,10 +240,10 @@ export default function HouseholdBookings() {
                   <div>
                     <div className="text-xs font-bold text-[#ff7a00] flex items-center gap-1.5">
                       <span>🔐</span>
-                      <span>Completion OTP</span>
+                      <span>{t('completionOtpTitle', 'Completion OTP')}</span>
                     </div>
                     <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                      Share this 4-digit code with the worker once the work is completed.
+                      {t('shareCompletionOtpDesc', 'Share this 4-digit code with the worker once the work is completed.')}
                     </p>
                   </div>
                   <div className="px-4 py-2 rounded-xl bg-[#ff6b00] text-white font-mono font-black text-xl tracking-widest text-center shadow-[0_0_15px_rgba(255,107,0,0.5)] shrink-0 self-start sm:self-auto">
@@ -255,7 +255,7 @@ export default function HouseholdBookings() {
               {/* Action Buttons */}
               <div className={`flex flex-wrap items-center justify-between gap-3 pt-3 border-t text-xs ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
                 <div className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                  Scheduled: <strong>{b.scheduled_date} ({b.scheduled_time_slot})</strong>
+                  {t('scheduledTimePrefix', 'Scheduled:')} <strong>{b.scheduled_date} ({b.scheduled_time_slot})</strong>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -264,13 +264,13 @@ export default function HouseholdBookings() {
                       {ratedBookings[b.id] ? (
                         <div className="flex items-center gap-1.5">
                           <span className="px-2.5 py-1 text-xs font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 rounded-xl flex items-center gap-1 shadow-xs">
-                            ★ {ratedBookings[b.id]} / 5 Rated
+                            ★ {ratedBookings[b.id]} / 5 {t('ratedLabel', 'Rated')}
                           </span>
                           <button
                             disabled
                             className="px-3 py-1.5 rounded-xl font-bold border opacity-50 cursor-not-allowed bg-slate-800/40 text-slate-400 border-white/10 text-xs"
                           >
-                            Rated ✓
+                            {t('ratedDoneBadge', 'Rated ✓')}
                           </button>
                         </div>
                       ) : (
@@ -282,33 +282,33 @@ export default function HouseholdBookings() {
                               : 'bg-amber-50 border-amber-300 text-amber-900'
                           }`}
                         >
-                          ★ Rate Worker
+                          ★ {t('rateWorkerBtn', 'Rate Worker')}
                         </button>
                       )}
                       <button
                         onClick={() => setReportIssueModalJob(b)}
-                        className={`px-3 py-1.5 rounded-xl font-bold border transition-all flex items-center gap-1 ${
+                        className={`px-3 py-1.5 rounded-xl font-bold border transition-all flex items-center gap-1 cursor-pointer ${
                           isDark
                             ? 'bg-rose-950/40 border-rose-500/40 text-rose-300 hover:bg-rose-900/40'
                             : 'bg-rose-50 border-rose-300 text-rose-900'
                         }`}
                       >
                         <span>⚠️</span>
-                        <span>Report Issue</span>
+                        <span>{t('reportIssueBtn', 'Report Issue')}</span>
                       </button>
                       <button
                         onClick={() => setPaymentModalJob(b)}
-                        className="px-3.5 py-1.5 flow-btn-emerald text-xs font-bold rounded-xl shadow-sm flex items-center gap-1"
+                        className="px-3.5 py-1.5 flow-btn-emerald text-xs font-bold rounded-xl shadow-sm flex items-center gap-1 cursor-pointer"
                       >
                         <span>💳</span>
-                        <span>Pay UPI/Card</span>
+                        <span>{t('payUpiCardBtn', 'Pay UPI/Card')}</span>
                       </button>
                       <Link
                         to="/household/invoices"
-                        className="px-3.5 py-1.5 flow-btn-primary font-bold rounded-xl shadow-sm flex items-center gap-1"
+                        className="px-3.5 py-1.5 flow-btn-primary font-bold rounded-xl shadow-sm flex items-center gap-1 cursor-pointer"
                       >
                         <span>📄</span>
-                        <span>Invoice</span>
+                        <span>{t('invoiceBtn', 'Invoice')}</span>
                       </Link>
                     </>
                   )}

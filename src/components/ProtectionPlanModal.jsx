@@ -14,43 +14,43 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
   const schemes = [
     {
       id: 'pmsby',
-      tag: 'ACCIDENTAL COVER',
-      title: 'Pradhan Mantri Suraksha Bima (PMSBY)',
-      desc: '24/7 comprehensive accidental disability & life risk coverage for active gig technicians.',
+      tag: t('accidentalCoverTag', 'ACCIDENTAL COVER'),
+      title: t('pmsbyTitle', 'Pradhan Mantri Suraksha Bima (PMSBY)'),
+      desc: t('pmsbyDesc', '24/7 comprehensive accidental disability & life risk coverage for active gig technicians.'),
       cover: '₹2,00,000',
-      premium: 'FREE (100% Co-op Funded)',
-      subsidy: '100% Co-op Covered',
-      badge: '✓ Active Policy',
+      premium: t('pmsbyPremium', 'FREE (100% Co-op Funded)'),
+      subsidy: t('pmsbySubsidy', '100% Co-op Covered'),
+      badge: t('activePolicyBadge', '✓ Active Policy'),
     },
     {
       id: 'ayushman',
-      tag: 'HEALTH & HOSPITALIZATION',
-      title: 'Ayushman Bharat PM-JAY Cashless Hospitalization',
-      desc: 'Secondary and tertiary cashless medical care across 27,000+ empanelled hospitals nationwide.',
-      cover: '₹5,00,000 / Family',
-      premium: 'FREE (Govt + Co-op)',
-      subsidy: '100% Subsidized',
-      badge: '✓ Verified Scheme',
+      tag: t('healthHospTag', 'HEALTH & HOSPITALIZATION'),
+      title: t('ayushmanTitle', 'Ayushman Bharat PM-JAY Cashless Hospitalization'),
+      desc: t('ayushmanDesc', 'Secondary and tertiary cashless medical care across 27,000+ empanelled hospitals nationwide.'),
+      cover: t('ayushmanCover', '₹5,00,000 / Family'),
+      premium: t('ayushmanPremium', 'FREE (Govt + Co-op)'),
+      subsidy: t('ayushmanSubsidy', '100% Subsidized'),
+      badge: t('verifiedSchemeBadge', '✓ Verified Scheme'),
     },
     {
       id: 'pension',
-      tag: 'RETIREMENT SECURITY',
-      title: 'Atal Pension Yojana (APY) Co-op Match',
-      desc: 'Cooperative matched monthly pension fund ensuring financial independence post 60 years of age.',
-      cover: '₹5,00,000 Retirement Corpus',
-      premium: '₹120 / Mo (50% Matched)',
-      subsidy: '50% Co-op Matching',
-      badge: '✓ Auto-Enrolled',
+      tag: t('retirementSecTag', 'RETIREMENT SECURITY'),
+      title: t('apyTitle', 'Atal Pension Yojana (APY) Co-op Match'),
+      desc: t('apyDesc', 'Cooperative matched monthly pension fund ensuring financial independence post 60 years of age.'),
+      cover: t('apyCover', '₹5,00,000 Retirement Corpus'),
+      premium: t('apyPremium', '₹120 / Mo (50% Matched)'),
+      subsidy: t('apySubsidy', '50% Co-op Matching'),
+      badge: t('autoEnrolledBadge', '✓ Auto-Enrolled'),
     },
     {
       id: 'emergency_pool',
-      tag: 'EMERGENCY LIQUIDITY',
-      title: 'Zero-Interest Co-op Micro-Advance Pool',
-      desc: 'Instant collateral-free liquidity up to ₹50,000 for emergency medical, tooling, or education needs.',
-      cover: 'Up to ₹50,000 Advance',
-      premium: '0% Interest',
-      subsidy: 'Direct Wage Reconciled',
-      badge: '⚡ Instant UPI',
+      tag: t('emergencyLiqTag', 'EMERGENCY LIQUIDITY'),
+      title: t('microAdvanceTitle', 'Zero-Interest Co-op Micro-Advance Pool'),
+      desc: t('microAdvanceDesc', 'Instant collateral-free liquidity up to ₹50,000 for emergency medical, tooling, or education needs.'),
+      cover: t('microAdvanceCover', 'Up to ₹50,000 Advance'),
+      premium: t('zeroInterestLabel', '0% Interest'),
+      subsidy: t('directWageReconciled', 'Direct Wage Reconciled'),
+      badge: t('instantUpiBadge', '⚡ Instant UPI'),
     },
   ]
 
@@ -79,7 +79,7 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
                 </span>
               </div>
               <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                100% fair wages, collective social security corpus, and cashless emergency safeguards funded by 5% co-op surplus
+                {t('welfarePlanHeaderDesc', '100% fair wages, collective social security corpus, and cashless emergency safeguards funded by 5% co-op surplus')}
               </p>
             </div>
           </div>
@@ -98,31 +98,31 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
           {/* Key Metrics Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className={`p-4 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Accidental Cover</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{t('accidentalCover', 'Accidental Cover')}</span>
               <div className="text-xl font-black text-[#ff7a00] mt-1">₹2,00,000</div>
-              <span className="text-[10px] text-emerald-400 font-bold">100% Co-op Paid</span>
+              <span className="text-[10px] text-emerald-400 font-bold">{t('hundredPctCoopPaid', '100% Co-op Paid')}</span>
             </div>
             <div className={`p-4 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Health Coverage</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{t('healthCoverage', 'Health Coverage')}</span>
               <div className="text-xl font-black text-emerald-400 mt-1">₹5,00,000</div>
-              <span className="text-[10px] text-slate-400 font-medium">PM-JAY Empanelled</span>
+              <span className="text-[10px] text-slate-400 font-medium">{t('pmjayEmpanelled', 'PM-JAY Empanelled')}</span>
             </div>
             <div className={`p-4 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Welfare Corpus</span>
-              <div className="text-xl font-black text-cyan-400 mt-1">₹10 / Job</div>
-              <span className="text-[10px] text-cyan-400 font-bold">Automatic Escrow</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{t('welfareCorpus', 'Welfare Corpus')}</span>
+              <div className="text-xl font-black text-cyan-400 mt-1">{t('tenPerJob', '₹10 / Job')}</div>
+              <span className="text-[10px] text-cyan-400 font-bold">{t('automaticEscrow', 'Automatic Escrow')}</span>
             </div>
             <div className={`p-4 rounded-2xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Emergency Credit</span>
-              <div className="text-xl font-black text-purple-400 mt-1">0% Interest</div>
-              <span className="text-[10px] text-purple-400 font-bold">Instant UPI</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{t('emergencyCredit', 'Emergency Credit')}</span>
+              <div className="text-xl font-black text-purple-400 mt-1">{t('zeroInterestLabel', '0% Interest')}</div>
+              <span className="text-[10px] text-purple-400 font-bold">{t('instantUpiBadge', '⚡ Instant UPI')}</span>
             </div>
           </div>
 
           {/* Scheme Details Grid */}
           <div className="space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-[#ff7a00]">
-              📋 Active Cooperative Social Protection Schemes
+              📋 {t('activeCoopSocialProtectionTitle', 'Active Cooperative Social Protection Schemes')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {schemes.map((sch) => (
@@ -153,15 +153,15 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
 
                   <div className={`pt-2.5 border-t space-y-1.5 text-xs ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Maximum Cover:</span>
+                      <span className="text-slate-400">{t('maximumCoverLabel', 'Maximum Cover:')}</span>
                       <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{sch.cover}</strong>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Worker Contribution:</span>
+                      <span className="text-slate-400">{t('workerContributionLabel', 'Worker Contribution:')}</span>
                       <span className="text-emerald-400 font-bold">{sch.premium}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Cooperative Subsidy:</span>
+                      <span className="text-slate-400">{t('coopSubsidyLabel', 'Cooperative Subsidy:')}</span>
                       <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{sch.subsidy}</span>
                     </div>
                   </div>
@@ -177,7 +177,7 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
         }`}>
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <span>🔒</span>
-            <span>Policy verified by National Health Authority & Ministry of Labour & Employment.</span>
+            <span>{t('policyVerifiedFooter', 'Policy verified by National Health Authority & Ministry of Labour & Employment.')}</span>
           </div>
           <div className="flex items-center gap-2.5 w-full sm:w-auto">
             {role === 'worker' && (
@@ -186,18 +186,18 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
                 onClick={onClose}
                 className="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#ff6b00] text-white shadow-md hover:scale-105 transition-all flex items-center gap-1.5"
               >
-                <span>⚡ Open Welfare Portal</span>
+                <span>⚡ {t('openWelfarePortal', 'Open Welfare Portal')}</span>
                 <span>→</span>
               </Link>
             )}
             <button
               onClick={() => {
-                alert('Digital Welfare Protection Certificate downloaded successfully.')
+                alert(t('protectionCertDownloadedAlert', 'Digital Welfare Protection Certificate downloaded successfully.'))
                 onClose()
               }}
               className="px-4 py-2.5 rounded-xl text-xs font-bold flow-btn-primary shadow-md hover:scale-105 transition-all flex items-center gap-1.5"
             >
-              <span>📄 Download Protection Certificate</span>
+              <span>📄 {t('downloadProtectionCertificate', 'Download Protection Certificate')}</span>
             </button>
             <button
               onClick={onClose}
@@ -205,7 +205,7 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
                 isDark ? 'bg-white/5 border-white/10 hover:bg-white/10 text-slate-200' : 'bg-white border-slate-300 hover:bg-slate-100 text-slate-700'
               }`}
             >
-              Close
+              {t('close', 'Close')}
             </button>
           </div>
         </div>

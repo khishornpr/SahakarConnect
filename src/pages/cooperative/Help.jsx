@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 
 export default function CooperativeHelp() {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [openSection, setOpenSection] = useState(null)
 
   const toggleAccordion = (id) => {
@@ -14,57 +16,57 @@ export default function CooperativeHelp() {
     {
       id: 'dashboard',
       icon: '📊',
-      title: 'Executive Dashboard & Financial Overview',
-      desc: 'High-level operational and financial summary of the entire cooperative federation.',
+      title: t('helpCoopDashTitle', 'Executive Dashboard & Financial Overview'),
+      desc: t('helpCoopDashDesc', 'High-level operational and financial summary of the entire cooperative federation.'),
       howTo: [
-        'Monitor high-level metrics: Total Gross Merchandise Value (GMV), active fleet utilization, completed jobs, and trust rating.',
-        'Switch between interactive revenue, expense, and cash flow charts (Bar, Line, Smooth Area, or Combo).',
-        'Check real-time liquidity projections and 30-day financial outlook.',
+        t('helpCoopDashStep1', 'Monitor high-level metrics: Total Gross Merchandise Value (GMV), active fleet utilization, completed jobs, and trust rating.'),
+        t('helpCoopDashStep2', 'Switch between interactive revenue, expense, and cash flow charts (Bar, Line, Smooth Area, or Combo).'),
+        t('helpCoopDashStep3', 'Check real-time liquidity projections and 30-day financial outlook.'),
       ],
     },
     {
       id: 'workers',
       icon: '👥',
-      title: 'Worker Registry & Verification Queue',
-      desc: 'Verify member-worker KYC credentials and approve craft trade updates.',
+      title: t('helpCoopWorkersTitle', 'Worker Registry & Verification Queue'),
+      desc: t('helpCoopWorkersDesc', 'Verify member-worker KYC credentials and approve craft trade updates.'),
       howTo: [
-        'Filter the worker roster by "All", "⏳ Pending Verification", or "✓ Verified".',
-        'Review submitted government ID documents and certified craft experience.',
-        'When a worker requests a primary trade or experience change, review their submission and click "✓ Approve & Verify" to activate their certified status.',
-        'Suspend or review workers who fail safety compliance or receive repeated low ratings.',
+        t('helpCoopWorkersStep1', 'Filter the worker roster by "All", "⏳ Pending Verification", or "✓ Verified".'),
+        t('helpCoopWorkersStep2', 'Review submitted government ID documents and certified craft experience.'),
+        t('helpCoopWorkersStep3', 'When a worker requests a primary trade or experience change, review their submission and click "✓ Approve & Verify" to activate their certified status.'),
+        t('helpCoopWorkersStep4', 'Suspend or review workers who fail safety compliance or receive repeated low ratings.'),
       ],
     },
     {
       id: 'dispatch',
       icon: '📍',
-      title: 'Geo-Dispatch & Fleet Matrix',
-      desc: 'Monitor real-time service assignments and respond to priority SOS emergencies.',
+      title: t('helpCoopDispatchTitle', 'Geo-Dispatch & Fleet Matrix'),
+      desc: t('helpCoopDispatchDesc', 'Monitor real-time service assignments and respond to priority SOS emergencies.'),
       howTo: [
-        'View live service dispatch requests categorized by trade category, zone, and priority.',
-        'Filter for Emergency SOS requests that appear with high-priority red alert styling.',
-        'Reassign field workers or adjust dispatch allocations when transit delays occur.',
+        t('helpCoopDispatchStep1', 'View live service dispatch requests categorized by trade category, zone, and priority.'),
+        t('helpCoopDispatchStep2', 'Filter for Emergency SOS requests that appear with high-priority red alert styling.'),
+        t('helpCoopDispatchStep3', 'Reassign field workers or adjust dispatch allocations when transit delays occur.'),
       ],
     },
     {
       id: 'financials',
       icon: '🔍',
-      title: 'Financials & AI Anomaly Detection',
-      desc: 'Audit the immutable transaction ledger and investigate automated fraud alerts.',
+      title: t('helpCoopFinTitle', 'Financials & AI Anomaly Detection'),
+      desc: t('helpCoopFinDesc', 'Audit the immutable transaction ledger and investigate automated fraud alerts.'),
       howTo: [
-        'Inspect the real-time transaction stream with cryptographic audit hashes and timestamped escrow releases.',
-        'Review AI Anomaly alerts detecting suspicious tariff spikes, rapid repeat requests, or unusual escrow hold patterns.',
-        'Manage the collective welfare fund reserves that fund worker insurance and emergency medical advances.',
+        t('helpCoopFinStep1', 'Inspect the real-time transaction stream with cryptographic audit hashes and timestamped escrow releases.'),
+        t('helpCoopFinStep2', 'Review AI Anomaly alerts detecting suspicious tariff spikes, rapid repeat requests, or unusual escrow hold patterns.'),
+        t('helpCoopFinStep3', 'Manage the collective welfare fund reserves that fund worker insurance and emergency medical advances.'),
       ],
     },
     {
       id: 'demand-forecast',
       icon: '📈',
-      title: 'AI Demand Planning & Surge Forecasting',
-      desc: 'Predictive seasonal and district-level labor demand forecasting.',
+      title: t('helpCoopDemandTitle', 'AI Demand Planning & Surge Forecasting'),
+      desc: t('helpCoopDemandDesc', 'Predictive seasonal and district-level labor demand forecasting.'),
       howTo: [
-        'Examine machine learning forecasts predicting service demand across Delhi-NCR districts (South, West, Central, East, North, NCR).',
-        'Identify upcoming seasonal shortages in specific trades (example: AC Repair in Summer, Painting before festivals).',
-        'Plan targeted worker onboarding and Skill Academy training schedules ahead of demand surges.',
+        t('helpCoopDemandStep1', 'Examine machine learning forecasts predicting service demand across Delhi-NCR districts (South, West, Central, East, North, NCR).'),
+        t('helpCoopDemandStep2', 'Identify upcoming seasonal shortages in specific trades (example: AC Repair in Summer, Painting before festivals).'),
+        t('helpCoopDemandStep3', 'Plan targeted worker onboarding and Skill Academy training schedules ahead of demand surges.'),
       ],
     },
   ]
@@ -77,13 +79,13 @@ export default function CooperativeHelp() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 bg-[#ff6b00]/15 text-[#ff7a00] border border-[#ff6b00]/30">
               <span>📖</span>
-              <span>Federation Admin Manual</span>
+              <span>{t('federationAdminManual', 'Federation Admin Manual')}</span>
             </div>
             <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Help & User Manual
+              {t('helpUserManual', 'Help & User Manual')}
             </h1>
             <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-              Complete administrator guide for worker verification, fleet dispatching, financial audits, and demand forecasting.
+              {t('helpCoopBannerDesc', 'Complete administrator guide for worker verification, fleet dispatching, financial audits, and demand forecasting.')}
             </p>
           </div>
         </div>
@@ -93,39 +95,39 @@ export default function CooperativeHelp() {
       <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
         <h2 className={`text-lg font-black mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           <span>🔄</span>
-          <span>1. How this portal works</span>
+          <span>{t('section1HowPortalWorks', '1. How this portal works')}</span>
         </h2>
         <p className={`text-xs leading-relaxed mb-4 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-          The Cooperative Admin Portal is the federation's central command system. Administrators use this portal to verify worker credentials, oversee automated geo-dispatching, monitor fair wage disbursements, detect financial anomalies, and forecast future labor demand using predictive AI models.
+          {t('helpCoopHowItWorksDesc', "The Cooperative Admin Portal is the federation's central command system. Administrators use this portal to verify worker credentials, oversee automated geo-dispatching, monitor fair wage disbursements, detect financial anomalies, and forecast future labor demand using predictive AI models.")}
         </p>
 
         <div className={`p-4 rounded-xl border ${isDark ? 'bg-black/30 border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
           <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#ff7a00] mb-3">
-            Core Administrative Flow (Step-by-Step)
+            {t('coreAdminFlowTitle', 'Core Administrative Flow (Step-by-Step)')}
           </h3>
           <ol className="space-y-2.5 text-xs">
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">1</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Worker Credential Verification:</strong> Review newly registered workers and pending trade/experience changes in the Worker Registry, then grant verified certification status.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep1WorkerCred', 'Worker Credential Verification:')}</strong> {t('helpStep1WorkerCredDesc', 'Review newly registered workers and pending trade/experience changes in the Worker Registry, then grant verified certification status.')}
               </div>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">2</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Live Dispatch Oversight:</strong> Monitor active service bookings across municipal zones and manage high-priority emergency SOS responses.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep2Dispatch', 'Live Dispatch Oversight:')}</strong> {t('helpStep2DispatchDesc', 'Monitor active service bookings across municipal zones and manage high-priority emergency SOS responses.')}
               </div>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">3</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Financial & Audit Management:</strong> Audit the escrow ledger, track welfare fund allocations, and investigate AI anomaly alerts to prevent fraud.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep3Financial', 'Financial & Audit Management:')}</strong> {t('helpStep3FinancialDesc', 'Audit the escrow ledger, track welfare fund allocations, and investigate AI anomaly alerts to prevent fraud.')}
               </div>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">4</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Demand Planning & Upskilling:</strong> Use AI predictive forecasts to identify upcoming labor demand surges and schedule targeted onboarding drives.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep4Demand', 'Demand Planning & Upskilling:')}</strong> {t('helpStep4DemandDesc', 'Use AI predictive forecasts to identify upcoming labor demand surges and schedule targeted onboarding drives.')}
               </div>
             </li>
           </ol>
@@ -137,10 +139,10 @@ export default function CooperativeHelp() {
         <div className="mb-4">
           <h2 className={`text-lg font-black flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
             <span>📚</span>
-            <span>2. Feature-by-feature guide</span>
+            <span>{t('section2FeatureGuide', '2. Feature-by-feature guide')}</span>
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Click on any section below to see administrative controls and operational instructions.
+            {t('helpClickAccordionDesc', 'Click on any section below to see administrative controls and operational instructions.')}
           </p>
         </div>
 
@@ -173,7 +175,7 @@ export default function CooperativeHelp() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs font-bold text-[#ff7a00]">{isOpen ? 'Hide ▲' : 'Read Guide ▼'}</span>
+                    <span className="text-xs font-bold text-[#ff7a00]">{isOpen ? t('hideText', 'Hide ▲') : t('readGuideText', 'Read Guide ▼')}</span>
                   </div>
                 </button>
 
@@ -182,7 +184,7 @@ export default function CooperativeHelp() {
                     isDark ? 'border-white/[0.06] bg-black/20 text-slate-300' : 'border-slate-200 bg-white text-slate-700'
                   }`}>
                     <div className="font-bold text-[#ff7a00] text-[11px] uppercase tracking-wider mb-1">
-                      Administrative Procedures:
+                      {t('adminProceduresLabel', 'Administrative Procedures:')}
                     </div>
                     <ul className="space-y-1.5 list-disc list-inside">
                       {feat.howTo.map((step, idx) => (
@@ -203,24 +205,24 @@ export default function CooperativeHelp() {
       <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
         <h2 className={`text-lg font-black mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           <span>📌</span>
-          <span>3. Mandatory Procedures</span>
+          <span>{t('section3MandatoryProcedures', '3. Mandatory Procedures')}</span>
         </h2>
         <ul className="space-y-2.5 text-xs">
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Review pending verifications daily:</strong> Clear the "Pending Verification" queue promptly so newly certified workers can immediately start accepting service requests.</span>
+            <span><strong>{t('helpMandatory1Title', 'Review pending verifications daily:')}</strong> {t('helpMandatory1Desc', 'Clear the "Pending Verification" queue promptly so newly certified workers can immediately start accepting service requests.')}</span>
           </li>
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Check demand forecast weekly:</strong> Use the AI demand forecasting tool every Monday to identify which trade categories will face shortages in specific municipal zones.</span>
+            <span><strong>{t('helpMandatory2Title', 'Check demand forecast weekly:')}</strong> {t('helpMandatory2Desc', 'Use the AI demand forecasting tool every Monday to identify which trade categories will face shortages in specific municipal zones.')}</span>
           </li>
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Investigate anomaly flags quickly:</strong> If an AI Anomaly is detected on a transaction, audit the job details before releasing escrow funds.</span>
+            <span><strong>{t('helpMandatory3Title', 'Investigate anomaly flags quickly:')}</strong> {t('helpMandatory3Desc', 'If an AI Anomaly is detected on a transaction, audit the job details before releasing escrow funds.')}</span>
           </li>
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Monitor emergency SOS alerts:</strong> Ensure emergency dispatch tickets are attended to immediately by coordinating with the local Zonal Rapid Response team.</span>
+            <span><strong>{t('helpMandatory4Title', 'Monitor emergency SOS alerts:')}</strong> {t('helpMandatory4Desc', 'Ensure emergency dispatch tickets are attended to immediately by coordinating with the local Zonal Rapid Response team.')}</span>
           </li>
         </ul>
       </div>
@@ -238,9 +240,9 @@ export default function CooperativeHelp() {
             🏛️
           </span>
           <div>
-            <h4 className={`text-sm font-black ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>4. Need more help?</h4>
+            <h4 className={`text-sm font-black ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>{t('section4NeedMoreHelp', '4. Need more help?')}</h4>
             <p className={`text-xs mt-0.5 font-medium leading-relaxed ${isDark ? 'text-orange-200/90' : 'text-orange-900/90'}`}>
-              Contact the Central Cooperative Federation Technical Support Desk for administrative or technical assistance.
+              {t('helpContactFederationDesc', 'Contact the Central Cooperative Federation Technical Support Desk for administrative or technical assistance.')}
             </p>
           </div>
         </div>
@@ -249,7 +251,7 @@ export default function CooperativeHelp() {
             href="mailto:admin-support@sahakar.in"
             className="px-4 py-2.5 bg-[#ff6b00] hover:bg-[#e05e00] text-white rounded-xl text-xs font-black shadow-md transition-all whitespace-nowrap cursor-pointer"
           >
-            ✉️ Contact Federation Tech Desk
+            ✉️ {t('contactFedTechDesk', 'Contact Federation Tech Desk')}
           </a>
           <a
             href="tel:1800112233"
@@ -266,3 +268,4 @@ export default function CooperativeHelp() {
     </div>
   )
 }
+

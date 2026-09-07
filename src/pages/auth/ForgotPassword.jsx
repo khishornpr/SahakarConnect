@@ -151,10 +151,10 @@ export default function ForgotPassword() {
                   1
                 </span>
                 <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Request PIN
+                  {t('requestPinStep', 'Request PIN')}
                 </span>
               </div>
-              <span className="text-[11px] font-semibold text-slate-400">Step 1 of 3</span>
+              <span className="text-[11px] font-semibold text-slate-400">{t('step1Of3', 'Step 1 of 3')}</span>
             </div>
 
             <div className="mb-4 sm:mb-5">
@@ -162,7 +162,7 @@ export default function ForgotPassword() {
                 {t('forgotPassword', 'Forgot Password?')}
               </h2>
               <p className={`text-xs mt-1 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                Enter your email address and we will send you a 4-digit reset PIN.
+                {t('forgotPasswordInstruction', 'Enter your email address and we will send you a 4-digit reset PIN.')}
               </p>
             </div>
 
@@ -209,7 +209,7 @@ export default function ForgotPassword() {
               {/* Demo Helper Pill */}
               <div className="flex items-center justify-between text-[11px] px-1">
                 <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                  Quick Demo:
+                  {t('quickDemo', 'Quick Demo:')}
                 </span>
                 <button
                   type="button"
@@ -225,14 +225,14 @@ export default function ForgotPassword() {
                 disabled={loading}
                 className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] transition-all disabled:opacity-50 mt-3 cursor-pointer"
               >
-                {loading ? 'Dispatching Secure Code...' : 'Send 4-Digit Reset PIN →'}
+                {loading ? t('dispatchingCode', 'Dispatching Secure Code...') : t('sendResetPinBtn', 'Send 4-Digit Reset PIN →')}
               </button>
             </form>
 
             <div className={`text-center mt-5 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Remembered your password?{' '}
+              {t('rememberedPassword', 'Remembered your password?')}{' '}
               <Link to="/login" className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline">
-                Back to Sign In
+                {t('backToSignIn', 'Back to Sign In')}
               </Link>
             </div>
           </div>
@@ -242,13 +242,13 @@ export default function ForgotPassword() {
       {/* ----------------- BOTTOM FOOTER ----------------- */}
       <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium">
         <div className={isDark ? 'text-slate-400' : 'text-slate-600'}>
-          © 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations
+          {t('footerCopyright', '© 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations')}
         </div>
         <div className="flex items-center gap-1.5 text-emerald-600">
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
-          <span className="font-semibold">Your session is protected with Supabase Edge Security</span>
+          <span className="font-semibold">{t('protectedEdgeSecurity', 'Your session is protected with Supabase Edge Security')}</span>
         </div>
       </footer>
     </div>

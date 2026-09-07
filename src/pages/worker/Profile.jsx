@@ -147,7 +147,7 @@ export default function WorkerProfile() {
                       : 'bg-amber-100 border-amber-300 text-amber-900'
                   }`}>
                     <span className="animate-pulse">⏳</span>
-                    <span>Verification in Progress</span>
+                    <span>{t('verificationInProgress', 'Verification in Progress')}</span>
                   </span>
                 ) : (
                   <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black border shadow-sm ${
@@ -156,7 +156,7 @@ export default function WorkerProfile() {
                       : 'bg-emerald-100 border-emerald-300 text-emerald-800'
                   }`}>
                     <span>✓</span>
-                    <span>Verified</span>
+                    <span>{t('verifiedBadge', 'Verified')}</span>
                   </span>
                 )}
               </div>
@@ -183,16 +183,16 @@ export default function WorkerProfile() {
             <div className="text-left">
               <div className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1 truncate">
                 <span>{currentCategory.icon}</span>
-                <span className="truncate">{currentTradeName} Works</span>
+                <span className="truncate">{currentTradeName} {t('worksSuffix', 'Works')}</span>
               </div>
               <div className="text-base font-black text-[#ff7a00]">
                 {currentTradeWorks}{' '}
                 <span className="text-[10px] font-bold text-slate-400">
                   {currentTradeWorks === 0 && totalWorks > 0
-                    ? `(${priorWorksCount} as ${priorTradeName})`
+                    ? `(${priorWorksCount} ${t('asTradePrefix', 'as')} ${priorTradeName})`
                     : currentTradeWorks < totalWorks
-                    ? `(${currentTradeWorks}/${totalWorks} • ${priorWorksCount} as ${priorTradeName})`
-                    : `(${currentTradeWorks}/${totalWorks} Works)`}
+                    ? `(${currentTradeWorks}/${totalWorks} • ${priorWorksCount} ${t('asTradePrefix', 'as')} ${priorTradeName})`
+                    : `(${currentTradeWorks}/${totalWorks} ${t('worksSuffix', 'Works')})`}
                 </span>
               </div>
             </div>
@@ -203,7 +203,7 @@ export default function WorkerProfile() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-wider">Craft & Specializations</h3>
+              <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-wider">{t('craftSpecializationsTitle', 'Craft & Specializations')}</h3>
             </div>
 
             {saveSuccess && (
@@ -223,10 +223,10 @@ export default function WorkerProfile() {
                 <span className="text-xl shrink-0 mt-0.5 animate-bounce">⏳</span>
                 <div className="space-y-1">
                   <span className={`font-black text-xs sm:text-sm block ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>
-                    Verification In Progress
+                    {t('verificationInProgress', 'Verification In Progress')}
                   </span>
                   <span className={`text-xs leading-relaxed block ${isDark ? 'text-amber-200/90' : 'text-amber-900 font-medium'}`}>
-                    Your craft credentials for <strong className={`font-bold ${isDark ? 'text-white' : 'text-amber-950 underline decoration-amber-400'}`}>{workerInfo?.primary_trade}</strong> ({formatExperience(workerInfo?.experience_years ?? experienceYears, workerInfo?.experience_months ?? experienceMonths)} exp) have been submitted to the Cooperative Admin Department. Until verified, your status will show <strong className={`font-bold ${isDark ? 'text-amber-300' : 'text-amber-950'}`}>Verification in Progress</strong>. Once approved by Admin, it will automatically update to <strong className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>Verified</strong>.
+                    {t('workerProfilePendingVerifyDesc', 'Your craft credentials have been submitted to the Cooperative Admin Department. Until verified, your status will show Verification in Progress. Once approved by Admin, it will automatically update to Verified.')}
                   </span>
                 </div>
               </div>
@@ -240,7 +240,7 @@ export default function WorkerProfile() {
                 <div className="mt-2 p-3.5 rounded-2xl border bg-gradient-to-b from-transparent to-orange-500/5 space-y-3 border-[#ff6b00]/30 shadow-md">
                   <div>
                     <label className={`text-[11px] font-bold block mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Select New Primary Trade
+                      {t('selectNewPrimaryTrade', 'Select New Primary Trade')}
                     </label>
                     <select
                       value={selectedTrade}
@@ -259,11 +259,11 @@ export default function WorkerProfile() {
 
                   <div>
                     <label className={`text-[11px] font-bold block mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Experience in this Trade
+                      {t('experienceInTradeLabel', 'Experience in this Trade')}
                     </label>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] text-slate-400 block mb-1 font-bold uppercase">Years</label>
+                        <label className="text-[10px] text-slate-400 block mb-1 font-bold uppercase">{t('yearsLabel', 'Years')}</label>
                         <select
                           value={experienceYears}
                           onChange={(e) => setExperienceYears(parseInt(e.target.value) || 0)}
@@ -273,14 +273,14 @@ export default function WorkerProfile() {
                         >
                           {Array.from({ length: 41 }, (_, i) => (
                             <option key={i} value={i}>
-                              {i} {i === 1 ? 'Year' : 'Years'}
+                              {i} {i === 1 ? t('yearUnit', 'Year') : t('yearsUnit', 'Years')}
                             </option>
                           ))}
                         </select>
                       </div>
 
                       <div>
-                        <label className="text-[10px] text-slate-400 block mb-1 font-bold uppercase">Months</label>
+                        <label className="text-[10px] text-slate-400 block mb-1 font-bold uppercase">{t('monthsLabel', 'Months')}</label>
                         <select
                           value={experienceMonths}
                           onChange={(e) => setExperienceMonths(parseInt(e.target.value) || 0)}
@@ -290,7 +290,7 @@ export default function WorkerProfile() {
                         >
                           {Array.from({ length: 12 }, (_, i) => (
                             <option key={i} value={i}>
-                              {i} {i === 1 ? 'Month' : 'Months'}
+                              {i} {i === 1 ? t('monthUnit', 'Month') : t('monthsUnit', 'Months')}
                             </option>
                           ))}
                         </select>
@@ -305,7 +305,7 @@ export default function WorkerProfile() {
                       onClick={handleSaveTrade}
                       className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-sm cursor-pointer hover:scale-105 transition-all"
                     >
-                      Save Primary Trade
+                      {t('savePrimaryTradeBtn', 'Save Primary Trade')}
                     </button>
                     <button
                       type="button"

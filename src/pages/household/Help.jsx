@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 
 export default function HouseholdHelp() {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [openSection, setOpenSection] = useState(null)
 
   const toggleAccordion = (id) => {
@@ -14,47 +16,47 @@ export default function HouseholdHelp() {
     {
       id: 'dashboard',
       icon: '📊',
-      title: 'Dashboard & Tariff Catalog',
-      desc: 'Browse standardized, fair hourly rates across all household service categories.',
+      title: t('helpHouseholdDashTitle', 'Dashboard & Tariff Catalog'),
+      desc: t('helpHouseholdDashDesc', 'Browse standardized, fair hourly rates across all household service categories.'),
       howTo: [
-        'Explore verified craft categories (Electrician, Plumber, Painter, House Cleaning, Cook, Appliance Repair, etc.).',
-        'Check standardized hourly rates (example: ₹180/hr Electrician, ₹160/hr Plumber) with 100% direct worker pay.',
-        'View quick summaries of your current active service bookings.',
+        t('helpHouseholdDashStep1', 'Explore verified craft categories (Electrician, Plumber, Painter, House Cleaning, Cook, Appliance Repair, etc.).'),
+        t('helpHouseholdDashStep2', 'Check standardized hourly rates (example: ₹180/hr Electrician, ₹160/hr Plumber) with 100% direct worker pay.'),
+        t('helpHouseholdDashStep3', 'View quick summaries of your current active service bookings.'),
       ],
     },
     {
       id: 'book',
       icon: '✨',
-      title: 'Book a Service (AI Worker Matching)',
-      desc: 'Schedule a certified tradesperson matched by proximity, craft rating, and verified skills.',
+      title: t('helpHouseholdBookTitle', 'Book a Service (AI Worker Matching)'),
+      desc: t('helpHouseholdBookDesc', 'Schedule a certified tradesperson matched by proximity, craft rating, and verified skills.'),
       howTo: [
-        '1. Select Trade: Choose the exact craft you need help with.',
-        '2. Enter Details: Type your service address, preferred date and time slot, and special instructions.',
-        '3. Select Matched Worker: Review recommended nearby verified workers with their ratings and past completed works.',
-        '4. Confirm Booking: Click "Confirm & Dispatch Worker" to lock your request in cooperative escrow.',
+        t('helpHouseholdBookStep1', '1. Select Trade: Choose the exact craft you need help with.'),
+        t('helpHouseholdBookStep2', '2. Enter Details: Type your service address, preferred date and time slot, and special instructions.'),
+        t('helpHouseholdBookStep3', '3. Select Matched Worker: Review recommended nearby verified workers with their ratings and past completed works.'),
+        t('helpHouseholdBookStep4', '4. Confirm Booking: Click "Confirm & Dispatch Worker" to lock your request in cooperative escrow.'),
       ],
     },
     {
       id: 'bookings',
       icon: '📋',
-      title: 'My Bookings & Job Start OTP',
-      desc: 'Track live worker arrival, manage security OTPs, and rate service quality.',
+      title: t('helpHouseholdBookingsTitle', 'My Bookings & Job Start OTP'),
+      desc: t('helpHouseholdBookingsDesc', 'Track live worker arrival, manage security OTPs, and rate service quality.'),
       howTo: [
-        'Track Real-Time Status: Watch your booking move from "Assigned" ➡️ "En Route" ➡️ "In Progress" ➡️ "Completed".',
-        '4-Digit Job Start OTP: When the worker arrives at your door, give them the 4-digit OTP shown on your booking card to authorize work commencement.',
-        'Payment & Rating: When work is finished, complete your payment and leave a star rating (1 to 5 stars) with constructive feedback.',
-        'Report Issue: If there is any problem, click "Report Issue" to open a dispute with a Labor Officer.',
+        t('helpHouseholdBookingsStep1', 'Track Real-Time Status: Watch your booking move from "Assigned" ➡️ "En Route" ➡️ "In Progress" ➡️ "Completed".'),
+        t('helpHouseholdBookingsStep2', '4-Digit Job Start OTP: When the worker arrives at your door, give them the 4-digit OTP shown on your booking card to authorize work commencement.'),
+        t('helpHouseholdBookingsStep3', 'Payment & Rating: When work is finished, complete your payment and leave a star rating (1 to 5 stars) with constructive feedback.'),
+        t('helpHouseholdBookingsStep4', 'Report Issue: If there is any problem, click "Report Issue" to open a dispute with a Labor Officer.'),
       ],
     },
     {
       id: 'invoices',
       icon: '🧾',
-      title: 'Digital Invoices & Statements',
-      desc: 'Access itemized, transparent billing records with zero middleman markups.',
+      title: t('helpHouseholdInvoicesTitle', 'Digital Invoices & Statements'),
+      desc: t('helpHouseholdInvoicesDesc', 'Access itemized, transparent billing records with zero middleman markups.'),
       howTo: [
-        'View complete invoice history for all completed household service tasks.',
-        'Inspect the clear breakdown of labor hours, materials, and cooperative welfare contribution.',
-        'Download official PDF invoice receipts for your home records or tax filing.',
+        t('helpHouseholdInvoicesStep1', 'View complete invoice history for all completed household service tasks.'),
+        t('helpHouseholdInvoicesStep2', 'Inspect the clear breakdown of labor hours, materials, and cooperative welfare contribution.'),
+        t('helpHouseholdInvoicesStep3', 'Download official PDF invoice receipts for your home records or tax filing.'),
       ],
     },
   ]
@@ -67,13 +69,13 @@ export default function HouseholdHelp() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 bg-[#ff6b00]/15 text-[#ff7a00] border border-[#ff6b00]/30">
               <span>📖</span>
-              <span>Customer Help & Manual</span>
+              <span>{t('customerHelpManual', 'Customer Help & Manual')}</span>
             </div>
             <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Help & User Manual
+              {t('helpUserManual', 'Help & User Manual')}
             </h1>
             <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-              Everything you need to know about booking verified tradespeople, OTP verification, invoices, and support.
+              {t('helpHouseholdBannerDesc', 'Everything you need to know about booking verified tradespeople, OTP verification, invoices, and support.')}
             </p>
           </div>
         </div>
@@ -83,39 +85,39 @@ export default function HouseholdHelp() {
       <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
         <h2 className={`text-lg font-black mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           <span>🔄</span>
-          <span>1. How this portal works</span>
+          <span>{t('section1HowPortalWorks', '1. How this portal works')}</span>
         </h2>
         <p className={`text-xs leading-relaxed mb-4 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-          The SahakarConnect Household Portal gives you direct access to background-verified, skilled cooperative workers at fair, standardized hourly tariffs. Your payments are protected in secure escrow, and jobs only start when you share your 4-digit arrival OTP.
+          {t('helpHouseholdHowItWorksDesc', 'The SahakarConnect Household Portal gives you direct access to background-verified, skilled cooperative workers at fair, standardized hourly tariffs. Your payments are protected in secure escrow, and jobs only start when you share your 4-digit arrival OTP.')}
         </p>
 
         <div className={`p-4 rounded-xl border ${isDark ? 'bg-black/30 border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
           <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#ff7a00] mb-3">
-            Core Booking Flow (Step-by-Step)
+            {t('coreBookingFlowTitle', 'Core Booking Flow (Step-by-Step)')}
           </h3>
           <ol className="space-y-2.5 text-xs">
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">1</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Choose Trade & Schedule:</strong> Select the required service trade, enter your house address, and pick your preferred time slot.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep1ChooseTrade', 'Choose Trade & Schedule:')}</strong> {t('helpStep1ChooseTradeDesc', 'Select the required service trade, enter your house address, and pick your preferred time slot.')}
               </div>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">2</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Select Verified Worker:</strong> Choose from recommended nearby cooperative members based on ratings and completed jobs.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep2SelectWorker', 'Select Verified Worker:')}</strong> {t('helpStep2SelectWorkerDesc', 'Choose from recommended nearby cooperative members based on ratings and completed jobs.')}
               </div>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">3</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Provide Job Start OTP:</strong> When the worker arrives physically at your address, give them the 4-digit OTP shown on your booking screen to begin work.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep3JobOtp', 'Provide Job Start OTP:')}</strong> {t('helpStep3JobOtpDesc', 'When the worker arrives physically at your address, give them the 4-digit OTP shown on your booking screen to begin work.')}
               </div>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-[#ff6b00] text-white font-black text-[11px] flex items-center justify-center shrink-0">4</span>
               <div>
-                <strong className={isDark ? 'text-white' : 'text-slate-900'}>Review, Pay & Rate:</strong> Once the service is finished, review the itemized time and tariff, complete the payment, and rate your experience.
+                <strong className={isDark ? 'text-white' : 'text-slate-900'}>{t('helpStep4PayRate', 'Review, Pay & Rate:')}</strong> {t('helpStep4PayRateDesc', 'Once the service is finished, review the itemized time and tariff, complete the payment, and rate your experience.')}
               </div>
             </li>
           </ol>
@@ -127,10 +129,10 @@ export default function HouseholdHelp() {
         <div className="mb-4">
           <h2 className={`text-lg font-black flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
             <span>📚</span>
-            <span>2. Feature-by-feature guide</span>
+            <span>{t('section2FeatureGuide', '2. Feature-by-feature guide')}</span>
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Click on any section below to expand detailed instructions.
+            {t('helpHouseholdClickAccordionDesc', 'Click on any section below to expand detailed instructions.')}
           </p>
         </div>
 
@@ -163,7 +165,7 @@ export default function HouseholdHelp() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs font-bold text-[#ff7a00]">{isOpen ? 'Hide ▲' : 'Read Guide ▼'}</span>
+                    <span className="text-xs font-bold text-[#ff7a00]">{isOpen ? t('hideText', 'Hide ▲') : t('readGuideText', 'Read Guide ▼')}</span>
                   </div>
                 </button>
 
@@ -172,7 +174,7 @@ export default function HouseholdHelp() {
                     isDark ? 'border-white/[0.06] bg-black/20 text-slate-300' : 'border-slate-200 bg-white text-slate-700'
                   }`}>
                     <div className="font-bold text-[#ff7a00] text-[11px] uppercase tracking-wider mb-1">
-                      How to use this feature:
+                      {t('howToUseFeatureLabel', 'How to use this feature:')}
                     </div>
                     <ul className="space-y-1.5 list-disc list-inside">
                       {feat.howTo.map((step, idx) => (
@@ -193,24 +195,24 @@ export default function HouseholdHelp() {
       <div className={`p-6 sm:p-8 rounded-2xl border flow-card ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
         <h2 className={`text-lg font-black mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           <span>📌</span>
-          <span>3. Mandatory Procedures</span>
+          <span>{t('section3MandatoryProcedures', '3. Mandatory Procedures')}</span>
         </h2>
         <ul className="space-y-2.5 text-xs">
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Add clear address & landmarks:</strong> Providing complete location details helps the AI match closer workers who can reach you quickly without delays.</span>
+            <span><strong>{t('helpHouseholdMandatory1Title', 'Add clear address & landmarks:')}</strong> {t('helpHouseholdMandatory1Desc', 'Providing complete location details helps the AI match closer workers who can reach you quickly without delays.')}</span>
           </li>
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Do not share the OTP over phone:</strong> Only give the 4-digit Job Start OTP after the worker arrives in person at your door.</span>
+            <span><strong>{t('helpHouseholdMandatory2Title', 'Do not share the OTP over phone:')}</strong> {t('helpHouseholdMandatory2Desc', 'Only give the 4-digit Job Start OTP after the worker arrives in person at your door.')}</span>
           </li>
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Rate worker quality honestly:</strong> Your feedback directly supports honest, skilled workers and helps maintain high cooperative quality standards.</span>
+            <span><strong>{t('helpHouseholdMandatory3Title', 'Rate worker quality honestly:')}</strong> {t('helpHouseholdMandatory3Desc', 'Your feedback directly supports honest, skilled workers and helps maintain high cooperative quality standards.')}</span>
           </li>
           <li className={`flex items-start gap-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <span className="text-[#ff7a00] font-bold text-sm">•</span>
-            <span><strong>Use Report Issue for disputes:</strong> If you notice incomplete work or accidental damage, report it through the booking card immediately to freeze escrow funds for investigation.</span>
+            <span><strong>{t('helpHouseholdMandatory4Title', 'Use Report Issue for disputes:')}</strong> {t('helpHouseholdMandatory4Desc', 'If you notice incomplete work or accidental damage, report it through the booking card immediately to freeze escrow funds for investigation.')}</span>
           </li>
         </ul>
       </div>
@@ -228,9 +230,9 @@ export default function HouseholdHelp() {
             🤝
           </span>
           <div>
-            <h4 className={`text-sm font-black ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>4. Need more help?</h4>
+            <h4 className={`text-sm font-black ${isDark ? 'text-orange-300' : 'text-orange-950'}`}>{t('section4NeedMoreHelp', '4. Need more help?')}</h4>
             <p className={`text-xs mt-0.5 font-medium leading-relaxed ${isDark ? 'text-orange-200/90' : 'text-orange-900/90'}`}>
-              Our cooperative customer service desk is available to assist you with bookings, invoices, or service feedback.
+              {t('helpHouseholdSupportDesc', 'Our cooperative customer service desk is available to assist you with bookings, invoices, or service feedback.')}
             </p>
           </div>
         </div>
@@ -239,7 +241,7 @@ export default function HouseholdHelp() {
             href="mailto:support@sahakar.in"
             className="px-4 py-2.5 bg-[#ff6b00] hover:bg-[#e05e00] text-white rounded-xl text-xs font-black shadow-md transition-all whitespace-nowrap cursor-pointer"
           >
-            ✉️ Email Support
+            ✉️ {t('emailSupport', 'Email Support')}
           </a>
           <a
             href="tel:1800112233"
@@ -256,3 +258,4 @@ export default function HouseholdHelp() {
     </div>
   )
 }
+

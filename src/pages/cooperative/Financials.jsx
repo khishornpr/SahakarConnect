@@ -109,7 +109,7 @@ export default function CooperativeFinancials() {
               <span className="text-xl">💼</span>
             </div>
           </div>
-          <div className="text-xs text-slate-400 mt-2 font-medium">Total Marketplace GMV</div>
+          <div className="text-xs text-slate-400 mt-2 font-medium">{t('totalMarketplaceGmv', 'Total Marketplace GMV')}</div>
         </div>
 
         <div className="flow-card glow-orange-hover p-5 flex flex-col justify-between">
@@ -126,7 +126,7 @@ export default function CooperativeFinancials() {
               <span className="text-xl">🏛️</span>
             </div>
           </div>
-          <div className={`text-xs mt-2 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Federation Operations</div>
+          <div className={`text-xs mt-2 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('federationOperations', 'Federation Operations')}</div>
         </div>
 
         <div className="flow-card glow-emerald-hover p-5 flex flex-col justify-between">
@@ -143,7 +143,7 @@ export default function CooperativeFinancials() {
               <span className="text-xl">💰</span>
             </div>
           </div>
-          <div className={`text-xs mt-2 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>100% Settled to Workers</div>
+          <div className={`text-xs mt-2 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{t('settledToWorkers', '100% Settled to Workers')}</div>
         </div>
 
         <div className="flow-card glow-rose-hover p-5 flex flex-col justify-between">
@@ -360,7 +360,7 @@ export default function CooperativeFinancials() {
               </div>
 
               <div className={`p-3.5 rounded-xl border text-xs space-y-1 ${isDark ? 'bg-rose-950/30 border-rose-900/50 text-rose-200' : 'bg-rose-50 border-rose-200 text-rose-900'}`}>
-                <div className="font-bold">⚠️ Audit Reasons Detected:</div>
+                <div className="font-bold">⚠️ {t('auditReasonsDetected', 'Audit Reasons Detected:')}</div>
                 <ul className="list-disc list-inside space-y-0.5 pl-1">
                   {(anomaly.detectedReasons || [anomaly.anomaly_reason]).map((r, i) => (
                     <li key={i}>{r}</li>
@@ -370,22 +370,22 @@ export default function CooperativeFinancials() {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
                 <div className={`p-2.5 rounded-lg border ${isDark ? 'bg-[#1c222d] border-white/[0.06]' : 'bg-white border-slate-200'}`}>
-                  <span className="block text-[10px] uppercase font-bold text-slate-400">Gross Billed</span>
+                  <span className="block text-[10px] uppercase font-bold text-slate-400">{t('grossBilled', 'Gross Billed')}</span>
                   <strong className={`text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{anomaly.gross_amount}</strong>
                 </div>
                 <div className={`p-2.5 rounded-lg border ${isDark ? 'bg-[#1c222d] border-white/[0.06]' : 'bg-white border-slate-200'}`}>
-                  <span className="block text-[10px] uppercase font-bold text-slate-400">Deducted Fee</span>
+                  <span className="block text-[10px] uppercase font-bold text-slate-400">{t('deductedFee', 'Deducted Fee')}</span>
                   <strong className={`text-sm ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
                     ₹{anomaly.cooperative_fee_amount} ({anomaly.cooperative_fee_pct}%)
                   </strong>
                 </div>
                 <div className={`p-2.5 rounded-lg border ${isDark ? 'bg-[#1c222d] border-white/[0.06]' : 'bg-white border-slate-200'}`}>
-                  <span className="block text-[10px] uppercase font-bold text-slate-400">Worker Net Payout</span>
+                  <span className="block text-[10px] uppercase font-bold text-slate-400">{t('workerNetPayout', 'Worker Net Payout')}</span>
                   <strong className={`text-sm ${isDark ? 'text-emerald-400' : 'text-emerald-700 font-bold'}`}>₹{anomaly.net_payout}</strong>
                 </div>
                 <div className={`p-2.5 rounded-lg border ${isDark ? 'bg-[#1c222d] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-                  <span className="block text-[10px] uppercase font-bold text-slate-400">Statutory Ceiling</span>
-                  <strong className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>5.0% Max</strong>
+                  <span className="block text-[10px] uppercase font-bold text-slate-400">{t('statutoryCeiling', 'Statutory Ceiling')}</span>
+                  <strong className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>5.0% {t('maxLabel', 'Max')}</strong>
                 </div>
               </div>
 

@@ -227,22 +227,22 @@ export default function OfficerDashboard() {
             }`}
           >
             <span>🏛️</span>
-            <span>Government of NCT of Delhi • Labor Department</span>
+            <span>{t('govtNctDelhiLaborDept', 'Government of NCT of Delhi • Labor Department')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            {t('welcome', 'Welcome')}, {profile?.full_name || 'Officer'} 👋
+            {t('welcome', 'Welcome')}, {profile?.full_name || t('officerRole', 'Officer')} 👋
           </h1>
           <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Statutory dispute resolution bench for household gig workers and registered consumer complaints across Delhi-NCR cooperative clusters.
+            {t('officerDashboardSubtitle', 'Statutory dispute resolution bench for household gig workers and registered consumer complaints across Delhi-NCR cooperative clusters.')}
           </p>
         </div>
 
         <div className={`p-3 rounded-2xl border text-xs font-semibold ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-white border-slate-200'}`}>
-          <div className="text-slate-400 text-[10px] uppercase font-bold">Officer on Duty</div>
+          <div className="text-slate-400 text-[10px] uppercase font-bold">{t('officerOnDuty', 'Officer on Duty')}</div>
           <div className={`font-black text-sm mt-0.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {profile?.full_name || 'Sanjay Verma (Labor Officer)'}
           </div>
-          <div className={`text-[11px] mt-0.5 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>● Active Session • Delhi NCR Zone</div>
+          <div className={`text-[11px] mt-0.5 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>● {t('activeSessionZone', 'Active Session • Delhi NCR Zone')}</div>
         </div>
       </div>
 
@@ -258,33 +258,33 @@ export default function OfficerDashboard() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Case Docket</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('totalCaseDocket', 'Total Case Docket')}</span>
           <div className={`text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalCases}</div>
-          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Registered Claims</span>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('registeredClaims', 'Registered Claims')}</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>Active & In Review</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>{t('activeInReview', 'Active & In Review')}</span>
           <div className={`text-2xl font-black ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>{pendingCases}</div>
-          <span className={`text-[10px] block font-medium ${isDark ? 'text-amber-400/80' : 'text-amber-700'}`}>Requires Attention</span>
+          <span className={`text-[10px] block font-medium ${isDark ? 'text-amber-400/80' : 'text-amber-700'}`}>{t('requiresAttention', 'Requires Attention')}</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Resolved Cases</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{t('resolvedCases', 'Resolved Cases')}</span>
           <div className={`text-2xl font-black ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{resolvedCases}</div>
-          <span className={`text-[10px] block font-medium ${isDark ? 'text-emerald-400/80' : 'text-emerald-700'}`}>Settled with Payout</span>
+          <span className={`text-[10px] block font-medium ${isDark ? 'text-emerald-400/80' : 'text-emerald-700'}`}>{t('settledWithPayout', 'Settled with Payout')}</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-rose-400' : 'text-rose-700'}`}>Rejected / Closed</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-rose-400' : 'text-rose-700'}`}>{t('rejectedClosed', 'Rejected / Closed')}</span>
           <div className={`text-2xl font-black ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>{rejectedCases}</div>
-          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>No Merit Found</span>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('noMeritFound', 'No Merit Found')}</span>
         </div>
 
         <div className="flow-card p-4 space-y-1 col-span-2 lg:col-span-1">
-          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>Avg. Resolution Time</span>
-          <div className={`text-2xl font-black ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>2.4 Days</div>
-          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Statutory Benchmark: 7d</span>
+          <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>{t('avgResolutionTime', 'Avg. Resolution Time')}</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>2.4 {t('daysUnit', 'Days')}</div>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('statutoryBenchmark7d', 'Statutory Benchmark: 7d')}</span>
         </div>
       </div>
 

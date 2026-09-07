@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from '../../context/I18nContext'
 import { supabase } from '../../lib/supabase'
 import LanguageToggle from '../../components/LanguageToggle'
 
 export default function EmailConfirmation() {
   const { isDark, toggleTheme } = useTheme()
+  const { t } = useTranslation()
   const { profile, verifyConfirmationToken, resendVerification } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+
 
   const [status, setStatus] = useState('verifying') // 'verifying' | 'success' | 'error' | 'manual'
   const [message, setMessage] = useState('Verifying your email address...')
@@ -212,10 +215,10 @@ export default function EmailConfirmation() {
             </div>
             <div className="text-left">
               <span className="block font-black text-base tracking-tight gradient-text-emerald">
-                SahakarConnect
+                {t('brandTitle', 'SahakarConnect')}
               </span>
               <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                Email Verification
+                {t('emailVerification', 'Email Verification')}
               </span>
             </div>
           </div>
@@ -227,9 +230,9 @@ export default function EmailConfirmation() {
                 <span className="w-8 h-8 rounded-full border-3 border-emerald-400/30 border-t-emerald-400 animate-spin"></span>
               </div>
               <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Verifying Account...
+                {t('verifyingAccount', 'Verifying Account...')}
               </h2>
-              <p className="text-xs text-slate-400">{message}</p>
+              <p className="text-xs text-slate-400">{t(message, message)}</p>
             </div>
           )}
 
@@ -241,15 +244,15 @@ export default function EmailConfirmation() {
               </div>
               <div>
                 <h2 className={`text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Email Confirmed!
+                  {t('emailConfirmedTitle', 'Email Confirmed!')}
                 </h2>
                 <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto leading-relaxed">
-                  Your email has been verified. Welcome to SahakarConnect.
+                  {t('emailConfirmedDesc', 'Your email has been verified. Welcome to SahakarConnect.')}
                 </p>
               </div>
 
               <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-                🚀 Redirecting to dashboard in {countdown}s...
+                🚀 {t('redirectingToDashboard', 'Redirecting to dashboard in')} {countdown}s...
               </div>
 
               <button
@@ -257,7 +260,7 @@ export default function EmailConfirmation() {
                 onClick={() => navigate('/')}
                 className="w-full py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 shadow-lg shadow-emerald-500/25 transition-all cursor-pointer"
               >
-                Go to Dashboard Now →
+                {t('goToDashboardNow', 'Go to Dashboard Now →')}
               </button>
             </div>
           )}
@@ -270,14 +273,14 @@ export default function EmailConfirmation() {
               </div>
               <div>
                 <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Verification Failed
+                  {t('verificationFailed', 'Verification Failed')}
                 </h2>
-                <p className="text-xs text-rose-400/90 mt-1 max-w-xs mx-auto">{message}</p>
+                <p className="text-xs text-rose-400/90 mt-1 max-w-xs mx-auto">{t(message, message)}</p>
               </div>
 
               <form onSubmit={handleResend} className="space-y-3 pt-2 text-left">
                 <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  Enter email to request a fresh link:
+                  {t('enterEmailToRequestFreshLink', 'Enter email to request a fresh link:')}
                 </label>
                 <input
                   type="email"
@@ -295,10 +298,10 @@ export default function EmailConfirmation() {
                   type="submit"
                   className="w-full py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 shadow-md transition-all cursor-pointer"
                 >
-                  Resend Verification Email
+                  {t('resendVerificationEmail', 'Resend Verification Email')}
                 </button>
                 {resendStatus && (
-                  <p className="text-xs text-amber-400 text-center">{resendStatus}</p>
+                  <p className="text-xs text-amber-400 text-center">{t(resendStatus, resendStatus)}</p>
                 )}
               </form>
 
@@ -307,7 +310,7 @@ export default function EmailConfirmation() {
                   to="/login"
                   className="text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center gap-1"
                 >
-                  <span>←</span> Return to Login
+                  <span>←</span> {t('returnToLogin', 'Return to Login')}
                 </Link>
               </div>
             </div>
@@ -321,16 +324,16 @@ export default function EmailConfirmation() {
               </div>
               <div>
                 <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Check Your Inbox
+                  {t('checkYourInbox', 'Check Your Inbox')}
                 </h2>
                 <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
-                  Click the confirmation link sent to your registered email to activate your account.
+                  {t('checkInboxDesc', 'Click the confirmation link sent to your registered email to activate your account.')}
                 </p>
               </div>
 
               <form onSubmit={handleResend} className="space-y-3 pt-2 text-left">
                 <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  Didn&apos;t receive it? Resend link:
+                  {t('didntReceiveResend', "Didn't receive it? Resend link:")}
                 </label>
                 <input
                   type="email"
@@ -348,10 +351,10 @@ export default function EmailConfirmation() {
                   type="submit"
                   className="w-full py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 shadow-md transition-all cursor-pointer"
                 >
-                  Send Verification Email
+                  {t('sendVerificationEmail', 'Send Verification Email')}
                 </button>
                 {resendStatus && (
-                  <p className="text-xs text-amber-400 text-center">{resendStatus}</p>
+                  <p className="text-xs text-amber-400 text-center">{t(resendStatus, resendStatus)}</p>
                 )}
               </form>
 
@@ -360,7 +363,7 @@ export default function EmailConfirmation() {
                   to="/login"
                   className="text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center gap-1"
                 >
-                  <span>←</span> Return to Login
+                  <span>←</span> {t('returnToLogin', 'Return to Login')}
                 </Link>
               </div>
             </div>

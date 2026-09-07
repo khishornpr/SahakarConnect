@@ -245,18 +245,18 @@ export default function ResetPassword() {
                       3
                     </span>
                     <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      New Password
+                      {t('newPasswordStep', 'New Password')}
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold text-slate-400">Step 3 of 3</span>
+                  <span className="text-[11px] font-semibold text-slate-400">{t('step3Of3', 'Step 3 of 3')}</span>
                 </div>
 
                 <div className="mb-5">
                   <h2 className={`text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Create New Password
+                    {t('createNewPasswordTitle', 'Create New Password')}
                   </h2>
                   <p className={`text-xs mt-1 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                    Resetting password for: <span className="font-semibold text-[#e5a65e]">{email}</span>
+                    {t('resettingPasswordFor', 'Resetting password for:')} <span className="font-semibold text-[#e5a65e]">{email}</span>
                   </p>
                 </div>
 
@@ -388,9 +388,9 @@ export default function ResetPassword() {
                 </form>
 
                 <div className={`text-center mt-5 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                  Remember your old password?{' '}
+                  {t('rememberOldPassword', 'Remember your old password?')}{' '}
                   <Link to="/login" className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline">
-                    Sign In
+                    {t('signIn', 'Sign In')}
                   </Link>
                 </div>
               </>
@@ -402,13 +402,13 @@ export default function ResetPassword() {
       {/* ----------------- BOTTOM FOOTER ----------------- */}
       <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium">
         <div className={isDark ? 'text-slate-400' : 'text-slate-600'}>
-          © 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations
+          {t('footerCopyright', '© 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations')}
         </div>
         <div className="flex items-center gap-1.5 text-emerald-600">
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
-          <span className="font-semibold">Your password is securely hashed via Supabase Auth</span>
+          <span className="font-semibold">{t('passwordSecurelyHashed', 'Your password is securely hashed via Supabase Auth')}</span>
         </div>
       </footer>
     </div>

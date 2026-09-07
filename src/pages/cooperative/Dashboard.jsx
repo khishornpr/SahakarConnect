@@ -203,7 +203,7 @@ export default function CooperativeDashboard() {
             </div>
             <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-emerald-500">
               <span>↑ 12.5%</span>
-              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>from last month</span>
+              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('fromLastMonth', 'from last month')}</span>
             </div>
           </div>
           <div className="h-10 mt-2 -mx-2 -mb-2">
@@ -227,7 +227,7 @@ export default function CooperativeDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Total Worker Payouts
+                  {t('totalWorkerPayouts', 'Total Worker Payouts')}
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   ₹{totalNetWagesPaid.toLocaleString()}
@@ -239,7 +239,7 @@ export default function CooperativeDashboard() {
             </div>
             <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-emerald-500">
               <span>↑ 8.4%</span>
-              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>from last month</span>
+              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('fromLastMonth', 'from last month')}</span>
             </div>
           </div>
           <div className="h-10 mt-2 -mx-2 -mb-2">
@@ -263,10 +263,10 @@ export default function CooperativeDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Cooperative 5% Retention
+                  {t('coopRetainedFee', 'Co-op Retained Fee (5%)')}
                 </span>
-                <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-[#ff7a00]' : 'text-orange-600'}`}>
-                  ₹{totalCoopSurplus.toLocaleString()}
+                <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>
+                  ₹{totalCoopFee.toLocaleString()}
                 </div>
               </div>
               <div className="flow-icon-badge-orange shrink-0">
@@ -275,7 +275,7 @@ export default function CooperativeDashboard() {
             </div>
             <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-emerald-500">
               <span>↑ 4.7%</span>
-              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>from last month</span>
+              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('fromLastMonth', 'from last month')}</span>
             </div>
           </div>
           <div className="h-10 mt-2 -mx-2 -mb-2">
@@ -293,7 +293,7 @@ export default function CooperativeDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Social Security Fund
+                  {t('socialSecurityFund', 'Social Security Fund')}
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
                   ₹{totalWelfareFund.toLocaleString()}
@@ -305,7 +305,7 @@ export default function CooperativeDashboard() {
             </div>
             <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-emerald-500">
               <span>↑ 15.3%</span>
-              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>from last month</span>
+              <span className={`font-normal ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('fromLastMonth', 'from last month')}</span>
             </div>
           </div>
           <div className="h-10 mt-2 -mx-2 -mb-2">
@@ -325,11 +325,11 @@ export default function CooperativeDashboard() {
           <div className={`flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <div className="min-w-0">
               <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Monthly Marketplace GMV
+                {t('monthlyMarketplaceGmv', 'Monthly Marketplace GMV')}
               </span>
               <div className="flex items-center gap-3 mt-0.5">
                 <h2 className={`text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹86,420.80</h2>
-                <span className="text-xs font-bold text-emerald-500">↑ 15.6% vs last year</span>
+                <span className="text-xs font-bold text-emerald-500">↑ 15.6% {t('vsLastYear', 'vs last year')}</span>
               </div>
             </div>
 
@@ -338,10 +338,10 @@ export default function CooperativeDashboard() {
               {/* Chart Type Selector Buttons */}
               <div className={`flex items-center gap-1 p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
                 {[
-                  { id: 'bar', label: '📊 Bar', tooltip: 'Bar Chart' },
-                  { id: 'line', label: '📈 Line', tooltip: 'Line Trend' },
-                  { id: 'area', label: '🌊 Area', tooltip: 'Smooth Area' },
-                  { id: 'composed', label: '⚡ Combo', tooltip: 'Revenue + Target' },
+                  { id: 'bar', label: `📊 ${t('chartBar', 'Bar')}`, tooltip: 'Bar Chart' },
+                  { id: 'line', label: `📈 ${t('chartLine', 'Line')}`, tooltip: 'Line Trend' },
+                  { id: 'area', label: `🌊 ${t('chartArea', 'Area')}`, tooltip: 'Smooth Area' },
+                  { id: 'composed', label: `⚡ ${t('chartCombo', 'Combo')}`, tooltip: 'Revenue + Target' },
                 ].map((type) => (
                   <button
                     key={type.id}
@@ -373,9 +373,9 @@ export default function CooperativeDashboard() {
                     : 'bg-white border-slate-200 text-slate-700 focus:border-[#ff6b00]'
                 }`}
               >
-                <option value="year">📅 Full Year (12 Mo)</option>
-                <option value="6m">📅 Last 6 Months</option>
-                <option value="qtr">📅 Quarterly (Q1-Q4)</option>
+                <option value="year">📅 {t('fullYear12Mo', 'Full Year (12 Mo)')}</option>
+                <option value="6m">📅 {t('last6Months', 'Last 6 Months')}</option>
+                <option value="qtr">📅 {t('quarterlyQ1Q4', 'Quarterly (Q1-Q4)')}</option>
               </select>
             </div>
           </div>

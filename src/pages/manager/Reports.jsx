@@ -89,13 +89,13 @@ export default function ManagerReports() {
             }`}
           >
             <span>📑</span>
-            <span>Financial Audit & Payroll Summary</span>
+            <span>{t('financialAuditPayrollSummary', 'Financial Audit & Payroll Summary')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Zonal Team Financial Report
+            {t('zonalTeamFinancialReport', 'Zonal Team Financial Report')}
           </h1>
           <p className={`text-xs mt-1 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Comprehensive payroll ledger, statutory 5% cooperative retentions, welfare fund contributions, and direct worker bank payouts.
+            {t('zonalFinancialReportDesc', 'Comprehensive payroll ledger, statutory 5% cooperative retentions, welfare fund contributions, and direct worker bank payouts.')}
           </p>
         </div>
 
@@ -107,7 +107,7 @@ export default function ManagerReports() {
             className="px-4 py-2 flow-btn-primary text-xs font-bold rounded-xl shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-60"
           >
             <span>📥</span>
-            <span>{downloading ? 'Exporting CSV...' : 'Download CSV Export'}</span>
+            <span>{downloading ? t('exportingCsv', 'Exporting CSV...') : t('downloadCsvExport', 'Download CSV Export')}</span>
           </button>
 
           <button
@@ -145,34 +145,34 @@ export default function ManagerReports() {
       {/* Financial Overview Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Total Billed Volume</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{t('totalBilledVolume', 'Total Billed Volume')}</span>
           <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{totalGross.toLocaleString()}</div>
-          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>100% Gross Value</span>
+          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('hundredPctGrossValue', '100% Gross Value')}</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>Co-op Fee Retained (5%)</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>{t('coopFeeRetained5', 'Co-op Fee Retained (5%)')}</span>
           <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-[#ff7a00]' : 'text-amber-600'}`}>₹{totalCoopFee.toLocaleString()}</div>
-          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Statutory Ceiling</span>
+          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('statutoryCeiling', 'Statutory Ceiling')}</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>Welfare Pool (PMSBY)</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>{t('welfarePoolPmsby', 'Welfare Pool (PMSBY)')}</span>
           <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-cyan-400' : 'text-teal-600'}`}>₹{totalWelfare.toLocaleString()}</div>
-          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Worker Safety Corpus</span>
+          <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('workerSafetyCorpus', 'Worker Safety Corpus')}</span>
         </div>
 
         <div className="flow-card p-4 space-y-1">
-          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Net Disbursed to Workers</span>
+          <span className={`text-[10px] uppercase font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{t('netDisbursedToWorkers', 'Net Disbursed to Workers')}</span>
           <div className={`text-xl sm:text-2xl font-black ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>₹{totalNet.toLocaleString()}</div>
-          <span className={`text-[10px] ${isDark ? 'text-emerald-400/80' : 'text-emerald-700 font-medium'}`}>94.5% Effective Payout</span>
+          <span className={`text-[10px] ${isDark ? 'text-emerald-400/80' : 'text-emerald-700 font-medium'}`}>{t('effectivePayoutRate', '94.5% Effective Payout')}</span>
         </div>
       </div>
 
       {/* Full Audit Table */}
       <div className="flow-card p-5 space-y-3">
         <h3 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          Detailed Wage & Disbursement Ledger
+          {t('detailedWageDisbursementLedger', 'Detailed Wage & Disbursement Ledger')}
         </h3>
 
         <div className="overflow-x-auto">

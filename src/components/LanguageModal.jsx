@@ -4,7 +4,7 @@ import { useTranslation, INDIAN_LANGUAGES } from '../context/I18nContext'
 import { useTheme } from '../context/ThemeContext'
 
 export default function LanguageModal({ isOpen, onClose }) {
-  const { language, setLanguage } = useTranslation()
+  const { language, setLanguage, t } = useTranslation()
   const { isDark } = useTheme()
   const [search, setSearch] = useState('')
 
@@ -23,9 +23,9 @@ export default function LanguageModal({ isOpen, onClose }) {
   }
 
   const modalContent = (
-    <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
       <div
-        className={`rounded-2xl max-w-2xl w-full p-5 sm:p-6 my-auto shadow-2xl space-y-4 relative max-h-[88vh] flex flex-col border transition-all ${
+        className={`w-full max-w-2xl rounded-2xl border p-5 shadow-2xl flex flex-col gap-4 max-h-[85vh] transition-all ${
           isDark
             ? 'bg-[#0a0f1d] border-cyan-500/40 text-white shadow-[0_0_50px_rgba(0,0,0,0.9)]'
             : 'bg-white border-slate-200 text-slate-900 shadow-2xl'
@@ -36,14 +36,14 @@ export default function LanguageModal({ isOpen, onClose }) {
           <div>
             <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold uppercase tracking-wider mb-1">
               <span>🇮🇳</span>
-              <span>Official Scheduled Languages of India (Eighth Schedule)</span>
+              <span>{t('officialScheduledLangsBadge', 'Official Scheduled Languages of India (Eighth Schedule)')}</span>
             </div>
             <h2 className={`text-lg sm:text-xl font-black tracking-tight flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               <span>🌐</span>
-              <span>Select Language • भाषा चयन</span>
+              <span>{t('selectLanguageModalTitle', 'Select Language • भाषा चयन')}</span>
             </h2>
             <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Choose from all 22 official constitutionally recognized Indian languages
+              {t('chooseFromAllLanguages', 'Choose from all 22 official constitutionally recognized Indian languages')}
             </p>
           </div>
           <button
@@ -66,7 +66,7 @@ export default function LanguageModal({ isOpen, onClose }) {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search language (example: Tamil, Marathi, বাংলা, తెలుగు, Gujarati, Punjabi)..."
+            placeholder={t('searchLanguagePlaceholder', 'Search language (example: Tamil, Marathi, বাংলা, తెలుగు, Gujarati, Punjabi)...')}
             className={`w-full pl-10 pr-4 py-2 rounded-xl text-xs focus:outline-none focus:ring-2 transition-all ${
               isDark
                 ? 'bg-slate-950 border border-slate-700 focus:border-cyan-400 text-slate-100 placeholder-slate-500 focus:ring-cyan-400/30'
@@ -99,7 +99,7 @@ export default function LanguageModal({ isOpen, onClose }) {
                     {lang.name}
                   </span>
                   {isSelected && (
-                    <span className="text-emerald-500 text-xs font-black">✓ Active</span>
+                    <span className="text-emerald-500 text-xs font-black">✓ {t('activeBadge', 'Active')}</span>
                   )}
                 </div>
                 <div className={`text-[11px] font-medium mt-0.5 ${isSelected ? (isDark ? 'text-emerald-300' : 'text-emerald-700') : (isDark ? 'text-slate-400' : 'text-slate-500')}`}>

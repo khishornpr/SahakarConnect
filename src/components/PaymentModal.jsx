@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../context/ThemeContext'
+import { useTranslation } from '../context/I18nContext'
 
 export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess }) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [method, setMethod] = useState('upi')
   const [upiId, setUpiId] = useState('priya@okhdfcbank')
   const [processing, setProcessing] = useState(false)
@@ -59,14 +61,14 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
         <div className={`flex justify-between items-start border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
           <div>
             <div className="status-pill-emerald mb-1">
-              Secure Payment
+              {t('securePayment', 'Secure Payment')}
             </div>
-            <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>Pay for Service</h3>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{job.title}</p>
+            <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('payForService', 'Pay for Service')}</h3>
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t(job.title, job.title)}</p>
           </div>
           <button
             onClick={onClose}
-            className={`font-bold text-lg ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-slate-600'}`}
+            className={`font-bold text-lg cursor-pointer ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-slate-600'}`}
           >
             ✕
           </button>
@@ -77,9 +79,9 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
             isDark ? 'text-emerald-400 bg-emerald-950/60 border-emerald-500/40' : 'text-emerald-900 bg-emerald-50 border-emerald-300'
           }`}>
             <div className="text-3xl mb-1">✅</div>
-            <div>Payment Successful!</div>
+            <div>{t('paymentSuccess', 'Payment Successful!')}</div>
             <p className={`text-xs font-normal ${isDark ? 'text-emerald-300' : 'text-emerald-700'}`}>
-              Direct pay sent to worker&apos;s account.
+              {t('directPaySent', "Direct pay sent to worker's account.")}
             </p>
           </div>
         ) : (
@@ -87,31 +89,31 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
             {/* Amount Summary */}
             <div className={`p-4 rounded-xl space-y-1.5 text-xs border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-900 text-white border-slate-800'}`}>
               <div className="flex justify-between items-center text-slate-300">
-                <span>Total to Pay:</span>
+                <span>{t('totalToPay', 'Total to Pay:')}</span>
                 <span className="text-xl font-black text-emerald-400">₹{amount}</span>
               </div>
               <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-white/[0.08]">
-                <span>Worker Take-Home: ₹{netWage}</span>
-                <span>Co-op 5% + ₹10 Welfare</span>
+                <span>{t('workerTakeHome', 'Worker Take-Home:')} ₹{netWage}</span>
+                <span>{t('coopRetentionShort', 'Co-op 5% + ₹10 Welfare')}</span>
               </div>
             </div>
 
             {/* Payment Method Selector */}
             <div>
               <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Choose Payment Method
+                {t('choosePaymentMethod', 'Choose Payment Method')}
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'upi', label: 'UPI / QR', icon: '📱' },
-                  { id: 'rupay', label: 'Card', icon: '💳' },
-                  { id: 'netbanking', label: 'NetBanking', icon: '🏦' },
+                  { id: 'upi', labelKey: 'upiMethod', label: 'UPI / QR', icon: '📱' },
+                  { id: 'rupay', labelKey: 'cardMethod', label: 'Card', icon: '💳' },
+                  { id: 'netbanking', labelKey: 'netBankingMethod', label: 'NetBanking', icon: '🏦' },
                 ].map((m) => (
                   <button
                     key={m.id}
                     type="button"
                     onClick={() => setMethod(m.id)}
-                    className={`p-2.5 rounded-xl border text-center text-xs font-bold transition-all ${
+                    className={`p-2.5 rounded-xl border text-center text-xs font-bold transition-all cursor-pointer ${
                       method === m.id
                         ? 'border-emerald-500 bg-emerald-500/15 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
                         : isDark
@@ -120,7 +122,7 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
                     }`}
                   >
                     <div className="text-base">{m.icon}</div>
-                    <div className="mt-1">{m.label}</div>
+                    <div className="mt-1">{t(m.labelKey, m.label)}</div>
                   </button>
                 ))}
               </div>
@@ -128,7 +130,7 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
 
             {method === 'upi' && (
               <div>
-                <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>UPI ID</label>
+                <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{t('upiIdLabel', 'UPI ID')}</label>
                 <input
                   type="text"
                   value={upiId}
@@ -144,20 +146,20 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
               type="button"
               onClick={handlePay}
               disabled={processing}
-              className="w-full py-3 flow-btn-emerald text-xs font-black uppercase tracking-wider rounded-xl shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 flow-btn-emerald text-xs font-black uppercase tracking-wider rounded-xl shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
               {processing ? (
                 <>
                   <span className="w-3 h-3 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
-                  <span>Processing Payment...</span>
+                  <span>{t('processingPayment', 'Processing Payment...')}</span>
                 </>
               ) : (
-                <span>Pay ₹{amount}</span>
+                <span>{t('payAmountBtn', 'Pay')} ₹{amount}</span>
               )}
             </button>
 
             <p className="text-[10px] text-slate-400 text-center">
-              Direct and secure digital payment.
+              {t('directSecurePaymentSub', 'Direct and secure digital payment.')}
             </p>
           </div>
         )}
@@ -167,3 +169,4 @@ export default function PaymentModal({ job, isOpen, onClose, onPaymentSuccess })
 
   return createPortal(modalContent, document.body)
 }
+
