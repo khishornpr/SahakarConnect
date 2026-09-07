@@ -71,7 +71,7 @@ export default function Sidebar() {
     <>
       {/* Desktop FlowBoard Sidebar */}
       <aside
-        className={`hidden md:flex w-64 shrink-0 min-h-screen flex-col z-30 sticky top-0 h-screen transition-colors duration-300 backdrop-blur-xl ${
+        className={`hidden md:flex w-64 xl:w-72 min-w-[16rem] max-w-[20rem] shrink-0 min-h-screen flex-col z-30 sticky top-0 h-screen transition-all duration-300 backdrop-blur-xl ${
           isDark
             ? 'bg-[#0f1217]/95 border-r border-white/[0.08] text-white shadow-[4px_0_24px_rgba(0,0,0,0.5)]'
             : 'bg-white border-r border-slate-200 text-slate-900 shadow-sm'
@@ -83,8 +83,8 @@ export default function Sidebar() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#ff5500] to-[#ff8c00] text-white flex items-center justify-center font-black text-xl shadow-[0_0_22px_rgba(255,107,0,0.65)] shrink-0 transition-transform hover:scale-105">
               ⚡
             </div>
-            <div className="min-w-0">
-              <h1 className="text-base font-black tracking-tight flex items-center gap-1.5 truncate">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-base font-black tracking-tight flex items-center gap-1.5 truncate" title="SahakarConnect">
                 <span className={isDark ? 'text-white' : 'text-slate-900'}>{t('brandTitle', 'SahakarConnect')}</span>
               </h1>
               <p className="text-[11px] text-[#ff7a00] font-bold tracking-wide truncate flex items-center gap-1">
@@ -108,9 +108,10 @@ export default function Sidebar() {
                   <Link
                     key={item.path}
                     to={item.path}
+                    title={item.label}
                     data-selected={isActive ? 'true' : undefined}
                     aria-selected={isActive ? 'true' : undefined}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all relative overflow-hidden group ${
+                    className={`flex items-center gap-3 px-3.5 py-2.5 min-h-[44px] rounded-xl text-xs sm:text-sm font-bold transition-all relative overflow-hidden group ${
                       isActive
                         ? 'sidebar-link-active'
                         : isDark
@@ -118,10 +119,10 @@ export default function Sidebar() {
                         : 'sidebar-link-inactive text-slate-700'
                     }`}
                   >
-                    <span className={`text-base transition-transform ${isActive ? '' : 'group-hover:scale-110'}`}>{item.icon}</span>
-                    <span className="truncate">{item.label}</span>
+                    <span className={`text-base shrink-0 transition-transform ${isActive ? '' : 'group-hover:scale-110'}`}>{item.icon}</span>
+                    <span className="flex-1 whitespace-normal break-words leading-snug">{item.label}</span>
                     {isActive && (
-                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white animate-pulse shadow-[0_0_8px_#ffffff]"></span>
+                      <span className="ml-auto shrink-0 w-1.5 h-1.5 rounded-full bg-white animate-pulse shadow-[0_0_8px_#ffffff]"></span>
                     )}
                   </Link>
                 )
@@ -138,14 +139,15 @@ export default function Sidebar() {
               <button
                 type="button"
                 onClick={() => setShowEmergency(true)}
-                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all sidebar-sos-btn cursor-pointer ${
+                title={t('emergencySosButton', '30-Min Emergency SOS')}
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 min-h-[44px] rounded-xl text-xs sm:text-sm font-black transition-all sidebar-sos-btn cursor-pointer ${
                   isDark
                     ? 'bg-[#181d26] border border-rose-500/60 text-rose-300 neon-pulse-rose'
                     : 'bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 shadow-sm'
                 }`}
               >
-                <span className="animate-pulse text-base">🚨</span>
-                <span className="truncate">{t('emergencySosButton', '30-Min Emergency SOS')}</span>
+                <span className="animate-pulse text-base shrink-0">🚨</span>
+                <span className="flex-1 text-left whitespace-normal break-words leading-tight">{t('emergencySosButton', '30-Min Emergency SOS')}</span>
               </button>
             </div>
           )}
@@ -160,7 +162,7 @@ export default function Sidebar() {
               }`}
             >
               <div className="flex items-center gap-2 text-sm font-black">
-                <span className="text-base">🚀</span>
+                <span className="text-base shrink-0">🚀</span>
                 <span className={isDark ? 'text-white' : 'text-slate-900'}>
                   {t('cooperativeWelfare', 'Cooperative Welfare')}
                 </span>
@@ -193,12 +195,13 @@ export default function Sidebar() {
             <Link
               key={item.path}
               to={item.path}
+              title={item.label}
               className={`flex flex-col items-center py-1 px-1.5 rounded-xl transition-all min-h-[44px] justify-center ${
                 isActive ? 'mobile-nav-link-active font-black scale-105' : 'mobile-nav-link-inactive text-slate-300'
               }`}
             >
               <span className="text-lg leading-tight">{item.icon}</span>
-              <span className="truncate max-w-[62px] sm:max-w-[78px] text-[10px] mt-0.5 font-bold leading-none">{item.label}</span>
+              <span className="max-w-[85px] sm:max-w-[105px] text-[10px] mt-0.5 font-bold leading-tight line-clamp-2 text-center break-words">{item.label}</span>
             </Link>
           )
         })}
@@ -208,6 +211,7 @@ export default function Sidebar() {
           <button
             type="button"
             onClick={() => setShowEmergency(true)}
+            title={t('emergencySosButton', '30-Min Emergency SOS')}
             className="flex flex-col items-center py-1 px-1.5 text-rose-400 text-xs font-black min-h-[44px] justify-center hover:scale-105 transition-transform cursor-pointer"
           >
             <span className="text-lg leading-tight animate-pulse">🚨</span>
@@ -219,12 +223,13 @@ export default function Sidebar() {
         <button
           type="button"
           onClick={() => setShowMobileDrawer(true)}
+          title={t('menu', 'Menu')}
           className={`flex flex-col items-center py-1 px-1.5 rounded-xl text-xs font-bold min-h-[44px] justify-center transition-all cursor-pointer ${
             showMobileDrawer ? 'text-[#ff7a00] mobile-nav-link-active' : 'text-slate-300 hover:text-white hover:scale-105'
           }`}
         >
           <span className="text-lg leading-tight">☰</span>
-          <span className="truncate max-w-[62px] sm:max-w-[78px] text-[10px] mt-0.5 font-bold leading-none">{t('menu', 'Menu')}</span>
+          <span className="max-w-[85px] sm:max-w-[105px] text-[10px] mt-0.5 font-bold leading-tight line-clamp-2 text-center break-words">{t('menu', 'Menu')}</span>
         </button>
       </div>
 

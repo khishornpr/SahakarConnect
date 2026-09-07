@@ -181,25 +181,25 @@ export default function DashboardLayout() {
               </span>
             </div>
 
-            <div className="hidden md:flex items-center">
-              <div className={`text-base sm:text-lg font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <div className="hidden md:flex items-center min-w-0 flex-1 pr-2">
+              <div className={`text-sm sm:text-base lg:text-lg font-black tracking-tight whitespace-normal break-words leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`} title={roleTitles[role]}>
                 {roleTitles[role]}
               </div>
             </div>
           </div>
 
           {/* Right Controls: Date Badge + Notifications + Theme Toggle + Language Toggle + Profile Avatar / Logout */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* FlowBoard Date Badge */}
             <div
-              className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition-all shrink-0 ${
                 isDark
                   ? 'bg-[#161a22] border-white/[0.08] text-slate-200 hover:border-white/20'
                   : 'bg-slate-100 border-slate-200 text-slate-700'
               }`}
             >
               <span>📅</span>
-              <span>{currentDate}</span>
+              <span className="whitespace-nowrap">{currentDate}</span>
             </div>
 
             {/* Notification Bell (Shakes and glows ONLY when there are unread notifications / new messages) */}
@@ -208,7 +208,7 @@ export default function DashboardLayout() {
                 type="button"
                 onClick={() => setShowNotifications(!showNotifications)}
                 title={unreadCount > 0 ? `${unreadCount} unread notifications` : 'Notifications'}
-                className={`relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-xs sm:text-sm border transition-all cursor-pointer ${
+                className={`relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-xs sm:text-sm border transition-all cursor-pointer shrink-0 ${
                   unreadCount > 0 ? 'neon-bell-button neon-glow-pulse-orange' : ''
                 } ${
                   isDark
@@ -229,19 +229,19 @@ export default function DashboardLayout() {
               {/* Notification Popover Dropdown */}
               {showNotifications && (
                 <div
-                  className={`fixed left-3 right-3 sm:left-auto sm:right-0 mt-2.5 sm:w-96 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up ${
+                  className={`fixed left-3 right-3 sm:left-auto sm:right-0 mt-2.5 sm:w-[26rem] max-w-[calc(100vw-1.5rem)] rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up ${
                     isDark
                       ? 'bg-[#12151c]/95 border-white/[0.12] text-white shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
                       : 'bg-white/95 border-slate-200 text-slate-900 shadow-[0_15px_35px_rgba(0,0,0,0.15)]'
                   }`}
                 >
-                  <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-                    <div className="flex items-center gap-2">
-                      <span className="text-base">🔔</span>
-                      <h3 className="text-sm font-black tracking-tight">{t('notifications', 'Notifications')}</h3>
+                  <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] gap-2">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                      <span className="text-base shrink-0">🔔</span>
+                      <h3 className="text-xs sm:text-sm font-black tracking-tight truncate">{t('notifications', 'Notifications')}</h3>
                       {unreadCount > 0 && (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40">
-                          {unreadCount} new
+                        <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 shrink-0">
+                          {unreadCount}
                         </span>
                       )}
                     </div>
@@ -249,7 +249,8 @@ export default function DashboardLayout() {
                       <button
                         type="button"
                         onClick={handleMarkAllAsRead}
-                        className="text-xs text-[#ff7a00] hover:underline font-bold cursor-pointer"
+                        title={t('markAllRead', 'Mark all read')}
+                        className="text-xs text-[#ff7a00] hover:underline font-bold cursor-pointer shrink-0 text-right max-w-[55%] truncate"
                       >
                         {t('markAllRead', 'Mark all read')}
                       </button>
@@ -324,7 +325,7 @@ export default function DashboardLayout() {
                 type="button"
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 title={`${profile?.full_name || 'User'} (Account & Logout)`}
-                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#ff6b00] to-[#ffaa00] text-white flex items-center justify-center font-black text-xs sm:text-base shadow-[0_0_15px_rgba(255,107,0,0.5)] transition-all cursor-pointer border border-white/20 ${
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#ff6b00] to-[#ffaa00] text-white flex items-center justify-center font-black text-xs sm:text-base shadow-[0_0_15px_rgba(255,107,0,0.5)] transition-all cursor-pointer border border-white/20 shrink-0 ${
                   showUserMenu ? 'ring-2 ring-[#ff6b00] scale-105' : 'hover:scale-105 hover:shadow-[0_0_25px_rgba(255,107,0,0.8)]'
                 }`}
               >
@@ -334,7 +335,7 @@ export default function DashboardLayout() {
               {/* Popover Dropdown with Details & Logout */}
               {showUserMenu && (
                 <div
-                  className={`fixed left-3 right-3 sm:left-auto sm:right-0 mt-2.5 sm:w-72 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up transition-all ${
+                  className={`fixed left-3 right-3 sm:left-auto sm:right-0 mt-2.5 sm:w-80 max-w-[calc(100vw-1.5rem)] rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl z-50 animate-fade-in-up transition-all ${
                     isDark
                       ? 'bg-[#12151c]/95 border-white/[0.12] text-white shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
                       : 'bg-white/95 border-slate-200 text-slate-900 shadow-[0_15px_35px_rgba(0,0,0,0.15)]'

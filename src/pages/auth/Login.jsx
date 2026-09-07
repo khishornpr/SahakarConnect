@@ -43,13 +43,13 @@ export default function Login() {
     },
     manager: {
       id: 'manager',
-      label: '👔 Manager',
+      label: `👔 ${t('managerRole', 'Zonal Manager')}`,
       demoEmail: 'manager.delhi@sahakar.in',
       hint: 'Rajiv Deshmukh (Zonal Manager)',
     },
     officer: {
       id: 'officer',
-      label: '⚖️ Labor Officer',
+      label: `⚖️ ${t('officerRole', 'Labor Officer')}`,
       demoEmail: 'officer.delhi@gov.in',
       hint: 'Sanjay Verma (Labor Officer)',
     },
@@ -219,7 +219,7 @@ export default function Login() {
           {/* Right Side: Floating Glassmorphic Login Card */}
           <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
             <div
-              className={`w-full max-w-[430px] border rounded-2xl sm:rounded-3xl p-4 sm:p-5 backdrop-blur-2xl transition-all duration-300 ${
+              className={`w-full max-w-[465px] min-w-[320px] border rounded-2xl sm:rounded-3xl p-4 sm:p-5 backdrop-blur-2xl transition-all duration-300 ${
                 isDark
                   ? 'bg-[#12151c]/90 border-white/[0.12] shadow-[0_20px_60px_rgba(0,0,0,0.85)] hover:border-[#e5a65e]/40'
                   : 'bg-white/92 border-slate-200 shadow-[0_20px_50px_rgba(0,0,0,0.12)] hover:border-orange-300'
@@ -261,18 +261,19 @@ export default function Login() {
                       <button
                         key={p.id}
                         type="button"
+                        title={p.label}
                         aria-selected={isActive ? 'true' : undefined}
                         data-selected={isActive ? 'true' : undefined}
                         onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                        className={`py-2 px-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 ${
+                        className={`min-h-[48px] sm:min-h-[52px] py-1.5 px-1.5 sm:px-2 rounded-lg text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center text-center gap-1 leading-tight break-words i18n-tab-pill ${
                           isActive
-                            ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
+                            ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default font-black'
                             : isDark
                             ? 'text-slate-300 hover:text-white hover:bg-white/[0.08] hover:shadow-[0_0_12px_rgba(232,176,112,0.25)] cursor-pointer'
                             : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:shadow-[0_0_10px_rgba(216,150,77,0.25)] cursor-pointer'
                         }`}
                       >
-                        <span className="truncate">{p.label}</span>
+                        <span className="whitespace-normal leading-tight text-center">{p.label}</span>
                       </button>
                     )
                   })}
@@ -289,18 +290,19 @@ export default function Login() {
                       <button
                         key={p.id}
                         type="button"
+                        title={p.label}
                         aria-selected={isActive ? 'true' : undefined}
                         data-selected={isActive ? 'true' : undefined}
                         onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                        className={`py-2 px-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 ${
+                        className={`min-h-[48px] sm:min-h-[52px] py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center text-center gap-1 leading-tight break-words i18n-tab-pill ${
                           isActive
-                            ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default'
+                            ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 shadow-sm cursor-default font-black'
                             : isDark
                             ? 'text-slate-300 hover:text-white hover:bg-white/[0.08] hover:shadow-[0_0_12px_rgba(232,176,112,0.25)] cursor-pointer'
                             : 'text-slate-700 hover:text-slate-900 hover:bg-white hover:shadow-[0_0_10px_rgba(216,150,77,0.25)] cursor-pointer'
                         }`}
                       >
-                        <span className="truncate">{p.label}</span>
+                        <span className="whitespace-normal leading-tight text-center">{p.label}</span>
                       </button>
                     )
                   })}
@@ -568,12 +570,13 @@ export default function Login() {
                   <button
                     key={p.id}
                     type="button"
+                    title={p.label}
                     aria-selected={isActive ? 'true' : undefined}
                     data-selected={isActive ? 'true' : undefined}
                     onClick={() => !isActive && handleSelectRoleTab(p.id)}
-                    className={`min-h-[38px] px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center justify-center gap-1.5 border active:scale-95 cursor-pointer ${
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center justify-center gap-1.5 border active:scale-95 cursor-pointer ${
                       isActive
-                        ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 border-[#c4833b] shadow-md shadow-orange-500/20 ring-1 ring-[#e5a65e]'
+                        ? 'bg-gradient-to-r from-[#e8b070] to-[#d8964d] text-slate-950 border-[#c4833b] shadow-md shadow-orange-500/20 ring-1 ring-[#e5a65e] font-black'
                         : isDark
                         ? 'bg-[#181c24]/90 border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.06]'
                         : 'bg-white/90 border-slate-200 text-slate-700 hover:text-slate-900 hover:bg-slate-50 shadow-xs'

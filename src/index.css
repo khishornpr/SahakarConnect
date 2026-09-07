@@ -1438,3 +1438,160 @@ html:not(.dark) .sidebar-link-inactive:hover {
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*         MULTI-LANGUAGE SCRIPT-SPECIFIC TYPOGRAPHY & LAYOUT SCALING         */
+/* -------------------------------------------------------------------------- */
+
+/* General safe text-wrapping & flex layout utilities for internationalized UI */
+.i18n-fluid-container {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.i18n-tab-pill {
+  min-height: 48px;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
+/* Mobile Bottom Navigation Micro-Typography (Zero truncation with clean multi-line wrapping) */
+.mobile-nav-label {
+  font-size: 9px;
+  line-height: 1.1;
+  max-width: 92px;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .mobile-nav-label {
+    font-size: 10px;
+    max-width: 115px;
+  }
+}
+
+/* Tamil (தமிழ்) - Wide glyphs and compound noun constructions */
+html[lang="ta"] {
+  letter-spacing: -0.01em;
+}
+html[lang="ta"] .sidebar-link-active,
+html[lang="ta"] .sidebar-link-inactive,
+html[lang="ta"] nav a,
+html[lang="ta"] button {
+  letter-spacing: normal;
+  line-height: 1.35;
+}
+html[lang="ta"] .i18n-tab-pill {
+  font-size: 0.88rem;
+  line-height: 1.2;
+}
+
+/* Malayalam (മലയാളം) - Tall conjunct ligatures & vertical spacing */
+html[lang="ml"] {
+  letter-spacing: 0;
+}
+html[lang="ml"] .sidebar-link-active,
+html[lang="ml"] .sidebar-link-inactive,
+html[lang="ml"] nav a,
+html[lang="ml"] button {
+  line-height: 1.48;
+  font-size: 0.91em;
+}
+html[lang="ml"] .i18n-tab-pill {
+  font-size: 0.85rem;
+  line-height: 1.28;
+}
+
+/* Telugu (తెలుగు) & Kannada (ಕನ್ನಡ) */
+html[lang="kn"],
+html[lang="te"] {
+  letter-spacing: -0.01em;
+}
+html[lang="kn"] nav a span,
+html[lang="te"] nav a span {
+  line-height: 1.42;
+  font-size: 0.92em;
+}
+
+/* Bengali (বাংলা), Assamese (অসমীয়া), Odia (ଓଡ଼ିଆ), Manipuri (মৈতৈলোন্) */
+html[lang="bn"],
+html[lang="as"],
+html[lang="or"],
+html[lang="mni"] {
+  letter-spacing: 0;
+}
+html[lang="bn"] nav a,
+html[lang="as"] nav a,
+html[lang="or"] nav a {
+  line-height: 1.36;
+}
+
+/* Gujarati (ગુજરાતી) & Punjabi Gurmukhi (ਪੰਜਾਬੀ) */
+html[lang="gu"],
+html[lang="pa"] {
+  letter-spacing: 0.005em;
+}
+html[lang="gu"] nav a,
+html[lang="pa"] nav a {
+  line-height: 1.38;
+}
+
+/* Devanagari Scripts: Hindi (हिन्दी), Marathi (मराठी), Sanskrit (संस्कृतम्), Nepali, Maithili, Konkani, Dogri, Bodo, Sindhi */
+html[lang="hi"],
+html[lang="mr"],
+html[lang="sa"],
+html[lang="ne"],
+html[lang="mai"],
+html[lang="kok"],
+html[lang="doi"],
+html[lang="brx"],
+html[lang="sd"] {
+  letter-spacing: 0.005em;
+}
+html[lang="hi"] nav a,
+html[lang="mr"] nav a,
+html[lang="sa"] nav a,
+html[lang="ne"] nav a,
+html[lang="kok"] nav a,
+html[lang="mai"] nav a,
+html[lang="doi"] nav a,
+html[lang="sd"] nav a {
+  line-height: 1.35;
+}
+
+/* Urdu (اردو) & Kashmiri (كٲشُر) - Full RTL Bidirectional Typography */
+html[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+html[dir="rtl"] .sidebar-link-active,
+html[dir="rtl"] .sidebar-link-inactive {
+  text-align: right;
+}
+html[lang="ur"],
+html[lang="ks"] {
+  letter-spacing: 0;
+  line-height: 1.5;
+  font-family: 'Noto Nastaliq Urdu', 'Segoe UI', system-ui, sans-serif;
+}
+html[lang="ur"] nav a,
+html[lang="ks"] nav a {
+  font-size: 0.95em;
+}
+
+/* Santali (Ol Chiki - ᱥᱟᱱᱛᱟᱲᱤ) */
+html[lang="sat"] {
+  letter-spacing: 0.02em;
+}
+

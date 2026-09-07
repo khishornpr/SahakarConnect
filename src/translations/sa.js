@@ -44,7 +44,7 @@ export default {
   "workerRole": "श्रमिकः",
   "customerRole": "ग्राहकः",
   "adminRole": "प्रशासकः",
-  "managerRole": "जोनल प्रबंधक",
+  "managerRole": "मण्डल प्रबन्धकः",
   "officerRole": "श्रम अधिकारी",
   "mainMenu": "मुख्य सूची",
   "rapidResponse": "शीघ्र आपत्कालीन साहाय्यम्",

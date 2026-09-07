@@ -55,7 +55,8 @@ export default function LanguageToggle() {
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-bold transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer ${
+          title={language !== 'en' && language !== 'hi' ? `${currentLangObj.englishName} (${currentLangObj.name})` : 'Select from 22 Indian Scheduled Languages'}
+          className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-bold transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer whitespace-nowrap ${
             language !== 'en' && language !== 'hi'
               ? 'bg-teal-600 text-white shadow-sm font-black'
               : isDark
@@ -64,7 +65,7 @@ export default function LanguageToggle() {
           }`}
         >
           <span className="text-[10px] sm:text-xs">🌐</span>
-          <span className="truncate max-w-[32px] sm:max-w-[80px]">
+          <span className="whitespace-nowrap font-medium">
             {language !== 'en' && language !== 'hi' ? currentLangObj.name : 'More'}
           </span>
         </button>
