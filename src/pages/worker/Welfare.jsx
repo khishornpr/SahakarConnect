@@ -23,7 +23,7 @@ export default function WorkerWelfare() {
             }`}
           >
             <span>🛡️</span>
-            <span>SIH26089 Feature 7 • Worker Welfare & Social Security</span>
+            <span>{t('sihFeature7WorkerWelfare', 'SIH26089 Feature 7 • Worker Welfare & Social Security')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {t('welfareHeading', 'Cooperative Welfare & Social Security')}
@@ -44,12 +44,16 @@ export default function WorkerWelfare() {
             <div>
               <div className="flex justify-between items-start mb-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40">
-                  {sch.type.replace('_', ' ')}
+                  {sch.type === 'insurance' ? t('insuranceTypeTag', 'INSURANCE') : sch.type === 'health' ? t('healthTypeTag', 'HEALTH') : t('emergencyAidTypeTag', 'EMERGENCY AID')}
                 </span>
                 <span className="status-pill-emerald">✓ {t('autoEnrolled', 'Auto-Enrolled')}</span>
               </div>
-              <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{sch.name}</h3>
-              <p className={`text-xs mt-2 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{sch.description}</p>
+              <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                {t(sch.name, sch.name)}
+              </h3>
+              <p className={`text-xs mt-2 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                {t(sch.description, sch.description)}
+              </p>
             </div>
 
             <div className={`space-y-2 pt-4 border-t text-xs ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
@@ -60,7 +64,7 @@ export default function WorkerWelfare() {
               <div className="flex justify-between">
                 <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('memberPremium', 'Member Premium')}:</span>
                 <span className="text-emerald-400 font-bold">
-                  {sch.monthly_premium === 0 ? 'FREE (100% Co-op Funded)' : `₹${sch.monthly_premium}/month`}
+                  {sch.monthly_premium === 0 ? t('freeCoopFunded', 'FREE (100% Co-op Funded)') : `₹${sch.monthly_premium}/month`}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -71,7 +75,7 @@ export default function WorkerWelfare() {
 
             <button
               onClick={() => alert('Digital Welfare Card: Download request queued with National Health Authority / PMSBY API.')}
-              className="w-full py-2.5 flow-btn-primary text-xs font-bold rounded-xl shadow-md transition-all"
+              className="w-full min-h-[44px] py-2.5 px-3 flow-btn-primary text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center text-center leading-snug whitespace-normal break-words"
             >
               📄 {t('downloadWelfareCard', 'Download Digital Welfare Card')}
             </button>

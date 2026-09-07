@@ -45,7 +45,7 @@ export default function Register() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const { data, error, needsConfirmation } = await signUp(email, password, role, fullName, {
+    const { error } = await signUp(email, password, role, fullName, {
       trade,
       experience,
       area,
@@ -55,9 +55,8 @@ export default function Register() {
     setLoading(false)
     if (error) {
       setError(error.message)
-    } else if (needsConfirmation || !data?.session) {
-      setIsRegistered(true)
     } else {
+      // Instant signup with ZERO verification required - redirect directly to portal!
       navigate('/')
     }
   }

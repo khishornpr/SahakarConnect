@@ -64,16 +64,10 @@ export default function Login() {
       return
     }
     setLoading(true)
-    const { error, isUnconfirmed: unconfirmedFlag } = await signIn(email.trim(), password)
+    const { error } = await signIn(email.trim(), password)
     setLoading(false)
     if (error) {
-      if (unconfirmedFlag || error.message?.toLowerCase().includes('email not confirmed')) {
-        setIsUnconfirmed(true)
-        setError('Please verify your email before logging in. Check your inbox or click below to resend the confirmation link.')
-      } else {
-        setIsUnconfirmed(false)
-        setError(error.message || 'Invalid email or password. Please try again.')
-      }
+      setError(error.message || 'Invalid email or password. Please try again.')
     } else {
       navigate('/')
     }
