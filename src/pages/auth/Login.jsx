@@ -388,7 +388,7 @@ export default function Login() {
                   <label className={`block text-xs sm:text-sm font-bold mb-1.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                     {t('password', 'Password')}
                   </label>
-                  <div className="relative flex items-center">
+                  <div className="relative flex items- center">
                     <span className={`absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -535,7 +535,7 @@ export default function Login() {
           {/* Mobile Role Switcher - Horizontal Scrollable Chip Row */}
           <div className="w-full max-w-md mb-3">
             <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              {t('selectPersonal', 'Select Personal')}
+              Select Persona
             </label>
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none no-scrollbar touch-pan-x -mx-1 px-1">
               {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative, ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {
