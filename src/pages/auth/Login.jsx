@@ -535,7 +535,7 @@ export default function Login() {
           {/* Mobile Role Switcher - Horizontal Scrollable Chip Row */}
           <div className="w-full max-w-md mb-3">
             <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Select Persona
+              {t('selectPersonal', 'Select Personal')}
             </label>
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none no-scrollbar touch-pan-x -mx-1 px-1">
               {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative, ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {

@@ -204,6 +204,7 @@ export default {
   "aiGeoDispatchChip": "Fast Local Matching",
   "loginTitle": "Login",
   "loginSubtitle": "Login to your account to continue",
+  "selectPersonal": "Select Personal",
   "emailAddress": "Email Address",
   "password": "Password",
   "forgotPassword": "Forgot Password?",
