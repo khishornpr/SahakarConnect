@@ -47,9 +47,9 @@ const I18nContext = createContext(null)
 export function I18nProvider({ children }) {
   const [language, setLanguage] = useState(() => {
     try {
-      return localStorage.getItem('sahakar_lang') || 'ta'
+      return localStorage.getItem('sahakar_lang') || 'en'
     } catch {
-      return 'ta'
+      return 'en'
     }
   })
 
