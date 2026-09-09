@@ -74,7 +74,8 @@ export default function CooperativeDashboard() {
 
   const totalGrossVolume = ledger.reduce((acc, row) => acc + (row.gross_amount || 0), 48750.5)
   const totalNetWagesPaid = ledger.reduce((acc, row) => acc + (row.net_payout || 0), 23685.2)
-  const totalCoopSurplus = ledger.reduce((acc, row) => acc + (row.cooperative_fee_amount || 0), 12347.9)
+  const totalCoopFee = ledger.reduce((acc, row) => acc + (row.cooperative_fee_amount || 0), 12347.9)
+  const totalCoopSurplus = totalCoopFee
   const totalWelfareFund = ledger.reduce((acc, row) => acc + (row.welfare_fund_amount || 0), 11337.3)
 
   // Full Year Dataset

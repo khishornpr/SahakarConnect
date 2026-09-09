@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { I18nProvider } from './context/I18nContext'
+import ErrorBoundary from './components/ErrorBoundary'
 import ProtectedRoute from './components/ProtectedRoute'
 import DashboardLayout from './components/DashboardLayout'
 
@@ -89,12 +90,13 @@ function HomeRedirect() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <I18nProvider>
-        <AuthProvider>
-          <HashRouter>
-            <Suspense fallback={<PageLoadingFallback />}>
-              <Routes>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <I18nProvider>
+          <AuthProvider>
+            <HashRouter>
+              <Suspense fallback={<PageLoadingFallback />}>
+                <Routes>
                 <Route path="/" element={<HomeRedirect />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -194,6 +196,7 @@ function App() {
         </AuthProvider>
       </I18nProvider>
     </ThemeProvider>
+  </ErrorBoundary>
   )
 }
 
