@@ -184,15 +184,15 @@ export default function ResetPassword() {
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
-                Set New<br />
-                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>Password</strong>
+                {t('setNewWord', 'Set New')}<br />
+                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>{t('passwordWord', 'Password')}</strong>
               </h1>
               <p
                 className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
-                Create a new password of at least 8 characters.
+                {t('createNewPasswordDesc', 'Create a new password of at least 8 characters.')}
               </p>
             </div>
           </div>
@@ -216,15 +216,15 @@ export default function ResetPassword() {
 
                 <div>
                   <h2 className={`text-2xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Password Reset!
+                    {t('passwordResetSuccess', 'Password Reset!')}
                   </h2>
                   <p className={`text-xs mt-2 max-w-xs mx-auto leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                    Your password has been successfully updated via Supabase Edge Function security.
+                    {t('passwordResetSuccessDesc', 'Your password has been successfully updated via Supabase Edge Function security.')}
                   </p>
                 </div>
 
                 <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-                  🚀 Redirecting to Sign In in {countdown}s...
+                  🚀 {t('redirectingToSignIn', 'Redirecting to Sign In in')} {countdown}s...
                 </div>
 
                 <button
@@ -232,7 +232,7 @@ export default function ResetPassword() {
                   onClick={() => navigate('/login')}
                   className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/25 transition-all cursor-pointer"
                 >
-                  Sign In with New Password →
+                  {t('signInWithNewPassword', 'Sign In with New Password →')}
                 </button>
               </div>
             ) : (
@@ -283,7 +283,7 @@ export default function ResetPassword() {
                         type={showPassword ? 'text' : 'password'}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
-                        placeholder="Min 8 characters"
+                        placeholder={t('min8Chars', 'Min 8 characters')}
                         className={`w-full pl-10 pr-10 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
                           isDark
                             ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
@@ -319,7 +319,7 @@ export default function ResetPassword() {
                     <div className="space-y-1 px-1">
                       <div className="flex justify-between text-[11px]">
                         <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                          Strength: <strong className="text-slate-200">{strength.label}</strong>
+                          {t('strength', 'Strength')}: <strong className="text-slate-200">{t(strength.label.toLowerCase(), strength.label)}</strong>
                         </span>
                         <span className="text-slate-500">{newPassword.length} chars</span>
                       </div>
@@ -347,7 +347,7 @@ export default function ResetPassword() {
                         type={showConfirmPassword ? 'text' : 'password'}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Re-type your new password"
+                        placeholder={t('retypeNewPassword', 'Re-type your new password')}
                         className={`w-full pl-10 pr-10 py-3 border rounded-xl text-xs focus:outline-none transition-all ${
                           isDark
                             ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
@@ -383,7 +383,7 @@ export default function ResetPassword() {
                     disabled={loading || !newPassword || !confirmPassword}
                     className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] transition-all disabled:opacity-50 mt-3 cursor-pointer"
                   >
-                    {loading ? 'Updating Password...' : 'Save New Password & Finish →'}
+                    {loading ? t('updatingPassword', 'Updating Password...') : t('saveNewPasswordFinish', 'Save New Password & Finish →')}
                   </button>
                 </form>
 

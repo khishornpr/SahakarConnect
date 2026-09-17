@@ -76,11 +76,11 @@ export default function CooperativeDispatch() {
   const completedCount = jobs.filter((j) => j.status === 'completed').length
 
   const dispatchStatuses = [
-    { id: 'all', label: 'All Dispatches', count: jobs.length, badgeClass: 'bg-slate-500/20 text-slate-300' },
-    { id: 'requested', label: 'Requested', count: requestedCount, badgeClass: 'bg-blue-500/20 text-blue-300' },
-    { id: 'assigned', label: 'Assigned', count: assignedCount, badgeClass: 'bg-purple-500/20 text-purple-300' },
-    { id: 'in_progress', label: 'In Progress', count: inProgressCount, badgeClass: 'bg-amber-500/20 text-amber-300' },
-    { id: 'completed', label: 'Completed', count: completedCount, badgeClass: 'bg-emerald-500/20 text-emerald-300' },
+    { id: 'all', label: t('allFilter', 'All Dispatches'), count: jobs.length, badgeClass: 'bg-slate-500/20 text-slate-300' },
+    { id: 'requested', label: t('requested', 'Requested'), count: requestedCount, badgeClass: 'bg-blue-500/20 text-blue-300' },
+    { id: 'assigned', label: t('assigned', 'Assigned'), count: assignedCount, badgeClass: 'bg-purple-500/20 text-purple-300' },
+    { id: 'in_progress', label: t('inProgress', 'In Progress'), count: inProgressCount, badgeClass: 'bg-amber-500/20 text-amber-300' },
+    { id: 'completed', label: t('completed', 'Completed'), count: completedCount, badgeClass: 'bg-emerald-500/20 text-emerald-300' },
   ]
 
   return (
@@ -116,7 +116,7 @@ export default function CooperativeDispatch() {
                   : 'text-slate-400 hover:text-white cursor-pointer'
               }`}
             >
-              All ({jobs.length})
+              {t('allFilter', 'All')} ({jobs.length})
             </button>
             <button
               onClick={() => setPriorityFilter('emergency')}
@@ -160,7 +160,7 @@ export default function CooperativeDispatch() {
           <div className="flex items-center gap-2">
             <span className="text-sm">🎯</span>
             <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-              Dispatch Status Filter
+              {t('filterByStatus', 'Dispatch Status Filter')}
             </span>
           </div>
           <span className="text-[11px] text-slate-400">
@@ -253,7 +253,7 @@ export default function CooperativeDispatch() {
                       {isEmergency && (
                         <span className="px-2 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] uppercase tracking-wider animate-pulse flex items-center gap-1 shadow-sm">
                           <span>🚨</span>
-                          <span>EMERGENCY</span>
+                          <span>{t('emergencySos', 'EMERGENCY')}</span>
                         </span>
                       )}
                     </div>

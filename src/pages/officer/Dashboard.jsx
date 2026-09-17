@@ -294,9 +294,9 @@ export default function OfficerDashboard() {
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              📊 Grievance Category Breakdown
+              📊 {t('grievanceCategoryBreakdown', 'Grievance Category Breakdown')}
             </h3>
-            <span className="text-xs text-slate-400 font-medium">Delhi-NCR</span>
+            <span className="text-xs text-slate-400 font-medium">{t('delhiNcrRegion', 'Delhi-NCR')}</span>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -319,9 +319,9 @@ export default function OfficerDashboard() {
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              ⏱️ Case Status Lifecycle
+              ⏱️ {t('caseStatusLifecycle', 'Case Status Lifecycle')}
             </h3>
-            <span className="text-xs text-slate-400 font-medium">Current Docket</span>
+            <span className="text-xs text-slate-400 font-medium">{t('currentDocket', 'Current Docket')}</span>
           </div>
           <div className="h-64 flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
@@ -343,10 +343,10 @@ export default function OfficerDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              🏛️ Labor Dispute Docket & Case Queue
+              🏛️ {t('laborDisputeDocketTitle', 'Labor Dispute Docket & Case Queue')}
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Select a case to inspect full evidence, review linked Geo-Dispatch logs, and record official rulings.
+              {t('laborDisputeDocketDesc', 'Select a case to inspect full evidence, review linked Geo-Dispatch logs, and record official rulings.')}
             </p>
           </div>
 
@@ -376,13 +376,13 @@ export default function OfficerDashboard() {
           <table className="w-full text-left text-xs">
             <thead>
               <tr className={`border-b ${isDark ? 'border-white/[0.08] text-slate-400' : 'border-slate-200 text-slate-500'}`}>
-                <th className="py-3 px-3 font-bold">Case ID</th>
-                <th className="py-3 px-3 font-bold">Initiator</th>
-                <th className="py-3 px-3 font-bold">Type</th>
-                <th className="py-3 px-3 font-bold">Subject / Description</th>
-                <th className="py-3 px-3 font-bold">Date</th>
-                <th className="py-3 px-3 font-bold">Status</th>
-                <th className="py-3 px-3 font-bold text-right">Action</th>
+                <th className="py-3 px-3 font-bold">{t('caseIdHeader', 'Case ID')}</th>
+                <th className="py-3 px-3 font-bold">{t('initiatorHeader', 'Initiator')}</th>
+                <th className="py-3 px-3 font-bold">{t('typeHeader', 'Type')}</th>
+                <th className="py-3 px-3 font-bold">{t('subjectDescHeader', 'Subject / Description')}</th>
+                <th className="py-3 px-3 font-bold">{t('dateHeader', 'Date')}</th>
+                <th className="py-3 px-3 font-bold">{t('statusHeader', 'Status')}</th>
+                <th className="py-3 px-3 font-bold text-right">{t('actionHeader', 'Action')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
@@ -394,10 +394,10 @@ export default function OfficerDashboard() {
                         ⚖️
                       </div>
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                        No Data Available
+                        {t('noDataAvailable', 'No Data Available')}
                       </div>
                       <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                        No dispute or grievance cases match the selected status tab.
+                        {t('noDisputeCasesFound', 'No dispute or grievance cases match the selected status tab.')}
                       </p>
                     </div>
                   </td>
@@ -496,16 +496,16 @@ export default function OfficerDashboard() {
                     👤 Complainant Evidence & Statement
                   </h4>
                   <div>
-                    <span className={`block text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Filed By</span>
+                    <span className={`block text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('filedByLabel', 'Filed By')}</span>
                     <strong className={`text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{selectedCase.user_name}</strong> <span className={isDark ? 'text-slate-400' : 'text-slate-600'}>({selectedCase.initiator_role})</span>
                   </div>
                   <div>
-                    <span className={`block text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Statement</span>
+                    <span className={`block text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('statementLabel', 'Statement')}</span>
                     <p className={`mt-0.5 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{selectedCase.description}</p>
                   </div>
                   {selectedCase.attachment_name && (
                     <div className={`pt-2 border-t flex items-center justify-between text-[11px] ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-                      <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>📎 Attachment:</span>
+                      <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>📎 {t('attachmentLabel', 'Attachment')}:</span>
                       <span className={`font-mono font-bold ${isDark ? 'text-cyan-400' : 'text-teal-700'}`}>{selectedCase.attachment_name}</span>
                     </div>
                   )}
@@ -519,29 +519,29 @@ export default function OfficerDashboard() {
                   {linkedJob ? (
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Job Title:</span>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('jobTitleLabel', 'Job Title')}:</span>
                         <strong className={isDark ? 'text-white' : 'text-slate-900'}>{linkedJob.title}</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Trade:</span>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('tradeLabel', 'Trade')}:</span>
                         <strong className={isDark ? 'text-slate-200' : 'text-slate-800'}>{linkedJob.trade_category}</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Site Address:</span>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('siteAddressLabel', 'Site Address')}:</span>
                         <span className={`truncate max-w-[150px] ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{linkedJob.address}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Final Tariff:</span>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('finalTariffLabel', 'Final Tariff')}:</span>
                         <strong className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>₹{linkedJob.final_amount || linkedJob.estimated_amount}</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Completed At:</span>
+                        <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{t('completedAtLabel', 'Completed At')}:</span>
                         <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>{new Date(linkedJob.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
                   ) : (
                     <div className={`py-6 text-center ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                      <span>No specific job ID attached. (General dispute filed).</span>
+                      <span>{t('noJobAttached', 'No specific job ID attached. (General dispute filed).')}</span>
                     </div>
                   )}
                 </div>
@@ -552,7 +552,7 @@ export default function OfficerDashboard() {
                 <div className="flex items-center justify-between">
                   <h4 className="font-bold text-amber-400 uppercase text-[11px] flex items-center gap-1.5">
                     <span>📜</span>
-                    <span>Case Action & Status Audit History</span>
+                    <span>{t('caseActionAuditHistory', 'Case Action & Status Audit History')}</span>
                   </h4>
                   {selectedCase.is_reopened && (
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
@@ -607,9 +607,9 @@ export default function OfficerDashboard() {
                         <span className="text-[11px] font-mono text-slate-400">{hist.date}</span>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
-                        <span>Officer / Actor: <strong className={isDark ? 'text-slate-300' : 'text-slate-700'}>{hist.officer_name}</strong></span>
+                        <span>{t('officerActorLabel', 'Officer / Actor')}: <strong className={isDark ? 'text-slate-300' : 'text-slate-700'}>{hist.officer_name}</strong></span>
                         <span>•</span>
-                        <span>Transition: <span className="font-mono text-amber-400 font-semibold">{hist.from_status?.toUpperCase()} → {hist.to_status?.toUpperCase()}</span></span>
+                        <span>{t('transitionLabel', 'Transition')}: <span className="font-mono text-amber-400 font-semibold">{hist.from_status?.toUpperCase()} → {hist.to_status?.toUpperCase()}</span></span>
                       </div>
                       {hist.notes && (
                         <p className={`text-[11px] leading-relaxed p-2 rounded-lg border ${
@@ -632,7 +632,7 @@ export default function OfficerDashboard() {
                   rows={3}
                   value={resolutionNoteInput}
                   onChange={(e) => setResolutionNoteInput(e.target.value)}
-                  placeholder="Record findings from Geo-Dispatch timestamp cross-verification, customer interview, compensation orders, or corrective action..."
+                  placeholder={t('findingsPlaceholder', 'Record findings from Geo-Dispatch timestamp cross-verification, customer interview, compensation orders, or corrective action...')}
                   className={`w-full p-3 rounded-xl border text-xs outline-none transition-all ${
                     isDark ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900'
                   }`}

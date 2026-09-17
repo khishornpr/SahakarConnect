@@ -53,7 +53,7 @@ export default function WorkerEarnings() {
           {t('fairWageLedger', 'Cooperative Fair Wage Ledger')}
         </h1>
         <p className={`text-xs mt-1 max-w-3xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-          100% transparent statutory accounting of gross customer billings, cooperative 5% retention, and net payouts
+          {t('transparentStatutoryAccounting', '100% transparent statutory accounting of gross customer billings, cooperative 5% retention, and net payouts')}
         </p>
       </div>
 
@@ -174,7 +174,7 @@ export default function WorkerEarnings() {
                       className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm cursor-pointer"
                     >
                       <span>📄</span>
-                      <span>Invoice</span>
+                      <span>{t('invoiceBtn', 'Invoice')}</span>
                     </button>
                   </td>
                 </tr>
@@ -187,10 +187,10 @@ export default function WorkerEarnings() {
                         💼
                       </div>
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                        No Data Available
+                        {t('noDataAvailable', 'No Data Available')}
                       </div>
                       <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                        No completed work wage records generated in your ledger yet.
+                        {t('noCompletedWorkWageRecords', 'No completed work wage records generated in your ledger yet.')}
                       </p>
                     </div>
                   </td>

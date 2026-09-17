@@ -320,7 +320,7 @@ export default function Login() {
                       : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b] shadow-xs'
                   }`}
                 >
-                  Auto-Fill ⚡
+                  {t('autoFillDemoBtn', 'Auto-Fill')} ⚡
                 </button>
               </div>
 
@@ -344,7 +344,7 @@ export default function Login() {
                             onClick={handleResendConfirmation}
                             className="px-3 py-1.5 rounded-md bg-amber-500 text-slate-950 font-black text-xs sm:text-sm hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
                           >
-                            Resend Confirmation Email →
+                            {t('resendVerificationEmail', 'Resend Confirmation Email →')}
                           </button>
                           {resendStatus && (
                             <span className="text-xs text-amber-300 font-medium">
@@ -398,7 +398,7 @@ export default function Login() {
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter password"
+                      placeholder={t('enterPasswordPlaceholder', 'Enter password')}
                       className={`w-full pl-10 pr-10 py-2.5 border rounded-xl text-sm sm:text-base focus:outline-none transition-all ${isDark
                         ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                         : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'
@@ -535,7 +535,7 @@ export default function Login() {
           {/* Mobile Role Switcher - Horizontal Scrollable Chip Row */}
           <div className="w-full max-w-md mb-3">
             <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Select Persona
+              {t('selectPersonal', 'Select Persona')}
             </label>
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none no-scrollbar touch-pan-x -mx-1 px-1">
               {[ROLE_CONFIGS.worker, ROLE_CONFIGS.household, ROLE_CONFIGS.cooperative, ROLE_CONFIGS.manager, ROLE_CONFIGS.officer].map((p) => {
@@ -608,7 +608,7 @@ export default function Login() {
                     : 'bg-[#d8964d] border-[#c4833b] text-slate-950 hover:bg-[#c4833b]'
                 }`}
               >
-                <span>Auto-Fill</span>
+                <span>{t('autoFillDemoBtn', 'Auto-Fill')}</span>
                 <span>⚡</span>
               </button>
             </div>
@@ -632,7 +632,7 @@ export default function Login() {
                           onClick={handleResendConfirmation}
                           className="min-h-[44px] px-3 py-2 rounded-lg bg-amber-500 text-slate-950 font-black text-xs hover:bg-amber-400 transition-colors shadow-sm cursor-pointer flex items-center justify-center active:scale-95"
                         >
-                          Resend Confirmation Email →
+                          {t('resendVerificationEmail', 'Resend Confirmation Email →')}
                         </button>
                         {resendStatus && (
                           <span className="text-[11px] text-amber-300 font-medium text-center">
@@ -688,7 +688,7 @@ export default function Login() {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter password"
+                    placeholder={t('enterPasswordPlaceholder', 'Enter password')}
                     className={`w-full min-h-[48px] h-12 pl-11 pr-12 border rounded-xl text-sm focus:outline-none transition-all ${isDark
                       ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e] focus:ring-1 focus:ring-[#e5a65e]/50'
                       : 'bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#d8964d] focus:ring-1 focus:ring-[#d8964d]/40'

@@ -282,13 +282,13 @@ export default function DashboardLayout() {
                           <span className="text-lg shrink-0 mt-0.5">{item.icon}</span>
                           <div className="flex-1 min-w-0 pr-4">
                             <div className="text-xs font-bold flex items-center justify-between">
-                              <span className="truncate">{item.title}</span>
+                              <span className="truncate">{item.titleKey ? t(item.titleKey, item.title) : t(item.title, item.title)}</span>
                               {item.unread && (
                                 <span className="w-2 h-2 rounded-full bg-[#ff6b00] animate-pulse shrink-0 ml-1"></span>
                               )}
                             </div>
                             <p className="text-[11px] text-slate-300 dark:text-slate-400 mt-0.5 leading-snug line-clamp-2">
-                              {item.desc}
+                              {item.descKey ? t(item.descKey, item.desc) : t(item.desc, item.desc)}
                             </p>
                             <span className="text-[10px] text-slate-500 mt-1 block font-mono">
                               {item.time}
@@ -300,7 +300,7 @@ export default function DashboardLayout() {
                               e.stopPropagation()
                               handleDismissNotif(item.id)
                             }}
-                            title="Dismiss"
+                            title={t('dismiss', 'Dismiss')}
                             className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-400 text-xs transition-opacity cursor-pointer p-1"
                           >
                             ✕

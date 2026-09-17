@@ -121,15 +121,15 @@ export default function ForgotPassword() {
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
-                Reset<br />
-                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>Password</strong>
+                {t('resetWord', 'Reset')}<br />
+                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>{t('passwordWord', 'Password')}</strong>
               </h1>
               <p
                 className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
-                Recover access to your account in 3 quick steps.
+                {t('recoverAccessSteps', 'Recover access to your account in 3 quick steps.')}
               </p>
             </div>
           </div>
@@ -216,7 +216,7 @@ export default function ForgotPassword() {
                   onClick={() => setEmail('ramesh.worker@sahakar.in')}
                   className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline transition-colors cursor-pointer"
                 >
-                  Use ramesh.worker@sahakar.in ⚡
+                  {t('useDemoEmail', 'Use ramesh.worker@sahakar.in ⚡')}
                 </button>
               </div>
 

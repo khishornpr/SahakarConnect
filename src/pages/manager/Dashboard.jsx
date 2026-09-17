@@ -128,8 +128,8 @@ export default function ManagerDashboard() {
         {/* Team Complaints */}
         <div className="flow-card p-4 space-y-1 col-span-2 lg:col-span-1">
           <span className={`text-[10px] uppercase font-bold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('teamGrievances', 'Team Grievances')}</span>
-          <div className={`text-2xl font-black ${isDark ? 'text-purple-400' : 'text-purple-700'}`}>{teamComplaintsCount} Cases</div>
-          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Routed to Labor Officer</span>
+          <div className={`text-2xl font-black ${isDark ? 'text-purple-400' : 'text-purple-700'}`}>{teamComplaintsCount} {t('worksCount', 'Cases')}</div>
+          <span className={`text-[10px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('routedToLaborQueue', 'Routed to Labor Officer')}</span>
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export default function ManagerDashboard() {
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               📈 Zonal Revenue vs Net Payouts (₹)
             </h3>
-            <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Past 7 Days</span>
+            <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('next7Days', 'Past 7 Days')}</span>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -161,8 +161,8 @@ export default function ManagerDashboard() {
                 <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                 <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', fontSize: '13px', color: isDark ? '#fff' : '#000' }} />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                <Area type="monotone" dataKey="revenue" name="Gross Revenue" stroke="#ff6b00" fill="url(#mgrRevGrad)" strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 6 }} />
-                <Area type="monotone" dataKey="payouts" name="Net Worker Payouts" stroke="#10b981" fill="url(#mgrPayGrad)" strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                <Area type="monotone" dataKey="revenue" name={t('totalGross', 'Gross Revenue')} stroke="#ff6b00" fill="url(#mgrRevGrad)" strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                <Area type="monotone" dataKey="payouts" name={t('netWorkerPayouts', 'Net Worker Payouts')} stroke="#10b981" fill="url(#mgrPayGrad)" strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 6 }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -174,7 +174,7 @@ export default function ManagerDashboard() {
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ⚡ Completed Jobs by Zonal Team
             </h3>
-            <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total: 141 Jobs</span>
+            <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('worksCount', 'Total')}: 141 {t('jobsUnit', 'Jobs')}</span>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -206,7 +206,7 @@ export default function ManagerDashboard() {
             to="/manager/workers"
             className="text-xs font-bold text-[#ff7a00] hover:underline"
           >
-            Full Roster Table →
+            {t('workerRosterTitle', 'Full Roster Table')} →
           </Link>
         </div>
 
@@ -221,17 +221,17 @@ export default function ManagerDashboard() {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    {w.primary_trade} Worker
+                    {t(w.primary_trade, w.primary_trade)} {t('worker', 'Worker')}
                   </h3>
-                  <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>📍 {w.area}</span>
+                  <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>📍 {t(w.area, w.area)}</span>
                 </div>
                 <span className="text-xs font-black text-amber-400">★ {w.rating}</span>
               </div>
 
               <div className={`flex items-center justify-between text-[11px] pt-2 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-                <span className={isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}>Hourly: ₹{w.hourly_rate}/hr</span>
+                <span className={isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}>{t('rateLabel', 'Hourly')}: ₹{w.hourly_rate}/{t('hourUnit', 'hr')}</span>
                 <span className={w.is_verified ? (isDark ? 'text-emerald-400 font-bold' : 'text-emerald-700 font-bold') : (isDark ? 'text-amber-400 font-bold' : 'text-amber-700 font-bold')}>
-                  {w.is_verified ? '✓ Verified' : 'Pending KYC'}
+                  {w.is_verified ? `✓ ${t('verified', 'Verified')}` : t('pendingVerification', 'Pending KYC')}
                 </span>
               </div>
             </div>

@@ -263,14 +263,14 @@ export default function HouseholdBookService() {
 
     const today = getTodayDateString()
     if (scheduledDate < today) {
-      alert('Cannot book past dates. Please select today or a future date.')
+      alert(t('cannotBookPastDates', 'Cannot book past dates. Please select today or a future date.'))
       return
     }
 
     const slots = generateDynamicSlots(estimatedHours)
     const selectedSlotConfig = slots.find((s) => s.value === effectiveTimeSlot)
     if (!selectedSlotConfig || !isSlotAvailable(selectedSlotConfig, scheduledDate)) {
-      alert('The selected time slot is in the past or unavailable. Please choose an upcoming time slot or future date.')
+      alert(t('slotUnavailableOrPast', 'The selected time slot is in the past or unavailable. Please choose an upcoming time slot or future date.'))
       return
     }
 
@@ -368,16 +368,16 @@ export default function HouseholdBookService() {
                 group === 'All'
                   ? t('allTrades', 'All Trades')
                   : group.includes('Home')
-                  ? '🏠 Home Improvement'
+                  ? t('homeImprovementGroup', '🏠 Home Improvement')
                   : group.includes('Repair')
-                  ? '🔧 Repair'
+                  ? t('repairGroup', '🔧 Repair')
                   : group.includes('Cleaning')
-                  ? '🧹 Cleaning'
+                  ? t('cleaningGroup', '🧹 Cleaning')
                   : group.includes('Domestic')
-                  ? '🍳 Domestic'
+                  ? t('domesticGroup', '🍳 Domestic')
                   : group.includes('Care')
-                  ? '🩺 Care'
-                  : '🌿 Outdoor'
+                  ? t('careGroup', '🩺 Care')
+                  : t('outdoorGroup', '🌿 Outdoor')
 
               return (
                 <button
@@ -462,16 +462,16 @@ export default function HouseholdBookService() {
           <div className="lg:col-span-7 flow-card glow-orange-hover p-6 sm:p-7 space-y-4">
             <div className="flex items-center justify-between border-b pb-3 border-white/[0.06]">
               <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Service Details & Schedule
+                {t('serviceDetailsSchedule', 'Service Details & Schedule')}
               </h2>
               <span className="text-xs font-mono font-bold text-[#ff7a00] bg-[#ff6b00]/15 px-2.5 py-0.5 rounded-lg border border-[#ff6b00]/30">
-                {trade}
+                {t(trade, trade)}
               </span>
             </div>
 
             <div>
               <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                Service Title / Requirement <span className="text-rose-400">*</span>
+                {t('serviceTitleRequirement', 'Service Title / Requirement')} <span className="text-rose-400">*</span>
               </label>
               <input
                 ref={detailsInputRef}
@@ -479,7 +479,7 @@ export default function HouseholdBookService() {
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder={`example: ${trade} needed for home repair`}
+                placeholder={`example: ${t(trade, trade)} ${t('serviceNeededPlaceholder', 'needed for home repair')}`}
                 className={`w-full px-3.5 py-2.5 border rounded-xl text-xs transition-all outline-none focus:ring-2 focus:ring-[#ff6b00]/60 ${
                   isDark
                     ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]'
@@ -490,13 +490,13 @@ export default function HouseholdBookService() {
 
             <div>
               <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                Detailed Description / Tools Needed
+                {t('detailedDescTools', 'Detailed Description / Tools Needed')}
               </label>
               <textarea
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe the issue, required tools, parts to be replaced..."
+                placeholder={t('describeIssuePlaceholder', 'Describe the issue, required tools, parts to be replaced...')}
                 className={`w-full px-3.5 py-2.5 border rounded-xl text-xs transition-all outline-none focus:ring-2 focus:ring-[#ff6b00]/60 ${
                   isDark
                     ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]'
@@ -508,7 +508,7 @@ export default function HouseholdBookService() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  Locality / Cluster
+                  {t('localityCluster', 'Locality / Cluster')}
                 </label>
                 <select
                   value={area}
@@ -529,7 +529,7 @@ export default function HouseholdBookService() {
 
               <div>
                 <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  Estimated Work Hours
+                  {t('estimatedWorkHours', 'Estimated Work Hours')}
                 </label>
                 <select
                   value={estimatedHours}
@@ -551,14 +551,14 @@ export default function HouseholdBookService() {
 
             <div>
               <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                Complete Service Address & Landmark
+                {t('completeServiceAddress', 'Complete Service Address & Landmark')}
               </label>
               <input
                 type="text"
                 required
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                placeholder="House/Flat No., Tower, Street, Landmark"
+                placeholder={t('houseFlatAddressPlaceholder', 'House/Flat No., Tower, Street, Landmark')}
                 className={`w-full px-3.5 py-2.5 border rounded-xl text-xs transition-all ${
                   isDark
                     ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]'
@@ -573,10 +573,10 @@ export default function HouseholdBookService() {
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className={`block text-xs font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Scheduled Date <span className="text-rose-400">*</span>
+                      {t('scheduledDateLabel', 'Scheduled Date')} <span className="text-rose-400">*</span>
                     </label>
                     <span className="text-[10px] text-emerald-400 font-bold">
-                      {isSelectedDateToday ? '📅 Today' : '📅 Future Date'}
+                      {isSelectedDateToday ? t('todayBadge', '📅 Today') : t('futureDateBadge', '📅 Future Date')}
                     </span>
                   </div>
                   <input
@@ -600,17 +600,17 @@ export default function HouseholdBookService() {
                     }`}
                   />
                   <p className="text-[10px] text-slate-400 mt-1">
-                    Past dates are disabled. Only today & future dates permitted.
+                    {t('pastDatesDisabled', 'Past dates are disabled. Only today & future dates permitted.')}
                   </p>
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className={`block text-xs font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Preferred Time Slot <span className="text-rose-400">*</span>
+                      {t('preferredTimeSlot', 'Preferred Time Slot')} <span className="text-rose-400">*</span>
                     </label>
                     <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-500/30">
-                      ⏱️ +15m Arrival Included
+                      {t('arrival15Included', '⏱️ +15m Arrival Included')}
                     </span>
                   </div>
                   <select
@@ -783,13 +783,13 @@ export default function HouseholdBookService() {
                 }`}
               >
                 {submitting ? (
-                  <span>Booking in Progress...</span>
+                  <span>{t('bookingInProgress', 'Booking in Progress...')}</span>
                 ) : hasNoSlotsAvailable ? (
-                  <span>⚠️ Same-Day Slots Closed — Select Future Date</span>
+                  <span>{t('sameDaySlotsClosed', '⚠️ Same-Day Slots Closed — Select Future Date')}</span>
                 ) : (
                   <>
                     <span>🚀</span>
-                    <span>Confirm Booking & Dispatch Worker</span>
+                    <span>{t('confirmBookingDispatch', 'Confirm Booking & Dispatch Worker')}</span>
                     <span>→</span>
                   </>
                 )}
@@ -801,13 +801,13 @@ export default function HouseholdBookService() {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className={`font-black text-xs uppercase tracking-wider ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Nearest Verified Workers ({trade})
+                    {t('nearestVerifiedWorkers', 'Nearest Verified Workers')} ({trade})
                   </h3>
                   <p className="text-[10px] text-slate-400 mt-0.5">
-                    Clustered by locality proximity & verified skill badge score
+                    {t('clusteredByLocality', 'Clustered by locality proximity & verified skill badge score')}
                   </p>
                 </div>
-                {loading && <span className="text-xs text-[#ff7a00] animate-pulse">Matching...</span>}
+                {loading && <span className="text-xs text-[#ff7a00] animate-pulse">{t('matchingEllipsis', 'Matching...')}</span>}
               </div>
 
               <div className="space-y-2.5 max-h-[280px] overflow-y-auto pr-1">
@@ -873,22 +873,22 @@ export default function HouseholdBookService() {
         createPortal(
           <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
             <div className={`p-6 rounded-2xl max-w-sm w-full space-y-4 border ${isDark ? 'bg-[#12151b] border-white/[0.08] text-white' : 'bg-white border-slate-200 text-slate-900 shadow-2xl'}`}>
-              <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>AI Match Score Breakdown</h3>
+              <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('aiMatchScoreBreakdown', 'AI Match Score Breakdown')}</h3>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>Proximity Score:</span>
+                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>{t('proximityScoreLabel', 'Proximity Score')}:</span>
                   <span className={`font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{showScoreModalFor.proximityScore} pts</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>Rating & Feedback Weight:</span>
+                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>{t('ratingFeedbackWeightLabel', 'Rating & Feedback Weight')}:</span>
                   <span className={`font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{showScoreModalFor.ratingScore} pts</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>Workload Fairness Factor:</span>
+                  <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>{t('workloadFairnessFactorLabel', 'Workload Fairness Factor')}:</span>
                   <span className={`font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{showScoreModalFor.fairnessScore} pts</span>
                 </div>
                 <div className={`flex justify-between pt-2 border-t font-black ${isDark ? 'border-white/[0.08]' : 'border-slate-200'}`}>
-                  <span className={isDark ? 'text-white' : 'text-slate-900'}>Total Composite Match:</span>
+                  <span className={isDark ? 'text-white' : 'text-slate-900'}>{t('totalCompositeMatchLabel', 'Total Composite Match')}:</span>
                   <span className={`font-mono ${isDark ? 'text-[#ff7a00]' : 'text-amber-600'}`}>{showScoreModalFor.score} / 100</span>
                 </div>
               </div>
@@ -897,7 +897,7 @@ export default function HouseholdBookService() {
                 onClick={() => setShowScoreModalFor(null)}
                 className="w-full py-2 flow-btn-primary font-bold text-xs rounded-xl cursor-pointer"
               >
-                Close
+                {t('close', 'Close')}
               </button>
             </div>
           </div>,

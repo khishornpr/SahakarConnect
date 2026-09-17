@@ -179,7 +179,7 @@ export default function CooperativeDashboard() {
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#ff6b00]/15 text-[#ff7a00] border border-[#ff6b00]/30 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-pulse"></span>
-            Apex Federation Operations
+            {t('federationOperations', 'Apex Federation Operations')}
           </span>
         </div>
       </div>
@@ -192,7 +192,7 @@ export default function CooperativeDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Total Marketplace Volume 👁
+                  {t('totalMarketplaceGmv', 'Total Marketplace GMV')} 👁
                 </span>
                 <div className={`text-2xl font-black mt-1.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   ₹{totalGrossVolume.toLocaleString()}
@@ -521,7 +521,7 @@ export default function CooperativeDashboard() {
             </ResponsiveContainer>
             {expenseChartType === 'donut' && (
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total</span>
+                <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('totalWord', 'Total')}</span>
                 <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{totalExpenseVal.toLocaleString('en-IN')}</span>
               </div>
             )}
@@ -532,7 +532,7 @@ export default function CooperativeDashboard() {
               <div key={item.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2 truncate">
                   <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }}></span>
-                  <span className={`truncate text-xs font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{item.name}</span>
+                  <span className={`truncate text-xs font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>{t(item.name, item.name)}</span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{item.value.toLocaleString()}</span>
@@ -549,7 +549,7 @@ export default function CooperativeDashboard() {
         {/* Recent Transactions List */}
         <div className="flow-card glow-orange-hover p-6 space-y-4">
           <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-            <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>Recent Transactions</h2>
+            <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('recentTransactionsTitle', 'Recent Transactions')}</h2>
             <Link to="/cooperative/financials" className="text-xs text-[#ff7a00] hover:underline font-bold flex items-center gap-1">
               <span>{t('viewAll', 'View All')}</span>
               <span>→</span>
@@ -581,7 +581,7 @@ export default function CooperativeDashboard() {
                 </div>
                 <div className="text-right">
                   <div className="text-xs font-black text-emerald-500">+{tx.amount}</div>
-                  <span className="text-[9px] text-slate-500 font-semibold uppercase">{tx.status}</span>
+                  <span className="text-[9px] text-slate-500 font-semibold uppercase">{t(tx.status, tx.status)}</span>
                 </div>
               </div>
             ))}
@@ -592,7 +592,7 @@ export default function CooperativeDashboard() {
         <div className="flow-card glow-orange-hover p-6 space-y-4 flex flex-col justify-between">
           <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <div className="min-w-0">
-              <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Disbursal Velocity</span>
+              <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('disbursalVelocity', 'Disbursal Velocity')}</span>
               <div className={`text-xl font-black mt-0.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>₹9,642.30</div>
             </div>
 
@@ -607,9 +607,9 @@ export default function CooperativeDashboard() {
                     : 'bg-white border-slate-300 text-slate-700 focus:border-[#ff6b00]'
                 }`}
               >
-                <option value="net">Net Disbursed</option>
-                <option value="gross">Gross Volume</option>
-                <option value="coop">5% Co-op Fee</option>
+                <option value="net">{t('workerNetPayout', 'Net Disbursed')}</option>
+                <option value="gross">{t('totalMarketplaceGmv', 'Gross Volume')}</option>
+                <option value="coop">{t('coopFeeRetained5', '5% Co-op Fee')}</option>
               </select>
 
               <div className={`flex items-center gap-1 p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#12151c] border-white/[0.1]' : 'bg-slate-100 border-slate-200'}`}>
@@ -689,7 +689,7 @@ export default function CooperativeDashboard() {
         {/* Goals Progress Bars */}
         <div className="flow-card glow-orange-hover p-6 space-y-4">
           <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
-            <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>Cooperative Targets</h2>
+            <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('cooperativeTargets', 'Cooperative Targets')}</h2>
             <Link to="/cooperative/demand-forecast" className="text-xs text-[#ff7a00] hover:underline font-bold flex items-center gap-1">
               <span>{t('viewAll', 'View All')}</span>
               <span>→</span>
@@ -767,7 +767,7 @@ export default function CooperativeDashboard() {
         <div className="space-y-1.5 max-w-2xl relative z-10">
           <div className="flex items-center gap-2 text-sm font-extrabold text-[#ff7a00]">
             <span>✨</span>
-            <span>Cooperative Intelligence & Financial Insights</span>
+            <span>{t('cooperativeIntelligenceInsights', 'Cooperative Intelligence & Financial Insights')}</span>
           </div>
           <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
             Your labour cooperative service federation is performing exceptionally well! Revenue velocity is up by{' '}

@@ -347,15 +347,15 @@ export default function WorkerProfile() {
             </div>
 
             <div>
-              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Experience</label>
+              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('experienceLabel', 'Experience')}</label>
               <div className={`text-sm font-semibold mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-                {formatExperience(workerInfo?.experience_years ?? experienceYears, workerInfo?.experience_months ?? experienceMonths)} Certified Experience
+                {formatExperience(workerInfo?.experience_years ?? experienceYears, workerInfo?.experience_months ?? experienceMonths)} {t('certifiedExperience', 'Certified Experience')}
               </div>
             </div>
 
             <div>
               <label className={`text-xs font-medium block mb-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Endorsed Skill Badges
+                {t('endorsedSkillBadges', 'Endorsed Skill Badges')}
               </label>
               <div className="flex flex-wrap gap-2">
                 {(workerInfo?.skills || ['Wiring', 'Switchboard Repair', 'Inverter Installation', 'MCB Tripping']).map((s) => (
@@ -367,7 +367,7 @@ export default function WorkerProfile() {
                         : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                     }`}
                   >
-                    ✓ {s}
+                    ✓ {t(s, s)}
                   </span>
                 ))}
               </div>
@@ -375,23 +375,23 @@ export default function WorkerProfile() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-wider">Federation & KYC Compliance</h3>
+            <h3 className="text-xs font-black text-[#ff7a00] uppercase tracking-wider">{t('federationKycCompliance', 'Federation & KYC Compliance')}</h3>
             <div>
-              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Cooperative Society</label>
+              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('cooperativeSocietyLabel', 'Cooperative Society')}</label>
               <div className={`text-sm font-semibold mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                 Delhi Shramik Sahakari Federation Ltd. (Reg: DEL/LAB-COOP/2021/894)
               </div>
             </div>
 
             <div>
-              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Identity Document</label>
+              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('identityDocumentLabel', 'Identity Document')}</label>
               <div className={`text-sm font-mono mt-0.5 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                 {workerInfo?.gov_id_type || 'Aadhaar'}: {workerInfo?.gov_id_masked || 'XXXX-XXXX-8921'}
               </div>
             </div>
 
             <div>
-              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Service Base Locality</label>
+              <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('serviceBaseLocality', 'Service Base Locality')}</label>
               <div className={`text-sm mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
                 📍 {workerInfo?.area || 'South Extension, New Delhi'}
               </div>
@@ -406,15 +406,15 @@ export default function WorkerProfile() {
           <div className="flex items-center gap-2">
             <span className="text-xl">🎓</span>
             <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-800'}`}>
-              Certified Training & Upskilling Badges
+              {t('certifiedTrainingBadges', 'Certified Training & Upskilling Badges')}
             </h3>
           </div>
           <span className="status-pill-emerald text-[11px]">
-            Co-op Verified
+            {t('coopVerifiedBadge', 'Co-op Verified')}
           </span>
         </div>
         <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-          Earned through successfully passing practical exams and interactive safety modules at the Sahakar Training Academy.
+          {t('certifiedTrainingBadgesDesc', 'Earned through successfully passing practical exams and interactive safety modules at the Sahakar Training Academy.')}
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
@@ -423,8 +423,8 @@ export default function WorkerProfile() {
           }`}>
             <span className="text-2xl">🏆</span>
             <div>
-              <strong className="text-xs block">Electrical Safety (LOTO)</strong>
-              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>Score: 100% • Verified</span>
+              <strong className="text-xs block">{t('electricalSafetyLoto', 'Electrical Safety (LOTO)')}</strong>
+              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>{t('score100Verified', 'Score: 100% • Verified')}</span>
             </div>
           </div>
 
@@ -433,8 +433,8 @@ export default function WorkerProfile() {
           }`}>
             <span className="text-2xl">⭐</span>
             <div>
-              <strong className="text-xs block">5-Star Customer Etiquette</strong>
-              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>Score: 100% • Verified</span>
+              <strong className="text-xs block">{t('fiveStarCustomerEtiquette', '5-Star Customer Etiquette')}</strong>
+              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>{t('score100Verified', 'Score: 100% • Verified')}</span>
             </div>
           </div>
 
@@ -443,8 +443,8 @@ export default function WorkerProfile() {
           }`}>
             <span className="text-2xl">⚡</span>
             <div>
-              <strong className="text-xs block">Smart Relay Specialist</strong>
-              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>In Progress (50%)</span>
+              <strong className="text-xs block">{t('smartRelaySpecialist', 'Smart Relay Specialist')}</strong>
+              <span className={`text-[10px] ${isDark ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>{t('inProgress50', 'In Progress (50%)')}</span>
             </div>
           </div>
         </div>
@@ -453,7 +453,7 @@ export default function WorkerProfile() {
       {/* Household Reviews */}
       <div className="flow-card glow-orange-hover p-6">
         <h3 className={`text-base font-black mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-          Household Ratings & Feedback ({ratingsList.length})
+          {t('householdRatingsFeedback', 'Household Ratings & Feedback')} ({ratingsList.length})
         </h3>
         <div className="space-y-3">
           {ratingsList.map((r) => (

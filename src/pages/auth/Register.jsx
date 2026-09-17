@@ -154,15 +154,15 @@ export default function Register() {
                   isDark ? 'text-white drop-shadow-md' : 'text-slate-900'
                 }`}
               >
-                Create<br />
-                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>Account</strong>
+                {t('createWord', 'Create')}<br />
+                <strong className={`font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>{t('accountWord', 'Account')}</strong>
               </h1>
               <p
                 className={`text-xs sm:text-base mt-3 sm:mt-4 max-w-md leading-relaxed ${
                   isDark ? 'text-slate-200 font-light' : 'text-slate-800 font-medium'
                 }`}
               >
-                Join SahakarConnect to book or offer verified local services.
+                {t('joinSahakarDesc', 'Join SahakarConnect to book or offer verified local services.')}
               </p>
             </div>
           </div>
@@ -206,9 +206,9 @@ export default function Register() {
                     <span>📋</span> Next Steps:
                   </div>
                   <ol className="list-decimal list-inside space-y-1 text-[11px] text-slate-400">
-                    <li>Open your email inbox and check for the verification message.</li>
-                    <li>Click the <strong>Confirm your email</strong> link.</li>
-                    <li>You will be instantly redirected to your SahakarConnect dashboard.</li>
+                    <li>{t('checkEmailVerification', 'Open your email inbox and check for the verification message.')}</li>
+                    <li>{t('clickConfirmEmailLink', 'Click the Confirm your email link.')}</li>
+                    <li>{t('instantRedirectDashboard', 'You will be instantly redirected to your SahakarConnect dashboard.')}</li>
                   </ol>
                 </div>
 
@@ -232,7 +232,7 @@ export default function Register() {
                         : 'border-orange-500 text-orange-600 hover:bg-orange-50 cursor-pointer'
                     }`}
                   >
-                    {resendCooldown > 0 ? `Resend Email in ${resendCooldown}s` : 'Resend Verification Email'}
+                    {resendCooldown > 0 ? `Resend Email in ${resendCooldown}s` : t('resendVerificationEmail', 'Resend Verification Email')}
                   </button>
 
                   {/* Instant Demo Confirmation Helper for frictionless testing */}
@@ -250,7 +250,7 @@ export default function Register() {
                     to="/login"
                     className="text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center gap-1"
                   >
-                    <span>←</span> Return to Login
+                    <span>←</span> {t('returnToLogin', 'Return to Login')}
                   </Link>
                 </div>
               </div>
@@ -258,10 +258,10 @@ export default function Register() {
               /* Normal Signup Form State */
               <>
                 <h2 className={`text-2xl font-black text-center tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Get Started
+                  {t('welcome', 'Get Started')}
                 </h2>
                 <p className={`text-xs text-center mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                  Choose your persona and create an account
+                  {t('loginSubtitle', 'Choose your persona and create an account')}
                 </p>
 
                 {/* 2 Role Switcher Tabs */}
@@ -271,8 +271,8 @@ export default function Register() {
                   }`}
                 >
                   {[
-                    { id: 'worker', label: '🛠️ Worker' },
-                    { id: 'household', label: '🏡 Customer' },
+                    { id: 'worker', label: `🛠️ ${t('worker', 'Worker')}` },
+                    { id: 'household', label: `🏡 ${t('householdPortal', 'Customer')}` },
                   ].map((r) => (
                     <button
                       key={r.id}
@@ -303,7 +303,7 @@ export default function Register() {
                   {/* Full Name */}
                   <div>
                     <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Full Name
+                      {t('workerNameHeader', 'Full Name')}
                     </label>
                     <input
                       type="text"
@@ -323,7 +323,7 @@ export default function Register() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                        Email Address
+                        {t('emailAddress', 'Email Address')}
                       </label>
                       <input
                         type="email"
@@ -340,14 +340,14 @@ export default function Register() {
                     </div>
                     <div>
                       <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                        Password
+                        {t('password', 'Password')}
                       </label>
                       <div className="relative flex items-center">
                         <input
                           type={showPassword ? 'text' : 'password'}
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          placeholder="Min 6 characters"
+                          placeholder={t('min6CharsPlaceholder', 'Min 6 characters')}
                           className={`w-full pl-3.5 pr-10 py-2.5 border rounded-xl text-xs focus:outline-none transition-all ${
                             isDark
                               ? 'bg-[#181c24] border-white/[0.08] text-white placeholder-slate-500 focus:border-[#e5a65e]'
@@ -387,12 +387,12 @@ export default function Register() {
                       }`}
                     >
                       <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
-                        Worker Trade & Cooperative Affiliation
+                        {t('craftSpecializationsTitle', 'Worker Trade & Cooperative Affiliation')}
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                           <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                            Primary Skill / Trade
+                            {t('primaryTrade', 'Primary Skill / Trade')}
                           </label>
                           <select
                             value={trade}
@@ -410,7 +410,7 @@ export default function Register() {
                         </div>
                         <div>
                           <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                            Experience (Years)
+                            {t('experienceLabel', 'Experience')} ({t('yearsLabel', 'Years')})
                           </label>
                           <input
                             type="number"
@@ -427,7 +427,7 @@ export default function Register() {
 
                       <div>
                         <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                          Assigned Cooperative Society
+                          {t('cooperativeSocietyLabel', 'Assigned Cooperative Society')}
                         </label>
                         <select
                           value={coopName}
@@ -447,7 +447,7 @@ export default function Register() {
 
                       <div>
                         <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                          Primary Base Work Area (NCR)
+                          {t('serviceBaseLocality', 'Primary Base Work Area (NCR)')}
                         </label>
                         <select
                           value={area}
@@ -458,7 +458,7 @@ export default function Register() {
                         >
                           {DELHI_NCR_AREAS.map((a) => (
                             <option key={a.id} value={a.name}>
-                              {a.name} ({a.district})
+                              {t(a.name, a.name)} ({t(a.district, a.district)})
                             </option>
                           ))}
                         </select>
@@ -474,11 +474,11 @@ export default function Register() {
                       }`}
                     >
                       <div className="text-xs font-bold text-[#d8964d] uppercase tracking-wider">
-                        Household Service Location
+                        {t('localityCluster', 'Household Service Location')}
                       </div>
                       <div>
                         <label className={`block text-[11px] mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                          Area / Locality
+                          {t('localityHeader', 'Area / Locality')}
                         </label>
                         <select
                           value={area}
@@ -489,7 +489,7 @@ export default function Register() {
                         >
                           {DELHI_NCR_AREAS.map((a) => (
                             <option key={a.id} value={a.name}>
-                              {a.name} ({a.district})
+                              {t(a.name, a.name)} ({t(a.district, a.district)})
                             </option>
                           ))}
                         </select>
@@ -503,9 +503,9 @@ export default function Register() {
                     className="w-full py-3.5 px-4 bg-gradient-to-r from-[#e8b070] to-[#d8964d] hover:from-[#f0be82] hover:to-[#e0a259] text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_25px_rgba(232,176,112,0.35)] transition-all disabled:opacity-50 mt-2 cursor-pointer"
                   >
                     {loading
-                      ? 'Creating Account...'
-                      : `Register as ${
-                          role === 'worker' ? 'Cooperative Worker' : 'Household Customer'
+                      ? t('saving', 'Creating Account...')
+                      : `${t('signUpLink', 'Register')} as ${
+                          role === 'worker' ? t('worker', 'Worker') : t('householdPortal', 'Customer')
                         }`}
                   </button>
                 </form>
@@ -526,16 +526,16 @@ export default function Register() {
                     <p className="mt-0.5">
                       Administrative & official accounts are pre-authorized by the Federation. Please{' '}
                       <Link to="/login" className="text-[#d8964d] font-bold hover:underline">
-                        Sign In directly →
+                        {t('signIn', 'Sign In')} directly →
                       </Link>
                     </p>
                   </div>
                 </div>
 
                 <div className={`text-center mt-4 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                  Already have an account?{' '}
+                  {t('dontHaveAccount', 'Already have an account?').replace("Don't", 'Already')}{' '}
                   <Link to="/login" className="text-[#d8964d] hover:text-[#b8762d] font-bold hover:underline">
-                    Sign In
+                    {t('signIn', 'Sign In')}
                   </Link>
                 </div>
               </>
@@ -547,13 +547,13 @@ export default function Register() {
       {/* ----------------- BOTTOM FOOTER ----------------- */}
       <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium">
         <div className={isDark ? 'text-slate-400' : 'text-slate-600'}>
-          © 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations
+          {t('footerRights', '© 2026 SahakarConnect. All rights reserved. • Ministry of Cooperation & Labour Federations')}
         </div>
         <div className="flex items-center gap-1.5 text-emerald-600">
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
-          <span className="font-semibold">Your data is secure with cooperative encryption</span>
+          <span className="font-semibold">{t('dataSecureCoopEncryption', 'Your data is secure with cooperative encryption')}</span>
         </div>
       </footer>
     </div>

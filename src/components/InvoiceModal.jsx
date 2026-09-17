@@ -99,12 +99,12 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
               <div className={`text-[10px] font-bold uppercase tracking-wider truncate print:text-slate-500 ${
                 isDark ? 'text-slate-400' : 'text-slate-500'
               }`}>
-                Registration No: {inv.society.regNo} • Multi-State Cooperative
+                {t('registrationNo', 'Registration No')}: {inv.society.regNo} • {t('multiStateCooperative', 'Multi-State Cooperative')}
               </div>
               <p className={`text-[11px] truncate print:text-slate-500 ${
                 isDark ? 'text-slate-400' : 'text-slate-500'
               }`}>
-                {inv.society.address} • Phone: {inv.society.phone}
+                {inv.society.address} • {t('phone', 'Phone')}: {inv.society.phone}
               </p>
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
             </span>
             <span className={`text-[10px] mt-1 block print:text-slate-500 ${
               isDark ? 'text-slate-400' : 'text-slate-500'
-            }`}>Date: {inv.date}</span>
+            }`}>{t('dateLabel', 'Date')}: {inv.date}</span>
           </div>
         </div>
 
@@ -133,7 +133,7 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
             <span className={`text-[10px] uppercase font-bold block tracking-wider print:text-slate-500 ${
               isDark ? 'text-slate-400' : 'text-slate-500'
             }`}>
-              Customer:
+              {t('customer', 'Customer')}:
             </span>
             <strong className={`text-sm font-bold block print:text-slate-900 ${
               isDark ? 'text-white' : 'text-slate-900'
@@ -149,14 +149,14 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
             <span className={`text-[10px] uppercase font-bold block tracking-wider print:text-slate-500 ${
               isDark ? 'text-slate-400' : 'text-slate-500'
             }`}>
-              Assigned Worker:
+              {t('assignedWorker', 'Assigned Worker')}:
             </span>
             <strong className={`text-sm font-bold block print:text-slate-900 ${
               isDark ? 'text-white' : 'text-slate-900'
             }`}>{workerDisplayName}</strong>
             <p className={`font-semibold print:text-emerald-700 ${
               isDark ? 'text-emerald-400' : 'text-emerald-700'
-            }`}>{inv.worker.trade} Trade • Verified Member</p>
+            }`}>{inv.worker.trade} {t('tradeWord', 'Trade')} • {t('verifiedMember', 'Verified Member')}</p>
           </div>
         </div>
 
@@ -284,7 +284,7 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
               ? 'text-slate-400 border-white/[0.08]'
               : 'text-slate-500 border-slate-200'
           }`}>
-            <span>Payment Mode: {inv.financials.paymentMode}</span>
+            <span>{t('paymentMode', 'Payment Mode')}: {inv.financials.paymentMode}</span>
             <span className={`font-bold print:text-emerald-700 ${
               isDark ? 'text-emerald-400' : 'text-emerald-700'
             }`}>✓ {inv.financials.paymentStatus}</span>

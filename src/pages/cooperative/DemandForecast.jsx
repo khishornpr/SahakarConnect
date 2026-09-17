@@ -164,7 +164,7 @@ export default function CooperativeDemandForecast() {
             </strong>
           </div>
           <div className="flex items-center justify-between gap-4 pt-1 border-t border-white/[0.06]">
-            <span className="text-slate-400">Net Capacity Gap:</span>
+            <span className="text-slate-400">{t('netCapacityGap', 'Net Capacity Gap:')}</span>
             <strong
               className={`font-mono text-xs ${
                 isDeficit
@@ -464,10 +464,10 @@ export default function CooperativeDemandForecast() {
                 }`}
                 title="Zoom into specific trade"
               >
-                <option value="all">🔍 Zoom: All in Category</option>
+                <option value="all">{t('zoomAllInCategory', '🔍 Zoom: All in Category')}</option>
                 {availableTradesInCurrentGroup.map((tr) => (
                   <option key={tr.trade} value={tr.trade}>
-                    {tr.trade}
+                    {t(tr.trade, tr.trade)}
                   </option>
                 ))}
               </select>

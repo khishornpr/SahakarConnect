@@ -302,7 +302,7 @@ export default function WorkerComplaints() {
                 maxLength={250}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="example: Wage dispute / Safety issue"
+                placeholder={t('subjectPlaceholder', 'example: Wage dispute / Safety issue')}
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-xs outline-none transition-all ${
                   isDark ? 'bg-[#161a22] border-white/[0.08] text-white focus:border-[#ff6b00]' : 'bg-white border-slate-300 text-slate-900 focus:border-[#ff6b00]'
                 }`}
@@ -349,14 +349,14 @@ export default function WorkerComplaints() {
                 <div className="text-2xl mb-1">{fileError ? '⚠️' : '📎'}</div>
                 <div className="text-xs font-semibold text-slate-400">
                   {fileName && !fileError ? (
-                    <span className="text-emerald-400 font-bold">✓ Attached: {fileName}</span>
+                    <span className="text-emerald-400 font-bold">{t('attachedLabel', '✓ Attached:')} {fileName}</span>
                   ) : (
                     <span>{t('uploadProof', 'Click to attach photo evidence, bill receipts, documents or work logs')}</span>
                   )}
                 </div>
 
                 <p className={`text-[11px] mt-1.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Upload the files in any of these formats: <span className="font-bold text-[#ff7a00]">TXT, DOC, DOCX, PDF, PNG, JPEG, JPG</span>
+                  {t('uploadFormatsHint', 'Upload the files in any of these formats:')} <span className="font-bold text-[#ff7a00]">TXT, DOC, DOCX, PDF, PNG, JPEG, JPG</span>
                 </p>
 
                 {fileError && (

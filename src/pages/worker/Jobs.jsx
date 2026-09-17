@@ -167,7 +167,7 @@ export default function WorkerJobs() {
               isDark ? 'bg-[#ff6b00]/15 border-[#ff6b00]/30 text-[#ff7a00]' : 'bg-orange-50 border-orange-200 text-orange-800'
             }`}
           >
-            <span>⚡ SIH26089 Feature 6 • Service Booking & Status Progression</span>
+            <span>⚡ {t('serviceBookingProgressionBadge', 'SIH26089 Feature 6 • Service Booking & Status Progression')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {t('serviceJobsQueue', 'Service Jobs & Dispatch Queue')}

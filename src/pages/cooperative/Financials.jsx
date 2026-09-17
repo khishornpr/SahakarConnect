@@ -436,13 +436,13 @@ export default function CooperativeFinancials() {
               isDark ? 'bg-[#161a22] text-[#ff7a00] border-white/[0.08]' : 'bg-slate-50 text-slate-700 border-slate-200'
             }`}>
               <tr>
-                <th className="px-4 py-3.5">Ledger ID</th>
-                <th className="px-4 py-3.5">Date</th>
-                <th className="px-4 py-3.5">Gross Billing</th>
-                <th className="px-4 py-3.5">Co-op 5% Surplus</th>
-                <th className="px-4 py-3.5">Welfare Fund</th>
-                <th className={`px-4 py-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Net Disbursal</th>
-                <th className="px-4 py-3.5">Audit Action</th>
+                <th className="px-4 py-3.5">{t('ledgerIdHeader', 'Ledger ID')}</th>
+                <th className="px-4 py-3.5">{t('dateHeader', 'Date')}</th>
+                <th className="px-4 py-3.5">{t('grossBillingHeader', 'Gross Billing')}</th>
+                <th className="px-4 py-3.5">{t('coop5SurplusHeader', 'Co-op 5% Surplus')}</th>
+                <th className="px-4 py-3.5">{t('welfareFundHeader', 'Welfare Fund')}</th>
+                <th className={`px-4 py-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{t('netDisbursalHeader', 'Net Disbursal')}</th>
+                <th className="px-4 py-3.5">{t('auditActionHeader', 'Audit Action')}</th>
               </tr>
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-white/[0.06] text-slate-200' : 'divide-slate-200 text-slate-800'}`}>
@@ -454,10 +454,10 @@ export default function CooperativeFinancials() {
                         💳
                       </div>
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                        No Data Available
+                        {t('noDataAvailable', 'No Data Available')}
                       </div>
                       <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                        No standard verified disbursal entries recorded in the ledger yet.
+                        {t('noStandardDisbursals', 'No standard verified disbursal entries recorded in the ledger yet.')}
                       </p>
                     </div>
                   </td>
@@ -481,7 +481,7 @@ export default function CooperativeFinancials() {
                         className="px-3 py-1 flow-btn-primary rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm cursor-pointer"
                       >
                         <span>📄</span>
-                        <span>Invoice</span>
+                        <span>{t('invoiceBtn', 'Invoice')}</span>
                       </button>
                     </td>
                   </tr>

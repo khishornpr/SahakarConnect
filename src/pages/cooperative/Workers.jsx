@@ -96,7 +96,11 @@ export default function CooperativeWorkers() {
                   : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer'
               }`}
             >
-              {f === 'pending' ? '⏳ Pending Verification' : f}
+              {f === 'pending'
+                ? `⏳ ${t('pendingVerification', 'Pending Verification')}`
+                : f === 'verified'
+                ? `✓ ${t('verified', 'Verified')}`
+                : t('allFilter', 'All')}
             </button>
           ))}
         </div>
@@ -136,10 +140,10 @@ export default function CooperativeWorkers() {
                       </div>
                       <div className="space-y-1">
                         <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                          No Data Available
+                          {t('noDataAvailable', 'No Data Available')}
                         </div>
                         <p className="text-xs text-slate-400">
-                          No workers found matching your selected verification status or trade category filter.
+                          {t('noWorkersFound', 'No workers found matching your selected verification status or trade category filter.')}
                         </p>
                       </div>
                     </div>
@@ -159,16 +163,16 @@ export default function CooperativeWorkers() {
                       </td>
                       <td className="px-4 py-3.5 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
-                          <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{w.primary_trade}</span>
+                          <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{t(w.primary_trade, w.primary_trade)}</span>
                           {!isFullyVerified && (
                             <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                              Pending Approval
+                              {t('pendingApprovalBadge', 'Pending Approval')}
                             </span>
                           )}
                         </div>
-                        <div className="text-[10px] text-slate-500">{w.experience_years} yrs experience</div>
+                        <div className="text-[10px] text-slate-500">{w.experience_years} {t('yearsLabel', 'yrs')} {t('experienceLabel', 'experience')}</div>
                       </td>
-                      <td className={`px-4 py-3.5 whitespace-nowrap ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>📍 {w.area}</td>
+                      <td className={`px-4 py-3.5 whitespace-nowrap ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>📍 {t(w.area, w.area)}</td>
                       <td className="px-4 py-3.5 font-mono whitespace-nowrap">
                         <span className={`block ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
                           {w.gov_id_type}: {w.gov_id_masked}
@@ -177,21 +181,21 @@ export default function CooperativeWorkers() {
                       </td>
                       <td className="px-4 py-3.5 whitespace-nowrap">
                         <span className="font-extrabold text-yellow-500">★ {w.rating || '5.0'}</span>
-                        <span className="text-[10px] text-slate-500 block">{w.completed_jobs_count} completed</span>
+                        <span className="text-[10px] text-slate-500 block">{w.completed_jobs_count} {t('completed', 'completed')}</span>
                       </td>
                       <td className="px-4 py-3.5 whitespace-nowrap">
                         {isFullyVerified ? (
                           <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm ${
                             isDark ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400' : 'bg-emerald-100 border-emerald-300 text-emerald-800'
                           }`}>
-                            ✓ APPROVED
+                            ✓ {t('approvedStatus', 'APPROVED')}
                           </span>
                         ) : (
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm ${
                             isDark ? 'bg-amber-500/15 border-amber-500/40 text-amber-300' : 'bg-amber-100 border-amber-300 text-amber-900'
                           }`}>
                             <span className="animate-pulse">⏳</span>
-                            <span>VERIFICATION IN PROGRESS</span>
+                            <span>{t('verificationInProgress', 'VERIFICATION IN PROGRESS')}</span>
                           </span>
                         )}
                       </td>
@@ -208,7 +212,7 @@ export default function CooperativeWorkers() {
                               : 'bg-blue-600 hover:bg-blue-500 text-white shadow-md cursor-pointer'
                           }`}
                         >
-                          {isKycVerified ? '✓ Verified' : 'Verify KYC'}
+                          {isKycVerified ? `✓ ${t('verified', 'Verified')}` : t('verifyKycBtn', 'Verify KYC')}
                         </button>
                       </td>
                       <td className="px-4 py-3.5 whitespace-nowrap">
@@ -226,10 +230,10 @@ export default function CooperativeWorkers() {
                           }`}
                         >
                           {updatingId === w.user_id
-                            ? 'Updating...'
+                            ? t('saving', 'Updating...')
                             : isFullyVerified
-                            ? 'Revoke Status'
-                            : 'Approve'}
+                            ? t('revokeStatusBtn', 'Revoke Status')
+                            : t('approveBtn', 'Approve')}
                         </button>
                       </td>
                     </tr>
@@ -266,19 +270,19 @@ export default function CooperativeWorkers() {
                   <div>
                     <h3 className="text-base font-black tracking-tight">
                       {confirmModal.type === 'verify'
-                        ? 'Confirm KYC Document Verification'
+                        ? t('confirmKycVerification', 'Confirm KYC Document Verification')
                         : confirmModal.type === 'approve'
-                        ? 'Approve'
-                        : 'Confirm Status Revocation'}
+                        ? t('approveBtn', 'Approve')
+                        : t('confirmStatusRevocation', 'Confirm Status Revocation')}
                     </h3>
                     <p className={`text-[11px] font-medium ${
                       isDark ? 'text-slate-400' : 'text-slate-500'
                     }`}>
                       {confirmModal.type === 'verify'
-                        ? 'Validate government ID & KYC records'
+                        ? t('validateGovIdSub', 'Validate government ID & KYC records')
                         : confirmModal.type === 'approve'
-                        ? 'Enable automatic dispatch allocations'
-                        : 'Pause active dispatch allocations'}
+                        ? t('enableAutoDispatchSub', 'Enable automatic dispatch allocations')
+                        : t('pauseActiveDispatchSub', 'Pause active dispatch allocations')}
                     </p>
                   </div>
                 </div>
@@ -298,43 +302,42 @@ export default function CooperativeWorkers() {
                 isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'
               }`}>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-400 font-medium">Worker Name:</span>
+                  <span className="text-slate-400 font-medium">{t('workerNameLabel', 'Worker Name')}:</span>
                   <strong className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {confirmModal.worker.profiles?.full_name || 'Worker'}
                   </strong>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-400 font-medium">Primary Trade:</span>
-                  <span className="font-semibold text-emerald-400">{confirmModal.worker.primary_trade}</span>
+                  <span className="text-slate-400 font-medium">{t('primaryTradeLabel', 'Primary Trade')}:</span>
+                  <span className="font-semibold text-emerald-400">{t(confirmModal.worker.primary_trade, confirmModal.worker.primary_trade)}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-400 font-medium">KYC Document:</span>
+                  <span className="text-slate-400 font-medium">{t('kycDocLabel', 'KYC Document')}:</span>
                   <span className="font-mono text-cyan-400">
                     {confirmModal.worker.gov_id_type}: {confirmModal.worker.gov_id_masked}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-400 font-medium">KYC Status:</span>
+                  <span className="text-slate-400 font-medium">{t('kycStatusLabel', 'KYC Status')}:</span>
                   <span className={confirmModal.worker.is_verified ? 'status-pill-emerald font-bold' : 'status-pill-orange font-bold'}>
-                    {confirmModal.worker.is_verified ? '✓ VERIFIED' : '⏳ NOT VERIFIED'}
+                    {confirmModal.worker.is_verified ? `✓ ${t('verified', 'VERIFIED')}` : `⏳ ${t('notVerifiedStatus', 'NOT VERIFIED')}`}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-400 font-medium">Locality:</span>
-                  <span className={isDark ? 'text-slate-200' : 'text-slate-700'}>{confirmModal.worker.area}</span>
+                  <span className="text-slate-400 font-medium">{t('localityLabel', 'Locality')}:</span>
+                  <span className={isDark ? 'text-slate-200' : 'text-slate-700'}>{t(confirmModal.worker.area, confirmModal.worker.area)}</span>
                 </div>
               </div>
 
               {/* Explanatory Prompt */}
               {confirmModal.type === 'verify' && (
                 <p className={`text-xs font-semibold leading-relaxed ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
-                  Please click verify to confirm
+                  {t('clickVerifyToConfirm', 'Please click verify to confirm')}
                 </p>
               )}
               {confirmModal.type === 'revoke' && (
                 <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  Are you sure you want to revoke the status of{' '}
-                  <strong>{confirmModal.worker.profiles?.full_name || 'this worker'}</strong>? This will pause automated job dispatch allocations.
+                  {t('revokeStatusPrompt', 'Are you sure you want to revoke the status of {name}? This will pause automated job dispatch allocations.').replace('{name}', confirmModal.worker.profiles?.full_name || 'this worker')}
                 </p>
               )}
 
@@ -347,7 +350,7 @@ export default function CooperativeWorkers() {
                     isDark ? 'border-white/10 text-slate-300 hover:bg-white/5' : 'border-slate-300 text-slate-700 hover:bg-slate-100'
                   }`}
                 >
-                  Cancel
+                  {t('close', 'Cancel')}
                 </button>
                 <button
                   type="button"
@@ -359,10 +362,10 @@ export default function CooperativeWorkers() {
                   }`}
                 >
                   {confirmModal.type === 'verify'
-                    ? 'Verify'
+                    ? t('verifyBtn', 'Verify')
                     : confirmModal.type === 'approve'
-                    ? 'Approve'
-                    : 'Confirm Revocation'}
+                    ? t('approveBtn', 'Approve')
+                    : t('confirmRevocationBtn', 'Confirm Revocation')}
                 </button>
               </div>
             </div>

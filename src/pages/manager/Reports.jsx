@@ -179,15 +179,15 @@ export default function ManagerReports() {
           <table className="w-full text-left text-xs">
             <thead>
               <tr className={`border-b ${isDark ? 'border-white/[0.08] text-slate-400' : 'border-slate-200 text-slate-500'}`}>
-                <th className="py-3 px-3 font-bold">Ledger ID</th>
-                <th className="py-3 px-3 font-bold">Worker ID</th>
-                <th className="py-3 px-3 font-bold">Date</th>
-                <th className="py-3 px-3 font-bold">Gross Tariff</th>
-                <th className="py-3 px-3 font-bold">Co-op Fee (5%)</th>
-                <th className="py-3 px-3 font-bold">Welfare Fund</th>
-                <th className="py-3 px-3 font-bold">Net Payout</th>
-                <th className="py-3 px-3 font-bold">Mode</th>
-                <th className="py-3 px-3 font-bold">Status</th>
+                <th className="py-3 px-3 font-bold">{t('ledgerIdHeader', 'Ledger ID')}</th>
+                <th className="py-3 px-3 font-bold">{t('workerIdHeader', 'Worker ID')}</th>
+                <th className="py-3 px-3 font-bold">{t('dateHeader', 'Date')}</th>
+                <th className="py-3 px-3 font-bold">{t('grossTariffHeader', 'Gross Tariff')}</th>
+                <th className="py-3 px-3 font-bold">{t('coopFee5Header', 'Co-op Fee (5%)')}</th>
+                <th className="py-3 px-3 font-bold">{t('welfareFundHeader', 'Welfare Fund')}</th>
+                <th className="py-3 px-3 font-bold">{t('netWorkerPayoutHeader', 'Net Payout')}</th>
+                <th className="py-3 px-3 font-bold">{t('modeHeader', 'Mode')}</th>
+                <th className="py-3 px-3 font-bold">{t('statusHeader', 'Status')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
@@ -199,10 +199,10 @@ export default function ManagerReports() {
                         📊
                       </div>
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                        No Data Available
+                        {t('noDataAvailable', 'No Data Available')}
                       </div>
                       <p className="text-xs text-slate-400">
-                        No financial audit report ledger records available to display.
+                        {t('noFinancialRecords', 'No financial audit report ledger records available to display.')}
                       </p>
                     </div>
                   </td>
@@ -224,7 +224,7 @@ export default function ManagerReports() {
                     </td>
                     <td className="py-3 px-3">
                       <span className={l.is_anomalous ? 'status-pill-rose' : 'status-pill-emerald'}>
-                        {l.is_anomalous ? 'FLAGGED' : 'COMPLETED'}
+                        {l.is_anomalous ? t('flaggedSuffix', 'FLAGGED') : t('completedStatus', 'COMPLETED')}
                       </span>
                     </td>
                   </tr>
