@@ -51,6 +51,27 @@ export default function CooperativeFinancials() {
     setResolvedIds([...resolvedIds, id])
   }
 
+  function formatAnomalyReason(reason) {
+    if (!reason) return ''
+    const direct = t(reason, null)
+    if (direct) return direct
+
+    const feeMatch = reason.match(/Excessive Cooperative Fee of ([\d.]+)% detected/i)
+    if (feeMatch) {
+      return t('excessiveCoopFeeTemplate', 'Excessive Cooperative Fee of {pct}% detected (Statutory ceiling is strictly 5.0%).')
+        .replace('{pct}', feeMatch[1])
+    }
+
+    const spikeMatch = reason.match(/Abnormal billing spike of [₹Rs.]*([\d,]+)\s*\(Mean job tariff is [₹Rs.]*([\d,]+)\)/i)
+    if (spikeMatch) {
+      return t('abnormalBillingSpikeTemplate', 'Abnormal billing spike of ₹{gross} (Mean job tariff is ₹{avg}).')
+        .replace('{gross}', spikeMatch[1])
+        .replace('{avg}', spikeMatch[2])
+    }
+
+    return t(reason, reason)
+  }
+
   const allAnomalies = detectWageAnomalies(ledger)
   const activeAnomalies = allAnomalies.filter((a) => !resolvedIds.includes(a.id))
   const normalEntries = ledger.filter((l) => !l.is_anomalous || resolvedIds.includes(l.id))
@@ -61,7 +82,7 @@ export default function CooperativeFinancials() {
 
   // Chart data transformed from ledger entries
   const chartData = ledger.slice(0, 8).map((row, idx) => ({
-    label: `Job #${idx + 1}`,
+    label: `${t('jobLabel', 'Job')} #${idx + 1}`,
     gross: row.gross_amount,
     net: row.net_payout,
     coop: row.cooperative_fee_amount,
@@ -82,13 +103,13 @@ export default function CooperativeFinancials() {
             }`}
           >
             <span>🔍</span>
-            <span>SIH26089 Feature 8 • {t('financialsAnomalies', 'Wage Ledger & Anomalies')}</span>
+            <span>SIH26089 • {t('financialsAnomalies', 'Wage Ledger & Anomalies')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {t('fairWageLedger', 'Cooperative Financial Audit & Wage Disbursal')}
           </h1>
           <p className={`text-xs mt-1 max-w-3xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Real-time audit of gross customer billings, cooperative 5% retentions, worker social security fund, and AI anomaly detection
+            {t('cooperativeFinancialsSub', 'Real-time audit of gross customer billings, cooperative 5% retentions, worker social security fund, and AI anomaly detection')}
           </p>
         </div>
       </div>
@@ -153,7 +174,7 @@ export default function CooperativeFinancials() {
                 {t('aiAnomalyAlerts', 'AI Anomaly Alerts')}
               </span>
               <div className={`text-2xl font-black mt-1.5 ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
-                {activeAnomalies.length} Flagged
+                {activeAnomalies.length} {t('flaggedCount', 'Flagged')}
               </div>
             </div>
             <div className="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-400 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(244,63,94,0.3)]">
@@ -161,7 +182,7 @@ export default function CooperativeFinancials() {
             </div>
           </div>
           <div className={`text-xs mt-2 font-bold ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
-            {activeAnomalies.length > 0 ? 'Requires Federation Audit' : 'All Clear'}
+            {activeAnomalies.length > 0 ? t('requiresFederationAudit', 'Requires Federation Audit') : t('allClear', 'All Clear')}
           </div>
         </div>
       </div>
@@ -171,10 +192,10 @@ export default function CooperativeFinancials() {
         <div className={`flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b pb-4 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
           <div className="min-w-0">
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Fee Retention & Disbursal Velocity Chart
+              {t('feeRetentionChartTitle', 'Fee Retention & Disbursal Velocity Chart')}
             </h2>
             <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Interactive audit comparison of gross billed amounts, 5% co-op fee, and net direct payouts
+              {t('feeRetentionChartSubtitle', 'Interactive audit comparison of gross billed amounts, 5% co-op fee, and net direct payouts')}
             </p>
           </div>
 
@@ -182,10 +203,10 @@ export default function CooperativeFinancials() {
           <div className="flex flex-wrap items-center gap-2 shrink-0 max-w-full">
             <div className={`flex items-center p-1 rounded-xl border shrink-0 overflow-x-auto max-w-full ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
-                { id: 'bar', label: '📊 Bar' },
-                { id: 'line', label: '📈 Line' },
-                { id: 'area', label: '🌊 Area' },
-                { id: 'stacked', label: '⚡ Stacked' },
+                { id: 'bar', label: `📊 ${t('chartBar', 'Bar')}` },
+                { id: 'line', label: `📈 ${t('chartLine', 'Line')}` },
+                { id: 'area', label: `🌊 ${t('chartArea', 'Area')}` },
+                { id: 'stacked', label: `⚡ ${t('chartStacked', 'Stacked')}` },
               ].map((c) => {
                 const isSelected = chartType === c.id
                 return (
@@ -212,9 +233,9 @@ export default function CooperativeFinancials() {
             {/* Metric Filter Selector to Declutter Multi-Series */}
             <div className={`flex items-center p-1 rounded-xl border shrink-0 overflow-x-auto max-w-full ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
-                { id: 'all', label: '✨ All' },
-                { id: 'net', label: '💰 Net Payouts' },
-                { id: 'coop', label: '🏛️ Co-op Retained' },
+                { id: 'all', label: `✨ ${t('allFilter', 'All')}` },
+                { id: 'net', label: `💰 ${t('netPayoutsLabel', 'Net Payouts')}` },
+                { id: 'coop', label: `🏛️ ${t('coopRetainedLabel', 'Co-op Retained')}` },
               ].map((m) => {
                 const isSelected = metricFilter === m.id
                 return (
@@ -253,13 +274,13 @@ export default function CooperativeFinancials() {
                 />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
                 {(metricFilter === 'all' || metricFilter === 'gross') && (
-                  <Bar dataKey="gross" name="Gross Billed" fill={isDark ? '#475569' : '#94a3b8'} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="gross" name={t('grossBilled', 'Gross Billed')} fill={isDark ? '#475569' : '#94a3b8'} radius={[6, 6, 0, 0]} />
                 )}
                 {(metricFilter === 'all' || metricFilter === 'net') && (
-                  <Bar dataKey="net" name="Net Direct Payout (95%)" fill="#10b981" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="net" name={t('netDirectPayout95', 'Net Direct Payout (95%)')} fill="#10b981" radius={[6, 6, 0, 0]} />
                 )}
                 {(metricFilter === 'all' || metricFilter === 'coop') && (
-                  <Bar dataKey="coop" name="Co-op 5% Retained" fill="#ff6b00" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="coop" name={t('coop5Retained', 'Co-op 5% Retained')} fill="#ff6b00" radius={[6, 6, 0, 0]} />
                 )}
               </BarChart>
             ) : chartType === 'line' ? (
@@ -273,13 +294,13 @@ export default function CooperativeFinancials() {
                 />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
                 {metricFilter === 'all' && (
-                  <Line type="monotone" dataKey="gross" name="Gross Billed" stroke={isDark ? '#475569' : '#94a3b8'} strokeWidth={1.5} strokeDasharray="3 3" dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                  <Line type="monotone" dataKey="gross" name={t('grossBilled', 'Gross Billed')} stroke={isDark ? '#475569' : '#94a3b8'} strokeWidth={1.5} strokeDasharray="3 3" dot={{ r: 3 }} activeDot={{ r: 5 }} />
                 )}
                 {(metricFilter === 'all' || metricFilter === 'net') && (
-                  <Line type="monotone" dataKey="net" name="Net Direct Payout (95%)" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981', stroke: isDark ? '#12151b' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
+                  <Line type="monotone" dataKey="net" name={t('netDirectPayout95', 'Net Direct Payout (95%)')} stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981', stroke: isDark ? '#12151b' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
                 )}
                 {(metricFilter === 'all' || metricFilter === 'coop') && (
-                  <Line type="monotone" dataKey="coop" name="Co-op 5% Retained" stroke="#ff6b00" strokeWidth={2.5} dot={{ r: 3.5, fill: '#ff6b00', stroke: isDark ? '#12151b' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
+                  <Line type="monotone" dataKey="coop" name={t('coop5Retained', 'Co-op 5% Retained')} stroke="#ff6b00" strokeWidth={2.5} dot={{ r: 3.5, fill: '#ff6b00', stroke: isDark ? '#12151b' : '#fff', strokeWidth: 1.5 }} activeDot={{ r: 6 }} />
                 )}
               </LineChart>
             ) : chartType === 'area' ? (
@@ -295,7 +316,7 @@ export default function CooperativeFinancials() {
                 <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                 <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }} />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                <Area type="monotone" dataKey="net" stroke="#10b981" strokeWidth={2.5} fill="url(#areaFin)" name="Net Direct Payout (95%)" dot={{ r: 3 }} activeDot={{ r: 6 }} />
+                <Area type="monotone" dataKey="net" stroke="#10b981" strokeWidth={2.5} fill="url(#areaFin)" name={t('netDirectPayout95', 'Net Direct Payout (95%)')} dot={{ r: 3 }} activeDot={{ r: 6 }} />
               </AreaChart>
             ) : (
               <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
@@ -307,9 +328,9 @@ export default function CooperativeFinancials() {
                   contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#ff6b00', borderRadius: '12px', color: isDark ? '#fff' : '#000', fontSize: '13px' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                <Bar dataKey="net" stackId="a" name="Net Direct Payout (95%)" fill="#10b981" />
-                <Bar dataKey="coop" stackId="a" name="Co-op 5% Retained" fill="#ff6b00" />
-                <Bar dataKey="welfare" stackId="a" name="Welfare Fund (2%)" fill="#06b6d4" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="net" stackId="a" name={t('netDirectPayout95', 'Net Direct Payout (95%)')} fill="#10b981" />
+                <Bar dataKey="coop" stackId="a" name={t('coop5Retained', 'Co-op 5% Retained')} fill="#ff6b00" />
+                <Bar dataKey="welfare" stackId="a" name={t('welfareFund2', 'Welfare Fund (2%)')} fill="#06b6d4" radius={[6, 6, 0, 0]} />
               </BarChart>
             )}
           </ResponsiveContainer>
@@ -325,15 +346,15 @@ export default function CooperativeFinancials() {
             </div>
             <div>
               <h2 className={`text-base font-black ${isDark ? 'text-rose-200' : 'text-rose-950'}`}>
-                AI Financial Anomaly Engine • Active Audit Warnings ({activeAnomalies.length})
+                {t('aiAnomalyEngineHeading', 'AI Financial Anomaly Engine')} • {t('activeAuditWarnings', 'Active Audit Warnings')} ({activeAnomalies.length})
               </h2>
               <p className={`text-xs ${isDark ? 'text-rose-300/80' : 'text-rose-800'}`}>
-                Automated heuristic inspection detects commission rate deviations (&gt;5.0% statutory ceiling) and tariff spikes
+                {t('aiAnomalyEngineSub', 'Automated heuristic inspection detects commission rate deviations (>5.0% statutory ceiling) and tariff spikes')}
               </p>
             </div>
           </div>
           <span className="status-pill-rose">
-            Federation Compliance Watchdog
+            {t('federationComplianceWatchdog', 'Federation Compliance Watchdog')}
           </span>
         </div>
 
@@ -351,11 +372,11 @@ export default function CooperativeFinancials() {
                     {anomaly.id}
                   </span>
                   <span className={`ml-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                    (Job: {anomaly.job_id} • {new Date(anomaly.created_at).toLocaleDateString()})
+                    ({t('jobLabel', 'Job')}: {anomaly.job_id} • {new Date(anomaly.created_at).toLocaleDateString()})
                   </span>
                 </div>
                 <span className="px-2.5 py-0.5 rounded font-black text-[10px] bg-rose-950 text-rose-300 border border-rose-500/60">
-                  SEVERITY: {anomaly.severity || 'HIGH'}
+                  {t('severityLabel', 'SEVERITY')}: {t(anomaly.severity || 'HIGH', anomaly.severity || 'HIGH')}
                 </span>
               </div>
 
@@ -363,7 +384,7 @@ export default function CooperativeFinancials() {
                 <div className="font-bold">⚠️ {t('auditReasonsDetected', 'Audit Reasons Detected:')}</div>
                 <ul className="list-disc list-inside space-y-0.5 pl-1">
                   {(anomaly.detectedReasons || [anomaly.anomaly_reason]).map((r, i) => (
-                    <li key={i}>{r}</li>
+                    <li key={i}>{formatAnomalyReason(r)}</li>
                   ))}
                 </ul>
               </div>
@@ -398,20 +419,20 @@ export default function CooperativeFinancials() {
                       : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
-                  Inspect Invoice 📄
+                  {t('inspectInvoiceBtn', 'Inspect Invoice')} 📄
                 </button>
                 <button
                   onClick={() => handleResolveAnomaly(anomaly.id)}
                   className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-lg text-xs shadow-md transition-all cursor-pointer"
                 >
-                  ✓ Mark Audited & Resolve Flag
+                  ✓ {t('markAuditedResolve', 'Mark Audited & Resolve Flag')}
                 </button>
               </div>
             </div>
           ))
         ) : (
           <div className="p-6 text-center text-emerald-400 bg-emerald-950/40 rounded-xl border border-emerald-500/30 text-xs font-semibold">
-            ✓ All transactions are 100% compliant with the cooperative statutory 5% fee limit and standard tariffs.
+            ✓ {t('allTransactionsCompliant', 'All transactions are 100% compliant with the cooperative statutory 5% fee limit and standard tariffs.')}
           </div>
         )}
       </div>
@@ -422,11 +443,11 @@ export default function CooperativeFinancials() {
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Standard Verified Disbursals ({normalEntries.length})
+              {t('standardVerifiedDisbursals', 'Standard Verified Disbursals')} ({normalEntries.length})
             </h2>
           </div>
           <span className="status-pill-emerald">
-            ✓ Statutory Compliant
+            ✓ {t('statutoryCompliant', 'Statutory Compliant')}
           </span>
         </div>
 

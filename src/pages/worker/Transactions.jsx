@@ -119,7 +119,7 @@ export default function WorkerTransactions() {
                         ? 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
                         : 'bg-rose-100 text-rose-800 border border-rose-300'
                     }`}>
-                      {tItem.type}
+                      {t(tItem.type, tItem.type)}
                     </span>
                   </td>
                   <td className={`px-4 py-3 font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -128,8 +128,8 @@ export default function WorkerTransactions() {
                   <td className={`px-4 py-3 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {new Date(tItem.created_at).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-3 capitalize">{tItem.status}</td>
-                  <td className={`px-4 py-3 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{tItem.remarks}</td>
+                  <td className="px-4 py-3 capitalize">{t(tItem.status, tItem.status)}</td>
+                  <td className={`px-4 py-3 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{t(tItem.remarks, tItem.remarks)}</td>
                 </tr>
               ))}
               {transactions.length === 0 && (
@@ -140,7 +140,7 @@ export default function WorkerTransactions() {
                         💳
                       </div>
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                        No Data Available
+                        {t('noDataAvailable', 'No Data Available')}
                       </div>
                       <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         {t('noTransactionsFound', 'No transactions found in this account.')}

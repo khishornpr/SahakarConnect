@@ -160,11 +160,13 @@ export default function CooperativeDispatch() {
           <div className="flex items-center gap-2">
             <span className="text-sm">🎯</span>
             <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-              {t('filterByStatus', 'Dispatch Status Filter')}
+              {t('filterByStatus', 'Filter by Status')}
             </span>
           </div>
           <span className="text-[11px] text-slate-400">
-            Showing {filteredJobs.length} of {jobs.length} total dispatch tickets
+            {t('showingDispatches', 'Showing {count} of {total} total dispatch tickets')
+              .replace('{count}', filteredJobs.length)
+              .replace('{total}', jobs.length)}
           </span>
         </div>
 
@@ -264,20 +266,20 @@ export default function CooperativeDispatch() {
 
                   <div>
                     <h3 className={`text-sm font-bold line-clamp-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      {job.title}
+                      {t(job.title, job.title)}
                     </h3>
                     <p className={`text-xs mt-1 line-clamp-2 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                      {job.description}
+                      {t(job.description, job.description)}
                     </p>
                   </div>
 
                   <div className={`text-xs space-y-1 pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-400' : 'border-slate-200 text-slate-600'}`}>
                     <div className="flex items-center gap-1.5">
                       <span>📍</span>
-                      <span className="truncate">{job.address}</span>
+                      <span className="truncate">{t(job.address, job.address)}</span>
                     </div>
                     <div className="font-mono text-[11px] text-cyan-400">
-                      Geo: ({job.latitude}, {job.longitude})
+                      {t('geoCoord', 'Geo')}: ({job.latitude}, {job.longitude})
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span>🕒</span>
@@ -292,7 +294,7 @@ export default function CooperativeDispatch() {
                   <span className={isDark ? 'text-slate-400' : 'text-slate-600'}>
                     {t('assigned', 'Assigned')}:{' '}
                     <strong className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
-                      {job.worker?.full_name || t('unassigned', 'Unassigned')}
+                      {job.worker?.full_name ? t(job.worker.full_name, job.worker.full_name) : t('unassigned', 'Unassigned')}
                     </strong>
                   </span>
                   <span className={`font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>

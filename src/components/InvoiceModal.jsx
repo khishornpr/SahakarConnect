@@ -190,10 +190,10 @@ export default function InvoiceModal({ job, worker, household, wageLedgerItem, o
                 <td className="px-4 py-3.5 pr-2">
                   <div className={`font-bold print:text-slate-900 ${
                     isDark ? 'text-white' : 'text-slate-900'
-                  }`}>{inv.job.title}</div>
+                  }`}>{t(inv.job.title, inv.job.title)}</div>
                   <div className={`text-[11px] mt-0.5 leading-normal print:text-slate-500 ${
                     isDark ? 'text-slate-400' : 'text-slate-500'
-                  }`}>{inv.job.description}</div>
+                  }`}>{t(inv.job.description, inv.job.description)}</div>
                 </td>
                 <td className={`px-3 py-3.5 text-center font-medium whitespace-nowrap print:text-slate-700 ${
                   isDark ? 'text-slate-300' : 'text-slate-700'

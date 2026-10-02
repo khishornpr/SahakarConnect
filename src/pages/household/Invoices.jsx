@@ -73,7 +73,7 @@ export default function HouseholdInvoices() {
                   <td className={`px-4 py-3.5 font-mono font-bold ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>
                     INV-{inv.id.slice(0, 8).toUpperCase()}
                   </td>
-                  <td className={`px-4 py-3.5 font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{inv.title}</td>
+                  <td className={`px-4 py-3.5 font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{t(inv.title, inv.title)}</td>
                   <td className={`px-4 py-3.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{t(inv.trade_category, inv.trade_category)}</td>
                   <td className={`px-4 py-3.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {new Date(inv.completed_at || inv.created_at).toLocaleDateString()}

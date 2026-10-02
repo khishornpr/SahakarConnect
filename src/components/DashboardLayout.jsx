@@ -51,7 +51,7 @@ function getStoredNotifications(role, userId) {
 
 export default function DashboardLayout() {
   const { profile, signOut } = useAuth()
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const { isDark } = useTheme()
   const role = profile?.role || 'worker'
 
@@ -134,7 +134,33 @@ export default function DashboardLayout() {
     labor: t('officerPortal', 'Labor Department Adjudication Portal'),
   }
 
-  const currentDate = new Date().toLocaleDateString('en-US', {
+  const LOCALE_MAP = {
+    hi: 'hi-IN',
+    ta: 'ta-IN',
+    mr: 'mr-IN',
+    bn: 'bn-IN',
+    te: 'te-IN',
+    gu: 'gu-IN',
+    kn: 'kn-IN',
+    ml: 'ml-IN',
+    pa: 'pa-IN',
+    or: 'or-IN',
+    ur: 'ur-PK',
+    as: 'as-IN',
+    sa: 'sa-IN',
+    ne: 'ne-NP',
+    kok: 'kok-IN',
+    mai: 'mai-IN',
+    sat: 'sat-IN',
+    doi: 'doi-IN',
+    sd: 'sd-IN',
+    mni: 'mni-IN',
+    brx: 'brx-IN',
+    ks: 'ks-IN',
+    en: 'en-IN'
+  }
+
+  const currentDate = new Date().toLocaleDateString(LOCALE_MAP[language] || 'en-IN', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',

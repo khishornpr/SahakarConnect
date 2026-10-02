@@ -279,7 +279,7 @@ export default function WorkerComplaints() {
                   <option value="">-- {t('noSpecificJob', 'None / General Complaint')} --</option>
                   {jobs.map((j) => (
                     <option key={j.id} value={j.id}>
-                      {j.title} ({j.scheduled_date}) - ₹{j.final_amount || j.estimated_amount}
+                      {t(j.title, j.title)} ({j.scheduled_date}) - ₹{j.final_amount || j.estimated_amount}
                     </option>
                   ))}
                 </select>
@@ -437,10 +437,10 @@ export default function WorkerComplaints() {
 
                   <div>
                     <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      {c.title}
+                      {t(c.title, c.title)}
                     </h3>
                     <p className={`text-xs mt-1 line-clamp-2 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                      {c.description}
+                      {t(c.description, c.description)}
                     </p>
                   </div>
 
@@ -491,7 +491,7 @@ export default function WorkerComplaints() {
                     </span>
                   </div>
                   <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    {selectedCase.title}
+                    {t(selectedCase.title, selectedCase.title)}
                   </h3>
                 </div>
                 <button
@@ -508,7 +508,7 @@ export default function WorkerComplaints() {
               <div className="space-y-3 text-xs">
                 <div className={`p-3.5 rounded-xl border ${isDark ? 'bg-[#161a22] border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
                   <span className={`font-medium block mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('detailedDescription', 'Detailed Description')}:</span>
-                  <p className={`leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{selectedCase.description}</p>
+                  <p className={`leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{t(selectedCase.description, selectedCase.description)}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-[11px]">

@@ -4,7 +4,7 @@ import { useTheme } from '../context/ThemeContext'
 import LanguageModal from './LanguageModal'
 
 export default function LanguageToggle() {
-  const { language, setLanguage } = useTranslation()
+  const { language, setLanguage, t } = useTranslation()
   const { isDark } = useTheme()
   const [showModal, setShowModal] = useState(false)
 
@@ -51,11 +51,11 @@ export default function LanguageToggle() {
           <span className="sm:hidden">हि</span>
         </button>
 
-        {/* Third Slot: If another official Indian language is selected, show that language name, otherwise show Others */}
+        {/* Third Slot: If another official Indian language is selected, show that language name, otherwise show More */}
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          title={language !== 'en' && language !== 'hi' ? `${currentLangObj.englishName} (${currentLangObj.name})` : 'Select from 22 Indian Scheduled Languages'}
+          title={language !== 'en' && language !== 'hi' ? `${currentLangObj.englishName} (${currentLangObj.name})` : t('selectIndianLangs', 'Select from 22 Indian Scheduled Languages')}
           className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-bold transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer whitespace-nowrap ${
             language !== 'en' && language !== 'hi'
               ? 'bg-teal-600 text-white shadow-sm font-black'
@@ -66,7 +66,7 @@ export default function LanguageToggle() {
         >
           <span className="text-[10px] sm:text-xs">🌐</span>
           <span className="whitespace-nowrap font-medium">
-            {language !== 'en' && language !== 'hi' ? currentLangObj.name : 'More'}
+            {language !== 'en' && language !== 'hi' ? currentLangObj.name : t('moreLanguages', 'More')}
           </span>
         </button>
       </div>

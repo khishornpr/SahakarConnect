@@ -218,18 +218,18 @@ export default function WorkerJobs() {
               >
                 <div className="flex justify-between items-start">
                   <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40">
-                    {job.trade_category}
+                    {t(job.trade_category, job.trade_category)}
                   </span>
                   <span className={`text-sm font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     ₹{job.estimated_amount}
                   </span>
                 </div>
                 <div>
-                  <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{job.title}</h3>
-                  <p className={`text-xs mt-1 line-clamp-2 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{job.description}</p>
+                  <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{t(job.title, job.title)}</h3>
+                  <p className={`text-xs mt-1 line-clamp-2 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{t(job.description, job.description)}</p>
                 </div>
                 <div className={`text-xs space-y-1 pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-400' : 'border-slate-200 text-slate-500'}`}>
-                  <div>📍 {job.address}</div>
+                  <div>📍 {t(job.address, job.address)}</div>
                   <div>🕒 Scheduled: {job.scheduled_date} ({job.scheduled_time_slot})</div>
                 </div>
                 <button
@@ -271,7 +271,7 @@ export default function WorkerJobs() {
               >
                 <div className="space-y-1.5 flex-1">
                   <div className="flex items-center gap-2.5">
-                    <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{job.title}</h3>
+                    <h3 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{t(job.title, job.title)}</h3>
                     <span
                       className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase border tracking-wider transition-colors ${
                         job.status === 'completed'
@@ -283,12 +283,12 @@ export default function WorkerJobs() {
                             : 'bg-orange-100 text-orange-900 border-orange-300 font-black shadow-xs'
                       }`}
                     >
-                      {job.status.replace('_', ' ')}
+                      {t(job.status === 'in_progress' ? 'inProgress' : job.status, job.status.replace('_', ' '))}
                     </span>
                   </div>
-                  <p className={`text-xs ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{job.description}</p>
+                  <p className={`text-xs ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{t(job.description, job.description)}</p>
                   <div className={`flex flex-wrap gap-x-4 gap-y-1 text-xs pt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                    <span>📍 {job.address}</span>
+                    <span>📍 {t(job.address, job.address)}</span>
                     <span>🕒 {job.scheduled_date} ({job.scheduled_time_slot})</span>
                   </div>
                 </div>
@@ -381,7 +381,7 @@ export default function WorkerJobs() {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('enterCustomerOtp', 'Enter Customer OTP')}</h3>
-                  <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{otpModalJob.title}</p>
+                  <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t(otpModalJob.title, otpModalJob.title)}</p>
                 </div>
                 <button
                   onClick={() => setOtpModalJob(null)}

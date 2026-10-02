@@ -438,7 +438,7 @@ export default function WorkerDashboard() {
                     }`}
                   >
                     <div className="flex justify-between items-start">
-                      <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>{job.title}</span>
+                      <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>{t(job.title, job.title)}</span>
                       <span
                         className={`px-2 py-0.5 rounded-md text-[10px] font-black uppercase border tracking-wider transition-colors ${
                           job.status === 'completed'
@@ -450,10 +450,10 @@ export default function WorkerDashboard() {
                               : 'bg-orange-100 text-orange-900 border-orange-300 font-black shadow-xs'
                         }`}
                       >
-                        {t(job.status, job.status.replace('_', ' '))}
+                        {t(job.status === 'in_progress' ? 'inProgress' : job.status, job.status.replace('_', ' '))}
                       </span>
                     </div>
-                    <div className={`text-[11px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>📍 {job.address}</div>
+                    <div className={`text-[11px] truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>📍 {t(job.address, job.address)}</div>
                     <div className={`flex justify-between items-center text-xs pt-1.5 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
                       <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>{job.scheduled_time_slot}</span>
                       <strong className="text-emerald-400 font-bold">₹{job.estimated_amount}</strong>

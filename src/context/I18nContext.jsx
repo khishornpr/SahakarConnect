@@ -42,6 +42,32 @@ const COGNATE_FALLBACKS = {
   sat: 'hi',  // Santali -> Hindi
 }
 
+const DUMMY_STRINGS = new Set([
+  'கூட்டுறவு சேவை விவரம்',
+  'सहकारी सेवा विवरण',
+  'सहकारी सेवा तपशील',
+  'సహకార సేవా వివరాలు',
+  'സഹകരണ സേവന വിവരങ്ങൾ',
+  'ಕಾರ್ಮಿಕ / ಸಹಕಾರಿ ಸೇವಾ ವಿವರಗಳು',
+  'ಸಹಕಾರಿ ಸೇವಾ ವಿವರಗಳು',
+  'সমবায় পরিষেবা বিবরণ',
+  'સહકારી સેવા વિગતો',
+  'ਸਹਿਕਾਰੀ ਸੇਵਾ ਵੇਰਵੇ',
+  'ସମବାୟ ସେବା ବିବରଣୀ',
+  'کوآپریٹو سروس کی تفصیلات',
+  'সমবায় সেৱাৰ বিৱৰণ',
+  'सहकारि-सेवा-विवरणम्',
+  'सहकारी सेवा म्हायती',
+  'सहकारी कामी बिबरण',
+  'ڪوآپريٽو سروس جا تفصيل',
+  'समबाय खामानिनि खौरां',
+  'کوآپریٹو خدمتچ تفصیل',
+])
+
+function isValidTranslation(text) {
+  return text && typeof text === 'string' && !DUMMY_STRINGS.has(text.trim())
+}
+
 const I18nContext = createContext(null)
 
 export function I18nProvider({ children }) {
@@ -56,7 +82,7 @@ export function I18nProvider({ children }) {
   // Synchronize document lang & dir attributes
   useEffect(() => {
     document.documentElement.lang = language
-    if (language === 'ur') {
+    if (language === 'ur' || language === 'ks' || language === 'sd') {
       document.documentElement.dir = 'rtl'
     } else {
       document.documentElement.dir = 'ltr'
@@ -66,7 +92,7 @@ export function I18nProvider({ children }) {
   const t = (key, fallback) => {
     // 1. If English is selected, return English canonical dictionary entry
     if (language === 'en') {
-      if (translations.en && translations.en[key]) {
+      if (translations.en && isValidTranslation(translations.en[key])) {
         return translations.en[key]
       }
       return fallback !== undefined ? fallback : key
@@ -77,11 +103,11 @@ export function I18nProvider({ children }) {
     const langDict = translations[language]
 
     if (langDict) {
-      if (langDict[key]) {
+      if (isValidTranslation(langDict[key])) {
         localizedText = langDict[key]
-      } else if (fallback && langDict[fallback]) {
+      } else if (fallback && isValidTranslation(langDict[fallback])) {
         localizedText = langDict[fallback]
-      } else if (translations.en && translations.en[key] && langDict[translations.en[key]]) {
+      } else if (translations.en && translations.en[key] && isValidTranslation(langDict[translations.en[key]])) {
         localizedText = langDict[translations.en[key]]
       }
     }
@@ -91,9 +117,9 @@ export function I18nProvider({ children }) {
       const cognateCode = COGNATE_FALLBACKS[language]
       if (cognateCode && translations[cognateCode]) {
         const cogDict = translations[cognateCode]
-        if (cogDict[key]) {
+        if (isValidTranslation(cogDict[key])) {
           localizedText = cogDict[key]
-        } else if (fallback && cogDict[fallback]) {
+        } else if (fallback && isValidTranslation(cogDict[fallback])) {
           localizedText = cogDict[fallback]
         }
       }
@@ -101,20 +127,20 @@ export function I18nProvider({ children }) {
 
     // Check Hindi (Indic base) fallback for any missing regional phrases before falling back to English
     if (!localizedText && translations.hi) {
-      if (translations.hi[key]) {
+      if (isValidTranslation(translations.hi[key])) {
         localizedText = translations.hi[key]
-      } else if (fallback && translations.hi[fallback]) {
+      } else if (fallback && isValidTranslation(translations.hi[fallback])) {
         localizedText = translations.hi[fallback]
       }
     }
 
     // 3. Return translated text in the specified language
-    if (localizedText && typeof localizedText === 'string') {
+    if (isValidTranslation(localizedText)) {
       return localizedText
     }
 
     // 4. If no translation exists at all, fall back to English or fallback text
-    if (translations.en && translations.en[key]) {
+    if (translations.en && isValidTranslation(translations.en[key])) {
       return translations.en[key]
     }
 

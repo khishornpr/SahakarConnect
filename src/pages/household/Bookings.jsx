@@ -156,7 +156,7 @@ export default function HouseholdBookings() {
               <div className="flex flex-col md:flex-row justify-between md:items-center gap-3">
                 <div>
                   <div className="flex items-center gap-2.5">
-                    <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
+                    <span className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{t(b.title, b.title)}</span>
                     <span
                       className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase border tracking-wider transition-colors ${
                         b.status === 'completed'
@@ -172,7 +172,7 @@ export default function HouseholdBookings() {
                     </span>
                   </div>
                   <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                    {t(b.trade_category, b.trade_category)} • {b.address}
+                    {t(b.trade_category, b.trade_category)} • {t(b.address, b.address)}
                   </p>
                 </div>
 

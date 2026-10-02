@@ -78,12 +78,12 @@ export default function CooperativeDemandForecast() {
 
   // Clean Category Groups Definition (removed cluttered 'All Services' view)
   const CATEGORY_GROUPS = [
-    { id: 'Repair & maintenance trades', label: 'Repair & Tech', icon: '🔧' },
-    { id: 'Home improvement / renovation', label: 'Home Improvement', icon: '🏠' },
-    { id: 'Cleaning & housekeeping', label: 'Cleaning & Hygiene', icon: '🧹' },
-    { id: 'Domestic works', label: 'Domestic Work', icon: '🍳' },
-    { id: 'Care & household support', label: 'Care & Support', icon: '🩺' },
-    { id: 'Outdoor & occasional', label: 'Outdoor & Events', icon: '🌿' },
+    { id: 'Repair & maintenance trades', label: t('repairAndTech', 'Repair & Tech'), icon: '🔧' },
+    { id: 'Home improvement / renovation', label: t('homeImprovement', 'Home Improvement'), icon: '🏠' },
+    { id: 'Cleaning & housekeeping', label: t('cleaningAndHygiene', 'Cleaning & Hygiene'), icon: '🧹' },
+    { id: 'Domestic works', label: t('domesticWork', 'Domestic Work'), icon: '🍳' },
+    { id: 'Care & household support', label: t('careAndSupport', 'Care & Support'), icon: '🩺' },
+    { id: 'Outdoor & occasional', label: t('outdoorAndEvents', 'Outdoor & Events'), icon: '🌿' },
   ]
 
   // Compute category counts
@@ -141,26 +141,26 @@ export default function CooperativeDemandForecast() {
         <div className="font-extrabold text-sm border-b pb-1.5 border-orange-500/20 flex items-center justify-between gap-2">
           <span>{label}</span>
           <span className="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-[#ff6b00]/15 text-[#ff7a00]">
-            {rowData?.categoryGroup}
+            {t(rowData?.categoryGroup, rowData?.categoryGroup)}
           </span>
         </div>
         <div className="space-y-1.5 pt-0.5">
           <div className="flex items-center justify-between gap-4">
             <span className="flex items-center gap-1.5 text-slate-400">
               <span className="w-2.5 h-2.5 rounded-sm bg-[#ff6b00]"></span>
-              Projected Demand:
+              {t('projectedDemandLabel', 'Projected Demand:')}
             </span>
             <strong className="font-mono text-[#ff7a00] text-sm">
-              {rowData?.adjustedDemand} jobs
+              {rowData?.adjustedDemand} {t('jobsUnit', 'jobs')}
             </strong>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span className="flex items-center gap-1.5 text-slate-400">
               <span className="w-2.5 h-2.5 rounded-sm bg-[#10b981]"></span>
-              Active Available Supply:
+              {t('activeAvailableSupplyLabel', 'Active Available Supply:')}
             </span>
             <strong className="font-mono text-emerald-400 text-sm">
-              {rowData?.adjustedSupply} workers
+              {rowData?.adjustedSupply} {t('workersUnit', 'workers')}
             </strong>
           </div>
           <div className="flex items-center justify-between gap-4 pt-1 border-t border-white/[0.06]">
@@ -175,10 +175,10 @@ export default function CooperativeDemandForecast() {
               }`}
             >
               {isDeficit
-                ? `${Math.abs(rowData?.gap)} (Deficit)`
+                ? `${Math.abs(rowData?.gap)} (${t('deficitWord', 'Deficit')})`
                 : isSurplus
-                ? `+${rowData?.gap} (Surplus)`
-                : 'Balanced (0)'}
+                ? `+${rowData?.gap} (${t('surplusWord', 'Surplus')})`
+                : t('balancedZero', 'Balanced (0)')}
             </strong>
           </div>
         </div>
@@ -308,7 +308,7 @@ export default function CooperativeDemandForecast() {
                 <span>
                   {t('priorityLabel', 'Priority')}:{' '}
                   <strong className={rec.urgency === 'HIGH' ? 'text-rose-400 font-bold' : 'text-amber-400 font-bold'}>
-                    {rec.urgency}
+                    {t(rec.urgency, rec.urgency)}
                   </strong>
                 </span>
                 <span className="font-bold text-[#ff7a00] hover:underline cursor-pointer flex items-center gap-1">
@@ -336,7 +336,7 @@ export default function CooperativeDemandForecast() {
                 <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border shrink-0 ${
                   isDark ? 'bg-orange-500/15 border-orange-500/30 text-[#ff7a00]' : 'bg-orange-50 border-orange-200 text-orange-800'
                 }`}>
-                  {activeTradeData.length} {activeTradeData.length === 1 ? 'Trade' : 'Trades'} Showing
+                  {activeTradeData.length} {t('tradesShowing', 'Trades Showing')}
                 </span>
               </div>
               <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -350,10 +350,10 @@ export default function CooperativeDemandForecast() {
             {/* Chart Type Selector */}
             <div className={`flex items-center p-1 rounded-xl border shrink-0 overflow-x-auto max-w-full ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
-                { id: 'bar', label: '📊 Bar' },
-                { id: 'line', label: '📈 Line' },
-                { id: 'area', label: '🌊 Area' },
-                { id: 'composed', label: '⚡ Combo' },
+                { id: 'bar', label: `📊 ${t('chartBar', 'Bar')}` },
+                { id: 'line', label: `📈 ${t('chartLine', 'Line')}` },
+                { id: 'area', label: `🌊 ${t('chartArea', 'Area')}` },
+                { id: 'composed', label: `⚡ ${t('chartCombo', 'Combo')}` },
               ].map((tItem) => {
                 const isSelected = tradeChartType === tItem.id
                 return (
@@ -380,9 +380,9 @@ export default function CooperativeDemandForecast() {
             {/* Series Filter Selector */}
             <div className={`flex items-center p-1 rounded-xl border shrink-0 overflow-x-auto max-w-full ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
-                { id: 'all', label: '✨ All Combined' },
-                { id: 'demand', label: '⚡ Demand Only' },
-                { id: 'supply', label: '👥 Supply Only' },
+                { id: 'all', label: `✨ ${t('allCombined', 'All Combined')}` },
+                { id: 'demand', label: `⚡ ${t('demandOnly', 'Demand Only')}` },
+                { id: 'supply', label: `👥 ${t('supplyOnly', 'Supply Only')}` },
               ].map((fItem) => {
                 const isSelected = tradeMetricFilter === fItem.id
                 return (
@@ -464,7 +464,7 @@ export default function CooperativeDemandForecast() {
                 }`}
                 title="Zoom into specific trade"
               >
-                <option value="all">{t('zoomAllInCategory', '🔍 Zoom: All in Category')}</option>
+                <option value="all">🔍 {t('zoomAllInCategory', 'Zoom: All in Category')}</option>
                 {availableTradesInCurrentGroup.map((tr) => (
                   <option key={tr.trade} value={tr.trade}>
                     {t(tr.trade, tr.trade)}
@@ -521,10 +521,10 @@ export default function CooperativeDemandForecast() {
                 🔍
               </div>
               <div className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                No Trade Data Found
+                {t('noTradeDataFound', 'No Trade Data Found')}
               </div>
               <p className="text-xs text-slate-400 max-w-sm text-center">
-                No trades match the selected category filter. Select another category.
+                {t('noTradesMatchCategory', 'No trades match the selected category filter. Select another category.')}
               </p>
               <button
                 onClick={() => {
@@ -533,7 +533,7 @@ export default function CooperativeDemandForecast() {
                 }}
                 className="px-4 py-2 text-xs font-bold rounded-xl bg-[#ff6b00] text-white shadow-md hover:scale-105 transition-all"
               >
-                Reset Category Filter
+                {t('resetCategoryFilter', 'Reset Category Filter')}
               </button>
             </div>
           ) : (
@@ -758,7 +758,7 @@ export default function CooperativeDemandForecast() {
                   <Bar
                     dataKey="adjustedDemand"
                     fill="#ff6b00"
-                    name="Demand Volume"
+                    name={t('projectedDemandBar', 'Projected Job Demand')}
                     radius={[6, 6, 0, 0]}
                     opacity={0.85}
                     barSize={activeTradeData.length <= 4 ? 36 : activeTradeData.length <= 8 ? 26 : 16}
@@ -768,7 +768,7 @@ export default function CooperativeDemandForecast() {
                     dataKey="adjustedSupply"
                     stroke="#10b981"
                     strokeWidth={3}
-                    name="Supply Capacity"
+                    name={t('activeSupplyBar', 'Available Active Workforce')}
                     dot={{ r: 4, fill: '#10b981' }}
                     activeDot={{ r: 7 }}
                   />
@@ -791,7 +791,7 @@ export default function CooperativeDemandForecast() {
                 {t('districtDemandTitle', 'District Demand vs Field Worker Allocation')}
               </h2>
               <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Delhi-NCR Geographic Cluster Breakdown & Dispatch Capacity
+                {t('districtDemandSub', 'Delhi-NCR Geographic Cluster Breakdown & Dispatch Capacity')}
               </p>
             </div>
           </div>
@@ -799,8 +799,8 @@ export default function CooperativeDemandForecast() {
           <div className="flex items-center gap-2 shrink-0">
             <div className={`flex items-center p-1 rounded-xl border shrink-0 ${isDark ? 'bg-[#161a22] border-white/[0.08]' : 'bg-slate-100 border-slate-200'}`}>
               {[
-                { id: 'bar', label: '📊 Horizontal' },
-                { id: 'vertical', label: '📈 Vertical' },
+                { id: 'bar', label: `📊 ${t('horizontalBar', 'Horizontal')}` },
+                { id: 'vertical', label: `📈 ${t('verticalBar', 'Vertical')}` },
               ].map((c) => (
                 <button
                   key={c.id}
@@ -967,10 +967,10 @@ export default function CooperativeDemandForecast() {
                         📊
                       </div>
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                        No Data Available
+                        {t('noDataAvailable', 'No Data Available')}
                       </div>
                       <p className="text-xs text-slate-400">
-                        No trade capacity forecast models available to display.
+                        {t('noTradeCapacityModels', 'No trade capacity forecast models available to display.')}
                       </p>
                     </div>
                   </td>

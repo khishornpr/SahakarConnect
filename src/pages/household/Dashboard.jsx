@@ -201,13 +201,13 @@ export default function HouseholdDashboard() {
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
+                    <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{t(b.title, b.title)}</span>
                     <p className="text-[#ff7a00] text-[11px] mt-0.5 font-bold">
                       {t(b.trade_category, b.trade_category)} • {b.scheduled_time_slot}
                     </p>
                   </div>
                   <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#ff6b00]/20 text-[#ff7a00] border border-[#ff6b00]/40 uppercase">
-                    {b.status}
+                    {t(b.status === 'in_progress' ? 'inProgress' : b.status, b.status)}
                   </span>
                 </div>
                 <div className={`flex justify-between items-center pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-300' : 'border-slate-200 text-slate-600'}`}>
@@ -232,7 +232,7 @@ export default function HouseholdDashboard() {
         <div className="flow-card glow-orange-hover p-6 space-y-4">
           <div className={`flex items-center justify-between border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Completed Services & Digital Invoices
+              {t('completedServicesHeading', 'Completed Services & Digital Invoices')}
             </h2>
             <Link to="/household/invoices" className={`text-xs hover:underline font-bold flex items-center gap-1 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
               <span>{t('invoices', 'Invoices')}</span>
@@ -252,7 +252,7 @@ export default function HouseholdDashboard() {
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{b.title}</span>
+                    <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>{t(b.title, b.title)}</span>
                     <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('completedByPrefix', 'Completed by')} {b.worker?.full_name || t('cooperativeMember', 'Cooperative Member')}</p>
                   </div>
                   <span className="status-pill-emerald">
