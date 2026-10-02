@@ -348,7 +348,7 @@ export default function WorkerDashboard() {
                 {chartType === 'bar' ? (
                   <BarChart data={activeChartData} barGap={4} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <XAxis dataKey="date" tickFormatter={(v) => t(v, v)} tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val, name) => [`₹${val}`, name === 'gross' ? t('grossBilled', 'Gross Billed') : t('netTakeHome', 'Net Take-Home')]}
@@ -363,7 +363,7 @@ export default function WorkerDashboard() {
                 ) : chartType === 'line' ? (
                   <LineChart data={activeChartData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <XAxis dataKey="date" tickFormatter={(v) => t(v, v)} tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val, name) => [`₹${val}`, name === 'gross' ? t('grossBilled', 'Gross') : t('netTakeHome', 'Net Payout')]}
@@ -384,7 +384,7 @@ export default function WorkerDashboard() {
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <XAxis dataKey="date" tickFormatter={(v) => t(v, v)} tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val) => [`₹${val}`, t('netTakeHome', 'Net Take-Home Payout')]}
@@ -398,7 +398,7 @@ export default function WorkerDashboard() {
                 ) : (
                   <BarChart data={activeChartData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#2d3748' : '#e2e8f0'} opacity={isDark ? 0.35 : 0.7} vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <XAxis dataKey="date" tickFormatter={(v) => t(v, v)} tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 12, fill: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
                     <Tooltip
                       formatter={(val, name) => [`₹${val}`, name === 'netPayout' ? t('netWorkerPayout', 'Net Worker Payout') : t('coopRetentionDeduction', '5% Co-op + Welfare Fund')]}

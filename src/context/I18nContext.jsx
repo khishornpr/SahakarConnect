@@ -29,6 +29,20 @@ export const INDIAN_LANGUAGES = [
 
 export { translations }
 
+// Bidirectional reverse lookup from English strings/values to canonical dictionary keys
+const EN_VALUE_TO_KEY = {}
+const EN_LOWER_TO_KEY = {}
+
+if (translations.en) {
+  for (const [key, val] of Object.entries(translations.en)) {
+    if (typeof val === 'string' && val.trim()) {
+      EN_VALUE_TO_KEY[val] = key
+      EN_VALUE_TO_KEY[val.trim()] = key
+      EN_LOWER_TO_KEY[val.trim().toLowerCase()] = key
+    }
+  }
+}
+
 // Cognate language fallback map for regional Indic languages
 const COGNATE_FALLBACKS = {
   kok: 'mr',  // Konkani -> Marathi
@@ -68,6 +82,22 @@ function isValidTranslation(text) {
   return text && typeof text === 'string' && !DUMMY_STRINGS.has(text.trim())
 }
 
+function resolveCanonicalKey(key, fallback) {
+  if (typeof key !== 'string') return key
+  const trimmed = key.trim()
+  if (EN_VALUE_TO_KEY[key]) return EN_VALUE_TO_KEY[key]
+  if (EN_VALUE_TO_KEY[trimmed]) return EN_VALUE_TO_KEY[trimmed]
+  if (EN_LOWER_TO_KEY[trimmed.toLowerCase()]) return EN_LOWER_TO_KEY[trimmed.toLowerCase()]
+  
+  if (fallback && typeof fallback === 'string') {
+    const fTrimmed = fallback.trim()
+    if (EN_VALUE_TO_KEY[fallback]) return EN_VALUE_TO_KEY[fallback]
+    if (EN_VALUE_TO_KEY[fTrimmed]) return EN_VALUE_TO_KEY[fTrimmed]
+    if (EN_LOWER_TO_KEY[fTrimmed.toLowerCase()]) return EN_LOWER_TO_KEY[fTrimmed.toLowerCase()]
+  }
+  return null
+}
+
 const I18nContext = createContext(null)
 
 export function I18nProvider({ children }) {
@@ -90,10 +120,17 @@ export function I18nProvider({ children }) {
   }, [language])
 
   const t = (key, fallback) => {
+    if (!key && key !== 0) return fallback !== undefined ? fallback : ''
+
+    const canonicalKey = resolveCanonicalKey(key, fallback)
+
     // 1. If English is selected, return English canonical dictionary entry
     if (language === 'en') {
       if (translations.en && isValidTranslation(translations.en[key])) {
         return translations.en[key]
+      }
+      if (canonicalKey && translations.en && isValidTranslation(translations.en[canonicalKey])) {
+        return translations.en[canonicalKey]
       }
       return fallback !== undefined ? fallback : key
     }
@@ -105,6 +142,8 @@ export function I18nProvider({ children }) {
     if (langDict) {
       if (isValidTranslation(langDict[key])) {
         localizedText = langDict[key]
+      } else if (canonicalKey && isValidTranslation(langDict[canonicalKey])) {
+        localizedText = langDict[canonicalKey]
       } else if (fallback && isValidTranslation(langDict[fallback])) {
         localizedText = langDict[fallback]
       } else if (translations.en && translations.en[key] && isValidTranslation(langDict[translations.en[key]])) {
@@ -112,25 +151,18 @@ export function I18nProvider({ children }) {
       }
     }
 
-    // Check direct cognate language fallback (e.g. Konkani -> Marathi, Maithili -> Hindi, Bodo -> Assamese)
+    // Check direct cognate language fallback (e.g. Konkani -> Marathi, Maithili -> Hindi, Dogri -> Punjabi, Bodo -> Assamese)
     if (!localizedText) {
       const cognateCode = COGNATE_FALLBACKS[language]
       if (cognateCode && translations[cognateCode]) {
         const cogDict = translations[cognateCode]
         if (isValidTranslation(cogDict[key])) {
           localizedText = cogDict[key]
+        } else if (canonicalKey && isValidTranslation(cogDict[canonicalKey])) {
+          localizedText = cogDict[canonicalKey]
         } else if (fallback && isValidTranslation(cogDict[fallback])) {
           localizedText = cogDict[fallback]
         }
-      }
-    }
-
-    // Check Hindi (Indic base) fallback for any missing regional phrases before falling back to English
-    if (!localizedText && translations.hi) {
-      if (isValidTranslation(translations.hi[key])) {
-        localizedText = translations.hi[key]
-      } else if (fallback && isValidTranslation(translations.hi[fallback])) {
-        localizedText = translations.hi[fallback]
       }
     }
 
@@ -142,6 +174,9 @@ export function I18nProvider({ children }) {
     // 4. If no translation exists at all, fall back to English or fallback text
     if (translations.en && isValidTranslation(translations.en[key])) {
       return translations.en[key]
+    }
+    if (canonicalKey && translations.en && isValidTranslation(translations.en[canonicalKey])) {
+      return translations.en[canonicalKey]
     }
 
     return fallback !== undefined ? fallback : key
