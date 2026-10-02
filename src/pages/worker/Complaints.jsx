@@ -237,7 +237,7 @@ export default function WorkerComplaints() {
               {t('newGrievanceFormTitle', 'File an Official Labor Dispute')}
             </h2>
             <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Your complaint will be assigned a permanent Case ID and reviewed by the Zonal Labor Department Officer.
+              {t('complaintReviewNotice', 'Your complaint will be assigned a permanent Case ID and reviewed by the Zonal Labor Department Officer.')}
             </p>
           </div>
 

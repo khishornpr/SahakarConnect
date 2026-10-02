@@ -1,4 +1,15 @@
 import React from 'react'
+import { translations } from '../translations/index.js'
+
+function getErrorTranslation(key, fallback) {
+  try {
+    const lang = localStorage.getItem('sahakar_language') || 'en'
+    const dict = translations[lang] || translations.en
+    return dict[key] || fallback
+  } catch {
+    return fallback
+  }
+}
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -29,9 +40,9 @@ export default class ErrorBoundary extends React.Component {
               ⚠️
             </div>
             <div>
-              <h2 className="text-xl font-black tracking-tight">Something unexpected occurred</h2>
+              <h2 className="text-xl font-black tracking-tight">{getErrorTranslation('somethingUnexpectedOccurred', 'Something unexpected occurred')}</h2>
               <p className="text-xs text-slate-400 mt-1">
-                The portal encountered a temporary rendering issue. Please reload or return to the login portal.
+                {getErrorTranslation('renderingIssueNotice', 'The portal encountered a temporary rendering issue. Please reload or return to the login portal.')}
               </p>
             </div>
             {this.state.error && (
@@ -45,14 +56,14 @@ export default class ErrorBoundary extends React.Component {
                 onClick={() => window.location.reload()}
                 className="px-4 py-2.5 rounded-xl bg-[#ff6b00] hover:bg-[#ff7a00] text-white font-bold text-xs tracking-wide shadow-lg cursor-pointer transition-all"
               >
-                🔄 Reload Page
+                🔄 {getErrorTranslation('reloadPage', 'Reload Page')}
               </button>
               <button
                 type="button"
                 onClick={this.handleReset}
                 className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs tracking-wide border border-white/10 cursor-pointer transition-all"
               >
-                🚪 Back to Login
+                🚪 {getErrorTranslation('backToLogin', 'Back to Login')}
               </button>
             </div>
           </div>

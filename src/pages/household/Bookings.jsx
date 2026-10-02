@@ -171,7 +171,12 @@ export default function HouseholdBookings() {
                       {getStatusLabel(b.status)}
                     </span>
                   </div>
-                  <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  {b.description && (
+                    <p className={`text-xs mt-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                      {t(b.description, b.description)}
+                    </p>
+                  )}
+                  <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {t(b.trade_category, b.trade_category)} • {t(b.address, b.address)}
                   </p>
                 </div>
@@ -255,7 +260,7 @@ export default function HouseholdBookings() {
               {/* Action Buttons */}
               <div className={`flex flex-wrap items-center justify-between gap-3 pt-3 border-t text-xs ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
                 <div className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                  {t('scheduledTimePrefix', 'Scheduled:')} <strong>{b.scheduled_date} ({b.scheduled_time_slot})</strong>
+                  {t('scheduledTimePrefix', 'Scheduled:')} <strong>{b.scheduled_date} ({t(b.scheduled_time_slot, b.scheduled_time_slot)})</strong>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">

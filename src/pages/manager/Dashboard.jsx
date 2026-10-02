@@ -139,7 +139,7 @@ export default function ManagerDashboard() {
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              📈 Zonal Revenue vs Net Payouts (₹)
+              📈 {t('zonalRevenueVsNetPayouts', 'Zonal Revenue vs Net Payouts')} (₹)
             </h3>
             <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('next7Days', 'Past 7 Days')}</span>
           </div>
@@ -172,7 +172,7 @@ export default function ManagerDashboard() {
         <div className="flow-card p-5 space-y-3">
           <div className="flex justify-between items-center">
             <h3 className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              ⚡ Completed Jobs by Zonal Team
+              ⚡ {t('completedJobsByZonalTeam', 'Completed Jobs by Zonal Team')}
             </h3>
             <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('worksCount', 'Total')}: 141 {t('jobsUnit', 'Jobs')}</span>
           </div>
@@ -184,7 +184,7 @@ export default function ManagerDashboard() {
                 <YAxis tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#64748b' }} axisLine={false} tickLine={false} />
                 <Tooltip contentStyle={{ backgroundColor: isDark ? '#0d0f14' : '#fff', borderColor: '#3b82f6', borderRadius: '12px', fontSize: '13px', color: isDark ? '#fff' : '#000' }} />
                 <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '8px' }} />
-                <Bar dataKey="completedJobs" name="Completed Service Tasks" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="completedJobs" name={t('completedServiceTasks', 'Completed Service Tasks')} fill="#3b82f6" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -196,10 +196,10 @@ export default function ManagerDashboard() {
         <div className="flex justify-between items-center">
           <div>
             <h2 className={`text-base font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              👥 Managed Worker Team (South Delhi Cluster)
+              👥 {t('managedWorkerTeam', 'Managed Worker Team')} ({t('South Delhi Cluster', 'South Delhi Cluster')})
             </h2>
             <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Real-time verification status, trade assignments, and rating health.
+              {t('managedWorkersSubheading', 'Real-time verification status, trade assignments, and rating health.')}
             </p>
           </div>
           <Link

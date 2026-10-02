@@ -187,10 +187,10 @@ export default function Register() {
 
                 <div>
                   <h2 className={`text-2xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Verify Your Email
+                    {t('verifyYourEmail', 'Verify Your Email')}
                   </h2>
                   <p className={`text-xs mt-2 max-w-xs mx-auto leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    We sent a confirmation link to:
+                    {t('sentConfirmationLinkTo', 'We sent a confirmation link to:')}
                   </p>
                   <div className="mt-1.5 inline-block font-mono font-bold text-xs px-3 py-1 rounded-lg bg-orange-500/10 border border-orange-500/30 text-orange-400">
                     {email}
@@ -203,7 +203,7 @@ export default function Register() {
                   }`}
                 >
                   <div className="font-bold flex items-center gap-1.5 text-amber-400">
-                    <span>📋</span> Next Steps:
+                    <span>📋</span> {t('nextSteps', 'Next Steps')}:
                   </div>
                   <ol className="list-decimal list-inside space-y-1 text-[11px] text-slate-400">
                     <li>{t('checkEmailVerification', 'Open your email inbox and check for the verification message.')}</li>
@@ -232,7 +232,7 @@ export default function Register() {
                         : 'border-orange-500 text-orange-600 hover:bg-orange-50 cursor-pointer'
                     }`}
                   >
-                    {resendCooldown > 0 ? `Resend Email in ${resendCooldown}s` : t('resendVerificationEmail', 'Resend Verification Email')}
+                    {resendCooldown > 0 ? `${t('resendEmailIn', 'Resend Email in')} ${resendCooldown}s` : t('resendVerificationEmail', 'Resend Verification Email')}
                   </button>
 
                   {/* Instant Demo Confirmation Helper for frictionless testing */}
@@ -241,7 +241,7 @@ export default function Register() {
                     onClick={handleDemoInstantVerify}
                     className="w-full py-2.5 px-4 rounded-xl text-[11px] font-bold text-emerald-400 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <span>⚡</span> Instant Verify (Demo Testing Mode)
+                    <span>⚡</span> {t('instantVerifyDemoMode', 'Instant Verify (Demo Testing Mode)')}
                   </button>
                 </div>
 
@@ -437,10 +437,10 @@ export default function Register() {
                           }`}
                         >
                           <option value="Delhi Shramik Sahakari Federation Ltd.">
-                            Delhi Shramik Sahakari Federation Ltd. (South Delhi)
+                            {t('Delhi Shramik Sahakari Federation Ltd. (South Delhi)', 'Delhi Shramik Sahakari Federation Ltd. (South Delhi)')}
                           </option>
                           <option value="Indraprastha Karigar Cooperative Society">
-                            Indraprastha Karigar Cooperative Society (West Delhi)
+                            {t('Indraprastha Karigar Cooperative Society (West Delhi)', 'Indraprastha Karigar Cooperative Society (West Delhi)')}
                           </option>
                         </select>
                       </div>
@@ -521,12 +521,12 @@ export default function Register() {
                   <span className="text-sm shrink-0">🏛️</span>
                   <div>
                     <span className={`font-bold block ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>
-                      Co-op Admin, Manager, or Labor Officer?
+                      {t('coopAdminManagerLaborOfficerQuestion', 'Co-op Admin, Manager, or Labor Officer?')}
                     </span>
                     <p className="mt-0.5">
-                      Administrative & official accounts are pre-authorized by the Federation. Please{' '}
+                      {t('adminOfficialAccountsNotice', 'Administrative & official accounts are pre-authorized by the Federation. Please')}{' '}
                       <Link to="/login" className="text-[#d8964d] font-bold hover:underline">
-                        {t('signIn', 'Sign In')} directly →
+                        {t('signIn', 'Sign In')} {t('directlyArrow', 'directly →')}
                       </Link>
                     </p>
                   </div>

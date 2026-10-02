@@ -99,7 +99,7 @@ export default function HouseholdInvoices() {
                         📄
                       </div>
                       <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                        No Data Available
+                        {t('noDataAvailable', 'No Data Available')}
                       </div>
                       <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                         {t('noInvoicesFound', 'No completed service invoices found yet.')}

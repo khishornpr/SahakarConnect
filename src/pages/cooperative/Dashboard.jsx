@@ -158,10 +158,10 @@ export default function CooperativeDashboard() {
 
   // Recent Transactions
   const recentTransactions = [
-    { id: 1, name: 'South Delhi Electrical Rewiring', date: 'May 22, 2026 • 10:30 AM', amount: '₹1,450.00', status: 'Completed', positive: true, icon: '⚡' },
-    { id: 2, name: 'Dwarka Sector 9 Plumbing Overhaul', date: 'May 22, 2026 • 09:15 AM', amount: '₹850.00', status: 'Completed', positive: true, icon: '🚰' },
-    { id: 3, name: 'Janakpuri Woodwork & Lock Repair', date: 'May 21, 2026 • 08:45 PM', amount: '₹620.00', status: 'Completed', positive: true, icon: '🪚' },
-    { id: 4, name: 'Connaught Place Deep House Sanitization', date: 'May 21, 2026 • 06:20 PM', amount: '₹1,200.00', status: 'Completed', positive: true, icon: '✨' },
+    { id: 1, name: t('South Delhi Electrical Rewiring', 'South Delhi Electrical Rewiring'), date: 'May 22, 2026 • 10:30 AM', amount: '₹1,450.00', status: 'Completed', positive: true, icon: '⚡' },
+    { id: 2, name: t('Dwarka Sector 9 Plumbing Overhaul', 'Dwarka Sector 9 Plumbing Overhaul'), date: 'May 22, 2026 • 09:15 AM', amount: '₹850.00', status: 'Completed', positive: true, icon: '🚰' },
+    { id: 3, name: t('Janakpuri Woodwork & Lock Repair', 'Janakpuri Woodwork & Lock Repair'), date: 'May 21, 2026 • 08:45 PM', amount: '₹620.00', status: 'Completed', positive: true, icon: '🪚' },
+    { id: 4, name: t('Connaught Place Deep House Sanitization', 'Connaught Place Deep House Sanitization'), date: 'May 21, 2026 • 06:20 PM', amount: '₹1,200.00', status: 'Completed', positive: true, icon: '✨' },
   ]
 
   return (
@@ -449,7 +449,7 @@ export default function CooperativeDashboard() {
         <div className="flow-card glow-orange-hover p-6 space-y-4 flex flex-col justify-between">
           <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3 ${isDark ? 'border-white/[0.06]' : 'border-slate-200'}`}>
             <h2 className={`text-sm font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Service Trade Distribution
+              {t('serviceTradeDistribution', 'Service Trade Distribution')}
             </h2>
 
             {/* Chart Type Toggle */}
@@ -701,26 +701,26 @@ export default function CooperativeDashboard() {
               {
                 id: 't1',
                 icon: '🎯',
-                title: 'Monthly Service GMV Target',
+                title: t('monthlyServiceGmvTarget', 'Monthly Service GMV Target'),
                 pct: 86,
                 current: '₹86,420',
-                goal: 'Goal: ₹100,000',
+                goal: `${t('goalWord', 'Goal')}: ₹100,000`,
               },
               {
                 id: 't2',
                 icon: '🛡️',
-                title: 'Social Security Coverage',
+                title: t('socialSecurityCoverage', 'Social Security Coverage'),
                 pct: 94,
-                current: '32/34 Workers Enrolled',
-                goal: 'Goal: 100%',
+                current: `32/34 ${t('workersEnrolled', 'Workers Enrolled')}`,
+                goal: `${t('goalWord', 'Goal')}: 100%`,
               },
               {
                 id: 't3',
                 icon: '⚡',
-                title: 'Zero Fee-Anomaly Rate',
+                title: t('zeroFeeAnomalyRate', 'Zero Fee-Anomaly Rate'),
                 pct: 98,
-                current: '100% Statutory Compliant',
-                goal: 'Goal: 100%',
+                current: `100% ${t('statutoryCompliant', 'Statutory Compliant')}`,
+                goal: `${t('goalWord', 'Goal')}: 100%`,
               },
             ].map((tItem) => {
               const barColor = getCompletionColor(tItem.pct)
@@ -770,11 +770,12 @@ export default function CooperativeDashboard() {
             <span>{t('cooperativeIntelligenceInsights', 'Cooperative Intelligence & Financial Insights')}</span>
           </div>
           <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-            Your labour cooperative service federation is performing exceptionally well! Revenue velocity is up by{' '}
-            <strong className={isDark ? 'text-white' : 'text-slate-900'}>15.6%</strong> compared to last month. Zero commission leakage detected across 4–6 weeks of audit logs.
+            {t('coopPerfInsightsMsg', 'Your labour cooperative service federation is performing exceptionally well! Revenue velocity is up by')}{' '}
+            <strong className={isDark ? 'text-white' : 'text-slate-900'}>15.6%</strong>{' '}
+            {t('comparedToLastMonthLeakage', 'compared to last month. Zero commission leakage detected across 4–6 weeks of audit logs.')}
           </p>
           <div className="text-[10px] text-slate-500 pt-1">
-            Synthesized from 4–6 week historical velocity, seasonality & district clustering • Delhi-NCR Grid
+            {t('synthesizedGridFootnote', 'Synthesized from 4–6 week historical velocity, seasonality & district clustering • Delhi-NCR Grid')}
           </div>
         </div>
 

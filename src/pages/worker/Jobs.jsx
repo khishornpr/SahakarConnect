@@ -230,7 +230,7 @@ export default function WorkerJobs() {
                 </div>
                 <div className={`text-xs space-y-1 pt-2 border-t ${isDark ? 'border-white/[0.06] text-slate-400' : 'border-slate-200 text-slate-500'}`}>
                   <div>📍 {t(job.address, job.address)}</div>
-                  <div>🕒 Scheduled: {job.scheduled_date} ({job.scheduled_time_slot})</div>
+                  <div>🕒 {t('scheduledTimePrefix', 'Scheduled:')} {job.scheduled_date} ({t(job.scheduled_time_slot, job.scheduled_time_slot)})</div>
                 </div>
                 <button
                   onClick={() => acceptJob(job.id)}
@@ -289,7 +289,7 @@ export default function WorkerJobs() {
                   <p className={`text-xs ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{t(job.description, job.description)}</p>
                   <div className={`flex flex-wrap gap-x-4 gap-y-1 text-xs pt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     <span>📍 {t(job.address, job.address)}</span>
-                    <span>🕒 {job.scheduled_date} ({job.scheduled_time_slot})</span>
+                    <span>🕒 {job.scheduled_date} ({t(job.scheduled_time_slot, job.scheduled_time_slot)})</span>
                   </div>
                 </div>
 
@@ -325,13 +325,13 @@ export default function WorkerJobs() {
                         {ratedJobs[job.id] ? (
                           <div className="flex items-center gap-1.5">
                             <span className="px-2.5 py-1 text-xs font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 rounded-xl flex items-center gap-1 shadow-xs">
-                              ★ {ratedJobs[job.id]} / 5 Rated
+                              ★ {ratedJobs[job.id]} / 5 {t('ratedWord', 'Rated')}
                             </span>
                             <button
                               disabled
                               className="px-3 py-1.5 text-xs font-bold rounded-xl border opacity-50 cursor-not-allowed bg-slate-800/40 text-slate-400 border-white/10"
                             >
-                              Rated ✓
+                              {t('ratedWord', 'Rated')} ✓
                             </button>
                           </div>
                         ) : (
@@ -449,11 +449,11 @@ export default function WorkerJobs() {
                   isDark ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300' : 'bg-emerald-50 border-emerald-300 text-emerald-900'
                 }`}>
                   <div className="flex justify-between font-bold">
-                    <span>Total Bill: ₹{otpModalJob.final_amount || otpModalJob.estimated_amount}</span>
-                    <span>Your Take-Home: ₹{((otpModalJob.final_amount || otpModalJob.estimated_amount) * 0.95 - 10).toFixed(0)}</span>
+                    <span>{t('totalBill', 'Total Bill')}: ₹{otpModalJob.final_amount || otpModalJob.estimated_amount}</span>
+                    <span>{t('yourTakeHome', 'Your Take-Home')}: ₹{((otpModalJob.final_amount || otpModalJob.estimated_amount) * 0.95 - 10).toFixed(0)}</span>
                   </div>
                   <div className={`text-[10px] ${isDark ? 'text-emerald-400/80' : 'text-emerald-700 font-medium'}`}>
-                    Statutory cooperative welfare contribution applied.
+                    {t('welfareContribApplied', 'Statutory cooperative welfare contribution applied.')}
                   </div>
                 </div>
 

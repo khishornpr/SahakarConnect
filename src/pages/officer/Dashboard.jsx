@@ -556,7 +556,7 @@ export default function OfficerDashboard() {
                   </h4>
                   {selectedCase.is_reopened && (
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                      Reopened Case
+                      {t('reopenedCase', 'Reopened Case')}
                     </span>
                   )}
                 </div>
@@ -575,7 +575,7 @@ export default function OfficerDashboard() {
                             hour12: true,
                           }),
                           officer_name: selectedCase.user_name || 'Complainant',
-                          action: 'Case Docket Registered',
+                          action: t('Case Docket Registered', 'Case Docket Registered'),
                           from_status: 'none',
                           to_status: 'submitted',
                           notes: selectedCase.description,
@@ -592,7 +592,7 @@ export default function OfficerDashboard() {
                                   hour12: true,
                                 }),
                                 officer_name: selectedCase.assigned_officer || 'Sanjay Verma (Labor Officer)',
-                                action: `Status Updated to ${selectedCase.status?.toUpperCase()}`,
+                                action: `${t('statusUpdatedTo', 'Status Updated to')} ${t(selectedCase.status, selectedCase.status?.toUpperCase())}`,
                                 from_status: 'submitted',
                                 to_status: selectedCase.status,
                                 notes: selectedCase.resolution_notes || 'Action recorded by presiding Labor Officer.',
@@ -603,19 +603,19 @@ export default function OfficerDashboard() {
                   ).map((hist, idx) => (
                     <div key={idx} className="pt-2 first:pt-0 space-y-1 text-xs">
                       <div className="flex flex-wrap items-center justify-between gap-1">
-                        <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{hist.action}</span>
+                        <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{t(hist.action, hist.action)}</span>
                         <span className="text-[11px] font-mono text-slate-400">{hist.date}</span>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
-                        <span>{t('officerActorLabel', 'Officer / Actor')}: <strong className={isDark ? 'text-slate-300' : 'text-slate-700'}>{hist.officer_name}</strong></span>
+                        <span>{t('officerActorLabel', 'Officer / Actor')}: <strong className={isDark ? 'text-slate-300' : 'text-slate-700'}>{t(hist.officer_name, hist.officer_name)}</strong></span>
                         <span>•</span>
-                        <span>{t('transitionLabel', 'Transition')}: <span className="font-mono text-amber-400 font-semibold">{hist.from_status?.toUpperCase()} → {hist.to_status?.toUpperCase()}</span></span>
+                        <span>{t('transitionLabel', 'Transition')}: <span className="font-mono text-amber-400 font-semibold">{t(hist.from_status, hist.from_status?.toUpperCase())} → {t(hist.to_status, hist.to_status?.toUpperCase())}</span></span>
                       </div>
                       {hist.notes && (
                         <p className={`text-[11px] leading-relaxed p-2 rounded-lg border ${
                           isDark ? 'bg-black/30 text-slate-300 border-white/[0.04]' : 'bg-white text-slate-700 border-slate-200'
                         }`}>
-                          {hist.notes}
+                          {t(hist.notes, hist.notes)}
                         </p>
                       )}
                     </div>
@@ -626,7 +626,7 @@ export default function OfficerDashboard() {
               {/* Adjudication Notes Input */}
               <div className="space-y-2">
                 <label className={`block text-xs font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  Official Adjudication & Resolution Notes *
+                  {t('officialAdjudicationResolutionNotes', 'Official Adjudication & Resolution Notes')} *
                 </label>
                 <textarea
                   rows={3}
@@ -642,7 +642,7 @@ export default function OfficerDashboard() {
               {/* Action Buttons for Officer */}
               <div className="pt-2 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
                 <span className="text-xs text-slate-400">
-                  Assigned Officer: <strong className="text-amber-400">{selectedCase.assigned_officer || profile?.full_name || 'Sanjay Verma'}</strong>
+                  {t('assignedOfficerColon', 'Assigned Officer:')} <strong className="text-amber-400">{selectedCase.assigned_officer || profile?.full_name || 'Sanjay Verma'}</strong>
                 </span>
 
                 <div className="flex flex-wrap gap-2">
@@ -652,7 +652,7 @@ export default function OfficerDashboard() {
                       onClick={() => handleUpdateCaseStatus('under review', 'Case Reopened for Adjudication')}
                       className="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow-md cursor-pointer"
                     >
-                      🔄 Reopen Case
+                      🔄 {t('reopenCaseBtn', 'Reopen Case')}
                     </button>
                   ) : null}
 
@@ -661,7 +661,7 @@ export default function OfficerDashboard() {
                     onClick={() => handleUpdateCaseStatus('under review', 'Marked Under Review')}
                     className="px-3 py-1.5 rounded-xl border border-purple-500/50 text-purple-300 hover:bg-purple-500/20 text-xs font-bold cursor-pointer"
                   >
-                    🔍 Mark Under Review
+                    🔍 {t('markUnderReviewBtn', 'Mark Under Review')}
                   </button>
 
                   <button
@@ -669,7 +669,7 @@ export default function OfficerDashboard() {
                     onClick={() => handleUpdateCaseStatus('in progress', 'Investigation Initiated')}
                     className="px-3 py-1.5 rounded-xl border border-amber-500/50 text-amber-300 hover:bg-amber-500/20 text-xs font-bold cursor-pointer"
                   >
-                    ⚡ Start Investigation
+                    ⚡ {t('startInvestigationBtn', 'Start Investigation')}
                   </button>
 
                   <button
@@ -677,7 +677,7 @@ export default function OfficerDashboard() {
                     onClick={() => handleUpdateCaseStatus('resolved', 'Case Resolved & Settlement Issued')}
                     className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md cursor-pointer"
                   >
-                    ✓ Resolve & Issue Settlement
+                    ✓ {t('resolveAndIssueSettlementBtn', 'Resolve & Issue Settlement')}
                   </button>
 
                   {selectedCase.status?.toLowerCase() !== 'resolved' && (
@@ -686,7 +686,7 @@ export default function OfficerDashboard() {
                       onClick={() => handleUpdateCaseStatus('rejected', 'Case Dismissed / Rejected')}
                       className="px-3 py-1.5 rounded-xl border border-rose-500/50 text-rose-400 hover:bg-rose-500/20 text-xs font-bold cursor-pointer"
                     >
-                      ✕ Dismiss / Reject
+                      ✕ {t('dismissRejectBtn', 'Dismiss / Reject')}
                     </button>
                   )}
                 </div>

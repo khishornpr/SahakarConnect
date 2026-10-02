@@ -439,7 +439,7 @@ export default function HouseholdBookService() {
           {filteredTrades.length === 0 && (
             <div className={`col-span-full p-8 text-center rounded-2xl border ${isDark ? 'bg-[#12151b] border-white/[0.08] text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
               <span className="text-3xl mb-2 block">🔍</span>
-              <p className="text-sm font-bold">No matching trades found for &quot;{searchQuery}&quot;</p>
+              <p className="text-sm font-bold">{t('noMatchingTradesFound', 'No matching trades found for')} &quot;{searchQuery}&quot;</p>
               <button
                 type="button"
                 onClick={() => {
@@ -448,7 +448,7 @@ export default function HouseholdBookService() {
                 }}
                 className="mt-3 px-4 py-1.5 flow-btn-primary text-xs font-bold rounded-xl cursor-pointer"
               >
-                Reset Search Filters
+                {t('resetSearchFilters', 'Reset Search Filters')}
               </button>
             </div>
           )}
@@ -650,10 +650,10 @@ export default function HouseholdBookService() {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <div className="text-[11px] font-bold text-slate-400">
-                    Select Time Window ({estimatedHours}h work + 15m arrival = <span className="text-emerald-400 font-bold">{currentSlotGap}</span>):
+                    {t('selectTimeWindow', 'Select Time Window')} ({estimatedHours}h {t('workLabel', 'work')} + 15m {t('arrivalLabel', 'arrival')} = <span className="text-emerald-400 font-bold">{currentSlotGap}</span>):
                   </div>
                   <div className="text-[10px] font-mono text-[#ff7a00] font-bold">
-                    Total: ₹{estimatedTotal}
+                    {t('totalWord', 'Total')}: ₹{estimatedTotal}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -690,14 +690,14 @@ export default function HouseholdBookService() {
                                 : 'bg-emerald-950/60 text-emerald-400 border border-emerald-500/30'
                             }`}
                           >
-                            {!isAvailable ? 'CLOSED' : isSelected ? 'SELECTED' : 'OPEN'}
+                            {!isAvailable ? t('closedUpper', 'CLOSED') : isSelected ? t('selectedUpper', 'SELECTED') : t('openUpper', 'OPEN')}
                           </span>
                         </div>
                         <div className="font-bold text-[11px] truncate text-emerald-400">
                           {slot.value}
                         </div>
                         <div className="text-[10px] text-slate-400 mt-0.5">
-                          {estimatedHours}h work + 15m arrival ({currentSlotGap})
+                          {estimatedHours}h {t('workLabel', 'work')} + 15m {t('arrivalLabel', 'arrival')} ({currentSlotGap})
                         </div>
                       </button>
                     )
@@ -710,14 +710,14 @@ export default function HouseholdBookService() {
                 <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 animate-fadeIn">
                   <div className="flex items-center gap-2">
                     <span className="text-base">⚠️</span>
-                    <span>All same-day {currentSlotGap} slots for today have passed or are closed. Earliest available date is tomorrow ({getTomorrowDateString()}).</span>
+                    <span>{t('allSameDaySlotsPassed', 'All same-day slots for today have passed or are closed. Earliest available date is tomorrow')} ({getTomorrowDateString()}).</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setScheduledDate(getTomorrowDateString())}
                     className="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black text-xs shrink-0 hover:bg-amber-400 cursor-pointer shadow"
                   >
-                    Switch to Tomorrow ({getTomorrowDateString()}) →
+                    {t('switchToTomorrow', 'Switch to Tomorrow')} ({getTomorrowDateString()}) →
                   </button>
                 </div>
               )}
@@ -730,10 +730,10 @@ export default function HouseholdBookService() {
             <div className="flow-card glow-emerald-hover p-6 space-y-4">
               <div className="flex items-center justify-between border-b pb-3 border-white/[0.06]">
                 <h3 className={`font-black text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Statutory Fair Wage Estimate
+                  {t('statutoryFairWageEstimate', 'Statutory Fair Wage Estimate')}
                 </h3>
                 <span className="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
-                  100% Direct Payout
+                  {t('hundredPctDirectPayout', '100% Direct Payout')}
                 </span>
               </div>
 
@@ -741,7 +741,7 @@ export default function HouseholdBookService() {
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                   <span>{t('selectedTradeRateLabel', 'Selected Trade Rate:')}</span>
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    ₹{currentTariff.rate}/{t('hourUnit', 'hr')} ({trade})
+                    ₹{currentTariff.rate}/{t('hourUnit', 'hr')} ({t(trade, trade)})
                   </span>
                 </div>
                 <div className={`flex justify-between ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
@@ -801,7 +801,7 @@ export default function HouseholdBookService() {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className={`font-black text-xs uppercase tracking-wider ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    {t('nearestVerifiedWorkers', 'Nearest Verified Workers')} ({trade})
+                    {t('nearestVerifiedWorkers', 'Nearest Verified Workers')} ({t(trade, trade)})
                   </h3>
                   <p className="text-[10px] text-slate-400 mt-0.5">
                     {t('clusteredByLocality', 'Clustered by locality proximity & verified skill badge score')}
@@ -829,16 +829,16 @@ export default function HouseholdBookService() {
                         <div>
                           <div className="flex items-center gap-1.5">
                             <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                              {w.profiles?.full_name || `Worker #${idx + 1}`}
+                              {w.profiles?.full_name || `${t('worker', 'Worker')} #${idx + 1}`}
                             </span>
                             {idx === 0 && (
                               <span className="px-1.5 py-0.2 text-[9px] font-black rounded bg-emerald-500 text-slate-950">
-                                TOP MATCH
+                                {t('topMatchUpper', 'TOP MATCH')}
                               </span>
                             )}
                           </div>
                           <div className={`text-[11px] font-semibold mt-0.5 ${isDark ? 'text-[#ff7a00]' : 'text-amber-700'}`}>
-                            ★ {w.rating_avg || 4.9} ({w.total_jobs_completed || 12} jobs) • {w.area || area}
+                            ★ {w.rating_avg || 4.9} ({w.total_jobs_completed || 12} {t('jobsWord', 'jobs')}) • {t(w.area || area, w.area || area)}
                           </div>
                         </div>
 
@@ -850,7 +850,7 @@ export default function HouseholdBookService() {
                           }}
                           className={`text-[10px] underline font-bold ${isDark ? 'text-slate-400 hover:text-[#ff7a00]' : 'text-slate-600 hover:text-amber-700'}`}
                         >
-                          Score Breakdown
+                          {t('scoreBreakdown', 'Score Breakdown')}
                         </button>
                       </div>
                     </div>
@@ -859,7 +859,7 @@ export default function HouseholdBookService() {
 
                 {rankedWorkers.length === 0 && !loading && (
                   <div className={`p-4 text-center text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                    No active verified workers in this specific cluster right now. Booking will broadcast to nearby cooperative pool.
+                    {t('noActiveWorkersBroadcast', 'No active verified workers in this specific cluster right now. Booking will broadcast to nearby cooperative pool.')}
                   </div>
                 )}
               </div>

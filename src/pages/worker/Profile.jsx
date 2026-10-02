@@ -124,10 +124,10 @@ export default function WorkerProfile() {
     <div className="space-y-6 max-w-4xl">
       <div>
         <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          Worker Skill Profile & Certification
+          {t('workerProfileTitle', 'Worker Skill Profile & Certification')}
         </h1>
         <p className={`text-xs mt-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-          Verified cooperative identity, trade certifications, and household rating reputation
+          {t('workerProfileSubtitle', 'Verified cooperative identity, trade certifications, and household rating reputation')}
         </p>
       </div>
 
@@ -322,7 +322,7 @@ export default function WorkerProfile() {
                           : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
                       }`}
                     >
-                      Cancel
+                      {t('cancel', 'Cancel')}
                     </button>
                   </div>
                 </div>
@@ -340,7 +340,7 @@ export default function WorkerProfile() {
                     onClick={() => setEditingTrade(true)}
                     className="text-xs text-[#ff7a00] hover:underline font-bold cursor-pointer"
                   >
-                    Edit Trade ✏️
+                    {t('editTrade', 'Edit Trade')} ✏️
                   </button>
                 </div>
               )}
@@ -379,21 +379,21 @@ export default function WorkerProfile() {
             <div>
               <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('cooperativeSocietyLabel', 'Cooperative Society')}</label>
               <div className={`text-sm font-semibold mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-                Delhi Shramik Sahakari Federation Ltd. (Reg: DEL/LAB-COOP/2021/894)
+                {t('Delhi Shramik Sahakari Federation Ltd. (Reg: DEL/LAB-COOP/2021/894)', 'Delhi Shramik Sahakari Federation Ltd. (Reg: DEL/LAB-COOP/2021/894)')}
               </div>
             </div>
 
             <div>
               <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('identityDocumentLabel', 'Identity Document')}</label>
               <div className={`text-sm font-mono mt-0.5 font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
-                {workerInfo?.gov_id_type || 'Aadhaar'}: {workerInfo?.gov_id_masked || 'XXXX-XXXX-8921'}
+                {t(workerInfo?.gov_id_type || 'Aadhaar', workerInfo?.gov_id_type || 'Aadhaar')}: {workerInfo?.gov_id_masked || 'XXXX-XXXX-8921'}
               </div>
             </div>
 
             <div>
               <label className={`text-xs font-medium block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('serviceBaseLocality', 'Service Base Locality')}</label>
               <div className={`text-sm mt-0.5 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-                📍 {workerInfo?.area || 'South Extension, New Delhi'}
+                📍 {t(workerInfo?.area || 'South Extension, New Delhi', workerInfo?.area || 'South Extension, New Delhi')}
               </div>
             </div>
           </div>
@@ -471,7 +471,7 @@ export default function WorkerProfile() {
                   {new Date(r.created_at).toLocaleDateString()}
                 </span>
               </div>
-              <p className={`text-xs italic ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>&quot;{r.review_text}&quot;</p>
+              <p className={`text-xs italic ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>&quot;{t(r.review_text, r.review_text)}&quot;</p>
               {r.tags && r.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {r.tags.map((tItem) => (
@@ -481,7 +481,7 @@ export default function WorkerProfile() {
                         isDark ? 'bg-white/5 border-white/10 text-slate-300' : 'bg-white border-slate-200 text-slate-600'
                       }`}
                     >
-                      🏷️ {tItem}
+                      🏷️ {t(tItem, tItem)}
                     </span>
                   ))}
                 </div>
@@ -490,7 +490,7 @@ export default function WorkerProfile() {
           ))}
           {ratingsList.length === 0 && (
             <div className={`p-6 text-center text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              No customer ratings received yet. Ratings from completed tasks will show here automatically.
+              {t('noRatingsYetNotice', 'No customer ratings received yet. Ratings from completed tasks will show here automatically.')}
             </div>
           )}
         </div>

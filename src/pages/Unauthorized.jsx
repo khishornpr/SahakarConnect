@@ -11,13 +11,13 @@ export default function Unauthorized() {
         <h1 className="text-4xl font-black text-rose-500">403</h1>
         <h2 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('accessRestricted', 'Access Restricted')}</h2>
         <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-          You do not have the required cooperative federation credentials to access this protected portal.
+          {t('unauthorizedDescription', 'You do not have the required cooperative federation credentials to access this protected portal.')}
         </p>
         <Link
           to="/"
           className="inline-block flow-btn-primary px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow"
         >
-          Return to Portal Switcher
+          {t('returnToPortalSwitcher', 'Return to Portal Switcher')}
         </Link>
       </div>
     </div>
