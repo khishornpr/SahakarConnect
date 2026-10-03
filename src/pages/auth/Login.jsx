@@ -143,7 +143,7 @@ export default function Login() {
                 {t('brandTitle', 'SAHAKARCONNECT')}
               </span>
               <span className={`text-[11px] block font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                {t('loginSubHeader', 'SIH26089 • Cooperative Service Marketplace')}
+                {t('loginSubHeader', 'Cooperative Service Marketplace')}
               </span>
             </div>
           </div>
@@ -508,7 +508,7 @@ export default function Login() {
                 {t('brandTitle', 'SAHAKARCONNECT')}
               </span>
               <span className={`text-[9px] block font-medium leading-none mt-0.5 truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                {t('loginSubHeader', 'SIH26089 • Cooperative Marketplace')}
+                {t('loginSubHeader', 'Cooperative Marketplace')}
               </span>
             </div>
           </div>

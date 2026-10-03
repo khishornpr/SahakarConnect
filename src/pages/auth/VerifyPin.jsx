@@ -245,7 +245,7 @@ export default function VerifyPin() {
               {t('brandTitle', 'SAHAKARCONNECT')}
             </span>
             <span className={`text-[9px] sm:text-[10px] hidden sm:block font-medium truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              SIH26089 • {t('accountRecovery', 'Account Recovery')}
+              {t('accountRecovery', 'Account Recovery')}
             </span>
           </div>
         </div>

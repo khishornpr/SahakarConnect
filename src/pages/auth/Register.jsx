@@ -131,7 +131,7 @@ export default function Register() {
               SAHAKARCONNECT
             </span>
             <span className={`text-[9px] sm:text-[10px] hidden sm:block font-medium truncate ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              SIH26089 • Cooperative Registration
+              Cooperative Registration
             </span>
           </div>
         </div>

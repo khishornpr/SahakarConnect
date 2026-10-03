@@ -23,7 +23,7 @@ export default function WorkerWelfare() {
             }`}
           >
             <span>🛡️</span>
-            <span>{t('sihFeature7WorkerWelfare', 'SIH26089 Feature 7 • Worker Welfare & Social Security')}</span>
+            <span>{t('sihFeature7WorkerWelfare', 'Feature 7 • Worker Welfare & Social Security')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {t('welfareHeading', 'Cooperative Welfare & Social Security')}

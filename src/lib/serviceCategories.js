@@ -1,6 +1,6 @@
 /**
  * SahakarConnect Single Source of Truth for Cooperative Service Categories and Trades
- * SIH26089 - Standardized Non-Exploitative Cooperative Tariff System
+ * Standardized Non-Exploitative Cooperative Tariff System
  */
 
 export const SERVICE_CATEGORIES = [

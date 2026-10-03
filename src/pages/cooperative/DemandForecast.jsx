@@ -240,7 +240,7 @@ export default function CooperativeDemandForecast() {
             }`}
           >
             <span>📈</span>
-            <span>SIH26089 Feature 11 • {t('demandPlanning', 'AI Demand & Planning')}</span>
+            <span>Feature 11 • {t('demandPlanning', 'AI Demand & Planning')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {t('aiDemandHeading', 'AI Demand Forecasting & Workforce Allocation')}

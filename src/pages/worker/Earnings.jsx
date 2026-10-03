@@ -47,7 +47,7 @@ export default function WorkerEarnings() {
           }`}
         >
           <span>⚡</span>
-          <span>SIH26089 Feature 7 • {t('fairWageLedger', 'Fair Wage Ledger')}</span>
+          <span>Feature 7 • {t('fairWageLedger', 'Fair Wage Ledger')}</span>
         </div>
         <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
           {t('fairWageLedger', 'Cooperative Fair Wage Ledger')}

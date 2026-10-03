@@ -1,5 +1,5 @@
 -- =====================================================================
--- SahakarConnect (SIH26089) Consolidated Database Schema
+-- SahakarConnect Consolidated Database Schema
 -- Cooperative-Owned Digital Service Marketplace Platform
 -- =====================================================================
 

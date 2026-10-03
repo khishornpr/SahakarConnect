@@ -103,7 +103,7 @@ export default function CooperativeFinancials() {
             }`}
           >
             <span>🔍</span>
-            <span>SIH26089 • {t('financialsAnomalies', 'Wage Ledger & Anomalies')}</span>
+            <span>{t('financialsAnomalies', 'Wage Ledger & Anomalies')}</span>
           </div>
           <h1 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {t('fairWageLedger', 'Cooperative Financial Audit & Wage Disbursal')}

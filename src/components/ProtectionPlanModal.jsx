@@ -75,7 +75,7 @@ export default function ProtectionPlanModal({ isOpen, onClose }) {
                   {t('cooperativeWelfarePlan', 'Cooperative Welfare & Worker Protection Plan')}
                 </h2>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  SIH26089 Feature 7
+                  Feature 7
                 </span>
               </div>
               <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>

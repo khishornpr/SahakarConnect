@@ -1,4 +1,4 @@
--- SahakarConnect Database Schema (SIH26089)
+-- SahakarConnect Database Schema
 -- Cooperative-Owned Digital Service Marketplace Platform
 
 -- 1. Cooperatives Table (Federations & Societies)

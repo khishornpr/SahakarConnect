@@ -1,5 +1,5 @@
 // SahakarConnect Mock Supabase Client & 4-6 Weeks Historical Database
-// Problem Statement SIH26089 - Cooperative Digital Service Marketplace
+// Cooperative Digital Service Marketplace
 
 // Helper to generate past ISO timestamps
 const daysAgo = (days, hour = 11, minute = 30) => {

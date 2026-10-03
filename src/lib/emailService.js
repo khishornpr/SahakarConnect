@@ -159,7 +159,7 @@ export const generatePasswordResetEmailHtml = ({ pinCode, expiryMinutes = 10, em
       </div>
     </div>
     <div class="footer">
-      © 2026 SahakarConnect • SIH26089 Cooperative Digital Service Marketplace<br>
+      © 2026 SahakarConnect • Cooperative Digital Service Marketplace<br>
       Automated Security Notification • Please do not reply directly to this email
     </div>
   </div>
